@@ -3,10 +3,10 @@ A new CMS platform. Focuses on solving the following problems which regularly oc
 1. Difficult for end user to use
 2. Difficult to manipulate JS, CSS and HTML directly for advanced users
 3. Constant plugin and CSS/JS collisions
-4. Deployment issues including: ftp, inccurect urls, client's don't update, dev/prod development, lack of version control, chearp hosting environments, difficult installation
+4. Deployment issues including: ftp, inccurect urls, client's don't update, dev/prod development, lack of version control, cheap hosting environments lead to unreliable scripts, to get full functionality installation is tricky
 5. Performance issues
 6. Security issues
-7. Poor mobile solutions lead to bad UX on mobile devices
+7. Poor mobile solutions lead to bad UX on mobile devices, slow load speeds
 8. Multilingual sites are difficult to create and manage
 9. Multi site setup is hard to do. Configs and resused files are very hard to migrate
 10. Access control is confusing (drupal) or lacks robustness (wordpress, joomla)
