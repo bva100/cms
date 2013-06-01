@@ -90,6 +90,14 @@ class Persister {
     }
 
     /**
+     * Flush
+     */
+    public function flush()
+    {
+        $this->em->flush();
+    }
+
+    /**
      * @param $object
      * @param bool $lazy
      * @param array $flash
@@ -117,7 +125,7 @@ class Persister {
         }
         if ( ! $lazy )
         {
-            $this->em->flush();
+            $this->flush();
         }
         if ( ! empty($flash) )
         {
@@ -125,4 +133,7 @@ class Persister {
         }
         return true;
     }
+
+
+
 }

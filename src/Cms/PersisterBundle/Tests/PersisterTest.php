@@ -20,7 +20,7 @@ class PersisterTest extends \PHPUnit_Framework_TestCase {
      */
     public function setUp()
     {
-        $this->em = $this->getMock('EntityManager', array('persist', 'flush'));
+        $this->em = $this->getMock('EntityManager', array('persist', 'flush', 'delete'));
         $this->validator = $this->getMock('Validator', array('validate'));
         $this->persister = new Persister($this->em, $this->validator);
     }
@@ -75,5 +75,18 @@ class PersisterTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($results);
     }
 
+    /**
+     * @covers Cms\PersisterBundle\Services\Persister::delete
+     */
+    public function testDelete()
+    {
+        $obj = new \stdClass;
+        
+        $this->persister->expects($this->any())
+            ->method('delete')
+            ->will($this->returnValue('deleted'));
+        $result = $this->persister->delete($obj);
+        $this->assertEquals('deleted', $result);
+    }
 
 }
