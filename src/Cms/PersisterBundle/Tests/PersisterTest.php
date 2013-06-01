@@ -20,7 +20,7 @@ class PersisterTest extends \PHPUnit_Framework_TestCase {
      */
     public function setUp()
     {
-        $this->em = $this->getMock('EntityManager', array('persist', 'flush', 'delete'));
+        $this->em = $this->getMock('EntityManager', array('persist', 'flush', 'remove', 'getRepository'));
         $this->validator = $this->getMock('Validator', array('validate'));
         $this->persister = new Persister($this->em, $this->validator);
     }
@@ -81,12 +81,22 @@ class PersisterTest extends \PHPUnit_Framework_TestCase {
     public function testDelete()
     {
         $obj = new \stdClass;
-        
-        $this->persister->expects($this->any())
-            ->method('delete')
-            ->will($this->returnValue('deleted'));
-        $result = $this->persister->delete($obj);
-        $this->assertEquals('deleted', $result);
+        $results = $this->persister->delete($obj, false);
+        $this->assertTrue($results);
     }
 
+    /**
+     * @covers Cms\PersisterBundle\Services\Persister::getRepo
+     */
+    public function testGetRepo()
+    {
+        $this->em->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue('returnedTestRepo'));
+        $this->persister->setEm($this->em);
+        
+        $repo = $this->persister->getRepo('testRepo');
+        $this->assertEquals($repo, 'returnedTestRepo');
+    }
+    
 }

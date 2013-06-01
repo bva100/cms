@@ -134,6 +134,28 @@ class Persister {
         return true;
     }
 
+    /**
+     * @param $object
+     * @param bool $lazy
+     * @return bool
+     */
+    public function delete($object, $lazy = false)
+    {
+        $this->em->remove($object);
+        if ( ! $lazy )
+        {
+            $this->flush();
+        }
+        return true;
+    }
 
+    /**
+     * @param $className
+     * @return mixed
+     */
+    public function getRepo($className)
+    {
+        return $this->em->getRepository($className);
+    }
 
 }
