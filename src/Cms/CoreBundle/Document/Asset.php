@@ -24,7 +24,7 @@ class Asset {
     /**
      * @MongoDB\String
      */
-    private $type;
+    private $ext;
 
     /**
      * @MongoDB\String
@@ -46,7 +46,6 @@ class Asset {
      */
     private $history;
 
-
     /**
      * Get id
      *
@@ -55,28 +54,6 @@ class Asset {
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     * @return self
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string $type
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**
@@ -99,6 +76,28 @@ class Asset {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set ext
+     *
+     * @param string $ext
+     * @return self
+     */
+    public function setExt($ext)
+    {
+        $this->ext = $ext;
+        return $this;
+    }
+
+    /**
+     * Get ext
+     *
+     * @return string $ext
+     */
+    public function getExt()
+    {
+        return $this->ext;
     }
 
     /**
@@ -166,5 +165,4 @@ class Asset {
     {
         return $this->history;
     }
-
 }

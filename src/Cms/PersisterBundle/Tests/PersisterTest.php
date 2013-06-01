@@ -27,16 +27,6 @@ class PersisterTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @covers Cms\PersisterBundle\Services\Persister::save
-     * @expectedException InvalidArgumentException
-     */
-    public function testInvalidFlashArray()
-    {
-        $obj = new \stdClass;
-        $this->persister->save($obj, true, array('flashBag' => ''));
-    }
-
-    /**
-     * @covers Cms\PersisterBundle\Services\Persister::save
      */
     public function testSaveInvalid()
     {

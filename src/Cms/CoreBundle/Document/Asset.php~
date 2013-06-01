@@ -24,15 +24,15 @@ class Asset {
     /**
      * @MongoDB\String
      */
-    private $type;
+    private $ext;
 
     /**
-     * @MongoDB\String
+     * @MongoDB\String @MongoDB\Index(unique=true, order="asc")
      */
     private $name;
 
     /**
-     * @MongoDB\Collection
+     * @MongoDB\Hash
      */
     private $acl;
 
@@ -42,10 +42,9 @@ class Asset {
     private $url;
 
     /**
-     * @MongoDB\Collection
+     * @MongoDB\Hash
      */
     private $history;
-
 
     /**
      * Get id
@@ -77,6 +76,28 @@ class Asset {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set ext
+     *
+     * @param string $ext
+     * @return self
+     */
+    public function setExt($ext)
+    {
+        $this->ext = $ext;
+        return $this;
+    }
+
+    /**
+     * Get ext
+     *
+     * @return string $ext
+     */
+    public function getExt()
+    {
+        return $this->ext;
     }
 
     /**

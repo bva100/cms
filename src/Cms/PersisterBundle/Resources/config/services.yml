@@ -4,4 +4,4 @@ parameters:
 services:
     persister:
         class: %persister.class%
-        arguments: [@doctrine.odm.mongodb.document_manager, @validator]
+        arguments: [@doctrine.odm.mongodb.document_manager, @validator, @session, true]

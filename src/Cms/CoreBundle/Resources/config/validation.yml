@@ -1,0 +1,12 @@
+Cms\CoreBundle\Document\Asset:
+    properties:
+        name:
+           - NotBlank: { message: 'Please add a name' }
+           - Length:
+              min: 3
+              max: 127
+        ext:
+           - NotBlank: { message: 'Please add an extention' }
+           - Choice: { choices: [css, js], message: 'Only js and css extensions are allowed' }
+        url:
+           - Url: ~

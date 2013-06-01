@@ -10,6 +10,14 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-        echo '<pre>', \var_dump($name); die();
+        $asset = new Asset();
+        $asset->setName('coco');
+        $asset->setExt('css');
+        $asset->setUrl('mermetmer');
+
+        $results = $this->get('persister')->save($asset);
+
+        $notices = $this->get('session')->getFlashBag()->get('notices');
+        echo '<pre>', \var_dump($results, $notices); die();
     }
 }

@@ -27,13 +27,33 @@ class Persister {
     private $validator;
 
     /**
+     * @var session helper
+     */
+    private $session;
+
+    /**
+     * @var flashBag from session service
+     */
+    private $flashBag;
+
+    /**
      * @param ObjectManager $em
      * @param $validator
+     * @param $session
+     * @param bool $addFlashBag
      */
-    public function __construct($em, $validator)
+    public function __construct($em, $validator, $session = null, $addFlashBag = true)
     {
         $this->setEm($em);
         $this->setValidator($validator);
+        if ( isset($session) )
+        {
+            $this->setSession($session);
+            if ( $addFlashBag )
+            {
+                $this->setFlashBag($this->session->getFlashBag());
+            }
+        }
     }
 
     /**
@@ -69,24 +89,35 @@ class Persister {
     }
 
     /**
-     * @param array $flash
-     * @throws \InvalidArgumentException
+     * @param $session
      */
-    private function validateFlashArray(array $flash)
+    public function setSession($session)
     {
-        if ( empty($flash) )
-        {
-            return;
-        }
-        else if ( ! isset($flash['flashBag']) )
-        {
-            throw new \InvalidArgumentException('flash array is missing a flashBag key value pair');
-        }
-        else if ( ! isset($flash['onSuccess']) )
-        {
-            throw new \InvalidArgumentException('flash array is missing an onSuccess key value pair');
-        }
+        $this->session = $session;
+    }
 
+    /**
+     * @return session
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param $flashBag
+     */
+    public function setFlashBag($flashBag)
+    {
+        $this->flashBag = $flashBag;
+    }
+
+    /**
+     * @return flashBag object
+     */
+    public function getFlashBag()
+    {
+        return $this->flashBag;
     }
 
     /**
@@ -100,21 +131,20 @@ class Persister {
     /**
      * @param $object
      * @param bool $lazy
-     * @param array $flash
+     * @param string $onSuccess
      * @return bool
      */
-    public function save($object, $lazy = false, array $flash = array())
+    public function save($object, $lazy = false, $onSuccess = 'save complete')
     {
         // validate
-        $this->validateFlashArray($flash);
         $errors = $this->validator->validate($object);
         if ( \count($errors) > 0 )
         {
             //set error messages to flashBag notices
-            if ( ! empty($flash) )
+            if ( isset($this->flashBag) )
             {
                 foreach ($errors as $error) {
-                    $flash['flashBag']->set('notices', $error->getMessage());
+                    $this->flashBag->add('notices', $error->getMessage());
                 }
             }
             return false;
@@ -127,9 +157,9 @@ class Persister {
         {
             $this->flush();
         }
-        if ( ! empty($flash) )
+        if ( isset($this->flashBag) )
         {
-            $flash['flashBag']->set('notices', $flash['onSuccess']);
+            $this->flashBag->add('notices', $onSuccess);
         }
         return true;
     }
