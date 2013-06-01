@@ -1,3 +1,7 @@
+cms_validator:
+    resource: "@CmsValidatorBundle/Resources/config/routing.yml"
+    prefix:   /
+
 cms_persister:
     resource: "@CmsPersisterBundle/Resources/config/routing.yml"
     prefix:   /

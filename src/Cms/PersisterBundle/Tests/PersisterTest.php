@@ -98,5 +98,5 @@ class PersisterTest extends \PHPUnit_Framework_TestCase {
         $repo = $this->persister->getRepo('testRepo');
         $this->assertEquals($repo, 'returnedTestRepo');
     }
-    
+
 }

@@ -22,6 +22,7 @@ class AppKernel extends Kernel
  	        new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Cms\CoreBundle\CmsCoreBundle(),
             new Cms\PersisterBundle\CmsPersisterBundle(),
+            new Cms\ValidatorBundle\CmsValidatorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
