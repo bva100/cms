@@ -5,7 +5,7 @@
  * Time: 12:57 PM
  */
 
-namespace Cms\CoreBundle\Services;
+namespace Cms\CoreBundle\Services\AssetManager;
 
 use Cms\CoreBundle\Exceptions\AssetManagerException;
 
@@ -14,12 +14,12 @@ use Cms\CoreBundle\Exceptions\AssetManagerException;
  * Class AssetManager
  * @package Cms\CoreBundle\Services
  */
-class AssetManager {
+abstract class AbstractAssetManager {
 
     /**
      * @var array
      */
-    private $dirs;
+    protected $dirs;
 
     /**
      * @param array $dirs
@@ -56,7 +56,7 @@ class AssetManager {
     {
         if ( empty($dirs) )
         {
-            $root = __DIR__.'/../ClientAssets/';
+            $root = __DIR__.'/../../../ClientAssets/';
             $dirs = array(
                 'css' => $root.'css/',
                 'js'  => $root.'js/',
@@ -75,40 +75,40 @@ class AssetManager {
 
     /**
      * @param $name
+     * @throws \InvalidArgumentException
+     */
+    public function validateName($name)
+    {
+        if ( ! is_string($name) )
+        {
+            throw new \InvalidArgumentException('Filename must be a string to be valid');
+        }
+        if ( preg_match('/[^a-z_\-0-9]/i', $name) )
+        {
+            throw new \InvalidArgumentException('Invalid filename. Filename must be alphanumeric.');
+        }
+    }
+
+    /**
+     * @param $name
      * @param $ext
      * @param $data
      * @throws AssetManagerException
      */
-    public function save($name, $ext, $data)
-    {
-        $results = \file_put_contents( $this->getDir($ext).'/'.$name.'.'.$ext, $data, LOCK_EX );
-        if ( $results === false )
-        {
-            throw new AssetManagerException('File write failed. Please check permissions.');
-        }
-    }
+    abstract public function save($name, $ext, $data);
 
     /**
      * @param $name
      * @param $ext
      * @return string
      */
-    public function read($name, $ext)
-    {
-        return \file_get_contents( $this->getDir($ext).$name.'.'.$ext );
-    }
+    abstract public function read($name, $ext);
 
     /**
      * @param $name
      * @param $ext
      * @throws \Cms\CoreBundle\Exceptions\AssetManagerException
      */
-    public function delete($name, $ext)
-    {
-        if ( ! \unlink( $this->getDir($ext).$name.'.'.$ext ) )
-        {
-            throw new AssetmanagerException('File deletion failed. Please check permissions');
-        }
-    }
+    abstract public function delete($name, $ext);
 
 }

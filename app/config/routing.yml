@@ -1,3 +1,7 @@
+cms_persister:
+    resource: "@CmsPersisterBundle/Resources/config/routing.yml"
+    prefix:   /
+
 cms_core:
     resource: "@CmsCoreBundle/Resources/config/routing.yml"
     prefix:   /
