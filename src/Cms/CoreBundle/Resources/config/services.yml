@@ -1,7 +1,6 @@
 parameters:
-#    cms_core.example.class: Cms\CoreBundle\Example
+    cms.local_asset_manager.class: Cms\CoreBundle\Services\AssetManager\Local
 
 services:
-#    cms_core.example:
-#        class: %cms_core.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    asset_manager:
+        class: %cms.local_asset_manager.class%
