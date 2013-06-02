@@ -10,10 +10,8 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-        $asset = new Asset();
-        $asset->setName('coco');
-        $asset->setExt('css');
-        $asset->setUrl('mermetmer');
+        $asset = $this->get('persister')->getRepo('CmsCoreBundle:Asset')->find('51aae72518a516340400000e');
+        $asset->removeOldestHistory();
 
         $results = $this->get('persister')->save($asset);
 

@@ -42,7 +42,7 @@ class Asset {
     private $url;
 
     /**
-     * @MongoDB\Hash
+     * @MongoDB\Collection
      */
     private $history;
 
@@ -145,15 +145,28 @@ class Asset {
     }
 
     /**
-     * Set history
-     *
-     * @param collection $history
-     * @return self
+     * @param $contentStr
+     * @param null $timestamp
      */
-    public function setHistory($history)
+    public function addHistory($contentStr, $timestamp = null)
     {
-        $this->history = $history;
-        return $this;
+        if ( ! $timestamp )
+        {
+            $timestamp = time();
+        }
+        if ( ! $this->history )
+        {
+            $this->history = array();
+        }
+        if ( count($this->history) >= 50 )
+        {
+            $this->removeOldestHistory();
+        }
+
+        $entry = new \stdClass;
+        $entry->created = $timestamp;
+        $entry->content = $contentStr;
+        $this->history[] = $entry;
     }
 
     /**
@@ -165,4 +178,35 @@ class Asset {
     {
         return $this->history;
     }
+
+    /**
+     * @return void
+     */
+    public function removeAllHistory()
+    {
+        $this->history = array();
+    }
+
+    /**
+     * @return void
+     */
+    public function removeOldestHistory()
+    {
+        if ( isset($this->history) )
+        {
+            \array_pop($this->history);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function removeNewestHistory()
+    {
+        if ( isset($this->history) )
+        {
+            \array_shift($this->history);
+        }
+    }
+    
 }
