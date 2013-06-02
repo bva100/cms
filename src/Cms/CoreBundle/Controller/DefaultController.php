@@ -3,7 +3,9 @@
 namespace Cms\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Cms\CoreBundle\Services\AssetManager;
+use Cms\CoreBundle\Services\TemplateLoader\MongoTwigLoader;
 use Cms\CoreBundle\Document\Asset;
 use Cms\CoreBundle\Document\Template;
 
@@ -11,9 +13,11 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-        $template = new Template();
-        $template->setName('Summit');
-        $template->setContent('{% extends \'coreBase\' %} {% block body %}<h1>Hello World!</h1>!{% endblock %}');
-        $this->get('persister')->save($template);
+//        $em = $this->get('doctrine_mongodb')->getManager();
+//        $class = 'CmsCoreBundle:Template';
+//        $loader = new MongoTwigLoader($em, $class);
+//        echo '<pre>', \var_dump($loader->getSource('Summit')); die();
+        $twig = $this->get('twig_loader')->load();
+        return new Response($twig->render('Summit'));
     }
 }

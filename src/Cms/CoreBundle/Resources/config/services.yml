@@ -1,6 +1,16 @@
 parameters:
     cms.local_asset_manager.class: Cms\CoreBundle\Services\AssetManager\Local
+    cms.mongo_twig_load.class: Cms\CoreBundle\Services\TemplateLoader\MongoTwigLoader
+    cms.twig_environemnt.class: Cms\CoreBundle\Services\TemplateLoader\TwigEnvironment
 
 services:
     asset_manager:
         class: %cms.local_asset_manager.class%
+    template_loader:
+        class: %cms.mongo_twig_load.class%
+        arguments: [@doctrine.odm.mongodb.document_manager, CmsCoreBundle:Template ]
+    twig_loader:
+        class: %cms.twig_environemnt.class%
+        arguments: [@kernel]
+        calls:
+          - [setLoader, [@template_loader]]
