@@ -208,5 +208,16 @@ class Asset {
             \array_shift($this->history);
         }
     }
-    
+
+    /**
+     * Set history
+     *
+     * @param collection $history
+     * @return self
+     */
+    public function setHistory($history)
+    {
+        $this->history = $history;
+        return $this;
+    }
 }

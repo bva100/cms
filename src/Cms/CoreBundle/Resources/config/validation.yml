@@ -10,3 +10,15 @@ Cms\CoreBundle\Document\Asset:
            - Choice: { choices: [css, js], message: 'Only js and css extensions are allowed' }
         url:
            - Url: ~
+
+Cms\CoreBundle\Document\Template:
+    properties:
+        name:
+           - NotBlank: { message: 'Please add a name to tempalte' }
+           - Length:
+              min: 3
+              max: 127
+        parent:
+           - Length:
+              min: 3
+              max: 127

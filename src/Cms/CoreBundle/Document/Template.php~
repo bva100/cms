@@ -1,0 +1,40 @@
+<?php
+/**
+ * User: Brian Anderson
+ * Date: 6/2/13
+ * Time: 12:07 AM
+ */
+
+namespace Cms\CoreBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
+/**
+ * Class Template
+ * @package Cms\CoreBundle\Document
+ * @MongoDB\Document(collection="templates")
+ */
+class Template {
+
+    /**
+     * @MongoDB\Id
+     */
+    private $id;
+
+    /**
+     * @MongoDB\String
+     */
+    private $name;
+
+    /**
+     * name of parent template
+     * @MongoDB\String
+     */
+    private $parent;
+
+    /**
+     * @MongoDB\String
+     */
+    private $content;
+
+}
