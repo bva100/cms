@@ -318,7 +318,7 @@ class User implements UserInterface, \Serializable{
         {
             return $this->name;
         }
-        elsegit
+        else
         {
             switch($type){
                 case 'first_last':

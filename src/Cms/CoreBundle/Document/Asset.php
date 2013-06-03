@@ -170,7 +170,7 @@ class Asset {
     }
 
     /**
-     * Get history
+     * Get history. Returns an array of stdClass objects with property (int, unixtimestamp) created and (string) content
      *
      * @return collection $history
      */
