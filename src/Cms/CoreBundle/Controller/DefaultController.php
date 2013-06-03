@@ -13,11 +13,6 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-//        $em = $this->get('doctrine_mongodb')->getManager();
-//        $class = 'CmsCoreBundle:Template';
-//        $loader = new MongoTwigLoader($em, $class);
-//        echo '<pre>', \var_dump($loader->getSource('Summit')); die();
-        $twig = $this->get('twig_loader')->load();
-        return new Response($twig->render('Summit'));
+        echo '<pre>', \var_dump($name); die();
     }
 }

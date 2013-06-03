@@ -1,0 +1,7 @@
+parameters:
+#    cms_user.example.class: Cms\UserBundle\Example
+
+services:
+#    cms_user.example:
+#        class: %cms_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

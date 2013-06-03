@@ -1,3 +1,7 @@
+cms_user:
+    resource: "@CmsUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
 cms_validator:
     resource: "@CmsValidatorBundle/Resources/config/routing.yml"
     prefix:   /
