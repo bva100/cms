@@ -47,9 +47,14 @@ class User implements UserInterface, \Serializable{
     private $password;
 
     /**
-     * @MongoDB\Hash
+     * @MongoDB\Collection
      */
     private $roles;
+
+    /**
+     * @MongoDB\Hash
+     */
+    private $name;
 
     /**
      * @MongoDB\String
@@ -62,6 +67,8 @@ class User implements UserInterface, \Serializable{
     public function __construct($saltGroupIndex = 1, $state = 'active')
     {
         $this->setSaltGroupIndex(1);
+        $this->roles = array();
+        $this->name = array();
     }
 
     /**
@@ -97,21 +104,7 @@ class User implements UserInterface, \Serializable{
     }
 
     /**
-     * Set username as email
-     *
-     * @param string $email
-     * @return self
-     */
-    public function setUsername($email)
-    {
-        $this->setEmail($email);
-        return $this;
-    }
-
-    /**
-     * Get username as email
-     *
-     * @return string $email
+     * Returns email instead of username. Used to satisfy interface requirements and remember-me functionality
      */
     public function getUsername()
     {
@@ -178,21 +171,43 @@ class User implements UserInterface, \Serializable{
     }
 
     /**
-     * Set roles
-     *
-     * @param hash $roles
-     * @return self
+     * @param $role
+     * @return $this
      */
-    public function setRoles($roles)
+    public function addRole($role)
     {
-        $this->roles = $roles;
+        $this->roles[] = $role;
+        return $this;
+    }
+
+    /**
+     * @param $role
+     * @return $this
+     */
+    public function removeRole($role)
+    {
+        $roles = array_flip($this->roles);
+        if ( isset($roles[$role]) )
+        {
+            unset($roles[$role]);
+            $this->roles = array_flip($roles);
+        }
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function removeAllRoles()
+    {
+        $this->roles = array();
         return $this;
     }
 
     /**
      * Get roles
      *
-     * @return hash $roles
+     * @return collection $roles
      */
     public function getRoles()
     {
@@ -253,11 +268,104 @@ class User implements UserInterface, \Serializable{
         ));
     }
 
+
     /**
-     * @see \Serializable::unserialize()
+     * @param string $serialized
      */
     public function unserialize($serialized)
     {
         list ($this->id) = unserialize($serialized);
+    }
+
+    /**
+     * @param array $nameArray
+     * @return $this
+     */
+    public function setName(array $nameArray = array())
+    {
+        $name = array();
+        if ( isset($nameArray['first']) )
+        {
+            $name['first'] = \ucfirst($nameArray['first']);
+        }
+        if ( isset($nameArray['last']) )
+        {
+            $name['last'] = \ucfirst($nameArray['last']);
+        }
+        if ( isset($nameArray['middle']) )
+        {
+            $name['middle'] = \ucfirst($nameArray['middle']);
+        }
+        if ( isset($nameArray['prefix']) )
+        {
+            $name['prefix'] = \ucfirst($nameArray['prefix']);
+        }
+        if ( isset($nameArray['suffix']) )
+        {
+            $name['suffix'] = \ucfirst($nameArray['suffix']);
+        }
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @param null $type
+     * @return array|string
+     */
+    public function getName($type = null)
+    {
+        if ( ! isset($type) )
+        {
+            return $this->name;
+        }
+        elsegit
+        {
+            switch($type){
+                case 'first_last':
+                    if ( isset($this->name['first']) AND isset($this->name['last']) )
+                    {
+                        return $this->name['first'].' '.$this->name['last'];
+                    }
+                    break;
+                case 'short':
+                    if ( isset($this->name['first']) AND isset($this->name['last']) )
+                    {
+                        return $this->name['first'].' '.$this->name['last'][0];
+                    }
+                    break;
+                case 'first':
+                    if ( isset($this->name['first']) )
+                    {
+                        return $this->name['first'];
+                    }
+                    break;
+                case 'last':
+                    if ( isset($this->name['last']) )
+                    {
+                        return $this->name['last'];
+                    }
+                    break;
+                case 'middle':
+                    if ( isset($this->name['middle']) )
+                    {
+                        return $this->name['middle'];
+                    }
+                    break;
+                case 'prefix':
+                    if ( isset($this->name['prefix']) )
+                    {
+                        return $this->name['prefix'];
+                    }
+                    break;
+                case 'suffix':
+                    if ( isset($this->name['suffix']) )
+                    {
+                        return $this->name['suffix'];
+                    }
+                    break;
+                default:
+                    return '';
+            }
+        }
     }
 }

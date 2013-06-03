@@ -13,6 +13,7 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-        echo '<pre>', \var_dump($name); die();
+        $asset = $this->get('persister')->getRepo('CmsCoreBundle:Asset')->find('51aaed5818a516fd7800000c');
+        echo '<pre>', \var_dump($asset); die();
     }
 }

@@ -51,4 +51,77 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('HsWmG9w3CpXEp81Qkkiq', $salt);
     }
 
+    /**
+     * @covers Cms\UserBundle\Document\User::addRole
+     * @covers Cms\UserBundle\Document\User::getRoles
+     */
+    public function testAddRole()
+    {
+        $this->user->addRole('ROLE_ADMIN');
+        $this->user->addRole('ROLE_USER');
+        $roles = $this->user->getRoles();
+
+        $this->assertContains('ROLE_ADMIN', $roles);
+        $this->assertContains('ROLE_USER', $roles);
+    }
+
+    /**
+     * @covers Cms\UserBundle\Document\User::removeRole
+     * @covers Cms\UserBundle\Document\User::addRole
+     * @covers Cms\UserBundle\Document\User::getRoles
+     */
+    public function testRemoveRole()
+    {
+        $this->user->addRole('ROLE_USER');
+        $this->user->addRole('ROLE_ADMIN');
+        $this->user->addRole('ROLE_ALLOWED_TO_SWITCH');
+        $this->assertCount(3, $this->user->getRoles());
+
+        $this->user->removeRole('ROLE_ALLOWED_TO_SWITCH');
+        $this->assertCount(2, $this->user->getRoles());
+        $this->user->removeRole('ROLE_ADMIN');
+        $this->assertCount(1, $this->user->getRoles());
+        $this->user->removeRole('ROLE_USER');
+        $this->assertEmpty($this->user->getRoles());
+    }
+
+    /**
+     * @covers Cms\UserBundle\Document\User::removeAllRole
+     * @covers Cms\UserBundle\Document\User::addRole
+     * @covers Cms\UserBundle\Document\User::getRoles
+     */
+    public function testRemoveAllRoles()
+    {
+        $this->user->addRole('ROLE_USER');
+        $this->user->addRole('ROLE_ADMIN');
+        $this->user->addRole('ROLE_ALLOWED_TO_SWITCH');
+        $this->assertCount(3, $this->user->getRoles());
+
+        $this->user->removeAllRoles();
+        $this->assertEmpty($this->user->getRoles());
+    }
+
+    /**
+     * @covers Cms\UserBundle\Document\User::setName
+     * @covers Cms\UserBundle\Document\User::getName
+     */
+    public function testSetNameAndGetName()
+    {
+        $nameArray = array(
+            'first' => 'Foo',
+            'last'  => 'Bar',
+            'middle' => 'Dum',
+            'prefix' => 'Mr.',
+            'suffix' => 'Ph.D',
+        );
+        $this->user->setName($nameArray);
+        $this->assertEquals($nameArray, $this->user->getName());
+        $this->assertEquals('Foo', $this->user->getName('first'));
+        $this->assertEquals('Bar', $this->user->getName('last'));
+        $this->assertEquals('Dum', $this->user->getName('middle'));
+        $this->assertEquals('Mr.', $this->user->getName('prefix'));
+        $this->assertEquals('Ph.D', $this->user->getName('suffix'));
+        $this->assertEquals('Foo Bar', $this->user->getName('first_last'));
+        $this->assertEquals('Foo B', $this->user->getName('short'));
+    }
 }

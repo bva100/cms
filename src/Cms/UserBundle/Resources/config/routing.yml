@@ -1,0 +1,23 @@
+login:
+    pattern:   /login
+    defaults:  { _controller: CmsUserBundle:Security:login }
+login_check:
+    pattern:   /login_check
+logout:
+    path: /logout
+
+read_user:
+    pattern: /user/read
+    defaults: { _controller: CmsUserBundle:Default:readUser }
+
+create_user:
+    pattern: /user/create
+    defaults: { _controller: CmsUserBundle:Default:createUser }
+
+login_forcer:
+    pattern: /forcelogin
+    defaults: { _controller: CmsUserBundle:Default:forceLogin }
+
+admin:
+    pattern: /admin
+    defaults: { _controller: CmsUserBundle:Default:index }

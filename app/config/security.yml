@@ -4,39 +4,33 @@ jms_security_extra:
 
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Cms\UserBundle\Document\User: sha512
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        my_mongo_provider:
+            mongodb: {class: Cms\UserBundle\Document\User, property: email}
 
     firewalls:
-        dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+        regular:
+            pattern : /
+            anonymous: ~
+            form_login: ~
+            logout: ~
+            remember_me:
+              key:      J8dTf3u3gvVtXB2zOKDF
+              lifetime: 31536000 # 365 days in seconds
+              path:     /
+              domain:   ~ # Defaults to the current domain from $_SERVER
 
-        login:
-            pattern:  ^/demo/secured/login$
-            security: false
-
-        secured_area:
-            pattern:    ^/demo/secured/
-            form_login:
-                check_path: _security_check
-                login_path: _demo_login
-            logout:
-                path:   _demo_logout
-                target: _demo
-            #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
+        admin_area:
+            pattern:    ^/admin$
+            form_login: ~
+            logout: ~
 
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/admin/update, roles: [ROLE_ADMIN] }
+        - { path: ^/admin, roles: [ ROLE_ADMIN ] }
