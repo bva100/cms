@@ -90,7 +90,6 @@ class User implements UserInterface, \Serializable{
         $this->setSaltGroupIndex(1);
         $this->roles = array();
         $this->name = array();
-        $this->login = array();
     }
 
     /**
@@ -229,7 +228,7 @@ class User implements UserInterface, \Serializable{
     /**
      * Cannot directly set roles, must use addRole method
      */
-    public function setRoles()
+    public function setRole()
     {
     }
 
@@ -395,113 +394,6 @@ class User implements UserInterface, \Serializable{
                 default:
                     return '';
             }
-        }
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return self
-     */
-    public function setIp($ip)
-    {
-        $this->ip = $ip;
-        return $this;
-    }
-
-    /**
-     * Get ip
-     *
-     * @return string $ip
-     */
-    public function getIp()
-    {
-        return $this->ip;
-    }
-
-    /**
-     * Set utcOffset
-     *
-     * @param int $utcOffset
-     * @return self
-     */
-    public function setUtcOffset($utcOffset)
-    {
-        $this->utcOffset = $utcOffset;
-        return $this;
-    }
-
-    /**
-     * Get utcOffset
-     *
-     * @return int $utcOffset
-     */
-    public function getUtcOffset()
-    {
-        return $this->utcOffset;
-    }
-
-    /**
-     * Set locale
-     *
-     * @param string $locale
-     * @return self
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-        return $this;
-    }
-
-    /**
-     * Get locale
-     *
-     * @return string $locale
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @return $this
-     */
-    public function recordLogin()
-    {
-        $login = array();
-        if ( isset($this->login['count']) )
-        {
-            $login['count'] = ++$this->login['count'];;
-        }
-        else
-        {
-            $login['count'] = 1;
-        }
-        $login['last'] = time();
-        $this->login = $login;
-        return $this;
-    }
-
-    /**
-     * Get login
-     *
-     * @param null $type
-     * @return hash $login
-     */
-    public function getLogin($type = null)
-    {
-        if ( ! isset($type) )
-        {
-            return $this->login;
-        }
-        else if ( $type === 'count' )
-        {
-            return $this->login['count'];
-        }
-        else if ( $type === 'last' )
-        {
-            return $this->login['last'];
         }
     }
 }

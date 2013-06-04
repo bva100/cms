@@ -1,0 +1,39 @@
+Cms\UserBundle\Document\User:
+    properties:
+        email:
+           - NotBlank: { message: Please add an Email address. }
+           - Email:
+              message: The email "{{ value }}" is not a valid email.
+              checkMX: true
+        password:
+           - NotBlank: { message: Please add a password }
+           - MinLength:
+               limit: 7,
+               message: Your name must have at least {{ limit }} characters.
+        saltGroupIndex:
+           - Type:
+              type: integer
+              message: The value {{ value }} is not a valid {{ type }}.
+        roles:
+           - Type:
+              type: array
+              message: The value {{ value }} is not a valid {{ type }}.
+        name:
+           - Type:
+              type: array
+              message: The value {{ value }} is not a valid {{ type }}.
+        ip:
+           - Ip: ~
+        utcOffset:
+           - Type:
+              type: integer
+              message: The value {{ value }} is not a valid {{ type }}.
+        locale:
+           - Locale: ~
+        login:
+           - Type:
+              type: array
+              message: The value {{ value }} is not a valid {{ type }}.
+        state:
+           - Choice:
+              choices:  [active, pending, inActive, deleted]

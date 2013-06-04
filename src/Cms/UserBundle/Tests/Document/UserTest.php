@@ -124,4 +124,21 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('Foo Bar', $this->user->getName('first_last'));
         $this->assertEquals('Foo B', $this->user->getName('short'));
     }
+
+    /**
+     * @covers Cms\UserBundle\Document\User::recordLogin
+     * @covers Cms\UserBundle\Document\User::getLogin
+     */
+    public function testRecordLogin()
+    {
+        $this->user->recordLogin();
+        $loginArray = $this->user->getLogin();
+
+        $this->assertCount(2, $loginArray);
+        $this->assertEquals(1, $loginArray['count']);
+
+        $this->user->recordLogin();
+        $loginArray = $this->user->getLogin();
+        $this->assertEquals(2, $loginArray['count']);
+    }
 }

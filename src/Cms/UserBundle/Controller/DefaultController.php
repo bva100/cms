@@ -16,7 +16,9 @@ class DefaultController extends Controller
     public function readUserAction()
     {
         $user = $this->get('persister')->getRepo('CmsUserBundle:User')->find('51acfbc518a516fd78000012');
-        echo '<pre>', \var_dump($user->getName('last')); die();
+        $user->recordLogin();
+        $this->get('persister')->save($user);
+        echo '<pre>', \var_dump($user->getLogin('count')); die();
     }
 
     public function createUserAction()
