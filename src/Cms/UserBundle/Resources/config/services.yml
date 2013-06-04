@@ -1,7 +1,7 @@
 parameters:
-#    cms_user.example.class: Cms\UserBundle\Example
+    cms_user.force_login.class: Cms\UserBundle\Services\SymfonyTokenForceLogin
 
 services:
-#    cms_user.example:
-#        class: %cms_user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    force_login:
+        class: %cms_user.force_login.class%
+        arguments: [@security.context, "regular"]

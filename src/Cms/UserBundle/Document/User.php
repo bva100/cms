@@ -90,7 +90,8 @@ class User implements UserInterface, \Serializable{
         $this->setSaltGroupIndex(1);
         $this->roles = array();
         $this->name = array();
-        $this->login = array();
+        $this->login = array('count' => 0);
+        $this->state = 'active';
     }
 
     /**

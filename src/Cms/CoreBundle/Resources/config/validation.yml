@@ -22,3 +22,7 @@ Cms\CoreBundle\Document\Template:
            - Length:
               min: 3
               max: 127
+        content:
+          - Type:
+             type: string
+             message: The value {{ value }} is not a valid {{ type }}.
