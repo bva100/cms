@@ -53,7 +53,7 @@ class Node
      * Updates the modified timestamp
      *
      * @param int $timestamp
-     * @returns void
+     * @return void
      */
     public function updateModifiedTimestamp($timestamp = null)
     {
@@ -137,6 +137,10 @@ class Node
         if ( isset($newMetadata['author']) AND is_array($newMetadata['author']) )
         {
             $metadataArray['author'] = $newMetadata['author'];
+        }
+        if ( isset($newMetadata['defaultLocale']) )
+        {
+            $metadataArray['defaultLocale'] = $newMetadata['defaultLocale'];
         }
         $this->metadata = $metadataArray;
         return $this;
@@ -308,6 +312,16 @@ class Node
                     else
                     {
                         return null;
+                    }
+                    break;
+                case 'defaultLocale':
+                    if ( isset($this->metadata['defaultLocale']) )
+                    {
+                        return $this->metadata['defaultLocale'];
+                    }
+                    else
+                    {
+                       return null;
                     }
                     break;
                 default:
