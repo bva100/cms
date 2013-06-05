@@ -212,9 +212,13 @@ class Node
         }
     }
 
+    /**
+     * remove all metadata
+     */
     public function removeAllMetadata()
     {
         $this->metadata = array();
+        return $this;
     }
 
     /**
@@ -338,20 +342,105 @@ class Node
         }
     }
 
-    public function setView(array $view)
+    /**
+     * Add view data ('content') to a specific locale
+     *
+     * @param $locale
+     * @param array $data
+     * @return $this
+     */
+    public function addView($locale, array $data)
     {
-        $this->view = $view;
+        $viewArray = $this->getView($locale);
+        if ( ! $viewArray )
+        {
+            $viewArray = array();
+        }
+        if ( isset($data['content']) )
+        {
+            $viewArray['content'] = $data['content'];
+        }
+        if ( isset($data['json']) )
+        {
+            $viewArray['json'] = $data['json'];
+        }
+        $this->view[$locale] = $viewArray;
         return $this;
     }
 
     /**
-     * Get view
+     * Review view data based on locale and, optionally, dataType
      *
-     * @return hash $view
+     * @param $locale
+     * @param null $dataType
      */
-    public function getView()
+    public function removeView($locale, $dataType = null)
     {
-        return $this->view;
+        if ( ! isset($dataType) )
+        {
+            unset($this->view[$locale]);
+        }
+        else
+        {
+            unset($this->view[$locale][$dataType]);
+        }
+    }
+
+    public function removeAllViews()
+    {
+        $this->view = array();
+    }
+
+    /**
+     * Get view by specifying a locale and format.
+     * Leave Locale as null to receive entire view array.
+     * Specify locale nut leave format null to receive array of all locale specific data
+     * Specify locale and format to get a string with best match to locale
+     *
+     * @param $locale
+     * @param string $format
+     * @return array|string $view
+     */
+    public function getView($locale = null, $format = null)
+    {
+        if ( ! isset($locale) )
+        {
+            return $this->view;
+        }
+        else
+        {
+            switch($format){
+                case 'content':
+                    if ( isset($this->view[$locale]) )
+                    {
+                        return isset($this->view[$locale]['content']) ? $this->view[$locale]['content'] : null;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    break;
+                case 'json':
+                    if ( isset($this->view[$locale]) )
+                    {
+                        return isset($this->view[$locale]['json']) ? $this->view[$locale]['json'] : null;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    break;
+                default:
+                    if ( isset($this->view[$locale]) )
+                    {
+                        return $this->view[$locale];
+                    }
+                    else
+                    {
+                        return null;
+                    }
+            }
+        }
     }
 
     /**

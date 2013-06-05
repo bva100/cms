@@ -28,6 +28,11 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->node = new Node();
     }
 
+    public function setUp()
+    {
+        $this->node = new Node();
+    }
+
     /**
      * @covers \Cms\CoreBundle\Document\Node::addMetadata
      * @covers \Cms\CoreBundle\Document\Node::removeMetadata
@@ -167,6 +172,58 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $time = time();
         $this->node->updateModifiedTimestamp($time);
         $this->assertEquals($time, $this->node->getMetadata('modified'));
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::addView
+     * @covers \Cms\CoreBundle\Document\Node::getView
+     */
+    public function testAddViewAndGetView()
+    {
+        // test getView with default/null params
+        $this->node->addView('en', array('content' => '<h1>hello, world</h1>'));
+        $this->node->addView('en', array('json' => '{"article":"<h1>article</h1><p>great article</p>"}'));
+        $this->assertCount(1, $this->node->getView());
+        $this->assertEquals($this->node->getView(), array('en' => array('content' => '<h1>hello, world</h1>', 'json' => '{"article":"<h1>article</h1><p>great article</p>"}')));
+        $this->node->addView('fr', array('content' => '<h1>Bonjour tout le monde</h1>'));
+        $this->assertCount(2, $this->node->getView());
+        $this->assertEquals( $this->node->getView(), array('en' => array('content' => '<h1>hello, world</h1>', 'json' => '{"article":"<h1>article</h1><p>great article</p>"}'), 'fr' => array('content' => '<h1>Bonjour tout le monde</h1>')) );
+
+        // test getView with locale param
+        $this->assertEquals($this->node->getView('en'), array('content' => '<h1>hello, world</h1>', 'json' => '{"article":"<h1>article</h1><p>great article</p>"}') );
+        $this->assertEquals($this->node->getView('fr'), array('content' => '<h1>Bonjour tout le monde</h1>'));
+
+        //test getView with locale param and format param
+        $this->assertEquals($this->node->getView('en', 'content'), '<h1>hello, world</h1>');
+        $this->assertEquals($this->node->getView('en', 'json'), '{"article":"<h1>article</h1><p>great article</p>"}');
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::removeView
+     * @covers \Cms\CoreBundle\Document\Node::removeAllViews
+     */
+    public function testRemoveView()
+    {
+        $this->node->addView('en', array('content' => '<h1>hello, world</h1>'));
+        $this->node->addView('en', array('json' => '{"article":"<h1>article</h1><p>great article</p>"}'));
+        $this->node->addView('fr', array('content' => '<h1>Bonjour tout le monde</h1>'));
+        $this->node->addView('fr', array('json' => '{"Bonjour": "Bonjour tout le monde</h1>"'));
+        $this->node->addView('es', array('content' => 'hola mundo'));
+        $this->node->addView('es', array('json' => '{"hola":"hola mundo"}'));
+        $this->assertCount(3, $this->node->getView());
+
+        // remove with specific locale and type
+        $this->node->removeView('fr', 'json');
+        $this->assertNull($this->node->getView('fr', 'json'));
+        $this->assertCount(1, $this->node->getView('fr'));
+
+        // remove specific locale
+        $this->node->removeView('es');
+        $this->assertEquals(array('en', 'fr'), \array_keys($this->node->getView()));
+
+        // remove all
+        $this->node->removeAllViews();
+        $this->assertEmpty($this->node->getView());
     }
 
 
