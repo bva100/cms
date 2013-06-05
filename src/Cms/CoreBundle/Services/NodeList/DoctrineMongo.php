@@ -57,8 +57,17 @@ class DoctrineMongo {
             if ( isset($type['format']) AND $type['format'] === 'loop' )
             {
                 $site = $this->node->getMetadata('site');
+                if ( ! isset($site['domain']) )
+                {
+                    return array();
+                }
                 $type = $this->node->getMetadata('type');
-                $query =
+                if ( ! isset($type['name']) )
+                {
+                    return array();
+                }
+                $locale = $this->node->getMetadata('locale');
+                return $this->repo->findDynamicNodesByContentTypeAndDomain($type['name'], $site['domain'], $locale);
             }
             else
             {

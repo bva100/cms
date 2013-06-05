@@ -18,7 +18,10 @@ class DefaultController extends Controller
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find('51af953f18a516fd78000016');
         $dynamic_list_service->setNode($node);
         $list = $dynamic_list_service->getList();
-        echo '<pre>', \var_dump(count($list)); die();
+        foreach ($list as $list) {
+            echo $list->getMetadata('title').'<br>';
+        }
+        die('end');
 
 
 //        $node = new Node();

@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class Node
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="nodes")
+ * @MongoDB\Document(collection="nodes", repositoryClass="Cms\CoreBundle\Repository\NodeRepository")
  */
 class Node
 {
