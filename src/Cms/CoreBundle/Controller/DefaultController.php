@@ -12,12 +12,8 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-        $em = $this->get('doctrine_mongodb')->getManager();
-        $dynamic_list_service = new \Cms\CoreBundle\Services\NodeList\DoctrineMongo($em);
-
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find('51af953f18a516fd78000016');
-        $dynamic_list_service->setNode($node);
-        $list = $dynamic_list_service->getList();
+        $list = $this->get('dynamic_nodes')->setNode($node)->getList();
         foreach ($list as $list) {
             echo $list->getMetadata('title').'<br>';
         }

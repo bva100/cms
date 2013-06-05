@@ -34,10 +34,12 @@ class DoctrineMongo {
 
     /**
      * @param \Cms\CoreBundle\Document\Node $node
+     * @return $this
      */
     public function setNode($node)
     {
         $this->node = $node;
+        return $this;
     }
 
     /**

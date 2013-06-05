@@ -2,6 +2,7 @@ parameters:
     cms.local_asset_manager.class: Cms\CoreBundle\Services\AssetManager\Local
     cms.mongo_twig_load.class: Cms\CoreBundle\Services\TemplateLoader\MongoTwigLoader
     cms.twig_environemnt.class: Cms\CoreBundle\Services\TemplateLoader\TwigEnvironment
+    cms.node_list_doctrine_mongo.class: Cms\CoreBundle\Services\NodeList\DoctrineMongo
 
 services:
     asset_manager:
@@ -14,3 +15,6 @@ services:
         arguments: [@kernel]
         calls:
           - [setLoader, [@template_loader]]
+    dynamic_nodes:
+        class: %cms.node_list_doctrine_mongo.class%
+        arguments: [@doctrine.odm.mongodb.document_manager]
