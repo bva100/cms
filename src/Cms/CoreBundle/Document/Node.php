@@ -136,6 +136,10 @@ class Node
         {
             $metadataArray['author'] = $newMetadata['author'];
         }
+        if ( isset($newMetadata['type']) and is_array($newMetadata['type']) )
+        {
+            $metadataArray['type'] = $newMetadata['type'];
+        }
         $this->metadata = $metadataArray;
         return $this;
     }
