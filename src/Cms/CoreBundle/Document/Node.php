@@ -210,7 +210,11 @@ class Node
         {
             throw new \InvalidArgumentException('removeMetadata requires one argument as an associative array with a metaType index and an optional pattern index');
         }
-        
+    }
+
+    public function removeAllMetadata()
+    {
+        $this->metadata = array();
     }
 
     /**

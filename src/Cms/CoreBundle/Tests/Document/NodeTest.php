@@ -144,6 +144,21 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers \Cms\CoreBundle\Document\Node::removeMetadata
+     * @covers \Cms\CoreBundle\Document\Node::addMetadata
+     * @covers \Cms\CoreBundle\Document\Node::getMetadata
+     */
+    public function testRemoveAllMetadata()
+    {
+        $this->node->addMetadata( array('title' => 'delete-me'));
+        $this->node->addMetadata( array('tags' => array('foo', 'bar')) );
+        $this->node->addMetadata( array('categories' => array('parent' => 'foo')) );
+        $this->assertCount(3, $this->node->getMetadata());
+        $this->node->removeAllMetadata();
+        $this->assertEmpty($this->node->getMetadata());
+    }
+
+    /**
      * @covers \Cms\CoreBundle\Document\Node::updateModifiedTimestamp
      * @covers \Cms\CoreBundle\Document\Node::getMetadata
      */
