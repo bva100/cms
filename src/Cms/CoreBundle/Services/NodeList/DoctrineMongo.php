@@ -25,10 +25,23 @@ class DoctrineMongo {
     private $node;
 
     /**
+     * Can be: 'limit', 'offset', 'categories', 'tags'
+     *
+     * @var array $params
+     */
+    private $params;
+
+    /**
      * @param $em
      */
     public function __construct($em)
     {
+        $this->params = array(
+            'limit' => 12,
+            'offset' => 0,
+            'categories' => array(),
+            'tags' => array(),
+        );
         $this->repo = $em->getRepository('CmsCoreBundle:Node');
     }
 
@@ -69,7 +82,7 @@ class DoctrineMongo {
                     return array();
                 }
                 $locale = $this->node->getMetadata('locale');
-                return $this->repo->findDynamicNodesByContentTypeAndDomain($type['name'], $site['domain'], $locale);
+                return $this->repo->findDynamicNodesByContentTypeAndDomain($type['name'], $site['domain'], $locale, $this->params);
             }
             else
             {
