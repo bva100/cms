@@ -27,11 +27,6 @@ class Node
     private $view;
 
     /**
-     * @MongoDB\Hash
-     */
-    private $comments;
-
-    /**
      * Constructor. Sets created to current unix timestamp int
      */
     public function __construct()
@@ -95,15 +90,15 @@ class Node
         {
             $metadataArray['created'] = $newMetadata['created'];
         }
-        if ( isset($newMetadata['slug']) )
+        if ( isset($newMetadata['slug']) AND is_string($newMetadata['slug']) )
         {
             $metadataArray['slug'] = $newMetadata['slug'];
         }
-        if ( isset($newMetadata['title']) )
+        if ( isset($newMetadata['title']) AND is_string($newMetadata['title']) )
         {
             $metadataArray['title'] = $newMetadata['title'];
         }
-        if ( isset($newMetadata['template']) )
+        if ( isset($newMetadata['template']) AND is_string($newMetadata['template']) )
         {
             $metadataArray['template'] = $newMetadata['template'];
         }
@@ -113,7 +108,10 @@ class Node
             {
                 throw new \InvalidArgumentException('Metadata Site Value Object must contain at least an id and a domain');
             }
-            $metadataArray['site'] = $newMetadata['site'];
+            if ( is_string($newMetadata['site']['id']) AND is_string($newMetadata['site']['domain']) )
+            {
+                $metadataArray['site'] = $newMetadata['site'];
+            }
         }
         if ( isset($newMetadata['tags']) AND is_array($newMetadata['tags']) )
         {
@@ -137,10 +135,6 @@ class Node
         if ( isset($newMetadata['author']) AND is_array($newMetadata['author']) )
         {
             $metadataArray['author'] = $newMetadata['author'];
-        }
-        if ( isset($newMetadata['defaultLocale']) )
-        {
-            $metadataArray['defaultLocale'] = $newMetadata['defaultLocale'];
         }
         $this->metadata = $metadataArray;
         return $this;
@@ -231,110 +225,7 @@ class Node
     {
         if ( isset($metaType) )
         {
-            switch($metaType){
-                case 'modified':
-                    if ( isset($this->metadata['modified']) )
-                    {
-                        return $this->metadata['modified'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'created':
-                    if ( isset($this->metadata['tags']) )
-                    {
-                        return $this->metadata['created'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'slug':
-                    if ( isset($this->metadata['slug']) )
-                    {
-                        return $this->metadata['slug'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'title':
-                    if ( isset($this->metadata['title']) )
-                    {
-                        return $this->metadata['title'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'template':
-                    if ( isset($this->metadata['template']) )
-                    {
-                        return $this->metadata['template'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'site':
-                    if ( isset($this->metadata['site']) )
-                    {
-                        return $this->metadata['site'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'tags':
-                    if ( isset($this->metadata['tags']) )
-                    {
-                        return $this->metadata['tags'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'categories':
-                    if ( isset($this->metadata['categories']) )
-                    {
-                        return $this->metadata['categories'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'author':
-                    if ( isset($this->metadata['author']) )
-                    {
-                        return $this->metadata['author'];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'defaultLocale':
-                    if ( isset($this->metadata['defaultLocale']) )
-                    {
-                        return $this->metadata['defaultLocale'];
-                    }
-                    else
-                    {
-                       return null;
-                    }
-                    break;
-                default:
-                    return null;
-            }
+            return isset($this->metadata[$metaType]) ? $this->metadata[$metaType] : null;
         }
         else
         {
@@ -343,127 +234,73 @@ class Node
     }
 
     /**
-     * Add view data ('content') to a specific locale
+     * Add view data to a specific locale
+     * Pattern: $data = array('contentType' => 'value')
      *
-     * @param $locale
      * @param array $data
      * @return $this
      */
-    public function addView($locale, array $data)
+    public function addView(array $data)
     {
-        $viewArray = $this->getView($locale);
+        $viewArray = $this->getView();
         if ( ! $viewArray )
         {
             $viewArray = array();
         }
-        if ( isset($data['content']) )
+        if ( isset($data['content']) AND is_string($data['content']) )
         {
             $viewArray['content'] = $data['content'];
         }
-        if ( isset($data['json']) )
+        if ( isset($data['json']) AND is_string($data['json']) )
         {
             $viewArray['json'] = $data['json'];
         }
-        $this->view[$locale] = $viewArray;
+        if ( isset($data['xml']) AND is_string($data['xml']) )
+        {
+            $viewArray['xml'] = $data['xml'];
+        }
+        $this->view = $viewArray;
         return $this;
     }
 
     /**
-     * Review view data based on locale and, optionally, dataType
+     * Remove view data associated with a specific view contentType
      *
-     * @param $locale
-     * @param null $dataType
+     * @param null $contentType
      */
-    public function removeView($locale, $dataType = null)
+    public function removeView($contentType = null)
     {
-        if ( ! isset($dataType) )
+        if ( isset($contentType) )
         {
-            unset($this->view[$locale]);
-        }
-        else
-        {
-            unset($this->view[$locale][$dataType]);
+            unset($this->view[$contentType]);
         }
     }
 
+    /**
+     * Remove all view data in this node
+     */
     public function removeAllViews()
     {
         $this->view = array();
     }
 
     /**
-     * Get view by specifying a locale and format.
-     * Leave Locale as null to receive entire view array.
-     * Specify locale nut leave format null to receive array of all locale specific data
-     * Specify locale and format to get a string with best match to locale
+     * Get view data array. Optionally pass a
      *
-     * @param $locale
-     * @param string $format
-     * @return array|string $view
+     * @param null $contentType
+     * @return null
      */
-    public function getView($locale = null, $format = null)
+    public function getView($contentType = null)
     {
-        if ( ! isset($locale) )
+        if ( ! isset($contentType) )
         {
             return $this->view;
         }
         else
         {
-            switch($format){
-                case 'content':
-                    if ( isset($this->view[$locale]) )
-                    {
-                        return isset($this->view[$locale]['content']) ? $this->view[$locale]['content'] : null;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                case 'json':
-                    if ( isset($this->view[$locale]) )
-                    {
-                        return isset($this->view[$locale]['json']) ? $this->view[$locale]['json'] : null;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                    break;
-                default:
-                    if ( isset($this->view[$locale]) )
-                    {
-                        return $this->view[$locale];
-                    }
-                    else
-                    {
-                        return null;
-                    }
-            }
+            return isset($this->view[$contentType]) ? $this->view[$contentType] : null;
         }
     }
 
-    /**
-     * Set comments
-     *
-     * @param $comments
-     * @return $this
-     * @return $this
-     */
-    public function setComments($comments)
-    {
-        $this->comments = $comments;
-        return $this;
-    }
-
-    /**
-     * Get comments
-     *
-     * @return hash $comments
-     */
-    public function getComments()
-    {
-        return $this->comments;
-    }
 
 }

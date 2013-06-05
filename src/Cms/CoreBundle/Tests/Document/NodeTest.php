@@ -180,22 +180,43 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testAddViewAndGetView()
     {
-        // test getView with default/null params
-        $this->node->addView('en', array('content' => '<h1>hello, world</h1>'));
-        $this->node->addView('en', array('json' => '{"article":"<h1>article</h1><p>great article</p>"}'));
-        $this->assertCount(1, $this->node->getView());
-        $this->assertEquals($this->node->getView(), array('en' => array('content' => '<h1>hello, world</h1>', 'json' => '{"article":"<h1>article</h1><p>great article</p>"}')));
-        $this->node->addView('fr', array('content' => '<h1>Bonjour tout le monde</h1>'));
-        $this->assertCount(2, $this->node->getView());
-        $this->assertEquals( $this->node->getView(), array('en' => array('content' => '<h1>hello, world</h1>', 'json' => '{"article":"<h1>article</h1><p>great article</p>"}'), 'fr' => array('content' => '<h1>Bonjour tout le monde</h1>')) );
+        $this->node->addView(array(
+            'content' => '<h1>this is an error and should not appear</h1>',
+            'json' => '{"hello" : "hello world"}',
+        ));
+        $this->node->addView(array('content' => '<h1>hello world</h1>'));
+        $this->node->addView(array('xml' => 'this is XML'));
+        $this->assertCount(3, $this->node->getView());
+        $this->assertEquals(array('content' => '<h1>hello world</h1>', 'json' => '{"hello" : "hello world"}', 'xml' => 'this is XML'), $this->node->getView());
+        $this->assertEquals('this is XML', $this->node->getView('xml'));
+        $this->assertEquals('<h1>hello world</h1>', $this->node->getView('content'));
 
-        // test getView with locale param
-        $this->assertEquals($this->node->getView('en'), array('content' => '<h1>hello, world</h1>', 'json' => '{"article":"<h1>article</h1><p>great article</p>"}') );
-        $this->assertEquals($this->node->getView('fr'), array('content' => '<h1>Bonjour tout le monde</h1>'));
+        $this->node->addView(array('xml' => null));
+        $this->assertEquals('this is XML', $this->node->getView('xml'));
+        $this->node->addView(array('xml' => 1));
+        $this->assertEquals('this is XML', $this->node->getView('xml'));
+        $this->node->addView(array('xml' => array('foo' => 'bar')));
+        $this->assertEquals('this is XML', $this->node->getView('xml'));
+        $this->node->addView(array('xml' => new \stdClass));
+        $this->assertEquals('this is XML', $this->node->getView('xml'));
 
-        //test getView with locale param and format param
-        $this->assertEquals($this->node->getView('en', 'content'), '<h1>hello, world</h1>');
-        $this->assertEquals($this->node->getView('en', 'json'), '{"article":"<h1>article</h1><p>great article</p>"}');
+        $this->node->addView(array('content' => null));
+        $this->assertEquals('<h1>hello world</h1>', $this->node->getView('content'));
+        $this->node->addView(array('xml' => 1));
+        $this->assertEquals('<h1>hello world</h1>', $this->node->getView('content'));
+        $this->node->addView(array('content' => array('foo' => 'bar')));
+        $this->assertEquals('<h1>hello world</h1>', $this->node->getView('content'));
+        $this->node->addView(array('content' => new \stdClass));
+        $this->assertEquals('<h1>hello world</h1>', $this->node->getView('content'));
+
+        $this->node->addView(array('content' => null));
+        $this->assertEquals('{"hello" : "hello world"}', $this->node->getView('json'));
+        $this->node->addView(array('json' => 1));
+        $this->assertEquals('{"hello" : "hello world"}', $this->node->getView('json'));
+        $this->node->addView(array('json' => array('foo' => 'bar')));
+        $this->assertEquals('{"hello" : "hello world"}', $this->node->getView('json'));
+        $this->node->addView(array('json' => new \stdClass));
+        $this->assertEquals('{"hello" : "hello world"}', $this->node->getView('json'));
     }
 
     /**
@@ -204,24 +225,28 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
      */
     public function testRemoveView()
     {
-        $this->node->addView('en', array('content' => '<h1>hello, world</h1>'));
-        $this->node->addView('en', array('json' => '{"article":"<h1>article</h1><p>great article</p>"}'));
-        $this->node->addView('fr', array('content' => '<h1>Bonjour tout le monde</h1>'));
-        $this->node->addView('fr', array('json' => '{"Bonjour": "Bonjour tout le monde</h1>"'));
-        $this->node->addView('es', array('content' => 'hola mundo'));
-        $this->node->addView('es', array('json' => '{"hola":"hola mundo"}'));
+        $this->node->addView(array(
+            'content' => '<h1>hello world</h1><p>this is some content</p>',
+            'json' => '{"foo":"bar"}',
+            'xml' => 'some xml',
+        ));
         $this->assertCount(3, $this->node->getView());
-
-        // remove with specific locale and type
-        $this->node->removeView('fr', 'json');
-        $this->assertNull($this->node->getView('fr', 'json'));
-        $this->assertCount(1, $this->node->getView('fr'));
-
-        // remove specific locale
-        $this->node->removeView('es');
-        $this->assertEquals(array('en', 'fr'), \array_keys($this->node->getView()));
+        $this->node->removeView('content');
+        $this->assertCount(2, $this->node->getView());
+        $this->assertEquals(array('json' => '{"foo":"bar"}', 'xml' => 'some xml'), $this->node->getView());
+        $this->node->removeView('json');
+        $this->assertCount(1, $this->node->getView());
+        $this->assertEquals(array('xml' => 'some xml'), $this->node->getView());
+        $this->node->removeView('xml');
+        $this->assertEmpty($this->node->getView());
 
         // remove all
+        $this->node->addView(array(
+            'content' => '<h1>hello world</h1><p>this is some content</p>',
+            'json' => '{"foo":"bar"}',
+            'xml' => 'some xml',
+        ));
+        $this->assertCount(3, $this->node->getView());
         $this->node->removeAllViews();
         $this->assertEmpty($this->node->getView());
     }
