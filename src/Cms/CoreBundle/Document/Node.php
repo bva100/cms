@@ -90,8 +90,30 @@ class Node
         {
             $metadataArray['created'] = $newMetadata['created'];
         }
+        if ( isset($newMetadata['slugPrefix']) AND is_string($newMetadata['slugPrefix']) )
+        {
+            if ( \substr($newMetadata['slugPrefix'], -1) !== '/' )
+            {
+                $newMetadata['slugPrefix'] = $newMetadata['slugPrefix'].'/';
+            }
+            $metadataArray['slugPrefix'] = $newMetadata['slugPrefix'];
+        }
         if ( isset($newMetadata['slug']) AND is_string($newMetadata['slug']) )
         {
+            if ( isset($this->metadata['slugPrefix'])  )
+            {
+                if ( isset($this->metadata['slug']) )
+                {
+                    if ( \strpos($this->metadata['slugPrefix'], $this->metadata['slugPrefix']) !== 0 )
+                    {
+                        $newMetadata['slug'] = $this->metadata['slugPrefix'].$newMetadata['slug'];
+                    }
+                }
+                else
+                {
+                    $newMetadata['slug'] = $this->metadata['slugPrefix'].$newMetadata['slug'];
+                }
+            }
             $metadataArray['slug'] = $newMetadata['slug'];
         }
         if ( isset($newMetadata['title']) AND is_string($newMetadata['title']) )
@@ -306,5 +328,18 @@ class Node
         }
     }
 
+
+    public function updateSlugPrefix($newSlugPrefix)
+    {
+        if ( \substr($newSlugPrefix, -1) !== '/' )
+        {
+            $newSlugPrefix = $newSlugPrefix.'/';
+        }
+        if ( isset($this->metadata['slug']) )
+        {
+            $this->metadata['slug'] = \str_replace($this->metadata['slugPrefix'], $newSlugPrefix, $this->metadata['slug']);
+        }
+        $this->metadata['slugPrefix'] = $newSlugPrefix;
+    }
 
 }

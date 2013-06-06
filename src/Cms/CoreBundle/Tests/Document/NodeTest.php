@@ -251,5 +251,25 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEmpty($this->node->getView());
     }
 
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::updateSlugPrefix
+     * @covers \Cms\CoreBundle\Document\Node::addMetadata
+     * @covers \Cms\CoreBundle\Document\Node::getMetadata
+     */
+    public function testSlugPrefixUpdate()
+    {
+        $this->node->addMetadata(array('slugPrefix' => 'review'));
+        $this->node->addMetadata(array('slug' => 'cool-dog-toy'));
+        $this->assertEquals('review/', $this->node->getMetadata('slugPrefix'));
+        $this->assertEquals('review/cool-dog-toy', $this->node->getMetadata('slug'));
+        $this->node->addMetadata(array('slugPrefix' => 'review/'));
+        $this->assertEquals('review/', $this->node->getMetadata('slugPrefix'));
+        $this->node->addMetadata(array('slug' => 'review/cool-dog-toy'));
+        $this->assertEquals('review/cool-dog-toy', $this->node->getMetadata('slug'));
+
+        $this->node->updateSlugPrefix('dog-toy');
+        $this->assertEquals('dog-toy/', $this->node->getMetadata('slugPrefix'));
+        $this->assertEquals('dog-toy/cool-dog-toy', $this->node->getMetadata('slug'));
+    }
 
 }
