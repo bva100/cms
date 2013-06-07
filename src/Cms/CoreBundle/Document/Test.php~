@@ -1,0 +1,24 @@
+<?php
+/**
+ * User: Brian Anderson
+ * Date: 6/6/13
+ * Time: 10:26 PM
+ */
+
+namespace Cms\CoreBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
+/**
+ * Class Test
+ * @package Cms\CoreBundle\Document
+ * @MongoDB\Document
+ */
+class Test {
+
+    /**
+     * @MongoDB\EmbedOne(targetDocument="ContentType")
+     */
+    private $contentType;
+
+}
