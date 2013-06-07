@@ -27,6 +27,11 @@ class Node
     private $view;
 
     /**
+     * @MongoDB\EmbedOne(targetDocument="ContentType")
+     */
+    private $contentType;
+
+    /**
      * Constructor. Sets created to current unix timestamp int
      */
     public function __construct()
@@ -314,7 +319,7 @@ class Node
      * Get view data array. Optionally pass a
      *
      * @param null $contentType
-     * @return null
+     * @return mixed
      */
     public function getView($contentType = null)
     {
@@ -328,7 +333,11 @@ class Node
         }
     }
 
-
+    /**
+     * Update slugPrefix and, if slug is set, also updates slug given new slugPrefix
+     *
+     * @param string $newSlugPrefix
+     */
     public function updateSlugPrefix($newSlugPrefix)
     {
         if ( \substr($newSlugPrefix, -1) !== '/' )
@@ -340,6 +349,40 @@ class Node
             $this->metadata['slug'] = \str_replace($this->metadata['slugPrefix'], $newSlugPrefix, $this->metadata['slug']);
         }
         $this->metadata['slugPrefix'] = $newSlugPrefix;
+    }
+
+    /**
+     * Set view
+     *
+     * @param hash $view
+     * @return self
+     */
+    public function setView($view)
+    {
+        $this->view = $view;
+        return $this;
+    }
+
+    /**
+     * Set contentType
+     *
+     * @param \Cms\CoreBundle\Document\ContentType $contentType
+     * @return self
+     */
+    public function setContentType(\Cms\CoreBundle\Document\ContentType $contentType)
+    {
+        $this->contentType = $contentType;
+        return $this;
+    }
+
+    /**
+     * Get contentType
+     *
+     * @return Cms\CoreBundle\Document\ContentType $contentType
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
     }
 
 }

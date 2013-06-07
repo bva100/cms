@@ -41,4 +41,6 @@ class NodeRepository extends DocumentRepository {
         return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
 
+    // get all nodes with content type id
+
 }

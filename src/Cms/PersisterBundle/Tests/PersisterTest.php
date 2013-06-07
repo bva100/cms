@@ -20,7 +20,11 @@ class PersisterTest extends \PHPUnit_Framework_TestCase {
      */
     public function setUp()
     {
-        $this->em = $this->getMock('EntityManager', array('persist', 'flush', 'remove', 'getRepository'));
+        $this->em = $this->getMock('EntityManager', array('persist', 'flush', 'remove', 'getRepository', 'getEventManager'));
+        $mockEventManager = $this->getMock('\Doctrine\Common\EventManager', array('addEventListener'));
+        $this->em->expects($this->any())
+            ->method('getEventManager')
+            ->will($this->returnValue($mockEventManager));
         $this->validator = $this->getMock('Validator', array('validate'));
         $this->persister = new Persister($this->em, $this->validator);
     }
