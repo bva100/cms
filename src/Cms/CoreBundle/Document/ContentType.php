@@ -1,8 +1,8 @@
 <?php
 /**
  * User: Brian Anderson
- * Date: 6/6/13
- * Time: 11:31 AM
+ * Date: 6/7/13
+ * Time: 9:56 PM
  */
 
 namespace Cms\CoreBundle\Document;
@@ -22,30 +22,34 @@ class ContentType {
     private $id;
 
     /**
-     * @MongoDB\String
+     * @MongoDB\String @MongoDB\Index(unique=true)
      */
     private $name;
 
     /**
-     * @MongoDB\collection
+     * @MongoDB\Collection
      */
     private $formats;
 
     /**
      * @MongoDB\String
      */
-    private $taxonomyStyle;
-
-    /**
-     * @MongoDB\Int
-     */
-    private $limit;
+    private $taxonomy;
 
     /**
      * @MongoDB\String
      */
     private $slugPrefix;
 
+    /**
+     * @MongoDB\Hash
+     */
+    private $categories;
+
+    public function __construct()
+    {
+        $this->categories = array();
+    }
 
     /**
      * Get id
@@ -102,47 +106,25 @@ class ContentType {
     }
 
     /**
-     * Set taxonomyStyle
+     * Set taxonomy
      *
-     * @param string $taxonomyStyle
+     * @param string $taxonomy
      * @return self
      */
-    public function setTaxonomyStyle($taxonomyStyle)
+    public function setTaxonomy($taxonomy)
     {
-        $this->taxonomyStyle = $taxonomyStyle;
+        $this->taxonomy = $taxonomy;
         return $this;
     }
 
     /**
-     * Get taxonomyStyle
+     * Get taxonomy
      *
-     * @return string $taxonomyStyle
+     * @return string $taxonomy
      */
-    public function getTaxonomyStyle()
+    public function getTaxonomy()
     {
-        return $this->taxonomyStyle;
-    }
-
-    /**
-     * Set limit
-     *
-     * @param int $limit
-     * @return self
-     */
-    public function setLimit($limit)
-    {
-        $this->limit = $limit;
-        return $this;
-    }
-
-    /**
-     * Get limit
-     *
-     * @return int $limit
-     */
-    public function getLimit()
-    {
-        return $this->limit;
+        return $this->taxonomy;
     }
 
     /**
@@ -167,4 +149,25 @@ class ContentType {
         return $this->slugPrefix;
     }
 
+    /**
+     * Set categories
+     *
+     * @param array $categories
+     * @return self
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+        return $this;
+    }
+
+    /**
+     * Get categories
+     *
+     * @return array $categories
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
 }

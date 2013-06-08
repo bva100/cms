@@ -24,6 +24,11 @@ class Template {
     /**
      * @MongoDB\String
      */
+    private $state;
+
+    /**
+     * @MongoDB\String
+     */
     private $name;
 
     /**
@@ -37,6 +42,11 @@ class Template {
      */
     private $content;
 
+    public function __construct()
+    {
+        $this->setState('active');
+    }
+
     /**
      * Get id
      *
@@ -45,6 +55,28 @@ class Template {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set state
+     *
+     * @param string $state
+     * @return self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return string $state
+     */
+    public function getState()
+    {
+        return $this->state;
     }
 
     /**

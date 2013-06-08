@@ -1,4 +1,9 @@
 <?php
+/**
+ * User: Brian Anderson
+ * Date: 6/7/13
+ * Time: 10:11 PM
+ */
 
 namespace Cms\CoreBundle\Document;
 
@@ -7,36 +12,97 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class Node
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="nodes", repositoryClass="Cms\CoreBundle\Repository\NodeRepository")
+ * @MongoDB\Document(collection="nodes")
  */
-class Node
-{
+class Node {
+
     /**
      * @MongoDB\Id
      */
     private $id;
 
     /**
+     * @MongoDB\String
+     */
+    private $state;
+
+    /**
+     * @MongoDB\String
+     */
+    private $siteId;
+
+    /**
+     * @MongoDB\String
+     */
+    private $domain;
+
+    /**
+     * @MongoDB\String
+     */
+    private $contentTypeName;
+
+    /**
+     * @MongoDB\String
+     */
+    private $format;
+
+    /**
+     * @MongoDB\String
+     */
+    private $locale;
+
+    /**
+     * @MongoDB\Collection
+     */
+    private $categories;
+
+    /**
+     * @MongoDB\Collection
+     */
+    private $tags;
+
+    /**
+     * @MongoDB\String @MongoDB\Index
+     */
+    private $slug;
+
+    /**
+     * @MongoDB\String
+     */
+    private $title;
+
+    /**
+     * @MongoDB\String
+     */
+    private $templateName;
+
+    /**
+     * @MongoDB\Collection
+     */
+    private $conversationIds;
+
+    /**
      * @MongoDB\Hash
      */
-    private $metadata;
+    private $fields;
+
+    /**
+     * @MongoDB\Hash
+     */
+    private $author;
 
     /**
      * @MongoDB\Hash
      */
     private $view;
 
-    /**
-     * @MongoDB\EmbedOne(targetDocument="ContentType")
-     */
-    private $contentType;
-
-    /**
-     * Constructor. Sets created to current unix timestamp int
-     */
     public function __construct()
     {
-        $this->created = time();
+        $this->categories = array();
+        $this->tags = array();
+        $this->fields = array();
+        $this->author = array();
+        $this->view = array();
     }
 
     /**
@@ -50,305 +116,381 @@ class Node
     }
 
     /**
-     * Updates the modified timestamp
+     * Set state
      *
-     * @param int $timestamp
-     * @return void
+     * @param string $state
+     * @return self
      */
-    public function updateModifiedTimestamp($timestamp = null)
+    public function setState($state)
     {
-        if ( ! isset($timestamp) )
-        {
-            $timestamp = time();
-        }
-        $this->addMetadata(array('modified' => $timestamp));
+        $this->state = $state;
+        return $this;
     }
 
     /**
-     * void. Use Add instead
+     * Get state
+     *
+     * @return string $state
      */
-    public function setMetadata()
+    public function getState()
     {
-        throw new \Exception('Pleas use the addMetadata method instead of the setMetadata method');
+        return $this->state;
     }
 
     /**
-     * Add metadata
+     * Set siteId
      *
-     * @param array $newMetadata
-     * @throws \InvalidArgumentException
+     * @param string $siteId
+     * @return self
+     */
+    public function setSiteId($siteId)
+    {
+        $this->siteId = $siteId;
+        return $this;
+    }
+
+    /**
+     * Get siteId
+     *
+     * @return string $siteId
+     */
+    public function getSiteId()
+    {
+        return $this->siteId;
+    }
+
+    /**
+     * Set domain
+     *
+     * @param string $domain
+     * @return self
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+        return $this;
+    }
+
+    /**
+     * Get domain
+     *
+     * @return string $domain
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * Set contentTypeName
+     *
+     * @param string $contentTypeName
+     * @return self
+     */
+    public function setContentTypeName($contentTypeName)
+    {
+        $this->contentTypeName = $contentTypeName;
+        return $this;
+    }
+
+    /**
+     * Get contentTypeName
+     *
+     * @return string $contentTypeName
+     */
+    public function getContentTypeName()
+    {
+        return $this->contentTypeName;
+    }
+
+    /**
+     * Set format ('static', 'single', 'loop')
+     *
+     * @param string $format
+     * @return self
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+        return $this;
+    }
+
+    /**
+     * Get format
+     *
+     * @return string $format
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return self
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string $locale
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Not used
+     *
+     * @throws \Exception
+     */
+    public function setCategories()
+    {
+        throw new \Exception('Please use the addCategory method instead of setCategories');
+    }
+
+    /**
+     * Add a new category. Does not allow duplicates.
+     *
+     * @param $parent
+     * @param null $sub
      * @return $this
      */
-    public function addMetadata(array $newMetadata)
+    public function addCategory($parent, $sub = null)
     {
-        $metadataArray = $this->getMetadata();
-        if ( ! $metadataArray )
+        if ( ! \is_string($parent) )
         {
-            $metadataArray = array();
+            return $this;
+        }
+        $newCategory = array();
+        $newCategory['parent'] = $parent;
+        if ( isset($sub) AND \is_string($sub) )
+        {
+            $newCategory['sub'] = $sub;
+        }
+        foreach ($this->categories as $categoryKey => $categoryArray)
+        {
+            if ( $categoryArray === $newCategory )
+            {
+                return $this;
+            }
+        }
+        $this->categories[] = $newCategory;
+        return $this;
+    }
+
+    /**
+     * @param $parent
+     * @param null $sub
+     * @return $this
+     */
+    public function removeCategory($parent, $sub = null)
+    {
+        if ( ! \is_string($parent) )
+        {
+            return $this;
         }
         
-        if ( isset($newMetadata['modified']) )
+        $remove = array();
+        $remove['parent'] = $parent;
+        if ( isset($sub) AND is_string($sub) )
         {
-            $metadataArray['modified'] = $newMetadata['modified'];
+            $remove['sub'] = $sub;
         }
-        if ( isset($newMetadata['created']) )
+        foreach ($this->getCategories() as $categoryKey => $categoryArray)
         {
-            $metadataArray['created'] = $newMetadata['created'];
-        }
-        if ( isset($newMetadata['slugPrefix']) AND is_string($newMetadata['slugPrefix']) )
-        {
-            if ( \substr($newMetadata['slugPrefix'], -1) !== '/' )
+            if ( $categoryArray === $remove )
             {
-                $newMetadata['slugPrefix'] = $newMetadata['slugPrefix'].'/';
-            }
-            $metadataArray['slugPrefix'] = $newMetadata['slugPrefix'];
-        }
-        if ( isset($newMetadata['slug']) AND is_string($newMetadata['slug']) )
-        {
-            if ( isset($this->metadata['slugPrefix'])  )
-            {
-                if ( isset($this->metadata['slug']) )
-                {
-                    if ( \strpos($this->metadata['slugPrefix'], $this->metadata['slugPrefix']) !== 0 )
-                    {
-                        $newMetadata['slug'] = $this->metadata['slugPrefix'].$newMetadata['slug'];
-                    }
-                }
-                else
-                {
-                    $newMetadata['slug'] = $this->metadata['slugPrefix'].$newMetadata['slug'];
-                }
-            }
-            $metadataArray['slug'] = $newMetadata['slug'];
-        }
-        if ( isset($newMetadata['title']) AND is_string($newMetadata['title']) )
-        {
-            $metadataArray['title'] = $newMetadata['title'];
-        }
-        if ( isset($newMetadata['template']) AND is_string($newMetadata['template']) )
-        {
-            $metadataArray['template'] = $newMetadata['template'];
-        }
-        if ( isset($newMetadata['site']) AND is_array($newMetadata['site']) )
-        {
-            if ( ! isset($newMetadata['site']['id']) OR ! isset($newMetadata['site']['domain']) )
-            {
-                throw new \InvalidArgumentException('Metadata Site Value Object must contain at least an id and a domain');
-            }
-            if ( is_string($newMetadata['site']['id']) AND is_string($newMetadata['site']['domain']) )
-            {
-                $metadataArray['site'] = $newMetadata['site'];
+                unset($this->categories[$categoryKey]);
             }
         }
-        if ( isset($newMetadata['tags']) AND is_array($newMetadata['tags']) )
-        {
-            $tagsArray = $this->getMetadata('tags');
-            if ( ! is_array($tagsArray) OR empty($tagsArray) )
-            {
-                $tagsArray = array();
-            }
-            $metadataArray['tags'] = array_merge($tagsArray, $newMetadata['tags']);
-        }
-        if ( isset($newMetadata['categories']) AND is_array($newMetadata['categories']))
-        {
-            $categoriesArray = $this->getMetadata('categories');
-            if ( ! is_array($categoriesArray) or empty($categoriesArray) )
-            {
-                $categoriesArray = array();
-            }
-            array_push($categoriesArray, $newMetadata['categories']);
-            $metadataArray['categories'] = $categoriesArray;
-        }
-        if ( isset($newMetadata['author']) AND is_array($newMetadata['author']) )
-        {
-            $metadataArray['author'] = $newMetadata['author'];
-        }
-        if ( isset($newMetadata['type']) and is_array($newMetadata['type']) )
-        {
-            $metadataArray['type'] = $newMetadata['type'];
-        }
-        $this->metadata = $metadataArray;
         return $this;
     }
 
     /**
-     * Data param is an associate array with the following structure: array('metaType' => 'someMetaType', 'pattern' => 'somePatternToMatch')
-     * The pattern element is optional. If not passed on an array property, clears entire property
+     * Get categories
      *
-     * @param array $data
-     * @throws \InvalidArgumentException
+     * @return hash $categories
      */
-    public function removeMetadata(array $data)
+    public function getCategories()
     {
-        if ( isset($data['metaType']) )
-        {
-            switch($data['metaType']){
-                case 'tags':
-                    if ( isset($this->metadata['tags']) )
-                    {
-                        if ( isset($data['pattern']) )
-                        {
-                            $this->metadata['tags'] = array_values( array_diff( $this->metadata['tags'], array($data['pattern']) ) );
-                        }
-                        else
-                        {
-                            $this->metadata['tags'] = array();
-                        }
-                    }
-                    break;
-                case 'categories':
-                    if ( isset($this->metadata['categories']) AND is_array($this->metadata['categories']) )
-                    {
-                        if ( isset($data['pattern']) )
-                        {
-                            if ( count($data['pattern']) === 1 AND isset($data['pattern']['parent']) )
-                            {
-                                // find all category array key which contain the specified parent
-                                foreach ($this->metadata['categories'] as $metaCatKey => $metaCatValue) {
-                                    if ( $metaCatValue['parent'] === $data['pattern']['parent'] )
-                                    {
-                                        $keys[] = $metaCatKey;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // find all keys with a specific parent/sub pair
-                                $keys = array_keys($this->metadata['categories'], $data['pattern']);
-                            }
-                            foreach ($keys as $key) {
-                                unset($this->metadata['categories'][$key]);
-                            }
-                        }
-                        else
-                        {
-                            $this->metadata['categories'] = array();
-                        }
-                    }
-                    break;
-                default:
-                    unset($this->metadata[$data['metaType']]);
-                    
-            }
-        }
-        else
-        {
-            throw new \InvalidArgumentException('removeMetadata requires one argument as an associative array with a metaType index and an optional pattern index');
-        }
+        return $this->categories;
     }
 
     /**
-     * remove all metadata
+     * Not used
+     *
+     * @throws \Exception
      */
-    public function removeAllMetadata()
+    public function setTags()
     {
-        $this->metadata = array();
-        return $this;
+        throw new \Exception('Please use the addTag method instead of setTags');
     }
 
     /**
-     * Get metadata
+     * Add a tag
      *
-     * @param null $metaType
-     * @return mixed $metadata
-     */
-    public function getMetadata($metaType = null)
-    {
-        if ( isset($metaType) )
-        {
-            return isset($this->metadata[$metaType]) ? $this->metadata[$metaType] : null;
-        }
-        else
-        {
-            return $this->metadata;
-        }
-    }
-
-    /**
-     * Add view data to a specific locale
-     * Pattern: $data = array('contentType' => 'value')
-     *
-     * @param array $data
+     * @param $tag
      * @return $this
      */
-    public function addView(array $data)
+    public function addTag($tag)
     {
-        $viewArray = $this->getView();
-        if ( ! $viewArray )
+        if ( ! \is_string($tag) OR in_array($tag, $this->tags) )
         {
-            $viewArray = array();
+            return $this;
         }
-        if ( isset($data['content']) AND is_string($data['content']) )
-        {
-            $viewArray['content'] = $data['content'];
-        }
-        if ( isset($data['json']) AND is_string($data['json']) )
-        {
-            $viewArray['json'] = $data['json'];
-        }
-        if ( isset($data['xml']) AND is_string($data['xml']) )
-        {
-            $viewArray['xml'] = $data['xml'];
-        }
-        $this->view = $viewArray;
+        $this->tags[] = $tag;
         return $this;
     }
 
     /**
-     * Remove view data associated with a specific view contentType
+     * Get tags
      *
-     * @param null $contentType
+     * @return collection $tags
      */
-    public function removeView($contentType = null)
+    public function getTags()
     {
-        if ( isset($contentType) )
-        {
-            unset($this->view[$contentType]);
-        }
+        return $this->tags;
     }
 
     /**
-     * Remove all view data in this node
+     * Set slug
+     *
+     * @param string $slug
+     * @return self
      */
-    public function removeAllViews()
+    public function setSlug($slug)
     {
-        $this->view = array();
+        $this->slug = $slug;
+        return $this;
     }
 
     /**
-     * Get view data array. Optionally pass a
+     * Get slug
      *
-     * @param null $contentType
-     * @return mixed
+     * @return string $slug
      */
-    public function getView($contentType = null)
+    public function getSlug()
     {
-        if ( ! isset($contentType) )
-        {
-            return $this->view;
-        }
-        else
-        {
-            return isset($this->view[$contentType]) ? $this->view[$contentType] : null;
-        }
+        return $this->slug;
     }
 
     /**
-     * Update slugPrefix and, if slug is set, also updates slug given new slugPrefix
+     * Set title
      *
-     * @param string $newSlugPrefix
+     * @param string $title
+     * @return self
      */
-    public function updateSlugPrefix($newSlugPrefix)
+    public function setTitle($title)
     {
-        if ( \substr($newSlugPrefix, -1) !== '/' )
-        {
-            $newSlugPrefix = $newSlugPrefix.'/';
-        }
-        if ( isset($this->metadata['slug']) )
-        {
-            $this->metadata['slug'] = \str_replace($this->metadata['slugPrefix'], $newSlugPrefix, $this->metadata['slug']);
-        }
-        $this->metadata['slugPrefix'] = $newSlugPrefix;
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set templateName
+     *
+     * @param string $templateName
+     * @return self
+     */
+    public function setTemplateName($templateName)
+    {
+        $this->templateName = $templateName;
+        return $this;
+    }
+
+    /**
+     * Get templateName
+     *
+     * @return string $templateName
+     */
+    public function getTemplateName()
+    {
+        return $this->templateName;
+    }
+
+    /**
+     * Set conversationIds
+     *
+     * @param collection $conversationIds
+     * @return self
+     */
+    public function setConversationIds($conversationIds)
+    {
+        $this->conversationIds = $conversationIds;
+        return $this;
+    }
+
+    /**
+     * Get conversationIds
+     *
+     * @return collection $conversationIds
+     */
+    public function getConversationIds()
+    {
+        return $this->conversationIds;
+    }
+
+    /**
+     * Set fields
+     *
+     * @param hash $fields
+     * @return self
+     */
+    public function setFields($fields)
+    {
+        $this->fields = $fields;
+        return $this;
+    }
+
+    /**
+     * Get fields
+     *
+     * @return hash $fields
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Set author
+     *
+     * @param hash $author
+     * @return self
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return hash $author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 
     /**
@@ -364,25 +506,12 @@ class Node
     }
 
     /**
-     * Set contentType
+     * Get view
      *
-     * @param \Cms\CoreBundle\Document\ContentType $contentType
-     * @return self
+     * @return hash $view
      */
-    public function setContentType(\Cms\CoreBundle\Document\ContentType $contentType)
+    public function getView()
     {
-        $this->contentType = $contentType;
-        return $this;
+        return $this->view;
     }
-
-    /**
-     * Get contentType
-     *
-     * @return Cms\CoreBundle\Document\ContentType $contentType
-     */
-    public function getContentType()
-    {
-        return $this->contentType;
-    }
-
 }

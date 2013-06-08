@@ -24,7 +24,7 @@ class Site {
     /**
      * @MongoDB\String
      */
-    private $name;
+    private $state;
 
     /**
      * @MongoDB\String @MongoDB\Index(unique=true)
@@ -37,20 +37,15 @@ class Site {
     private $domain;
 
     /**
-     * @MongoDB\String
-     */
-    private $templateName;
-
-    /**
      * @MongoDB\EmbedMany(targetDocument="ContentType")
      */
-    private $contentType;
+    private $contentTypes;
 
     public function __construct()
     {
         $this->contentType = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
@@ -62,25 +57,25 @@ class Site {
     }
 
     /**
-     * Set name
+     * Set state
      *
-     * @param string $name
+     * @param string $state
      * @return self
      */
-    public function setName($name)
+    public function setState($state)
     {
-        $this->name = $name;
+        $this->state = $state;
         return $this;
     }
 
     /**
-     * Get name
+     * Get state
      *
-     * @return string $name
+     * @return string $state
      */
-    public function getName()
+    public function getState()
     {
-        return $this->name;
+        return $this->state;
     }
 
     /**
@@ -128,45 +123,23 @@ class Site {
     }
 
     /**
-     * Set templateName
-     *
-     * @param string $templateName
-     * @return self
-     */
-    public function setTemplateName($templateName)
-    {
-        $this->templateName = $templateName;
-        return $this;
-    }
-
-    /**
-     * Get templateName
-     *
-     * @return string $templateName
-     */
-    public function getTemplateName()
-    {
-        return $this->templateName;
-    }
-
-    /**
      * Add contentType
      *
      * @param Cms\CoreBundle\Document\ContentType $contentType
      */
     public function addContentType(\Cms\CoreBundle\Document\ContentType $contentType)
     {
-        $this->contentType[] = $contentType;
+        $this->contentTypes[] = $contentType;
     }
 
     /**
-     * Remove contentType
-     *
-     * @param <variableType$contentType
-     */
+    * Remove contentType
+    *
+    * @param <variableType$contentType
+    */
     public function removeContentType(\Cms\CoreBundle\Document\ContentType $contentType)
     {
-        $this->contentType->removeElement($contentType);
+        $this->contentTypes->removeElement($contentType);
     }
 
     /**
@@ -176,7 +149,6 @@ class Site {
      */
     public function getContentTypes()
     {
-        return $this->contentType;
+        return $this->contentTypes;
     }
-
 }

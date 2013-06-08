@@ -1,0 +1,339 @@
+<?php
+/**
+ * User: Brian Anderson
+ * Date: 6/7/13
+ * Time: 1:25 PM
+ */
+
+namespace Cms\CoreBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
+/**
+ * Class Content
+ * @package Cms\CoreBundle\Document
+ * @MongoDB\Document(collection="content")
+ */
+class Content {
+
+    /**
+     * @MongoDB\Id
+     */
+    private $id;
+
+    /**
+     * @MongoDB\String
+     */
+    private $state;
+
+    /**
+     * @MongoDB\Date
+     */
+    private $updated;
+
+    /**
+     * @MongoDB\String
+     */
+    private $name;
+
+    /**
+     * @MongoDB\String
+     */
+    private $siteId;
+
+    /**
+     * @MongoDB\String
+     */
+    private $domain;
+
+    /**
+     * @MongoDB\Collection
+     */
+    private $formats;
+
+    /**
+     * @MongoDB\String
+     */
+    private $templateName;
+
+    /**
+     * @MongoDB\String
+     */
+    private $taxonomy;
+
+    /**
+     * @MongoDB\String
+     */
+    private $slugPrefix;
+
+    /**
+     * @MongoDB\EmbedMany(targetDocument="Node")
+     */
+    private $node;
+
+    public function __construct()
+    {
+        $this->setState('active');
+        $this->node = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set state
+     *
+     * @param $state
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return string $state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set Updated
+     *
+     * @param $updated
+     * @return $this
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+        return $this;
+    }
+
+    /**
+     * Get date of last updated
+     *
+     * @return int
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string $name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set siteId
+     *
+     * @param string $siteId
+     * @return self
+     */
+    public function setSiteId($siteId)
+    {
+        $this->siteId = $siteId;
+        return $this;
+    }
+
+    /**
+     * Get siteId
+     *
+     * @return int $siteId
+     */
+    public function getSiteId()
+    {
+        return $this->siteId;
+    }
+
+    /**
+     * Set domain
+     *
+     * @param string $domain
+     * @return self
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+        return $this;
+    }
+
+    /**
+     * Get domain
+     *
+     * @return string $domain
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * Set formats
+     *
+     * @param collection $formats
+     * @return self
+     */
+    public function setFormats($formats)
+    {
+        $this->formats = $formats;
+        return $this;
+    }
+
+    /**
+     * Get formats
+     *
+     * @return collection $formats
+     */
+    public function getFormats()
+    {
+        return $this->formats;
+    }
+
+    /**
+     * Set templateName
+     *
+     * @param string $templateName
+     * @return self
+     */
+    public function setTemplateName($templateName)
+    {
+        $this->templateName = $templateName;
+        return $this;
+    }
+
+    /**
+     * Get templateName
+     *
+     * @return string $templateName
+     */
+    public function getTemplateName()
+    {
+        return $this->templateName;
+    }
+
+    /**
+     * Set taxonomy
+     *
+     * @param string $taxonomy
+     * @return self
+     */
+    public function setTaxonomy($taxonomy)
+    {
+        $this->taxonomy = $taxonomy;
+        return $this;
+    }
+
+    /**
+     * Get taxonomy
+     *
+     * @return string $taxonomy
+     */
+    public function getTaxonomy()
+    {
+        return $this->taxonomy;
+    }
+
+    /**
+     * Set slugPrefix
+     *
+     * @param string $slugPrefix
+     * @return self
+     */
+    public function setSlugPrefix($slugPrefix)
+    {
+        if ( \substr($slugPrefix, -1) !== '/' )
+        {
+            $slugPrefix = $slugPrefix.'/';
+        }
+        $oldSlugPrefix = $this->slugPrefix;
+        $this->slugPrefix = $slugPrefix;
+        // get all nodes and update all slugs with new prefix
+        foreach ($this->getNodes() as $node)
+        {
+            $oldSlug = $node->getMetadata('slug');
+            if ( $oldSlug )
+            {
+                if ( $oldSlugPrefix AND \strpos($oldSlug, $oldSlugPrefix) === 0 )
+                {
+                    $newSlug = \str_replace($oldSlugPrefix, $slugPrefix, $oldSlug);
+                }
+                else
+                {
+                    $newSlug = $slugPrefix.$oldSlug;
+                }
+                $node->addMetadata(array('slug' => $newSlug));
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Get slugPrefix
+     *
+     * @return string $slugPrefix
+     */
+    public function getSlugPrefix()
+    {
+        return $this->slugPrefix;
+    }
+
+    /**
+     * Add node
+     *
+     * @param Cms\CoreBundle\Document\Node $node
+     */
+    public function addNode(\Cms\CoreBundle\Document\Node $node)
+    {
+        $this->node[] = $node;
+    }
+
+    /**
+    * Remove node
+    *
+    * @param <variableType$node
+    */
+    public function removeNode(\Cms\CoreBundle\Document\Node $node)
+    {
+        $this->node->removeElement($node);
+    }
+
+    /**
+     * Get node
+     *
+     * @return Doctrine\Common\Collections\Collection $node
+     */
+    public function getNodes()
+    {
+        return $this->node;
+    }
+}
