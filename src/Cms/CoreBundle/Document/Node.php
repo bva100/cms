@@ -99,6 +99,7 @@ class Node {
     public function __construct()
     {
         $this->categories = array();
+        $this->conversationIds = array();
         $this->tags = array();
         $this->fields = array();
         $this->author = array();
@@ -288,6 +289,8 @@ class Node {
     }
 
     /**
+     * Remove Category
+     *
      * @param $parent
      * @param null $sub
      * @return $this
@@ -348,6 +351,21 @@ class Node {
             return $this;
         }
         $this->tags[] = $tag;
+        return $this;
+    }
+
+    public function removeTag($tag)
+    {
+        if ( ! \is_string($tag) )
+        {
+            return $this;
+        }
+        $keys = \array_keys($this->tags, $tag);
+        foreach ($keys as $key)
+        {
+            unset($this->tags[$key]);
+            $this->tags = array_values($this->tags);
+        }
         return $this;
     }
 
@@ -427,15 +445,41 @@ class Node {
         return $this->templateName;
     }
 
+
     /**
-     * Set conversationIds
+     * Not used
      *
-     * @param collection $conversationIds
-     * @return self
+     * @throws \Exception
      */
-    public function setConversationIds($conversationIds)
+    public function setConversationIds()
     {
-        $this->conversationIds = $conversationIds;
+        throw new \Exception('setConversationIds is not used. Please call the addConversationId instead');
+    }
+
+    /**
+     * Add a conversation id
+     *
+     * @param $id
+     * @return $this
+     */
+    public function addConversationId($id)
+    {
+        if ( in_array($id, $this->conversationIds) )
+        {
+            return $this;
+        }
+        $this->conversationIds[] = $id;
+        return $this;
+    }
+
+    public function removeConversationId($id)
+    {
+        $keys = \array_keys($this->conversationIds, $id);
+        foreach ($keys as $key)
+        {
+            unset($this->conversationIds[$key]);
+            $this->conversationIds = array_values($this->conversationIds);
+        }
         return $this;
     }
 
@@ -450,15 +494,48 @@ class Node {
     }
 
     /**
-     * Set fields
+     * Not used
      *
-     * @param hash $fields
-     * @return self
+     * @throws \Exception
      */
-    public function setFields($fields)
+    public function setFields()
     {
-        $this->fields = $fields;
+        throw new \Exception('setFields method is not used. Please use the addField method insetead.');
+    }
+
+    /**
+     * Only also for (string) key (string\int) value pairs
+     * Cannot have more than one value for the same key, new value overrides old value whens ame key is passed
+     *
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function addField($key, $value)
+    {
+        if ( ! is_string($key) )
+        {
+            return $this;
+        }
+        if ( ! is_string($value) AND ! is_int($value) )
+        {
+            return $this;
+        }
+        $this->fields[$key] = $value;
         return $this;
+    }
+
+    /**
+     * Remove a field
+     *
+     * @param $key
+     */
+    public function removeField($key)
+    {
+        if ( \is_string($key) )
+        {
+            unset($this->fields[$key]);
+        }
     }
 
     /**

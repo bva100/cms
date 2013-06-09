@@ -118,28 +118,113 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \Cms\CoreBundle\Document\Node::addView
-     * @covers \Cms\CoreBundle\Document\Node::getView
+     * @covers \Cms\CoreBundle\Document\Node::removeTag
+     * @covers \Cms\CoreBundle\Document\Node::addTag
+     * @covers \Cms\CoreBundle\Document\Node::getTags
      */
-    public function testAddViewAndGetView()
+    public function testRemoveTag()
     {
+        $this->node->addTag('foo');
+        $this->node->addTag('bar');
+        $this->node->addTag('foobar');
+        $this->assertCount(3, $this->node->getTags());
+
+        $this->node->removeTag('foo');
+        $this->assertCount(2, $this->node->getTags());
+        $this->assertEquals(array('bar', 'foobar'), $this->node->getTags());
+        $this->node->removeTag('doesnotexist');
+        $this->assertCount(2, $this->node->getTags());
+        $this->assertEquals(array('bar', 'foobar'), $this->node->getTags());
+        $this->node->removeTag('bar');
+        $this->assertCount(1, $this->node->getTags());
+        $this->assertEquals(array('foobar'), $this->node->getTags());
+        $this->node->removeTag('foobar');
+        $this->assertEmpty($this->node->getTags());
     }
 
     /**
-     * @covers \Cms\CoreBundle\Document\Node::removeView
-     * @covers \Cms\CoreBundle\Document\Node::removeAllViews
+     * @covers \Cms\CoreBundle\Document\Node::addConversationId
+     * @covers \Cms\CoreBundle\Document\Node::getConversationIds
      */
-    public function testRemoveView()
+    public function testAddConversationId()
     {
+        $this->node->addConversationId('12345');
+        $this->node->addConversationId('abcde');
+        $this->node->addConversationId('zyx');
+        $this->assertCount(3, $this->node->getConversationIds());
+        $this->assertEquals(array('12345', 'abcde', 'zyx'), $this->node->getConversationIds());
+
+        $this->node->addConversationId('12345');
+        $this->assertCount(3, $this->node->getConversationIds());
+        $this->node->addConversationId('zyx');
+        $this->assertCount(3, $this->node->getConversationIds());
     }
 
     /**
-     * @covers \Cms\CoreBundle\Document\Node::updateSlugPrefix
-     * @covers \Cms\CoreBundle\Document\Node::addMetadata
-     * @covers \Cms\CoreBundle\Document\Node::getMetadata
+     * @covers \Cms\CoreBundle\Document\Node::removeConversationId
+     * @covers \Cms\CoreBundle\Document\Node::addConversationId
+     * @covers \Cms\CoreBundle\Document\Node::getConversationIds
      */
-    public function testSlugPrefixUpdate()
+    public function testRemoveConversationId()
     {
+        $this->node->addConversationId('12345');
+        $this->node->addConversationId('abcde');
+        $this->node->addConversationId('zyx');
+        $this->assertCount(3, $this->node->getConversationIds());
+
+        $this->node->removeConversationId('12345');
+        $this->assertCount(2, $this->node->getConversationIds());
+        $this->assertEquals(array('abcde', 'zyx'), $this->node->getConversationIds());
+        $this->node->removeConversationId('idDoesNotExist');
+        $this->assertCount(2, $this->node->getConversationIds());
+        $this->node->removeConversationId('abcde');
+        $this->assertCount(1, $this->node->getConversationIds());
+        $this->assertEquals(array('zyx'), $this->node->getConversationIds());
+        $this->node->removeConversationId('zyx');
+        $this->assertEmpty($this->node->getConversationIds());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::addField
+     * @covers \Cms\CoreBundle\Document\Node::getFields
+     */
+    public function testAddField()
+    {
+        $this->node->addField('shoeSize', 11);
+        $this->node->addField('color', 'blue');
+        $this->node->addField('town', 'truckee');
+        $this->assertCount(3, $this->node->getFields());
+        $this->assertEquals(array('shoeSize' => 11, 'color' => 'blue', 'town' => 'truckee'), $this->node->getFields());
+
+        $this->node->addField('shoeSize', 11);
+        $this->assertCount(3, $this->node->getFields());
+        $this->node->addField('shoeSize', 9);
+        $this->assertCount(3, $this->node->getFields());
+        $this->assertEquals(array('shoeSize' => 9, 'color' => 'blue', 'town' => 'truckee'), $this->node->getFields());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::removeField
+     * @covers \Cms\CoreBundle\Document\Node::addField
+     * @covers \Cms\CoreBundle\Document\Node::getFields
+     */
+    public function testRemoveField()
+    {
+        $this->node->addField('shoeSize', 11);
+        $this->node->addField('color', 'blue');
+        $this->node->addField('town', 'truckee');
+        $this->assertCount(3, $this->node->getFields());
+
+        $this->node->removeField('shoeSize');
+        $this->assertCount(2, $this->node->getFields());
+        $this->assertEquals(array('color' => 'blue', 'town' => 'truckee'), $this->node->getFields());
+        $this->node->removeField('thisKeyDoesNotExist');
+        $this->assertCount(2, $this->node->getFields());
+        $this->node->removeField('color');
+        $this->assertCount(1, $this->node->getFields());
+        $this->assertEquals(array('town' => 'truckee'), $this->node->getFields());
+        $this->node->removeField('town');
+        $this->assertEmpty($this->node->getFields());
     }
 
 }
