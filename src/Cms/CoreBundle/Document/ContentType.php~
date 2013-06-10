@@ -48,6 +48,7 @@ class ContentType {
 
     public function __construct()
     {
+        $this->formats = array();
         $this->categories = array();
     }
 
@@ -84,14 +85,43 @@ class ContentType {
     }
 
     /**
-     * Set formats
+     * Not used
      *
-     * @param collection $formats
-     * @return self
+     * @throws \Exception
      */
-    public function setFormats($formats)
+    public function setFormats()
     {
-        $this->formats = $formats;
+        throw new \Exception('setFormats is not used. Please use addFormat instead');
+    }
+
+    /**
+     * Add a new format
+     *
+     * @param $format
+     * @return $this
+     */
+    public function addFormat($format)
+    {
+        if ( ! is_string($format) OR in_array($format, $this->formats) )
+        {
+            return $this;
+        }
+        $this->formats[] = $format;
+        return $this;
+    }
+
+    public function removeFormat($format)
+    {
+        if ( ! is_string($format) )
+        {
+            return $this;
+        }
+        $keys = \array_keys($this->formats, $format);
+        foreach ($keys as $key)
+        {
+            unset($this->formats[$key]);
+            $this->formats = array_values($this->formats);
+        }
         return $this;
     }
 
@@ -150,14 +180,72 @@ class ContentType {
     }
 
     /**
-     * Set categories
+     *  Not used
      *
-     * @param array $categories
-     * @return self
+     * @throws \Exception
      */
-    public function setCategories($categories)
+    public function setCategories()
     {
-        $this->categories = $categories;
+        throw new \Exception('setCategories is not used. Try using addCategory instead.');
+    }
+
+    /**
+     * Add a new category. Does not allow duplicates.
+     *
+     * @param $parent
+     * @param null $sub
+     * @return $this
+     */
+    public function addCategory($parent, $sub = null)
+    {
+        if ( ! \is_string($parent) )
+        {
+            return $this;
+        }
+        $newCategory = array();
+        $newCategory['parent'] = $parent;
+        if ( isset($sub) AND \is_string($sub) )
+        {
+            $newCategory['sub'] = $sub;
+        }
+        foreach ($this->categories as $categoryKey => $categoryArray)
+        {
+            if ( $categoryArray === $newCategory )
+            {
+                return $this;
+            }
+        }
+        $this->categories[] = $newCategory;
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param $parent
+     * @param null $sub
+     * @return $this
+     */
+    public function removeCategory($parent, $sub = null)
+    {
+        if ( ! \is_string($parent) )
+        {
+            return $this;
+        }
+
+        $remove = array();
+        $remove['parent'] = $parent;
+        if ( isset($sub) AND is_string($sub) )
+        {
+            $remove['sub'] = $sub;
+        }
+        foreach ($this->getCategories() as $categoryKey => $categoryArray)
+        {
+            if ( $categoryArray === $remove )
+            {
+                unset($this->categories[$categoryKey]);
+            }
+        }
         return $this;
     }
 

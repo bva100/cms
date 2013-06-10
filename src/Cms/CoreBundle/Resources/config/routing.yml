@@ -1,3 +1,12 @@
-cms_core_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: CmsCoreBundle:Default:index }
+cms_core.create_site:
+  pattern: /site/create
+  defaults: { _controller: CmsCoreBundle:Default:siteCreate }
+
+cms_core.create_node:
+  pattern: /node/create/
+  defaults: { _controller: CmsCoreBundle:Default:nodeCreate, domain: www.foobartest.com, namespace: foobartest }
+
+
+cms_core.read_nodes:
+  pattern: /
+  defaults: { _controller: CmsCoreBundle:Default:nodeRead }

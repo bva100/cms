@@ -43,6 +43,7 @@ class Site {
 
     public function __construct()
     {
+        $this->setState('active');
         $this->contentType = new \Doctrine\Common\Collections\ArrayCollection();
     }
     

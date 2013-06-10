@@ -2,7 +2,8 @@ parameters:
     cms.local_asset_manager.class: Cms\CoreBundle\Services\AssetManager\Local
     cms.mongo_twig_load.class: Cms\CoreBundle\Services\TemplateLoader\MongoTwigLoader
     cms.twig_environemnt.class: Cms\CoreBundle\Services\TemplateLoader\TwigEnvironment
-    cms.node_list_doctrine_mongo.class: Cms\CoreBundle\Services\NodeList\DoctrineMongo
+    cms.node_loader_locale_resolver.class: Cms\CoreBundle\Services\NodeLoader\LocaleResolver
+    cms.node_loop_finder.class: Cms\CoreBundle\Services\NodeLoader\LoopFinder
 
 services:
     asset_manager:
@@ -15,6 +16,7 @@ services:
         arguments: [@kernel]
         calls:
           - [setLoader, [@template_loader]]
-    dynamic_nodes:
-        class: %cms.node_list_doctrine_mongo.class%
-        arguments: [@doctrine.odm.mongodb.document_manager]
+    node_resolver:
+        class: %cms.node_loader_locale_resolver.class%
+    loop_finder:
+        class: %cms.node_loop_finder.class%

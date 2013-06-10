@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class Node
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="nodes")
+ * @MongoDB\Document(collection="nodes", repositoryClass="Cms\CoreBundle\Repository\NodeRepository")
  */
 class Node {
 
@@ -62,6 +62,11 @@ class Node {
     private $tags;
 
     /**
+     * @MongoDB\Int
+     */
+    private $defaultLimit;
+
+    /**
      * @MongoDB\String @MongoDB\Index
      */
     private $slug;
@@ -98,6 +103,7 @@ class Node {
 
     public function __construct()
     {
+        $this->setState('active');
         $this->categories = array();
         $this->conversationIds = array();
         $this->tags = array();
@@ -370,6 +376,28 @@ class Node {
     }
 
     /**
+     * Set defaultLimit
+     *
+     * @param int $defaultLimit
+     * @return self
+     */
+    public function setDefaultLimit($defaultLimit)
+    {
+        $this->defaultLimit = $defaultLimit;
+        return $this;
+    }
+
+    /**
+     * Get defaultLimit
+     *
+     * @return int $defaultLimit
+     */
+    public function getDefaultLimit()
+    {
+        return $this->defaultLimit;
+    }
+
+    /**
      * Get tags
      *
      * @return collection $tags
@@ -591,4 +619,5 @@ class Node {
     {
         return $this->view;
     }
+
 }
