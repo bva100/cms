@@ -34,7 +34,7 @@ class Node {
     /**
      * @MongoDB\String
      */
-    private $domain;
+    private $host;
 
     /**
      * @MongoDB\String
@@ -156,6 +156,8 @@ class Node {
         return $this;
     }
 
+    
+
     /**
      * Get siteId
      *
@@ -164,28 +166,6 @@ class Node {
     public function getSiteId()
     {
         return $this->siteId;
-    }
-
-    /**
-     * Set domain
-     *
-     * @param string $domain
-     * @return self
-     */
-    public function setDomain($domain)
-    {
-        $this->domain = $domain;
-        return $this;
-    }
-
-    /**
-     * Get domain
-     *
-     * @return string $domain
-     */
-    public function getDomain()
-    {
-        return $this->domain;
     }
 
     /**
@@ -373,6 +353,28 @@ class Node {
             $this->tags = array_values($this->tags);
         }
         return $this;
+    }
+
+    /**
+     * Set defaultLimit
+     *
+     * @param int $defaultLimit
+     * @return self
+     */
+    public function setDefaultLimit($defaultLimit)
+    {
+        $this->defaultLimit = $defaultLimit;
+        return $this;
+    }
+
+    /**
+     * Get defaultLimit
+     *
+     * @return int $defaultLimit
+     */
+    public function getDefaultLimit()
+    {
+        return $this->defaultLimit;
     }
 
     /**
@@ -597,4 +599,5 @@ class Node {
     {
         return $this->view;
     }
+
 }

@@ -21,7 +21,7 @@ class DefaultController extends Controller
     {
         $site = new Site();
         $site->setNamespace('foobartest');
-        $site->setDomain('www.foobartest.com');
+        $site->setDomain('foobartest.com');
 
         $reviews = new ContentType();
         $reviews->setName($site->getNamespace().'reviews');
@@ -41,14 +41,14 @@ class DefaultController extends Controller
         return $results ? new Response('saved with id '.$sites->getId()) : new Response('failed');
     }
 
-    public function nodeCreateAction($domain, $namespace)
+    public function nodeCreateAction($host, $namespace)
     {
         // reivew en
         $review = new Node();
         $review->setSlug('five-best-dogs');
         $review->setTitle('five best dog toys');
-        $review->setDomain($domain);
-        $review->setLocale('en');
+        $review->setHost($host);
+        $review->setLocale('en-us');
         $review->setFormat('single');
         $review->setContentTypeName($namespace.'reviews');
         $review->addCategory('dog');
@@ -64,8 +64,8 @@ class DefaultController extends Controller
         $review = new Node();
         $review->setSlug('great-dog-chew-toy');
         $review->setTitle('great dog chew toy');
-        $review->setDomain($domain);
-        $review->setLocale('en');
+        $review->setHost($host);
+        $review->setLocale('en-us');
         $review->setContentTypeName($namespace.'reviews');
         $review->setFormat('single');
         $review->addCategory('dog');
@@ -84,8 +84,8 @@ class DefaultController extends Controller
         $reviewEs = new Node();
         $reviewEs->setSlug('five-best-dogs');
         $reviewEs->setTitle('cinco mejores juguetes para perros');
-        $reviewEs->setDomain($domain);
-        $reviewEs->setLocale('es');
+        $reviewEs->setHost($host);
+        $reviewEs->setLocale('es-es');
         $reviewEs->setFormat('single');
         $reviewEs->setContentTypeName($namespace.'reviews');
         $reviewEs->addCategory('perro');
@@ -101,8 +101,8 @@ class DefaultController extends Controller
         $reviewLoop = new Node();
         $reviewLoop->setSlug('reviews');
         $reviewLoop->setTitle('reivew loop');
-        $reviewLoop->setDomain($domain);
-        $reviewLoop->setLocale('en');
+        $reviewLoop->setHost($host);
+        $reviewLoop->setLocale('en-us');
         $reviewLoop->setContentTypeName($namespace.'reviews');
         $reviewLoop->setFormat('loop-tag');
         $reviewLoop->setView(array('html' => '<h1>review loop</h1><p>this is a loop, cool eh?</p>'));
@@ -114,8 +114,8 @@ class DefaultController extends Controller
         $painting = new Node();
         $painting->setSlug('blue-ocean-landscape');
         $painting->setTitle('blue ocean landscape');
-        $painting->setDomain($domain);
-        $painting->setLocale('en');
+        $painting->setHost($host);
+        $painting->setLocale('en-us');
         $painting->setFormat('single');
         $painting->setContentTypeName($namespace.'gallery');
         $painting->addCategory('landscape');
@@ -127,21 +127,39 @@ class DefaultController extends Controller
 
     }
 
-    public function nodeReadAction(Request $request)
+    public function nodeReadAction(Request $request, $_locale = null, $path = null)
     {
+        $params = $this->get('param_manager')->setRequest($request)->setLocale($_locale)->setPath($path)->load();
+        $params['host'] = 'www.foobartest.com';
+
         $nodeRepo = $this->get('persister')->getrepo('CmsCoreBundle:Node');
-        $allNodes = $nodeRepo->findByDomainAndSlug('www.foobartest.com', 'reviews');
-        $node = $this->get('node_resolver')->setRequest($request)->setNodes($allNodes)->resolve();
+        if ( isset($locale) )
+        {
+            $node = $nodeRepo->fineOneByHostAndSlugAndLocale( $params['host'], $params['slug'], $params['locale'] );
+        }
+        else
+        {
+            $node = $nodeRepo->findOneByHostAndSlug($params['host'], $params['slug']);
+        }
         if ( ! $node )
         {
-            throw $this->createNotFoundException('node not found');
+            throw $this->createNotFoundException('Node not found');
         }
+
         $loop = array();
         if ( $node->getFormat() === 'loop-tag' OR $node->getFormat() === 'loop-category')
         {
-            $loop = $this->get('loop_finder')->setNodeRepo($this->get('persister')->getRepo('CmsCoreBundle:Node'))->find($node, array(
+            $loop = $this->get('loop_finder')->setNodeRepo($nodeRepo)->find($node, array(
                 'taxonomy' => array('dog'),
             ));
+        }
+        echo '<pre>', \var_dump($node->getView(), '<hr>');
+        if ( ! empty($loop) )
+        {
+            foreach ($loop as $loop) {
+                $view = $loop->getView();
+                echo $view['html'].'<br>';
+            }
         }
         die('end');
     }

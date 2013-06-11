@@ -2,8 +2,8 @@ parameters:
     cms.local_asset_manager.class: Cms\CoreBundle\Services\AssetManager\Local
     cms.mongo_twig_load.class: Cms\CoreBundle\Services\TemplateLoader\MongoTwigLoader
     cms.twig_environemnt.class: Cms\CoreBundle\Services\TemplateLoader\TwigEnvironment
-    cms.node_loader_locale_resolver.class: Cms\CoreBundle\Services\NodeLoader\LocaleResolver
     cms.node_loop_finder.class: Cms\CoreBundle\Services\NodeLoader\LoopFinder
+    cms.param_manager.class: Cms\CoreBundle\Services\ParamManager\Core
 
 services:
     asset_manager:
@@ -16,7 +16,7 @@ services:
         arguments: [@kernel]
         calls:
           - [setLoader, [@template_loader]]
-    node_resolver:
-        class: %cms.node_loader_locale_resolver.class%
     loop_finder:
         class: %cms.node_loop_finder.class%
+    param_manager:
+        class: %cms.param_manager.class%

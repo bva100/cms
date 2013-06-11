@@ -4,9 +4,22 @@ cms_core.create_site:
 
 cms_core.create_node:
   pattern: /node/create/
-  defaults: { _controller: CmsCoreBundle:Default:nodeCreate, domain: www.foobartest.com, namespace: foobartest }
+  defaults: { _controller: CmsCoreBundle:Default:nodeCreate, host: www.foobartest.com, namespace: foobartest }
 
+
+cms_core.read_locale_nodes:
+  pattern: /{_locale}/{path}
+  defaults: { _controller: CmsCoreBundle:Default:nodeRead }
+  requirements:
+    _locale: "[a-z]{2}-[a-z]{2}"
+    path: ".+"
 
 cms_core.read_nodes:
+  pattern: /{path}
+  defaults:  { _controller: CmsCoreBundle:Default:nodeRead }
+  requirements:
+    path: ".+"
+
+cms_core.read_nodes_null_path:
   pattern: /
   defaults: { _controller: CmsCoreBundle:Default:nodeRead }

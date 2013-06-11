@@ -10,30 +10,46 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 class NodeRepository extends DocumentRepository {
 
     /**
-     * Find node by domain and slug
+     * Find one node by host and slug
      *
-     * @param string $domain
+     * @param string $host
      * @param string $slug
      */
-    public function findByDomainAndSlug($domain, $slug)
+    public function findOneByHostAndSlug($host, $slug)
     {
         return $this->createQueryBuilder()
-            ->field('domain')->equals($domain)
+            ->field('host')->equals($host)
             ->field('slug')->equals($slug)
-            ->getQuery()->execute();
+            ->getQuery()->execute()->getSingleResult();
     }
 
     /**
-     * Find by domain and locale and contentTypeName and Taxonomy. Can paginate if needed.
+     * Find one node by host and slug and locale
      *
-     * @param string $domain
+     * @param string $host
+     * @param string $slug
+     * @param string $locale
+     */
+    public function fineOneByHostAndSlugAndLocale($host, $slug, $locale)
+    {
+        return $this->createQueryBuilder()
+            ->field('host')->equals($host)
+            ->field('slug')->equals($slug)
+            ->field('locale')->equals($locale)
+            ->getQuery()->execute()->getSingleResult();
+    }
+
+    /**
+     * Find by host and locale and contentTypeName and Taxonomy. Can paginate if needed.
+     *
+     * @param string $host
      * @param string $locale
      * @param string $contentTypeName
      * @param array $category
      * @param array $tags
      * @param array $params
      */
-    public function findByDomainAndLocaleAndContentTypeNameAndTaxonomy($domain, $locale, $contentTypeName, array $category, array $tags, array $params)
+    public function findByHostAndLocaleAndContentTypeNameAndTaxonomy($host, $locale, $contentTypeName, array $category, array $tags, array $params)
     {
         if ( ! isset($params['offset']) )
         {
@@ -44,7 +60,7 @@ class NodeRepository extends DocumentRepository {
             $params['limit'] = 20;
         }
         $qb = $this->createQueryBuilder()
-            ->field('domain')->equals($domain)
+            ->field('host')->equals($host)
             ->field('locale')->equals($locale)
             ->field('contentTypeName')->equals($contentTypeName)
             ->field('format')->equals('single');
@@ -65,38 +81,5 @@ class NodeRepository extends DocumentRepository {
         }
         return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
-
-    /**
-     * Find a list of nodes by searching via domain type and locale
-     */
-    public function findDynamicNodesByContentTypeAndDomain($typeName, $domain, $locale = null, array $params)
-    {
-        $qb = $this->createQueryBuilder()
-            ->field('metadata.site.domain')->equals($domain)
-            ->field('metadata.type.name')->equals($typeName)
-            ->field('metadata.type.format')->equals('single');
-        if ( isset($locale) )
-        {
-            $qb->field('metadata.locale')->equals($locale);
-        }
-        if ( isset($params['categories']) AND is_array($params['categories']) AND ! empty($params['categories']) )
-        {
-            if ( isset($params['categories']['parent']) )
-            {
-                $qb->field('metadata.categories.parent')->equals($params['categories']['parent']);
-            }
-            if ( isset($params['categories']['sub']) )
-            {
-                $qb->field('metadata.categories.sub')->equals($params['categories']['sub']);
-            }
-        }
-        if ( isset($params['tags']) AND is_array($params['tags']) AND ! empty($params['tags']) )
-        {
-            $qb->field('metadata.tags')->in($params['tags']);
-        }
-        return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
-    }
-
-    // get all nodes with content type id
 
 }

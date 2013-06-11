@@ -34,7 +34,7 @@ class Node {
     /**
      * @MongoDB\String
      */
-    private $domain;
+    private $host;
 
     /**
      * @MongoDB\String
@@ -157,6 +157,28 @@ class Node {
     }
 
     /**
+     * Set host
+     *
+     * @param string $host
+     * @return self
+     */
+    public function setHost($host)
+    {
+        $this->host = $host;
+        return $this;
+    }
+
+    /**
+     * Get host
+     *
+     * @return string $host
+     */
+    public function getHost()
+    {
+        return $this->host;
+    }
+
+    /**
      * Get siteId
      *
      * @return string $siteId
@@ -164,28 +186,6 @@ class Node {
     public function getSiteId()
     {
         return $this->siteId;
-    }
-
-    /**
-     * Set domain
-     *
-     * @param string $domain
-     * @return self
-     */
-    public function setDomain($domain)
-    {
-        $this->domain = $domain;
-        return $this;
-    }
-
-    /**
-     * Get domain
-     *
-     * @return string $domain
-     */
-    public function getDomain()
-    {
-        return $this->domain;
     }
 
     /**
@@ -619,5 +619,4 @@ class Node {
     {
         return $this->view;
     }
-
 }
