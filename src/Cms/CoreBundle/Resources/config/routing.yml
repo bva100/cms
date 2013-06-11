@@ -4,7 +4,7 @@ cms_core.create_site:
 
 cms_core.create_node:
   pattern: /node/create/
-  defaults: { _controller: CmsCoreBundle:Default:nodeCreate, host: www.foobartest.com, namespace: foobartest }
+  defaults: { _controller: CmsCoreBundle:Default:nodeCreate, host: localhost, namespace: foobartest }
 
 
 cms_core.read_locale_nodes:

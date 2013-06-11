@@ -21,7 +21,7 @@ class DefaultController extends Controller
     {
         $site = new Site();
         $site->setNamespace('foobartest');
-        $site->setDomain('foobartest.com');
+        $site->setDomain('localhost');
 
         $reviews = new ContentType();
         $reviews->setName($site->getNamespace().'reviews');
@@ -129,30 +129,18 @@ class DefaultController extends Controller
 
     public function nodeReadAction(Request $request, $_locale = null, $path = null)
     {
-        $params = $this->get('param_manager')->setRequest($request)->setLocale($_locale)->setPath($path)->load();
-        $params['host'] = 'www.foobartest.com';
-
-        $nodeRepo = $this->get('persister')->getrepo('CmsCoreBundle:Node');
-        if ( isset($locale) )
-        {
-            $node = $nodeRepo->fineOneByHostAndSlugAndLocale( $params['host'], $params['slug'], $params['locale'] );
-        }
-        else
-        {
-            $node = $nodeRepo->findOneByHostAndSlug($params['host'], $params['slug']);
-        }
+        $nodeRepo = $this->get('persister')->getRepo('CmsCoreBundle:Node');
+        $params = $this->get('param_manager')->setRequest($request)->setLocale($_locale)->setPath($path)->get();
+        $node = $this->get('node_loader')->setNodeRepo($nodeRepo)->setParams($params)->load();
         if ( ! $node )
         {
-            throw $this->createNotFoundException('Node not found');
+            throw $this->createNotFoundException('node not found');
         }
+        $loop = $this->get('loop_loader')->setNode($node)->setNodeRepo($nodeRepo)->load();
 
-        $loop = array();
-        if ( $node->getFormat() === 'loop-tag' OR $node->getFormat() === 'loop-category')
-        {
-            $loop = $this->get('loop_finder')->setNodeRepo($nodeRepo)->find($node, array(
-                'taxonomy' => array('dog'),
-            ));
-        }
+
+
+
         echo '<pre>', \var_dump($node->getView(), '<hr>');
         if ( ! empty($loop) )
         {

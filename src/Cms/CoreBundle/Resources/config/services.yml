@@ -3,7 +3,9 @@ parameters:
     cms.mongo_twig_load.class: Cms\CoreBundle\Services\TemplateLoader\MongoTwigLoader
     cms.twig_environemnt.class: Cms\CoreBundle\Services\TemplateLoader\TwigEnvironment
     cms.node_loop_finder.class: Cms\CoreBundle\Services\NodeLoader\LoopFinder
+    cms.node_loop_loader.class: Cms\CoreBundle\Services\NodeLoader\CoreLoop
     cms.param_manager.class: Cms\CoreBundle\Services\ParamManager\Core
+    cms.node_loader.class: Cms\CoreBundle\Services\NodeLoader\CoreNode
 
 services:
     asset_manager:
@@ -18,5 +20,10 @@ services:
           - [setLoader, [@template_loader]]
     loop_finder:
         class: %cms.node_loop_finder.class%
+    loop_loader:
+        class: %cms.node_loop_loader.class%
+        arguments: [@loop_finder]
     param_manager:
         class: %cms.param_manager.class%
+    node_loader:
+        class: %cms.node_loader.class%

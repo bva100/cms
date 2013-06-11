@@ -83,7 +83,7 @@ class Core {
      *
      * @return array
      */
-    public function load()
+    public function get()
     {
         $params = \explode('/', $this->path);
         $paramsArray =  array(
