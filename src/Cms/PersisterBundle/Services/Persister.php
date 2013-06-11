@@ -175,11 +175,9 @@ class Persister {
      */
     public function save($object, $lazy = false, $onSuccess = 'save complete')
     {
-        // validate
         $errors = $this->validator->validate($object);
         if ( \count($errors) > 0 )
         {
-            //set error messages to flashBag notices
             if ( isset($this->flashBag) )
             {
                 foreach ($errors as $error) {
