@@ -116,9 +116,7 @@ class CoreLoop {
         $loop = array();
         if ( $this->node->getFormat() === 'loop-tag' OR $this->node->getFormat() === 'loop-category')
         {
-            $loop = $this->loopFinder->find($this->node, array(
-                'taxonomy' => array('dog'),
-            ));
+            $loop = $this->loopFinder->find($this->node, $this->params);
         }
         return $loop;
     }

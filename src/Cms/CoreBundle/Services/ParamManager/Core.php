@@ -87,12 +87,17 @@ class Core {
     {
         $params = \explode('/', $this->path);
         $paramsArray =  array(
-            'taxonomyParent' => array_shift($params),
             'slug' => $this->path,
             'host' => $this->request->getHost(),
-            'taxonomySub' => $params,
             'locale' => $this->getLocale(),
         );
+        if ( count($params) > 1 )
+        {
+            unset($params[0]);
+            $paramsArray['taxonomyParent'] = array_shift($params);
+            $paramsArray['taxonomySub'] = $params;
+        }
+
         \parse_str($this->request->getQueryString());
         if ( isset($locale) AND is_string($locale) )
         {

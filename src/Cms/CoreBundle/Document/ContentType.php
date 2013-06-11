@@ -22,6 +22,11 @@ class ContentType {
     private $id;
 
     /**
+     * @MongoDB\String
+     */
+    private $state;
+
+    /**
      * @MongoDB\String @MongoDB\Index(unique=true)
      */
     private $name;
@@ -30,11 +35,6 @@ class ContentType {
      * @MongoDB\Collection
      */
     private $formats;
-
-    /**
-     * @MongoDB\String
-     */
-    private $taxonomy;
 
     /**
      * @MongoDB\String
@@ -60,6 +60,28 @@ class ContentType {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set state
+     *
+     * @param string $state
+     * @return self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return string $state
+     */
+    public function getState()
+    {
+        return $this->state;
     }
 
     /**
@@ -133,28 +155,6 @@ class ContentType {
     public function getFormats()
     {
         return $this->formats;
-    }
-
-    /**
-     * Set taxonomy
-     *
-     * @param string $taxonomy
-     * @return self
-     */
-    public function setTaxonomy($taxonomy)
-    {
-        $this->taxonomy = $taxonomy;
-        return $this;
-    }
-
-    /**
-     * Get taxonomy
-     *
-     * @return string $taxonomy
-     */
-    public function getTaxonomy()
-    {
-        return $this->taxonomy;
     }
 
     /**

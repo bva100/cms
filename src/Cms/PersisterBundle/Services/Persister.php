@@ -65,8 +65,8 @@ class Persister {
             }
         }
         // add eventListeners. Be sure each of these methods is included in InterfaceEvents
-        $this->evm->addEventListener(\Doctrine\ODM\MongoDB\Events::preFlush, new PersisterEvents($this));
-        $this->evm->addEventListener(\Doctrine\ODM\MongoDB\Events::preUpdate, new PersisterEvents($this));
+//        $this->evm->addEventListener(\Doctrine\ODM\MongoDB\Events::preFlush, new PersisterEvents($this));
+//        $this->evm->addEventListener(\Doctrine\ODM\MongoDB\Events::preUpdate, new PersisterEvents($this));
     }
 
     /**

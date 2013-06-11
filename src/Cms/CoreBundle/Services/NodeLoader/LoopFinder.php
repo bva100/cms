@@ -46,15 +46,27 @@ class LoopFinder {
     {
         $category = array();
         $tags = array();
-        if ( isset($params['taxonomy']) )
+        if ( isset($params['taxonomyParent']) )
         {
             if ( $loopNode->getFormat() === 'loop-tag' )
             {
-                $tags = $params['taxonomy'];
+                $tags = array();
+                $tags[] = $params['taxonomyParent'];
+                if ( isset($params['taxonomySub']) )
+                {
+                    foreach ($params['taxonomySub'] as $tagKey => $tagValue)
+                    {
+                        $tags[] = $tagValue;
+                    }
+                }
             }
             else if( $loopNode->getFormat() === 'loop-category' )
             {
-                $category = $params['taxonomy'];
+                $category['parent'] = $params['taxonomyParent'];
+                if ( isset($params['taxonomySub']) )
+                {
+                    $category['sub'] = $params['taxonomySub'][0];
+                }
             }
         }
         if ( ! isset($params['limit']) AND $defaultLimit = $loopNode->getDefaultLimit() )
