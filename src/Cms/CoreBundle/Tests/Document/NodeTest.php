@@ -204,6 +204,21 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers \Cms\CoreBundle\Document\Node::getField
+     * @covers \Cms\CoreBundle\Document\Node::addField
+     */
+    public function testGetField()
+    {
+        $this->node->addField('shoeSize', 11);
+        $this->node->addField('color', 'blue');
+        $this->node->addField('town', 'truckee');
+        $this->assertCount(3, $this->node->getFields());
+
+        $this->assertNull($this->node->getField('width'));
+        $this->assertEquals('blue', $this->node->getField('color'));
+    }
+
+    /**
      * @covers \Cms\CoreBundle\Document\Node::removeField
      * @covers \Cms\CoreBundle\Document\Node::addField
      * @covers \Cms\CoreBundle\Document\Node::getFields
@@ -225,6 +240,40 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(array('town' => 'truckee'), $this->node->getFields());
         $this->node->removeField('town');
         $this->assertEmpty($this->node->getFields());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::addView
+     * @covers \Cms\CoreBundle\Document\Node::getView
+     * @covers \Cms\CoreBundle\Document\Node::getViews
+     */
+    public function testAddView()
+    {
+        $this->node->addView('html', '<h1>hello world</h1>');
+        $this->node->addView('json', '{"hello":"world"}');
+        $this->node->addView('xml', '<hello world>');
+        $this->assertCount(3, $this->node->getViews());
+        $this->assertEquals(array('html' => '<h1>hello world</h1>', 'json' => '{"hello":"world"}', 'xml' => '<hello world>'), $this->node->getViews());
+
+        $this->node->addView('html', '<h1>foobar</h1>');
+        $this->assertCount(3, $this->node->getViews());
+        $this->assertEquals('<h1>foobar</h1>', $this->node->getView('html'));
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::getView
+     * @covers \Cms\CoreBundle\Document\Node::getViews
+     * @covers \Cms\CoreBundle\Document\Node::addView
+     */
+    public function testGetView()
+    {
+        $this->node->addView('html', '<h1>hello world</h1>');
+        $this->node->addView('json', '{"hello":"world"}');
+        $this->node->addView('xml', '<hello world>');
+        $this->assertCount(3, $this->node->getViews());
+
+        $this->assertNull($this->node->getView('rss'));
+        $this->assertEquals('<hello world>', $this->node->getView('xml'));
     }
 
 }

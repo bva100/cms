@@ -39,6 +39,23 @@ class DefaultController extends Controller
         return $results ? new Response('saved with id '.$sites->getId()) : new Response('failed');
     }
 
+    public function updateContentTypeAction($id)
+    {
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
+        $contentType = $site->getContentType('51b80e1218a5163504000050');
+        if ( ! $contentType )
+        {
+            throw $this->createNotFoundException('content type not found');
+        }
+
+        $manager = new \Cms\CoreBundle\Services\UpdateManager\ContentType\UpdateToNodes();
+        $manager->setNodeRepo($this->get('persister')->getRepo('CmsCoreBundle:Node'))->updateSlugPrefix($contentType, null);
+
+
+        $results = $this->get('persister')->save($site);
+        echo '<pre>', \var_dump($results); die();
+    }
+
     public function nodeCreateAction($host, $namespace)
     {
         // reivew en
@@ -55,7 +72,7 @@ class DefaultController extends Controller
         $review->addTag('dog');
         $review->addTag('dog-toy');
         $review->setTemplateName('Summit');
-        $review->setView(array('html' => '<h1>five best dog toys</h1><p>here is a list of the five best dog toys ever</p>'));
+        $review->addView('html', '<h1>five best dog toys</h1><p>here is a list of the five best dog toys ever</p>');
 
         $results = $this->get('persister')->save($review);
 //        return $results ? new Response('review saved with id '.$review->getId()) : new Response('failed');
@@ -76,7 +93,7 @@ class DefaultController extends Controller
         $review->addTag('dog-toy');
         $review->addTag('dog-chew-toy');
         $review->setTemplateName('Summit');
-        $review->setView(array('html' => '<h1>Great Dog Chew Toys</h1><p>This is some copy that contains information about great doggie chew toys</p>'));
+        $review->addView('html', '<h1>Great Dog Chew Toys</h1><p>This is some copy that contains information about great doggie chew toys</p>');
 
         $results = $this->get('persister')->save($review);
 //        return $results ? new Response('review saved with id '.$review->getId()) : new Response('failed');
@@ -96,7 +113,7 @@ class DefaultController extends Controller
         $reviewEs->addTag('perro');
         $reviewEs->addTag('perro-juguete');
         $reviewEs->setTemplateName('Summit');
-        $reviewEs->setView(array('html' => '<h1>cinco mejores juguetes para perros</h1><p>Aquí está una lista de los cinco mejores perro juguetes siempre</p>'));
+        $reviewEs->addView('html', '<h1>cinco mejores juguetes para perros</h1><p>Aquí está una lista de los cinco mejores perro juguetes siempre</p>');
 
         $results = $this->get('persister')->save($reviewEs);
 //        return $results ? new Response('review saved with id '.$reviewEs->getId()) : new Response('failed');
@@ -111,7 +128,7 @@ class DefaultController extends Controller
         $reviewLoop->setContentTypeName($namespace.'reviews');
         $reviewLoop->setFormat('loop-tag');
         $reviewLoop->setTemplateName('Summit');
-        $reviewLoop->setView(array('html' => '<h1>review loop</h1><p>this is a loop, cool eh?</p>'));
+        $reviewLoop->addView('html', '<h1>review loop</h1><p>this is a loop, cool eh?</p>');
 
         $results = $this->get('persister')->save($reviewLoop);
 //        return $results ? new Response('review loop saved with id '.$reviewLoop->getId()) : new Response('failed');
@@ -128,7 +145,7 @@ class DefaultController extends Controller
         $painting->addCategory('landscape');
         $painting->addCategory('landscape', 'ocean');
         $painting->setTemplateName('Gallery');
-        $painting->setView(array('html' => '<h1>Blue Landscape Painting</h1><p>cool painting</p><img src="wwww.foobartest.com/blue-landscape">'));
+        $painting->addView('html', '<h1>Blue Landscape Painting</h1><p>cool painting</p><img src="wwww.foobartest.com/blue-landscape">');
 
         $results = $this->get('persister')->save($painting);
 //        return $results ? new Response('painting saved with id '.$painting->getId()) : new Response('failed to save');
@@ -143,7 +160,7 @@ class DefaultController extends Controller
         $reviewLoop->setContentTypeName($namespace.'reviews');
         $reviewLoop->setFormat('loop-tag');
         $reviewLoop->setTemplateName('Summit');
-        $reviewLoop->setView(array('html' => '<h1>review loop</h1><p>this is a loop, cool eh?</p>'));
+        $reviewLoop->addView('html', '<h1>review loop</h1><p>this is a loop, cool eh?</p>');
 
         $results = $this->get('persister')->save($reviewLoop);
 //        return $results ? new Response('review loop saved with id '.$reviewLoop->getId()) : new Response('failed');
@@ -157,7 +174,7 @@ class DefaultController extends Controller
         $reviewLoop->setContentTypeName($namespace.'reviews');
         $reviewLoop->setFormat('loop-tag');
         $reviewLoop->setTemplateName('Summit');
-        $reviewLoop->setView(array('html' => '<h1>review loop</h1><p>this is a loop, cool eh?</p>'));
+        $reviewLoop->addView('html', '<h1>review loop</h1><p>this is a loop, cool eh?</p>');
 
         $results = $this->get('persister')->save($reviewLoop);
 //        return $results ? new Response('review loop saved with id '.$reviewLoop->getId()) : new Response('failed');
@@ -171,7 +188,7 @@ class DefaultController extends Controller
         $reviewLoop->setContentTypeName($namespace.'reviews');
         $reviewLoop->setFormat('loop-category');
         $reviewLoop->setTemplateName('Summit');
-        $reviewLoop->setView(array('html' => '<h1>review loop</h1><p>this is a loop with the category of dog => toy, cool eh?</p>'));
+        $reviewLoop->addView('html', '<h1>review loop</h1><p>this is a loop with the category of dog => toy, cool eh?</p>');
 
         $results = $this->get('persister')->save($reviewLoop);
 //        return $results ? new Response('review loop saved with id '.$reviewLoop->getId()) : new Response('failed');
@@ -186,7 +203,7 @@ class DefaultController extends Controller
         $reviewLoop->setContentTypeName($namespace.'reviews');
         $reviewLoop->setFormat('loop-tag');
         $reviewLoop->setTemplateName('Summit');
-        $reviewLoop->setView(array('html' => '<h1>review loop</h1><p>this is a loop, cool eh?</p>'));
+        $reviewLoop->addView('html', '<h1>review loop</h1><p>this is a loop, cool eh?</p>');
 
         $results = $this->get('persister')->save($reviewLoop);
 //        return $results ? new Response('review loop saved with id '.$reviewLoop->getId()) : new Response('failed');
@@ -204,16 +221,11 @@ class DefaultController extends Controller
         }
         $loop = $this->get('loop_loader')->setNode($node)->setNodeRepo($nodeRepo)->setParams($params)->load();
 
-
-
-
-
-        echo '<pre>', \var_dump($node->getView(), '<hr>');
+        echo '<pre>', \var_dump($node->getView('html'), '<hr>');
         if ( ! empty($loop) )
         {
             foreach ($loop as $loop) {
-                $view = $loop->getView();
-                echo $view['html'].'<br>';
+                echo $loop->getView('html'), '<br>';
             }
         }
         die('end');

@@ -165,6 +165,10 @@ class ContentType {
      */
     public function setSlugPrefix($slugPrefix)
     {
+        if ( substr($slugPrefix, -1) !== '/' )
+        {
+            $slugPrefix = $slugPrefix.'/';
+        }
         $this->slugPrefix = $slugPrefix;
         return $this;
     }

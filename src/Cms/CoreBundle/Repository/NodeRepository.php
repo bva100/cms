@@ -82,4 +82,16 @@ class NodeRepository extends DocumentRepository {
         return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
 
+    /**
+     * Find all nodes
+     *
+     * @param string $contentTyepName
+     */
+    public function findByContentTypeName($contentTyepName)
+    {
+        return $this->createQueryBuilder()
+            ->field('contentTypeName')->equals($contentTyepName)
+            ->getQuery()->execute();
+    }
+    
 }

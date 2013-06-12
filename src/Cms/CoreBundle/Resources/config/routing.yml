@@ -6,6 +6,9 @@ cms_core.create_node:
   pattern: /node/create/
   defaults: { _controller: CmsCoreBundle:Default:nodeCreate, host: localhost, namespace: foobartest }
 
+cms_core.update_content_type:
+  pattern: /contentType/update/{id}
+  defaults: { _controller: CmsCoreBundle:Default:updateContentType }
 
 cms_core.read_locale_nodes:
   pattern: /{_locale}/{path}

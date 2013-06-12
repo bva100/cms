@@ -415,6 +415,7 @@ class Node {
      */
     public function setSlug($slug)
     {
+        $slug = ltrim($slug, '/');
         $this->slug = $slug;
         return $this;
     }
@@ -567,7 +568,21 @@ class Node {
     }
 
     /**
-     * Get fields
+     * Get field associated with a specfic key
+     *
+     * @param $key
+     * @return null
+     */
+    public function getField($key)
+    {
+        if ( is_string($key) )
+        {
+            return isset($this->fields[$key]) ? $this->fields[$key] : null;
+        }
+    }
+
+    /**
+     * Get all fields as an array of key value pairs
      *
      * @return hash $fields
      */
@@ -599,24 +614,52 @@ class Node {
     }
 
     /**
-     * Set view
+     * Not used
      *
-     * @param hash $view
-     * @return self
+     * @throws \Exception
      */
-    public function setView($view)
+    public function setView()
     {
-        $this->view = $view;
-        return $this;
+        throw new \Exception('setView method is not used. Please use the addView method instead.');
     }
 
     /**
-     * Get view
+     * Add a new view. Does not allow for duplicates.
+     *
+     * @param $format
+     * @param $value
+     * @return $this
+     */
+    public function addView($format, $value)
+    {
+        if ( ! is_string($format) OR ! is_string($value) )
+        {
+            return $this;
+        }
+        $this->view[$format] = $value;
+    }
+
+    /**
+     * Get a specific view value assocaited with a format
      *
      * @return hash $view
      */
-    public function getView()
+    public function getView($format)
+    {
+        if ( is_string($format)  )
+        {
+            return isset($this->view[$format]) ? $this->view[$format] : null;
+        }
+    }
+
+    /**
+     * Get all view formats as an array of format value pairs
+     *
+     * @return array
+     */
+    public function getViews()
     {
         return $this->view;
     }
+    
 }
