@@ -52,6 +52,11 @@ class Node {
     private $locale;
 
     /**
+     * @MongoDB\String
+     */
+    private $parentNodeId;
+
+    /**
      * @MongoDB\Collection
      */
     private $categories;
@@ -252,6 +257,28 @@ class Node {
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * Set parentNodeId
+     *
+     * @param string $parentNodeId
+     * @return self
+     */
+    public function setParentNodeId($parentNodeId)
+    {
+        $this->parentNodeId = $parentNodeId;
+        return $this;
+    }
+
+    /**
+     * Get parentNodeId
+     *
+     * @return string $parentNodeId
+     */
+    public function getParentNodeId()
+    {
+        return $this->parentNodeId;
     }
 
     /**
@@ -534,7 +561,7 @@ class Node {
 
     /**
      * Only also for (string) key (string\int) value pairs
-     * Cannot have more than one value for the same key, new value overrides old value whens ame key is passed
+     * Cannot have more than one value for the same key, new value overrides old value when names have key is passed
      *
      * @param $key
      * @param $value
@@ -661,5 +688,5 @@ class Node {
     {
         return $this->view;
     }
-    
+
 }

@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class Site
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="sites")
+ * @MongoDB\Document(collection="sites", repositoryClass="Cms\CoreBundle\Repository\SiteRepository")
  */
 class Site {
 
@@ -141,6 +141,24 @@ class Site {
     public function removeContentType(\Cms\CoreBundle\Document\ContentType $contentType)
     {
         $this->contentTypes->removeElement($contentType);
+    }
+
+    /**
+     * Get a contentType via id.
+     * Returns a contentType entity on success and void on failure
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function getContentType($id)
+    {
+        foreach ($this->getContentTypes() as $contentType)
+        {
+            if ( $contentType->getId() === $id )
+            {
+                return $contentType;
+            }
+        }
     }
 
     /**

@@ -22,6 +22,11 @@ class ContentType {
     private $id;
 
     /**
+     * @MongoDB\String
+     */
+    private $state;
+
+    /**
      * @MongoDB\String @MongoDB\Index(unique=true)
      */
     private $name;
@@ -34,11 +39,6 @@ class ContentType {
     /**
      * @MongoDB\String
      */
-    private $taxonomy;
-
-    /**
-     * @MongoDB\String
-     */
     private $slugPrefix;
 
     /**
@@ -46,10 +46,16 @@ class ContentType {
      */
     private $categories;
 
+    /**
+     * @MongoDB\Collection
+     */
+    private $fields;
+
     public function __construct()
     {
         $this->formats = array();
         $this->categories = array();
+        $this->fields = array();
     }
 
     /**
@@ -60,6 +66,28 @@ class ContentType {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set state
+     *
+     * @param string $state
+     * @return self
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return string $state
+     */
+    public function getState()
+    {
+        return $this->state;
     }
 
     /**
@@ -136,28 +164,6 @@ class ContentType {
     }
 
     /**
-     * Set taxonomy
-     *
-     * @param string $taxonomy
-     * @return self
-     */
-    public function setTaxonomy($taxonomy)
-    {
-        $this->taxonomy = $taxonomy;
-        return $this;
-    }
-
-    /**
-     * Get taxonomy
-     *
-     * @return string $taxonomy
-     */
-    public function getTaxonomy()
-    {
-        return $this->taxonomy;
-    }
-
-    /**
      * Set slugPrefix
      *
      * @param string $slugPrefix
@@ -165,6 +171,10 @@ class ContentType {
      */
     public function setSlugPrefix($slugPrefix)
     {
+        if ( substr($slugPrefix, -1) !== '/' )
+        {
+            $slugPrefix = $slugPrefix.'/';
+        }
         $this->slugPrefix = $slugPrefix;
         return $this;
     }
@@ -220,7 +230,7 @@ class ContentType {
     }
 
     /**
-     * Remove category
+     * remove a category
      *
      * @param $parent
      * @param null $sub
@@ -258,4 +268,61 @@ class ContentType {
     {
         return $this->categories;
     }
+
+    /**
+     * Not used
+     *
+     * @throws \Exception
+     */
+    public function setFields()
+    {
+        throw new \Exception('setFields not used. Please use addField');
+    }
+
+    /**
+     * Add a field
+     *
+     * @param $field
+     * @return $this
+     */
+    public function addField($field)
+    {
+        if ( is_string($field) )
+        {
+            $key = array_search($field, $this->fields);
+            if ( $key === false )
+            {
+                $this->fields[] = $field;
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Remove a field
+     *
+     * @param $field
+     * @return $this
+     */
+    public function removeField($field)
+    {
+        $key = array_search($field, $this->fields);
+        if ( $key !== false )
+        {
+            unset($this->fields[$key]);
+            $this->fields = array_values($this->fields);
+        }
+        return $this;
+    }
+    
+    /**
+     * Get fields
+     *
+     * @return collection $fields
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
 }

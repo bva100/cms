@@ -37,6 +37,10 @@ Cms\CoreBundle\Document\ContentType:
           - Type:
               type: array
               message: The value {{ value }} is not a valid {{ type }}.
+        fields:
+          - Type:
+              type: array
+              message: The value {{ value }} is not a valid {{ type }}.
 
 Cms\CoreBundle\Document\Node:
       properties:

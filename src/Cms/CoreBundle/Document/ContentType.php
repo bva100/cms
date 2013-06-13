@@ -46,10 +46,16 @@ class ContentType {
      */
     private $categories;
 
+    /**
+     * @MongoDB\Collection
+     */
+    private $fields;
+
     public function __construct()
     {
         $this->formats = array();
         $this->categories = array();
+        $this->fields = array();
     }
 
     /**
@@ -224,7 +230,7 @@ class ContentType {
     }
 
     /**
-     * Remove category
+     * remove a category
      *
      * @param $parent
      * @param null $sub
@@ -262,4 +268,61 @@ class ContentType {
     {
         return $this->categories;
     }
+
+    /**
+     * Not used
+     *
+     * @throws \Exception
+     */
+    public function setFields()
+    {
+        throw new \Exception('setFields not used. Please use addField');
+    }
+
+    /**
+     * Add a field
+     *
+     * @param $field
+     * @return $this
+     */
+    public function addField($field)
+    {
+        if ( is_string($field) )
+        {
+            $key = array_search($field, $this->fields);
+            if ( $key === false )
+            {
+                $this->fields[] = $field;
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Remove a field
+     *
+     * @param $field
+     * @return $this
+     */
+    public function removeField($field)
+    {
+        $key = array_search($field, $this->fields);
+        if ( $key !== false )
+        {
+            unset($this->fields[$key]);
+            $this->fields = array_values($this->fields);
+        }
+        return $this;
+    }
+    
+    /**
+     * Get fields
+     *
+     * @return collection $fields
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
 }
