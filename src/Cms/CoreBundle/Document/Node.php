@@ -102,6 +102,11 @@ class Node {
     private $author;
 
     /**
+     * @MongoDB\Collection
+     */
+    private $javascripts;
+
+    /**
      * @MongoDB\Hash
      */
     private $view;
@@ -114,6 +119,7 @@ class Node {
         $this->tags = array();
         $this->fields = array();
         $this->author = array();
+        $this->javascripts = array();
         $this->view = array();
     }
 
@@ -403,6 +409,16 @@ class Node {
     }
 
     /**
+     * Get tags
+     *
+     * @return collection $tags
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
      * Set defaultLimit
      *
      * @param int $defaultLimit
@@ -422,16 +438,6 @@ class Node {
     public function getDefaultLimit()
     {
         return $this->defaultLimit;
-    }
-
-    /**
-     * Get tags
-     *
-     * @return collection $tags
-     */
-    public function getTags()
-    {
-        return $this->tags;
     }
 
     /**
@@ -598,7 +604,7 @@ class Node {
      * Get field associated with a specfic key
      *
      * @param $key
-     * @return null
+     * @return mixed
      */
     public function getField($key)
     {
@@ -638,6 +644,56 @@ class Node {
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Not used
+     *
+     * @throws \Exception
+     */
+    public function setJavascripts()
+    {
+        throw new \Exception('setJavascript is not used. Pleas use the addJavascript method');
+    }
+
+    /**
+     * Add a javascript
+     *
+     * @param $src
+     * @return $this
+     */
+    public function addJavascript($src)
+    {
+        if ( is_string($src) AND ! in_array($src, $this->javascripts))
+        {
+            $this->javascripts[] = $src;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove a javascript
+     *
+     * @param $src
+     * @return $this
+     */
+    public function removeJavascript($src)
+    {
+        $key = array_search($src, $this->javascripts);
+        if ( $key !== false )
+        {
+            unset($this->javascripts[$key]);
+            $this->javascripts = array_values($this->javascripts);
+        }
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getJavascripts()
+    {
+        return $this->javascripts;
     }
 
     /**
@@ -688,5 +744,4 @@ class Node {
     {
         return $this->view;
     }
-
 }

@@ -276,4 +276,49 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('<hello world>', $this->node->getView('xml'));
     }
 
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::addJavascript
+     * @covers \Cms\CoreBundle\Document\Node::getJavascript
+     */
+    public function testAddJavascript()
+    {
+        $this->node->addJavascript('blah.js');
+        $this->node->addJavascript('foo.js');
+        $this->node->addJavascript('bar.js');
+        $this->assertCount(3, $this->node->getJavascripts());
+        $this->assertEquals(array('blah.js', 'foo.js', 'bar.js'), $this->node->getJavascripts());
+
+        $this->node->addJavascript('foo.js');
+        $this->assertCount(3, $this->node->getJavascripts());
+        $this->node->addJavascript('bar.js');
+        $this->assertCount(3, $this->node->getJavascripts());
+        $this->assertEquals(array('blah.js', 'foo.js', 'bar.js'), $this->node->getJavascripts());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::removeJavascript
+     * @covers \Cms\CoreBundle\Document\Node::addJavascript
+     * @covers \Cms\CoreBundle\Document\Node::getJavascript
+     */
+    public function testRemoveJavascript()
+    {
+        $this->node->addJavascript('blah.js');
+        $this->node->addJavascript('foo.js');
+        $this->node->addJavascript('bar.js');
+        $this->assertCount(3, $this->node->getJavascripts());
+
+        $this->node->removeJavascript('blah.js');
+        $this->assertCount(2, $this->node->getJavascripts());
+        $this->node->removeField('blah.js');
+        $this->assertCount(2, $this->node->getJavascripts());
+        $this->assertEquals(array('foo.js', 'bar.js'), $this->node->getJavascripts());
+        $this->node->removeJavascript('foo.js');
+        $this->assertCount(1, $this->node->getJavascripts());
+        $this->node->removeJavascript('bar.js');
+        $this->assertEmpty($this->node->getJavascripts());
+    }
+
+
+
+
 }

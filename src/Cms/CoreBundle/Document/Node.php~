@@ -102,6 +102,11 @@ class Node {
     private $author;
 
     /**
+     * @MongoDB\Collection
+     */
+    private $javascripts;
+
+    /**
      * @MongoDB\Hash
      */
     private $view;
@@ -257,6 +262,28 @@ class Node {
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * Set parentNodeId
+     *
+     * @param string $parentNodeId
+     * @return self
+     */
+    public function setParentNodeId($parentNodeId)
+    {
+        $this->parentNodeId = $parentNodeId;
+        return $this;
+    }
+
+    /**
+     * Get parentNodeId
+     *
+     * @return string $parentNodeId
+     */
+    public function getParentNodeId()
+    {
+        return $this->parentNodeId;
     }
 
     /**
@@ -666,5 +693,5 @@ class Node {
     {
         return $this->view;
     }
-    
+
 }
