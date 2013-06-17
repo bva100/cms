@@ -107,6 +107,21 @@ class Node {
     private $javascripts;
 
     /**
+     * @MongoDB\Collection
+     */
+    private $stylesheets;
+
+    /**
+     * @MongoDB\Collection
+     */
+    private $metatags;
+
+    /**
+     * @MongoDB\String
+     */
+    private $image;
+
+    /**
      * @MongoDB\Hash
      */
     private $view;
@@ -120,6 +135,8 @@ class Node {
         $this->fields = array();
         $this->author = array();
         $this->javascripts = array();
+        $this->stylesheets = array();
+        $this->metatags = array();
         $this->view = array();
     }
 
@@ -340,7 +357,7 @@ class Node {
         {
             return $this;
         }
-        
+
         $remove = array();
         $remove['parent'] = $parent;
         if ( isset($sub) AND is_string($sub) )
@@ -701,6 +718,136 @@ class Node {
      *
      * @throws \Exception
      */
+    public function setStylesheets()
+    {
+        throw new \Exception('setStylesheet method not used. Please use the addStylesheet method instead.');
+    }
+
+    /**
+     * Add a stylesheet
+     *
+     * @param $src
+     * @return $this
+     */
+    public function addStylesheet($src)
+    {
+        if ( is_string($src) AND ! in_array($src, $this->stylesheets))
+        {
+            $this->stylesheets[] = $src;
+        }
+        return $this;
+    }
+
+    /**
+     * @param $src
+     * @return $this
+     */
+    public function removeStylesheet($src)
+    {
+        $key = array_search($src, $this->stylesheets);
+        if ( $key !== false )
+        {
+            unset($this->stylesheets[$key]);
+            $this->stylesheets = array_values($this->stylesheets);
+        }
+        return $this;
+    }
+
+    /**
+     * Get stylesheets
+     *
+     * @return collection $stylesheets
+     */
+    public function getStylesheets()
+    {
+        return $this->stylesheets;
+    }
+
+    /**
+     * Not used
+     *
+     * @throws \Exception
+     */
+    public function setMetatags()
+    {
+        throw new \Exception('setMetatags not used. Please use addMetatag');
+    }
+
+    /**
+     * Adds a metatag with given attributes
+     *
+     * @param array $attributes
+     * @return self
+     */
+    public function addMetatag(array $attributes)
+    {
+        foreach ($attributes as $attrKey => $attrValue) {
+            if ( is_string($attrKey) AND is_string($attrValue) )
+            {
+                $validAttributes[$attrKey] = $attrValue;
+            }
+        }
+        if ( isset($validAttributes) and ! in_array($validAttributes, $this->metatags) )
+        {
+            $this->metatags[] = $validAttributes;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove a metatag matching the specific attributes passed
+     *
+     * @param array $attributes
+     * @return self
+     */
+    public function removeMetatag(array $attributes)
+    {
+        $key = array_search($attributes, $this->metatags);
+        if ( $key !== false )
+        {
+            unset($this->metatags[$key]);
+            $this->metatags = array_values($this->metatags);
+        }
+        return $this;
+    }
+    
+    /**
+     * Get metatags
+     *
+     * @return collection $metatags
+     */
+    public function getMetatags()
+    {
+        return $this->metatags;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return self
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string $image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Not used
+     *
+     * @throws \Exception
+     */
     public function setView()
     {
         throw new \Exception('setView method is not used. Please use the addView method instead.');
@@ -744,4 +891,5 @@ class Node {
     {
         return $this->view;
     }
+
 }

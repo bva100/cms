@@ -278,7 +278,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @covers \Cms\CoreBundle\Document\Node::addJavascript
-     * @covers \Cms\CoreBundle\Document\Node::getJavascript
+     * @covers \Cms\CoreBundle\Document\Node::getJavascripts
      */
     public function testAddJavascript()
     {
@@ -298,7 +298,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers \Cms\CoreBundle\Document\Node::removeJavascript
      * @covers \Cms\CoreBundle\Document\Node::addJavascript
-     * @covers \Cms\CoreBundle\Document\Node::getJavascript
+     * @covers \Cms\CoreBundle\Document\Node::getJavascripts
      */
     public function testRemoveJavascript()
     {
@@ -318,7 +318,94 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEmpty($this->node->getJavascripts());
     }
 
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::addStylesheet
+     * @covers \Cms\CoreBundle\Document\Node::getStylesheets
+     */
+    public function testAddStylesheet()
+    {
+        $this->node->addStylesheet('foo.css');
+        $this->node->addStylesheet('bar.css');
+        $this->node->addStylesheet('foobar.css');
+        $this->assertCount(3, $this->node->getStylesheets());
+        $this->assertEquals(array('foo.css', 'bar.css', 'foobar.css'), $this->node->getStylesheets());
 
+        $this->node->addStylesheet('foobar.css');
+        $this->assertCount(3, $this->node->getStylesheets());
+        $this->node->addStylesheet('foo.css');
+        $this->assertCount(3, $this->node->getStylesheets());
+    }
 
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::removeStylesheet
+     * @covers \Cms\CoreBundle\Document\Node::addStylesheet
+     * @covers \Cms\CoreBundle\Document\Node::getStylesheets
+     */
+    public function testRemoveStylesheet()
+    {
+        $this->node->addStylesheet('foo.css');
+        $this->node->addStylesheet('bar.css');
+        $this->node->addStylesheet('foobar.css');
+        $this->assertCount(3, $this->node->getStylesheets());
+
+        $this->node->removeStylesheet('foo.css');
+        $this->assertCount(2, $this->node->getStylesheets());
+        $this->node->removeStylesheet('foo.css');
+        $this->assertCount(2, $this->node->getStylesheets());
+        $this->assertEquals(array('bar.css', 'foobar.css'), $this->node->getStylesheets());
+        $this->node->removeStylesheet('bar.css');
+        $this->assertCount(1, $this->node->getStylesheets());
+        $this->node->removeStylesheet('foobar.css');
+        $this->assertEmpty($this->node->getStylesheets());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::addMetatag
+     * @covers \Cms\CoreBundle\Document\Node::getMetatags
+     */
+    public function testAddMetatag()
+    {
+        $first = array('name' => 'description', 'content' => 'this is a foobar');
+        $second = array('property' => 'og:type', 'content' => 'image' );
+        $third = array('name' => 'viewport', 'content' => 'initial-scale=1.0, maximum-scale=1.0, width=device-width');
+
+        $this->node->addMetatag($first);
+        $this->node->addMetatag($second);
+        $this->node->addMetatag($third);
+        $this->assertCount(3, $this->node->getMetatags());
+        $this->assertEquals(array($first, $second, $third), $this->node->getMetatags());
+
+        $this->node->addMetatag($first);
+        $this->assertCount(3, $this->node->getMetatags());
+        $this->assertEquals(array($first, $second, $third), $this->node->getMetatags());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::removeMetatag
+     * @covers \Cms\CoreBundle\Document\Node::addMetatag
+     * @covers \Cms\CoreBundle\Document\Node::getMetatags
+     */
+    public function testRemoveMetatag()
+    {
+        $first = array('name' => 'description', 'content' => 'this is a foobar');
+        $second = array('property' => 'og:type', 'content' => 'image' );
+        $third = array('name' => 'viewport', 'content' => 'initial-scale=1.0, maximum-scale=1.0, width=device-width');
+
+        $this->node->addMetatag($first);
+        $this->node->addMetatag($second);
+        $this->node->addMetatag($third);
+        $this->assertCount(3, $this->node->getMetatags());
+
+        $this->node->removeMetatag($first);
+        $this->assertCount(2, $this->node->getMetatags());
+        $this->node->removeMetatag($first);
+        $this->assertCount(2, $this->node->getMetatags());
+        $this->assertEquals(array($second, $third), $this->node->getMetatags());
+        $this->node->removeMetatag($second);
+        $this->assertCount(1, $this->node->getMetatags());
+        $this->assertEquals(array($third), $this->node->getMetatags());
+        $this->node->removeMetatag($third);
+        $this->assertEmpty($this->node->getMetatags());
+    }
 
 }
