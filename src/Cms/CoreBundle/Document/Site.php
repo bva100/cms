@@ -32,9 +32,9 @@ class Site {
     private $namespace;
 
     /**
-     * @MongoDB\String
+     * @MongoDB\Collection
      */
-    private $domain;
+    private $domains;
 
     /**
      * @MongoDB\EmbedMany(targetDocument="ContentType")
@@ -45,6 +45,7 @@ class Site {
     {
         $this->setState('active');
         $this->contentType = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->domains = array();
     }
     
     /**
@@ -102,25 +103,59 @@ class Site {
     }
 
     /**
-     * Set domain
+     * Not used
+     *
+     * @throws \Exception
+     */
+    public function setDomains()
+    {
+        throw new \Exception('setDomains not used. Please use addDomain instead');
+    }
+
+    /**
+     * Add a domain
      *
      * @param string $domain
-     * @return self
+     * @return $this
      */
-    public function setDomain($domain)
+    public function addDomain($domain)
     {
-        $this->domain = $domain;
+        if ( is_string($domain) AND ! in_array($domain, $this->domains) )
+        {
+            $this->domains[] = $domain;
+        }
         return $this;
     }
 
     /**
-     * Get domain
+     * Remove a domain
      *
-     * @return string $domain
+     * @param string $domain
+     * @return $this
      */
-    public function getDomain()
+    public function removeDomain($domain)
     {
-        return $this->domain;
+        if ( ! is_string($domain) )
+        {
+            return $this;
+        }
+        $key = array_search($domain, $this->domains);
+        if ( $key !== false )
+        {
+            unset($this->domains[$key]);
+            $this->domains = array_values($this->domains);
+        }
+        return $this;
+    }
+
+    /**
+     * Get domains
+     *
+     * @return collection $domains
+     */
+    public function getDomains()
+    {
+        return $this->domains;
     }
 
     /**
@@ -170,4 +205,5 @@ class Site {
     {
         return $this->contentTypes;
     }
+
 }

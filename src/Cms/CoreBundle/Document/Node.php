@@ -822,7 +822,7 @@ class Node {
     }
 
     /**
-     * Set image
+     * Set image url
      *
      * @param string $image
      * @return self
