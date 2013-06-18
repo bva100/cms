@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block notices %}
+    {% if notices is not empty %}
+        <aside>
+            <h3>Notice</h3>
+            {% for notice in notices  %}
+                <p>{{ notice }}</p>
+            {% endfor %}
+        </aside>
+    {% endif %}
+{% endblock %}

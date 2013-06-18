@@ -1,15 +1,41 @@
-cms_core.create_site:
-  pattern: /site/create
-  defaults: { _controller: CmsCoreBundle:Default:siteCreate }
+cms_core.user_register:
+  pattern: /user/register
+  defaults: { _controller: CmsCoreBundle:User:Register }
+  methods: [GET]
 
-cms_core.create_node:
-  pattern: /node/create/
-  defaults: { _controller: CmsCoreBundle:Default:nodeCreate, host: localhost, namespace: foobartest }
+cms_core.user_save:
+  pattern:  /user
+  defaults: { _controller: CmsCoreBundle:User:Save }
+  methods: [POST]
 
-cms_core.update_content_type:
-  pattern: /contentType/update/{id}
-  defaults: { _controller: CmsCoreBundle:Default:updateContentType }
 
+cms_core.app_index:
+  pattern: /app
+  defaults: { _controller: CmsCoreBundle:App:Index }
+  methods: [GET]
+
+
+cms_core.site_save:
+  pattern: /site
+  defaults: { _controller: CmsCoreBundle:Site:save }
+  methods: [POST]
+
+cms_core.site_read:
+  pattern: /site/{id}
+  defaults: { _controller: CmsCoreBundle:Site:read }
+  methods: [GET]
+
+
+cms_core.contentType_save:
+  pattern: /contentType
+  defaults: { _controller: CmsCoreBundle:ContentType:save }
+  methods: [POST]
+
+#node crud :)
+
+
+
+#client routes
 cms_core.read_locale_nodes:
   pattern: /{_locale}/{path}
   defaults: { _controller: CmsCoreBundle:Default:nodeRead }

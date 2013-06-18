@@ -1,0 +1,24 @@
+{% extends 'CmsCoreBundle:Welcome:base.html.twig' %}
+
+{% block body %}
+    <article>
+        <h1>Register</h1>
+        <p>Register as a new user here</p>
+
+        {% if notices is not empty %}
+            <aside>
+                <h3>Warning</h3>
+                {% for notice in notices  %}
+                    <p>{{ notice }}</p>
+                {% endfor %}
+            </aside>
+        {% endif %}
+
+        <form action="{{ path('cms_core.user_save') }}" method="post">
+            <input type="hidden" name="token" value="{{ token }}"/>
+            <input type="email" name="email" placeholder="email" autofocus required/>
+            <input type="password" name="password" placeholder="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="must be at least 8 characters and must contain one uppercase and one number" required/>
+            <input type="submit" value="Create Account"/>
+        </form>
+    </article>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block title %}App Home | Cms{% endblock %}
+
+{% block body %}
+    <section>
+        <h1>Welcome To The App {{ user.email }}</h1>
+        <p>
+            Select some stuff here and do some stuff here while you're at it
+        </p>
+    </section>
+
+    <section>
+        <h2>Sites</h2>
+        {% block notices %}{% endblock %}
+        <form action="{{ path('cms_core.site_save') }}" method="post">
+            <input type="hidden" name="token" value="{{ token }}" />
+            <input type="text" name="name" placeholder="name" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,63}$" required/>
+            <input type="submit" value="Create"/>
+        </form>
+        <ol>
+            {% for site in sites  %}
+                {{ site.name }}
+            {% endfor %}
+        </ol>
+    </section>
+{% endblock %}

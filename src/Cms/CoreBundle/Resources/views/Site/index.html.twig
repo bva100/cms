@@ -1,0 +1,40 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block body %}
+    <section>
+        <h2>{{ site.name }}'s data</h2>
+
+        {% block notices %}{% endblock %}
+
+        <form action="{{ path('cms_core.site_save') }}" method="post">
+            <input type="hidden" value="{{ token }}" name="token"/>
+            <label for="name">name:</label>
+            <input type="text" value="{{ site.name }}" name="name" placeholder="name" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,63}$" required />
+            <label for="namespace">namespace:</label>
+            <input type="text" value="{{ site.namespace }}" name="namespace" placeholder="namespace" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,63}$"/>
+            <input type="submit" value="Update"/>
+        </form>
+    </section>
+
+    <section>
+        <h3>{{ site.name }} Content Types</h3>
+        {% for contentType in contentTypes  %}
+            <p>
+                name: {{ contentType.name }} | slug: {{ contentType.slugPrefix }}
+            </p>
+        {% endfor %}
+        
+
+        <form action="{{ path('cms_core.contentType_save') }}" method="post">
+            <input type="hidden" name="token" value="{{ token }}"/>
+            <input type="hidden" name="siteId" value="{{ site.id }}"/>
+            <input type="text" name="name" placeholder="name" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,127}$" title="must only include numbers and letter with a minimum of 3 characters and a maximum of 127" required/>
+            <input type="text" name="slugPrefix" placeholder="slug prefix" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,127}$" title="must only include numbers and letter with a minimum of 3 characters and a maximum of 127" />
+            <input type="radio" name="format" value="static"/> static
+            <input type="radio" name="format" value="dynamic"/> dynamic
+            <input type="submit" value="Add"/>
+        </form>
+
+    </section>
+
+{% endblock %}

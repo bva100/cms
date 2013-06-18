@@ -27,6 +27,11 @@ class Site {
     private $state;
 
     /**
+     * @MongoDB\String
+     */
+    private $name;
+
+    /**
      * @MongoDB\String @MongoDB\Index(unique=true)
      */
     private $namespace;
@@ -78,6 +83,28 @@ class Site {
     public function getState()
     {
         return $this->state;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string $name
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

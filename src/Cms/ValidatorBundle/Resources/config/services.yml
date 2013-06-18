@@ -1,8 +1,11 @@
 parameters:
     cms_validator.csrfToken: Cms\ValidatorBundle\Services\CsrfToken
     cms_validator.csrfToken_hashAlgo: 'md5'
+    cms_validator.xmlResponser.class: Cms\ValidatorBundle\Services\XmlResponder
 
 services:
     csrfToken:
         class: %cms_validator.csrfToken%
         arguments: [@session,  %cms_validator.csrfToken_hashAlgo%]
+    xmlResponse:
+        class: %cms_validator.xmlResponser.class%

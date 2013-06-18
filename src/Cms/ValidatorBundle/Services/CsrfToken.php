@@ -10,7 +10,7 @@
  */
 
 namespace Cms\ValidatorBundle\Services;
-use Cms\ValidatorBundle\Exceptions;
+use \Cms\ValidatorBundle\Exceptions\ValidationException;
 
 class CsrfToken {
 
@@ -42,10 +42,12 @@ class CsrfToken {
 
     /**
      * @param $session
+     * @return $this
      */
     private function setSession($session)
     {
         $this->session = $session;
+        return $this;
     }
 
     /**
@@ -61,6 +63,7 @@ class CsrfToken {
                 break;
         }
         $this->session->set('CSRFToken', $token);
+        return $this;
     }
 
     /**
@@ -84,6 +87,7 @@ class CsrfToken {
         }
         else if ( $token === $this->session->get('CSRFToken') )
         {
+            $this->session->remove('CSRFToken');
             return true;
         }
         else

@@ -4,15 +4,21 @@ Cms\CoreBundle\Document\Site:
           - NotBlank: { message: 'Please add a state' }
           - Choice:
               choices: [active, deleted]
+        name:
+          - NotBlank: { message: 'Please add a name' }
+          - Length:
+              min: 2
+              max: 63
         namespace:
           - NotBlank: { message: 'Please add a unique namespace' }
           - Length:
               min: 2
               max: 63
-        domain:
-          - NotBlank: { message: 'Please add the domain of the site' }
-          - Length:
-              max: 127
+        domains:
+          - NotBlank: { message: 'Please add a domain' }
+          - Type:
+              type: array
+              message: The value {{ value }} is not a valid {{ type }}.
 
 Cms\CoreBundle\Document\ContentType:
     properties:
