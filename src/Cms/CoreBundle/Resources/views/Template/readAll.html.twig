@@ -1,0 +1,23 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block body %}
+    <h1>All Templates</h1>
+    <ul>
+        {% for template in templates  %}
+            <li>
+                <a href="{{ path('cms_core.template_read', {'id':template.id} ) }}">{{ template.name }}</a>
+                <form action="{{ path('cms_core.template_delete') }}" method="post">
+                    <input type="hidden" name="token" value="{{ token }}"/>
+                    <input type="hidden" name="id" value="{{ template.id }}"/>
+                    <input type="submit" value="x"/>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('cms_core.template_new') }}">create a new template</a>
+
+    <nav>
+        <a href="{{ path('cms_core.app_index') }}">Back to Admin Panel</a>
+    </nav>
+{% endblock %}

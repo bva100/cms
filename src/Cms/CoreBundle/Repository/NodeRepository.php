@@ -83,15 +83,42 @@ class NodeRepository extends DocumentRepository {
     }
 
     /**
-     * Find all nodes
-     *
-     * @param string $contentTyepName
+     * @param string $siteId
+     * @param string $contentTypeName
+     * @param array $params
+     * @returns collection of entities
      */
-    public function findByContentTypeName($contentTyepName)
+    public function findBySiteIdAndContentType($siteId, $contentTypeName, array $params = array('offset' => 0, 'limit' => 20))
     {
-        return $this->createQueryBuilder()
-            ->field('contentTypeName')->equals($contentTyepName)
-            ->getQuery()->execute();
+        $qb = $this->createQueryBuilder();
+        if ( isset($siteId) )
+        {
+            $qb->field('siteId')->equals($siteId);
+        }
+        if ( isset($contentType) )
+        {
+            $qb->field('contentTypeName')->equals($contentTypeName);
+        }
+        return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
+
+    /**
+     * @param string $siteId
+     * @param array $params
+     */
+    public function findBySiteId($siteId, array $params = array('offset' => 0, 'limit' => 20))
+    {
+        return $this->findBySiteIdAndContentType($siteId, null, $params);
+    }
+
+    /**
+     * @param string $contentTypeName
+     * @param array $params
+     */
+    public function findByContentTypeName($contentTypeName, array $params = array('offset' => 0, 'limit' => 20))
+    {
+        return $this->findBySiteIdAndContentType(null, $contentTypeName, $params);
+    }
+
     
 }

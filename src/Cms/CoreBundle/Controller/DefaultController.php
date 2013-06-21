@@ -245,14 +245,25 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('node not found');
         }
         $loop = $this->get('loop_loader')->setNode($node)->setNodeRepo($nodeRepo)->setParams($params)->load();
-        
-        echo '<pre>', \var_dump($node->getView('html'), '<hr>');
-        if ( ! empty($loop) )
-        {
-            foreach ($loop as $loop) {
-                echo $loop->getView('html'), '<br>';
-            }
-        }
-        die('end');
+        $twig = $this->get('twig_loader')->load();
+        $twig->clearCacheFiles();
+
+        $templateNameHelper = $this->get('template_name_helper')->setName($node->getTemplateName());
+        return new Response($twig->render($node->getTemplateName(), array(
+            'node' => $node,
+            'loop' => $loop,
+            'namespace' => $templateNameHelper->getNamespace(),
+            'theme' => $templateNameHelper->getTheme(),
+            'templateType' => $templateNameHelper->getType(),
+        )));
+
+//        echo '<pre>', \var_dump($node->getView('html'), '<hr>');
+//        if ( ! empty($loop) )
+//        {
+//            foreach ($loop as $loop) {
+//                echo $loop->getView('html'), '<br>';
+//            }
+//        }
+//        die('end');
     }
 }

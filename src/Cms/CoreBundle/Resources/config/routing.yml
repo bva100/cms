@@ -1,3 +1,4 @@
+#user
 cms_core.user_register:
   pattern: /user/register
   defaults: { _controller: CmsCoreBundle:User:Register }
@@ -9,12 +10,14 @@ cms_core.user_save:
   methods: [POST]
 
 
+#app
 cms_core.app_index:
   pattern: /app
   defaults: { _controller: CmsCoreBundle:App:Index }
   methods: [GET]
 
 
+#site
 cms_core.site_save:
   pattern: /site
   defaults: { _controller: CmsCoreBundle:Site:save }
@@ -25,14 +28,71 @@ cms_core.site_read:
   defaults: { _controller: CmsCoreBundle:Site:read }
   methods: [GET]
 
+cms_core.site_delete:
+  pattern: /site/delete
+  defaults: { _controller: CmsCoreBundle:Site:delete }
+  methods: [POST]
 
+
+#contentType
 cms_core.contentType_save:
   pattern: /contentType
   defaults: { _controller: CmsCoreBundle:ContentType:save }
   methods: [POST]
 
-#node crud :)
+cms_core.contentType_read:
+  pattern: /contentType/{siteId}/{id}
+  defaults: { _controller: CmsCoreBundle:ContentType:read }
+  methods: [GET]
 
+cms_core.contentType_delete:
+  pattern: /contentType/delete
+  defaults: { _controller: CmsCoreBundle:ContentType:delete }
+  methods: [POST]
+
+
+#node
+cms_core.node_save:
+  pattern: /node
+  defaults: { _controller: CmsCoreBundle:Node:save }
+  methods: [POST]
+
+cms_core.node_new:
+  pattern: /node/new/{siteId}/{contentTypeId}
+  defaults: { _controller: CmsCoreBundle:Node:new }
+  methods: [GET]
+
+cms_core.node_delete:
+  pattern: /node/delete
+  defaults: { _controller: CmsCoreBundle:Node:delete }
+  methods: [POST]
+
+
+#template
+cms_core.template_delete:
+  pattern: /template/delete
+  defaults: { _controller: CmsCoreBundle:Template:delete }
+  methods: [POST]
+
+cms_core.template_new:
+  pattern: /template/new
+  defaults: { _controller: CmsCoreBundle:Template:new }
+  methods: [GET]
+
+cms_core.template_readAll:
+  pattern: /templates
+  defaults: { _controller: CmsCoreBundle:Template:readAll }
+  methods: [GET]
+
+cms_core.template_read:
+  pattern: /template/{id}
+  defaults: { _controller: CmsCoreBundle:Template:read }
+  methods: [GET]
+
+cms_core.template_save:
+  pattern: /template
+  defaults: { _controller: CmsCoreBundle:Template:save }
+  methods: [POST]
 
 
 #client routes

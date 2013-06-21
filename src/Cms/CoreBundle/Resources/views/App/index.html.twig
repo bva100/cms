@@ -11,17 +11,28 @@
     </section>
 
     <section>
-        <h2>Sites</h2>
+        <h2>Your Sites</h2>
         {% block notices %}{% endblock %}
+        <ol>
+            {% for site in sites  %}
+                <li>
+                    <a href="{{ path('cms_core.site_read', {'id':site.id}) }}">{{ site.name }}</a>
+                    <form action="{{ path('cms_core.site_delete') }}" method="post">
+                        <input type="hidden" name="id" value="{{ site.id }}"/>
+                        <input type="submit" value="Delete"/>
+                    </form>
+                </li>
+            {% endfor %}
+        </ol>
         <form action="{{ path('cms_core.site_save') }}" method="post">
             <input type="hidden" name="token" value="{{ token }}" />
+            <label for="name">Add a New Site: </label>
             <input type="text" name="name" placeholder="name" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,63}$" required/>
             <input type="submit" value="Create"/>
         </form>
-        <ol>
-            {% for site in sites  %}
-                {{ site.name }}
-            {% endfor %}
-        </ol>
+    </section>
+
+    <section>
+        <a href="{{ path('cms_core.template_readAll') }}">View Templates</a>
     </section>
 {% endblock %}

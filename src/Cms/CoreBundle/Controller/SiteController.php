@@ -48,13 +48,37 @@ class SiteController extends Controller {
     public function readAction($id)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
+        $notices = $this->get('session')->getFlashBag()->get('notices');
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
         $contentTypes = $site->getContentTypes();
+        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteId($id);
         return $this->render('CmsCoreBundle:Site:index.html.twig', array(
             'site' => $site,
             'token' => $token,
+            'notices' => $notices,
             'contentTypes' => $contentTypes,
+            'nodes' => $nodes,
         ));
+    }
+
+    public function deleteAction()
+    {
+        $token = (string)$this->getRequest()->request->get('token');
+        $id = (string)$this->getRequest()->request->get('id');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
+        $this->get('csrfToken')->validate($token);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$id.' not found');
+        }
+        // ensure use has proper permission to delete this site
+        $success = $this->get('persister')->delete($site);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
+        return $this->redirect($this->generateUrl('cms_core.app_index'));
     }
 
 }

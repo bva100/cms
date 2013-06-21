@@ -73,6 +73,8 @@ Cms\CoreBundle\Document\Node:
             - Length:
                 min: 4
                 max: 63
+          locale:
+            - Length: 5
           categories:
             - Type:
                 type: array

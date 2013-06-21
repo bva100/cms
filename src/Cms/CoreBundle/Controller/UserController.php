@@ -34,7 +34,8 @@ class UserController extends Controller {
         }
         if ( $password )
         {
-            $user->setPassword($password);
+            $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+            $user->setPassword($encoder->encodePassword($password,$user->getSalt()));
         }
         $user->addRole('ROLE_USER');
         $success = $this->get('persister')->save($user);

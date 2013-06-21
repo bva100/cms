@@ -2,9 +2,9 @@
 
 {% block body %}
     <section>
-        <h2>{{ site.name }}'s data</h2>
+        <h2>{{ site.name }}</h2>
 
-        {% block notices %}{% endblock %}
+        {% block notices %}{{ parent() }}{% endblock %}
 
         <form action="{{ path('cms_core.site_save') }}" method="post">
             <input type="hidden" value="{{ token }}" name="token"/>
@@ -17,14 +17,21 @@
     </section>
 
     <section>
-        <h3>{{ site.name }} Content Types</h3>
-        {% for contentType in contentTypes  %}
-            <p>
-                name: {{ contentType.name }} | slug: {{ contentType.slugPrefix }}
-            </p>
-        {% endfor %}
-        
-
+        <h3>Content Types</h3>
+        <ol>
+            {% for contentType in contentTypes  %}
+                <li>
+                    <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}">{{ contentType.name }}</a>
+                    <form action="{{ path('cms_core.contentType_delete') }}" method="post">
+                        <input type="hidden" name="token" value="{{ token }}"/>
+                        <input type="hidden" name="id" value="{{ contentType.id }}"/>
+                        <input type="hidden" name="siteId" value="{{ site.id }}"/>
+                        <input type="submit" value="X"/>
+                    </form>
+                </li>
+            {% endfor %}
+        </ol>
+        <legend>Add a New Content Type</legend>
         <form action="{{ path('cms_core.contentType_save') }}" method="post">
             <input type="hidden" name="token" value="{{ token }}"/>
             <input type="hidden" name="siteId" value="{{ site.id }}"/>
@@ -36,5 +43,27 @@
         </form>
 
     </section>
+
+    <section>
+        <h3>Nodes</h3>
+        <ul>
+            {% for node in nodes  %}
+                <li>
+                    <a href="{{ app.request.baseURL() }}/{{ node.slug }}" target="_blank">{{ node.title }}</a>
+                    <form action="{{ path('cms_core.node_delete') }}" method="post">
+                        <input type="hidden" name="token" value="{{ token }}"/>
+                        <input type="hidden" name="id" value="{{ node.id }}"/>
+                        <input type="submit" value="x"/>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <nav>
+        <ul>
+            <li><a href="{{ path('cms_core.app_index') }}">Back to Admin</a></li>
+        </ul>
+    </nav>
 
 {% endblock %}

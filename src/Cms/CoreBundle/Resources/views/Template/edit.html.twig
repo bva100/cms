@@ -1,0 +1,22 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block body %}
+    <article>
+        <h1>{{ template.name | default('New') }} Template</h1>
+        <div>
+            {{ template.content | default() }}
+        </div>
+        <div>
+            {% block notices %}{{ parent() }}{% endblock %}
+        </div>
+        <form action="{{ path('cms_core.template_save', {'id':template.id | default()}) }}" method="post">
+            <input type="hidden" name="token" value="{{ token }}"/>
+            <input type="hidden" name="id" value="{{ template.id | default() }}"/>
+            <p>
+                <input type="text" name="name" value="{{ template.name | default() }}" placeholder="name" pattern=".{3,63}$" required/>
+            </p>
+            <textarea name="content" id="textContent" cols="100" rows="30">{{ template.content | default() }}</textarea>
+            <p><input type="submit" value="Save"/></p>
+        </form>
+    </article>
+{% endblock %}

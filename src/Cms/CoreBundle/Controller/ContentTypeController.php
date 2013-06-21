@@ -59,4 +59,58 @@ class ContentTypeController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $siteId)));
     }
 
+    public function readAction($siteId, $id)
+    {
+        $token = $this->get('csrfToken')->createToken()->getToken();
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
+        }
+        $contentType = $site->getContentType($id);
+        if ( ! $contentType )
+        {
+            throw $this->createNotFoundException('ConentType with id '.$id.' not found');
+        }
+        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findByContentTypeName($contentType->getName());
+        return $this->render('CmsCoreBundle:ContentType:read.html.twig', array(
+            'token' => $token,
+            'site' => $site,
+            'contentType' => $contentType,
+            'nodes' => $nodes,
+        ));
+    }
+
+    public function deleteAction()
+    {
+        $token = (string)$this->getRequest()->request->get('token');
+        $id = (string)$this->getRequest()->request->get('id');
+        $siteId = (string)$this->getRequest()->request->get('siteId');
+        $this->get('csrfToken')->validate($token);
+
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
+        }
+        $contentType = $site->getContentType($id);
+        if ( ! $contentType )
+        {
+            throw $this->createNotFoundException('Content type with id '.$id.' not found');
+        }
+        // ensure user has permission to delete contentType
+        $site->removeContentType($contentType);
+        $success = $this->get('persister')->save($site);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
+        if ( ! $success )
+        {
+            return $this->redirect($this->generateUrl('cms_core.contentType_read', array('id' => $id, 'siteId' => $siteId)));
+        }
+        return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $siteId)));
+    }
+
 }
