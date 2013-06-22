@@ -1,0 +1,197 @@
+<?php
+/**
+ * User: Brian Anderson
+ * Date: 6/21/13
+ * Time: 4:14 PM
+ */
+
+namespace Cms\CoreBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
+/**
+ * Class Theme
+ * @package Cms\CoreBundle\Document
+ * @MongoDB\Document(collection="themes")
+ */
+class Theme {
+
+    /**
+     * @MongoDB\Id
+     */
+    private $id;
+
+    /**
+     * @MongoDB\String
+     */
+    private $parentId;
+
+    /**
+     * @MongoDB\String @MongoDB\Index(unique=true)
+     */
+    private $name;
+
+    /**
+     * @MongoDB\String
+     */
+    private $componentTemplateName;
+
+    /**
+     * @MongoDB\Collection
+     */
+    private $layouts;
+
+    public function __construct()
+    {
+        $this->layouts = array();
+    }
+
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set parentId
+     *
+     * @param string $parentId
+     * @return self
+     */
+    public function setParentId($parentId)
+    {
+        $this->parentId = $parentId;
+        return $this;
+    }
+
+    /**
+     * Get parentId
+     *
+     * @return string $parentId
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string $name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set componentTemplateName
+     *
+     * @param string $componentTemplateName
+     * @return self
+     */
+    public function setComponentTemplateName($componentTemplateName)
+    {
+        $this->componentTemplateName = $componentTemplateName;
+        return $this;
+    }
+
+    /**
+     * Get componentTemplateName
+     *
+     * @return string $componentTemplateName
+     */
+    public function getComponentTemplateName()
+    {
+        return $this->componentTemplateName;
+    }
+
+    /**
+     * Not used
+     *
+     * @throws \Exception
+     */
+    public function setLayouts()
+    {
+        throw new \Exception('the setLayouts method is not used. Please use addLayout instead');
+    }
+
+    /**
+     * Add a layout type
+     *
+     * @param $type
+     * @return $this
+     */
+    public function addLayout($type)
+    {
+        if ( ! is_string($type) )
+        {
+            return $this;
+        }
+        $key = array_search($type, $this->layouts);
+        if ( $key === false )
+        {
+            $this->layouts[] = $type;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove a layout type
+     *
+     * @param $type
+     * @return $this
+     */
+    public function removeLayout($type)
+    {
+        if ( ! is_string($type) )
+        {
+            return $this;
+        }
+        $key = array_search($type, $this->layouts);
+        if ( $key !== false )
+        {
+            unset($this->layouts[$key]);
+            $this->layouts = array_values($this->layouts);
+        }
+        return $this;
+    }
+
+    /**
+     * Check if layout exists in theme
+     *
+     * @param $type
+     * @return bool
+     */
+    public function hasLayout($type)
+    {
+        $key = array_search($type, $this->layouts);
+        return $key !== false ? true : false;
+    }
+
+    /**
+     * Get layouts
+     *
+     * @return array $layouts
+     */
+    public function getLayouts()
+    {
+        return $this->layouts;
+    }
+}

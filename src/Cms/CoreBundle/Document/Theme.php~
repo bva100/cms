@@ -1,0 +1,46 @@
+<?php
+/**
+ * User: Brian Anderson
+ * Date: 6/21/13
+ * Time: 4:14 PM
+ */
+
+namespace Cms\CoreBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
+/**
+ * Class Theme
+ * @package Cms\CoreBundle\Document
+ * @MongoDB\Document(collection="themes")
+ */
+class Theme {
+
+    /**
+     * @MongoDB\Id
+     */
+    private $id;
+
+    /**
+     * @MongoDB\String
+     */
+    private $parentId;
+
+    /**
+     * @MongoDB\String @MongoDB\Index(unique=true)
+     */
+    private $name;
+
+    /**
+     * @MongoDB\String
+     */
+    private $componentTemplateName;
+
+    /**
+     * @MongoDB\Hash
+     */
+    private $layouts;
+
+
+
+}

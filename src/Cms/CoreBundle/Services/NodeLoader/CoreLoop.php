@@ -114,7 +114,7 @@ class CoreLoop {
     public function load()
     {
         $loop = array();
-        if ( $this->node->getFormat() === 'loop-tag' OR $this->node->getFormat() === 'loop-category')
+        if ( $this->node->getFormat() === 'loop-tag' OR $this->node->getFormat() === 'loop-category' OR $this->node->getFormat() === 'loop')
         {
             $loop = $this->loopFinder->find($this->node, $this->params);
         }

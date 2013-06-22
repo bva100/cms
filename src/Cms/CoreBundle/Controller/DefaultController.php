@@ -248,6 +248,7 @@ class DefaultController extends Controller
         $twig = $this->get('twig_loader')->load();
         $twig->clearCacheFiles();
 
+
         $templateNameHelper = $this->get('template_name_helper')->setName($node->getTemplateName());
         return new Response($twig->render($node->getTemplateName(), array(
             'node' => $node,
