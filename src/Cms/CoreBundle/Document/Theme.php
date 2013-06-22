@@ -32,6 +32,11 @@ class Theme {
     private $name;
 
     /**
+     * @MongoDB\Hash
+     */
+    private $author;
+
+    /**
      * @MongoDB\String
      */
     private $componentTemplateName;
@@ -43,6 +48,7 @@ class Theme {
 
     public function __construct()
     {
+        $this->author = array();
         $this->layouts = array();
     }
 
@@ -98,6 +104,48 @@ class Theme {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add an author value object with properties of name, image and url
+     *
+     * @param array $author
+     * @return $this
+     */
+    public function addAuthor(array $author)
+    {
+        $this->removeAuthor();
+        if ( isset($author['name']) AND is_string($author['name']) )
+        {
+            $this->author['name'] = $author['name'];
+        }
+        if ( isset($author['image']) AND is_string($author['image']) )
+        {
+            $this->author['image'] = $author['image'];
+        }
+        if ( isset($author['url']) AND is_string($author['url']) )
+        {
+            $this->author['url'] = $author['url'];
+        }
+        return $this;
+    }
+
+    /**
+     * Remove author value object
+     */
+    public function removeAuthor()
+    {
+        $this->author = array();
+    }
+
+    /**
+     * Get author
+     *
+     * @return array $author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 
     /**
@@ -193,5 +241,18 @@ class Theme {
     public function getLayouts()
     {
         return $this->layouts;
+    }
+
+
+    /**
+     * Set author
+     *
+     * @param hash $author
+     * @return self
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
     }
 }

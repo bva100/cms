@@ -94,4 +94,14 @@ class ThemeTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->theme->hasLayout(1));
     }
 
+    public function testSetAuthor()
+    {
+        $this->theme->addAuthor(array('name' => 'foo', 'url' => 'foobar.com', 'image' => 'foobar.com/image.png'));
+        $this->assertEquals(array('name' => 'foo', 'url' => 'foobar.com', 'image' => 'foobar.com/image.png' ), $this->theme->getAuthor());
+        $this->theme->addAuthor(array('name' => 'baz', 'url' => 'bazboom.com'));
+        $this->assertEquals(array('name' => 'baz', 'url' => 'bazboom.com'), $this->theme->getAuthor());
+        $this->theme->removeAuthor();
+        $this->assertEmpty($this->theme->getAuthor());
+    }
+
 }

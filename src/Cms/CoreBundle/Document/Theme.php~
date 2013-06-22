@@ -32,15 +32,213 @@ class Theme {
     private $name;
 
     /**
+     * @MongoDB\Hash
+     */
+    private $author;
+
+    /**
      * @MongoDB\String
      */
     private $componentTemplateName;
 
     /**
-     * @MongoDB\Hash
+     * @MongoDB\Collection
      */
     private $layouts;
 
+    public function __construct()
+    {
+        $this->layouts = array();
+    }
 
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set parentId
+     *
+     * @param string $parentId
+     * @return self
+     */
+    public function setParentId($parentId)
+    {
+        $this->parentId = $parentId;
+        return $this;
+    }
+
+    /**
+     * Get parentId
+     *
+     * @return string $parentId
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string $name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Add an author value object with properties of name, image and url
+     *
+     * @param array $author
+     * @return $this
+     */
+    public function addAuthor(array $author)
+    {
+        if ( isset($author['name']) AND is_string($author) )
+        {
+            $this->author['name'] = $author['name'];
+        }
+        if ( isset($author['image']) AND is_string($author) )
+        {
+            $this->author['image'] = $author['image'];
+        }
+        if ( isset($author['url']) AND is_string($author['url']) )
+        {
+            $this->author['url'] = $author['url'];
+        }
+        return $this;
+    }
+
+    /**
+     * Remove author value object
+     */
+    public function removeAuthor()
+    {
+        $this->author = array();
+    }
+
+    /**
+     * Get author
+     *
+     * @return array $author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set componentTemplateName
+     *
+     * @param string $componentTemplateName
+     * @return self
+     */
+    public function setComponentTemplateName($componentTemplateName)
+    {
+        $this->componentTemplateName = $componentTemplateName;
+        return $this;
+    }
+
+    /**
+     * Get componentTemplateName
+     *
+     * @return string $componentTemplateName
+     */
+    public function getComponentTemplateName()
+    {
+        return $this->componentTemplateName;
+    }
+
+    /**
+     * Not used
+     *
+     * @throws \Exception
+     */
+    public function setLayouts()
+    {
+        throw new \Exception('the setLayouts method is not used. Please use addLayout instead');
+    }
+
+    /**
+     * Add a layout type
+     *
+     * @param $type
+     * @return $this
+     */
+    public function addLayout($type)
+    {
+        if ( ! is_string($type) )
+        {
+            return $this;
+        }
+        $key = array_search($type, $this->layouts);
+        if ( $key === false )
+        {
+            $this->layouts[] = $type;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove a layout type
+     *
+     * @param $type
+     * @return $this
+     */
+    public function removeLayout($type)
+    {
+        if ( ! is_string($type) )
+        {
+            return $this;
+        }
+        $key = array_search($type, $this->layouts);
+        if ( $key !== false )
+        {
+            unset($this->layouts[$key]);
+            $this->layouts = array_values($this->layouts);
+        }
+        return $this;
+    }
+
+    /**
+     * Check if layout exists in theme
+     *
+     * @param $type
+     * @return bool
+     */
+    public function hasLayout($type)
+    {
+        $key = array_search($type, $this->layouts);
+        return $key !== false ? true : false;
+    }
+
+    /**
+     * Get layouts
+     *
+     * @return array $layouts
+     */
+    public function getLayouts()
+    {
+        return $this->layouts;
+    }
 
 }
