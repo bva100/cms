@@ -94,6 +94,11 @@ class ThemeTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->theme->hasLayout(1));
     }
 
+    /**
+     * @covers \Cms\CoreBundle\Document\Theme::addAuthor
+     * @covers \Cms\CoreBundle\Document\Theme::removeAuthor
+     * @covers \Cms\CoreBundle\Document\Theme::getAuthor
+     */
     public function testSetAuthor()
     {
         $this->theme->addAuthor(array('name' => 'foo', 'url' => 'foobar.com', 'image' => 'foobar.com/image.png'));

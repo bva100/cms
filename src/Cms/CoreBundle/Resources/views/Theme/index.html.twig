@@ -3,18 +3,25 @@
 {% block body %}
     <article>
         <h1>All Themes</h1>
-        {% for theme in themes  %}
-            <a href="{{ path('cms_core.theme_read', {'id':theme.id}) }}">{{ theme.name }}</a>
-        {% else %}
-            <b>no themes found</b>
-        {% endfor %}
+
+        <ul>
+            {% for theme in themes  %}
+                <li>
+                    <a href="{{ path('cms_core.theme_read', {'id':theme.id}) }}">{{ theme.name }}</a>
+
+                    <form action="{{ path('cms_core.theme_delete') }}" method="post">
+                        <input type="hidden" name="token" value="{{ token }}"/>
+                        <input type="hidden" name="id" value="{{ theme.id }}"/>
+                        <input type="submit" value="x"/>
+                    </form>
+                </li>
+            {% else %}
+                <b>no themes found</b>
+            {% endfor %}
+        </ul>
 
         <section>
-            <h2>Create A New Theme</h2>
-            <form action="{{ path('cms_core.theme_save') }}" method="post">
-                <input type="hidden" name="token" value="{{ token }}"/>
-                <input type="text"/>
-            </form>
+            <a href="{{ path('cms_core.theme_new') }}">Create A New Theme</a>
         </section>
 
     </article>

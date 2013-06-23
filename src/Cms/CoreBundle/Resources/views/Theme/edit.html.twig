@@ -1,0 +1,21 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block body %}
+    <h1>{{ theme.name | default('Create New Theme') }}</h1>
+    <form action="{{ path('cms_core.theme_save') }}" method="post">
+        <input type="hidden" name="token" value="{{ token }}"/>
+        <input type="hidden" name="id" value="{{ theme.id | default() }}"/>
+        <input type="hidden" name="parentId" placeholder="parent id"/>
+        <input type="text" name="name" value="{{ theme.name | default() }}" placeholder="name" required/>
+        <input type="text" name="authorName" value="{{ theme.author.name | default() }}" placeholder="author name"/>
+        <input type="text" name="authorUrl" value="{{ theme.author.url | default() }}" placeholder="author url"/>
+        <input type="text" name="authorImage" value="{{ theme.author.image | default() }}" placeholder="author image"/>
+        <input type="text" name="componentTemplateName" value="{{ theme.componentTemplateName | default() }}" placeholder="component template name"/>
+        <div>
+            <label for="checkbox-single">single</label><input type="checkbox" name="layout[]" value="single" id="checkbox-single"/>
+            <label for="checkbox-loop">loop</label><input type="checkbox" name="layout[]" value="loop" id="checkbox-loop"/>
+            <label for="checkbox-static">static</label><input type="checkbox" name="layout[]" value="static" id="checkbox-static"/>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+{% endblock %}
