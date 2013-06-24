@@ -48,6 +48,7 @@ class Theme {
 
     public function __construct()
     {
+        $this->author = array();
         $this->layouts = array();
     }
 
@@ -113,11 +114,12 @@ class Theme {
      */
     public function addAuthor(array $author)
     {
-        if ( isset($author['name']) AND is_string($author) )
+        $this->removeAuthor();
+        if ( isset($author['name']) AND is_string($author['name']) )
         {
             $this->author['name'] = $author['name'];
         }
-        if ( isset($author['image']) AND is_string($author) )
+        if ( isset($author['image']) AND is_string($author['image']) )
         {
             $this->author['image'] = $author['image'];
         }
@@ -241,4 +243,16 @@ class Theme {
         return $this->layouts;
     }
 
+
+    /**
+     * Set author
+     *
+     * @param hash $author
+     * @return self
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
 }
