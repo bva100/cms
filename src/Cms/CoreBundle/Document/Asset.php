@@ -87,10 +87,15 @@ class Asset {
      * Set name
      *
      * @param string $name
+     * @throws \InvalidArgumentException
      * @return self
      */
     public function setName($name)
     {
+        if ( preg_match('/[^a-z_\-0-9]/i', str_replace(':', '', $name)) )
+        {
+            throw new \InvalidArgumentException('Invalid filename. Filename must be alphanumeric.');
+        }
         $this->name = $name;
         return $this;
     }

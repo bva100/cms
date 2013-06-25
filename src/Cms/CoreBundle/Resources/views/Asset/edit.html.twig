@@ -16,16 +16,19 @@
             </div>
             <input type="submit" value="Save"/>
         </form>
-        <section>
-            <h3>History</h3>
-            <ul>
-                {% for history in history  %}
-                    <li>{{ history.content }}</li>
-                {% else %}
-                    <li>no history found</li>
-                {% endfor %}
-            </ul>
-        </section>
+
+        {% if history is defined %}
+            <section>
+                <h3>History</h3>
+                <ul>
+                    {% for history in history  %}
+                        <li>{{ history.content }}</li>
+                    {% else %}
+                        <li>no history found</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
     </article>
     <nav>
         <a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}">Back to Assets</a>

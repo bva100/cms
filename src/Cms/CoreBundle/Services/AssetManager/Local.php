@@ -67,9 +67,13 @@ class Local extends AbstractAssetManager {
     public function delete($name, $ext)
     {
         $this->validateName($name);
-        if ( ! \unlink( $this->getDir($ext).$name.'.'.$ext ) )
+        $filename = $this->getDir($ext).$name.'.'.$ext;
+        if ( file_exists($filename) )
         {
-            throw new AssetManagerException('File deletion failed. Please check permissions');
+            if ( ! \unlink( $filename ) )
+            {
+                throw new AssetManagerException('File deletion failed. Please check permissions');
+            }
         }
     }
 

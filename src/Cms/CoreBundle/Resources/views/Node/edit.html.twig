@@ -25,4 +25,7 @@
         </div>
         <p><input type="submit" value="Save"/></p>
     </form>
+    <nav>
+        <a href="{{ path('cms_core.site_read', {'id':site.id}) }}">Back to Site {{ site.name | title }}</a>
+    </nav>
 {% endblock %}

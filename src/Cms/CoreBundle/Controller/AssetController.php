@@ -111,6 +111,7 @@ class AssetController extends Controller  {
         }
         if ( $content )
         {
+            $oldContent = $asset->getContent();
             $asset->setContent($content);
         }
 
@@ -129,12 +130,14 @@ class AssetController extends Controller  {
         {
             return $this->redirect($this->generateUrl('cms_core.asset_read', array('id' => $asset->getId()) ));
         }
-
         // persist to history
-        $history = new AssetHistory();
-        $history->setParentId($asset->getId());
-        $history->setContent($asset->getContent());
-        $this->get('persister')->save($history, false, 'saved old version to history');
+        if ( isset($oldContent) AND $oldContent !== $content )
+        {
+            $history = new AssetHistory();
+            $history->setParentId($asset->getId());
+            $history->setContent($oldContent);
+            $this->get('persister')->save($history, false, 'saved old version to history');
+        }
 
         // persist to filesystem
         $this->get('asset_manager')->save($asset->getName(), $asset->getExt(), $asset->getContent());
@@ -156,7 +159,14 @@ class AssetController extends Controller  {
         {
             throw $this->createNotFoundException('Asset with id '.$id.' not found');
         }
+        $histories = $this->get('persister')->getRepo('CmsCoreBundle:AssetHistory')->findAllByParentId($asset->getId());
         $siteId = $asset->getSiteId();
+
+        $this->get('asset_manager')->delete($asset->getName(), $asset->getExt());
+        foreach ($histories as $history)
+        {
+            $this->get('persister')->delete($history, true, null);
+        }
         $success = $this->get('persister')->delete($asset);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
