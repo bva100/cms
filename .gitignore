@@ -8,6 +8,6 @@
 
 #ignore client asset files#
 ###########################
-/src/Cms/CoreBundle/ClientAssets/css/*
-src/Cms/CoreBundle/ClientAssets/js/*
+src/Cms/ClientAssets/css/*
+src/Cms/ClientAssets/js/*
 web/ClientAssets
