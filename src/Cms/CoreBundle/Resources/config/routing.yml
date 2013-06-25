@@ -52,6 +52,11 @@ cms_core.contentType_delete:
 
 
 #node
+cms_core.node_delete:
+  pattern: /node/delete
+  defaults: { _controller: CmsCoreBundle:Node:delete }
+  methods: [POST]
+
 cms_core.node_save:
   pattern: /node
   defaults: { _controller: CmsCoreBundle:Node:save }
@@ -62,10 +67,10 @@ cms_core.node_new:
   defaults: { _controller: CmsCoreBundle:Node:new }
   methods: [GET]
 
-cms_core.node_delete:
-  pattern: /node/delete
-  defaults: { _controller: CmsCoreBundle:Node:delete }
-  methods: [POST]
+cms_core.node_read:
+  pattern: /node/{id}
+  defaults: { _controller: CmsCoreBundle:Node:read }
+  methods: [GET]
 
 
 #template

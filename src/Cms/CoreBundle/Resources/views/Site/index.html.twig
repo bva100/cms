@@ -50,6 +50,7 @@
             {% for node in nodes  %}
                 <li>
                     <a href="{{ app.request.baseURL() }}/{{ node.slug }}" target="_blank">{{ node.title }}</a>
+                    <a href="{{ path('cms_core.node_read', {'id':node.id} ) }}">edit</a>
                     <form action="{{ path('cms_core.node_delete') }}" method="post">
                         <input type="hidden" name="token" value="{{ token }}"/>
                         <input type="hidden" name="id" value="{{ node.id }}"/>

@@ -96,8 +96,6 @@ class NodeController extends Controller {
             return $this->redirect($this->generateUrl('cms_core.node_new', array('siteId' => $siteId, 'contentTypeId' => $contentTypeId)));
         }
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $siteId)));
-
-
     }
 
     public function newAction($siteId, $contentTypeId)
@@ -110,10 +108,38 @@ class NodeController extends Controller {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
         $contentType = $site->getContentType($contentTypeId);
-        return $this->render('CmsCoreBundle:Node:new.html.twig', array(
-            'site' => $site,
+        return $this->render('CmsCoreBundle:Node:edit.html.twig', array(
             'token' => $token,
             'notices' => $notices,
+            'site' => $site,
+            'contentType' => $contentType,
+        ));
+    }
+
+    public function readAction($id)
+    {
+        $token = $this->get('csrfToken')->createToken()->getToken();
+        $notices = $this->get('session')->getFlashBag()->get('notices');
+        $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id);
+        if ( ! $node )
+        {
+            throw $this->createNotFoundException('Node with id '.$id.' was not found');
+        }
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($node->getSiteId());
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$id.' was not found');
+        }
+        $contentType = $site->getContentTypeByName($node->getContentTypeName());
+        if ( ! $contentType )
+        {
+            throw $this->createNotFoundException('contentType with id '.$id.' was not found');
+        }
+        return $this->render('CmsCoreBundle:Node:edit.html.twig', array(
+            'token' => $token,
+            'notices' => $notices,
+            'node' => $node,
+            'site' => $site,
             'contentType' => $contentType,
         ));
     }

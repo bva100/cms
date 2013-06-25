@@ -224,6 +224,24 @@ class Site {
     }
 
     /**
+     * Get a contentType via name
+     * Returns a contentType entity on success and void on failure
+     *
+     * @param $name
+     * @return mixed
+     */
+    public function getContentTypeByName($name)
+    {
+        foreach ($this->getContentTypes() as $contentType)
+        {
+            if ( $contentType->getName() === $name )
+            {
+                return $contentType;
+            }
+        }
+    }
+
+    /**
      * Get contentType
      *
      * @return Doctrine\Common\Collections\Collection $contentType

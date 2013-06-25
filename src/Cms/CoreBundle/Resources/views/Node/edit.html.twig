@@ -1,0 +1,28 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block body %}
+    <h1>New {{ contentType.name | title }} Node</h1>
+    {% block notices %}{{ parent() }}{% endblock %}
+    <form action="{{ path('cms_core.node_save') }}" method="post">
+        <input type="hidden" name="token" value="{{ token }}"/>
+        <input type="hidden" name="siteId" value="{{ site.id }}"/>
+        <input type="hidden" name="contentTypeId" value="{{ contentType.id }}"/>
+        <input type="hidden" name="contentTypeName" value="{{ contentType.name }}"/>
+        <input type="text" name="title" value="{{ node.title | default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="title"/>
+        <div>
+            <input type="text" name="templateName" value="{{ node.templateName | default() }}" placeholder="template name"/>
+        </div>
+        <div>
+            <h4>format</h4>
+            <input type="radio" name="format" value="single" {% if node is defined %}{% if node.format == 'single' %}checked{% endif %}{% endif %} id='radio-format-single'/><label for="radio-format-single">Single</label>
+            <input type="radio" name="format" value="loop" {% if node is defined %}{% if node.format == 'loop' %}checked{% endif %}{% endif %}id="radio-format-loop"/><label for="radio-format-loop">Loop</label>
+        </div>
+        <input type="text" name="host" placeholder="host name" {% if asset is defined %}value="{{ node.host }}"{% else %}value="www.{{ site.domains[0] }}"{% endif %} required/>
+        <input type="hidden" name="slugPrefix" value="{{ contentType.slugPrefix }}"/>
+        /{{ contentType.slugPrefix }}<input type="text" name="slug" value="{{ node.slug | default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="slug" required/>
+        <div>
+            <textarea name="viewHtml" id="view-html" cols="100" rows="30" placeholder="html here">{{ node.views['html'] | default() | raw }}</textarea>
+        </div>
+        <p><input type="submit" value="Save"/></p>
+    </form>
+{% endblock %}
