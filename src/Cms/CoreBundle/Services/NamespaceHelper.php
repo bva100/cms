@@ -7,35 +7,34 @@
 
 namespace Cms\CoreBundle\Services;
 
-
 use InvalidArgumentException;
 
 /**
- * Class TemplateNameHelper
+ * Class NameHelper
  * @package Cms\CoreBundle\Services
  */
-class TemplateNameHelper {
+class NamespaceHelper {
 
     /**
      * @var string
      */
-    private $templateName;
+    private $fullname;
 
     /**
      * @var array
      */
-    private $templateNameArray;
+    private $nameArray;
 
     /**
-     * @param string $templateName
+     * @param string $fullname
      * @return $this
      * @throws InvalidArgumentException
      */
-    public function setName($templateName)
+    public function setFullname($fullname)
     {
-        if ( is_string($templateName) )
+        if ( is_string($fullname) )
         {
-            $this->templateName = $templateName;
+            $this->fullname = $fullname;
             $this->createTemplateNameArray();
             return $this;
         }
@@ -48,9 +47,9 @@ class TemplateNameHelper {
     /**
      * @return string
      */
-    public function getName()
+    public function getFullname()
     {
-        return $this->templateName;
+        return $this->fullname;
     }
 
     /**
@@ -58,7 +57,7 @@ class TemplateNameHelper {
      */
     public function createTemplateNameArray()
     {
-        $this->templateNameArray =  explode(':', $this->templateName);
+        $this->nameArray =  explode(':', $this->fullname);
         return $this;
     }
 
@@ -67,7 +66,7 @@ class TemplateNameHelper {
      */
     public function getNamespace()
     {
-        $namespace = $this->templateNameArray[0];
+        $namespace = $this->nameArray[0];
         if ( strpos($namespace, '-') !== false )
         {
             $namespace = strstr($namespace, '-', true);
@@ -80,7 +79,7 @@ class TemplateNameHelper {
      */
     public function getTheme()
     {
-        return $this->templateNameArray[1];
+        return $this->nameArray[1];
     }
 
     /**
@@ -88,6 +87,17 @@ class TemplateNameHelper {
      */
     public function getType()
     {
-        return $this->templateNameArray[2];
+        return $this->nameArray[2];
     }
+
+    /**
+     * Asset name is equivalent to type
+     *
+     * @return sting
+     */
+    public function getAssetName()
+    {
+        return $this->getType();
+    }
+
 }

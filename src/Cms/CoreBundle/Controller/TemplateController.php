@@ -77,6 +77,10 @@ class TemplateController extends Controller {
         {
             return $xmlResponse;
         }
+        if ( ! $success )
+        {
+            return $this->redirect($this->generateUrl('cms_core.template_readAll'));
+        }
         return $this->redirect($this->generateUrl('cms_core.template_read', array('id' => $template->getId())));
     }
 

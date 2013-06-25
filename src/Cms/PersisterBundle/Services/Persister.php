@@ -204,14 +204,29 @@ class Persister {
     /**
      * @param $object
      * @param bool $lazy
+     * @param string $onSuccess
      * @return bool
      */
-    public function delete($object, $lazy = false)
+    public function delete($object, $lazy = false, $onSuccess = 'deleted')
     {
-        $this->em->remove($object);
+        $errors = $this->em->remove($object);
+        if ( \count($errors) > 0 )
+        {
+            if ( isset($this->flashBag) )
+            {
+                foreach ($errors as $error) {
+                    $this->flashBag->add('notices', $error->getMessage());
+                }
+            }
+            return false;
+        }
         if ( ! $lazy )
         {
             $this->flush();
+        }
+        if ( isset($this->flashBag) )
+        {
+            $this->flashBag->add('notices', $onSuccess);
         }
         return true;
     }

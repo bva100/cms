@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class Asset
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="assets")
+ * @MongoDB\Document(collection="assets", repositoryClass="Cms\CoreBundle\Repository\assetRepository")
  */
 class Asset {
 
@@ -20,6 +20,11 @@ class Asset {
      * @MongoDB\Id
      */
     private $id;
+
+    /**
+     * @MongoDB\String
+     */
+    private $siteId;
 
     /**
      * @MongoDB\String
@@ -42,6 +47,11 @@ class Asset {
     private $url;
 
     /**
+     * @MongoDB\String
+     */
+    private $content;
+
+    /**
      * Get id
      *
      * @return id $id
@@ -49,6 +59,28 @@ class Asset {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set siteId
+     *
+     * @param string $siteId
+     * @return self
+     */
+    public function setSiteId($siteId)
+    {
+        $this->siteId = $siteId;
+        return $this;
+    }
+
+    /**
+     * Get siteId
+     *
+     * @return string $siteId
+     */
+    public function getSiteId()
+    {
+        return $this->siteId;
     }
 
     /**
@@ -74,7 +106,7 @@ class Asset {
     }
 
     /**
-     * Set ext
+     * Set ext. In validation, only "css" and "js" (without beginning period), are accepted
      *
      * @param string $ext
      * @return self
@@ -137,6 +169,28 @@ class Asset {
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return self
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string $content
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
 }

@@ -122,6 +122,33 @@ cms_core.theme_save:
   methods: [POST]
 
 
+#assets
+cms_core.asset_delete:
+  pattern: /asset/delete
+  defaults: { _controller: CmsCoreBundle:Asset:delete }
+  methods: [POST]
+
+cms_core.asset_new:
+  pattern: /asset/new/{siteId}
+  defaults: { _controller: CmsCoreBundle:Asset:new }
+  methods: [GET]
+
+cms_core.asset_readAll:
+  pattern: /assets/{siteId}
+  defaults: { _controller: CmsCoreBundle:Asset:readAll }
+  methods: [GET]
+
+cms_core.asset_read:
+  pattern: /asset/{id}
+  defaults: { _controller: CmsCoreBundle:Asset:read }
+  methods: [GET]
+
+cms_core.asset_save:
+  pattern: /asset
+  defaults: { _controller: CmsCoreBundle:Asset:save }
+  methods: [POST]
+
+
 #client routes
 cms_core.read_locale_nodes:
   pattern: /{_locale}/{path}

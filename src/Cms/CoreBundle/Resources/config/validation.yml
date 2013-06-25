@@ -129,7 +129,7 @@ Cms\CoreBundle\Document\Asset:
            - NotBlank: { message: 'Please add an extention' }
            - Choice: { choices: [css, js], message: 'Only js and css extensions are allowed' }
         url:
-           - Url: ~
+           - Url: { message: 'Please add a valid url' }
 
 Cms\CoreBundle\Document\Template:
     properties:

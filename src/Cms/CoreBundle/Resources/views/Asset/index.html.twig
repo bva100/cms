@@ -1,0 +1,27 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block body %}
+    <article>
+        <h1>Assets for {{ site.name | title }}</h1>
+        {% block notices %}{{ parent() }}{% endblock %}
+        <ul>
+            {% for asset in assets  %}
+                <a href="{{ path('cms_core.asset_read', {'id':asset.id}) }}">{{ asset.name | title }}.{{ asset.ext }}</a>
+                <form action="{{ path('cms_core.asset_delete') }}" method="post">
+                    <input type="hidden" name="token" value="{{ token }}"/>
+                    <input type="hidden" name="id" value="{{ asset.id }}"/>
+                    <input type="submit" value="x"/>
+                </form>
+            {% else %}
+                <li><b>No assets found</b></li>
+            {% endfor %}
+        </ul>
+        <div>
+            <a href="{{ path('cms_core.asset_new', {'siteId':site.id}) }}">Create a New Asset</a>
+        </div>
+    </article>
+
+    <nav>
+        <a href="{{ path('cms_core.site_read', {'id':site.id}) }}">Back to {{ site.name | title }}</a>
+    </nav>
+{% endblock %}

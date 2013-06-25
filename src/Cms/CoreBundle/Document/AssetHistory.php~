@@ -42,6 +42,28 @@ class AssetHistory {
     }
 
     /**
+     * Set parentId
+     *
+     * @param string $parentId
+     * @return self
+     */
+    public function setParentId($parentId)
+    {
+        $this->parentId = $parentId;
+        return $this;
+    }
+
+    /**
+     * Get parentId
+     *
+     * @return string $parentId
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
      * Set content
      *
      * @param string $content
@@ -62,4 +84,5 @@ class AssetHistory {
     {
         return $this->content;
     }
+
 }

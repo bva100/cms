@@ -1,0 +1,25 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block body %}
+    <article>
+        <h1>Asset {{ asset.name | default() }}</h1>
+
+        {% block notices %}{{ parent() }}{% endblock %}
+
+        <form action="{{ path('cms_core.asset_save') }}" method="post">
+            <input type="hidden" name="token" value="{{ token }}"/>
+            <input type="hidden" name="siteId" value="{{ site.id | default() }}"/>
+            {{ site.namespace }}:Master:<input type="text" name="name" placeholder="name" value="{{ assetName | default() }}" required/>
+            <input type="radio" name="ext" value="css" id='radioExtCss' {% if asset is defined %}{% if asset.ext == 'css' %}checked{% endif %}{% endif %} required/><label for="radioExtCss">stylesheet</label>
+            <input type="radio" name="ext" value="js" id="radioExtJs" {% if asset is defined %}{% if asset.ext == 'js' %}checked{% endif %}{% endif %} required/><label for="radioExtJs">javascript</label>
+            <div>
+                <textarea name="content" id="content" cols="100" rows="30" required>{{ asset.content | default() }}</textarea>
+            </div>
+            <input type="submit" value="Save"/>
+        </form>
+    </article>
+
+    <nav>
+        <a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}">Back to Assets</a>
+    </nav>
+{% endblock %}

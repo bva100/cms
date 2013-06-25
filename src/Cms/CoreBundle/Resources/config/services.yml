@@ -6,7 +6,7 @@ parameters:
     cms.node_loop_loader.class: Cms\CoreBundle\Services\NodeLoader\CoreLoop
     cms.param_manager.class: Cms\CoreBundle\Services\ParamManager\Core
     cms.node_loader.class: Cms\CoreBundle\Services\NodeLoader\CoreNode
-    cms.template_name_helper.class: Cms\CoreBundle\Services\TemplateNameHelper
+    cms.namespace_helper.class: Cms\CoreBundle\Services\NamespaceHelper
 
 services:
     asset_manager:
@@ -28,5 +28,5 @@ services:
         class: %cms.param_manager.class%
     node_loader:
         class: %cms.node_loader.class%
-    template_name_helper:
-        class:  %cms.template_name_helper.class%
+    namespace_helper:
+        class:  %cms.namespace_helper.class%
