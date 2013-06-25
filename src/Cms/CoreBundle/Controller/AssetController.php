@@ -47,13 +47,15 @@ class AssetController extends Controller  {
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
+        $history = $this->get('persister')->getRepo('CmsCoreBundle:AssetHistory')->findAllByParentId($id);
         $assetName = $this->get('namespace_helper')->setFullname($asset->getName())->getAssetName();
         return $this->render('CmsCoreBundle:Asset:edit.html.twig', array(
             'token' => $token,
+            'notices' => $notices,
             'asset' => $asset,
             'assetName' => $assetName,
             'site' => $site,
-            'notices' => $notices,
+            'history' => $history,
         ));
     }
 
@@ -90,6 +92,10 @@ class AssetController extends Controller  {
         // ensure user has access to add assets to this particular site
 
         $asset = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Asset')->find($id) : new Asset();
+        if ( ! $asset )
+        {
+            throw $this->createNotFoundException('Asset with id '.$id.' was not found.');
+        }
         $asset->setSiteId($siteId);
         if ( $name )
         {
@@ -107,9 +113,11 @@ class AssetController extends Controller  {
         {
             $asset->setContent($content);
         }
+
+        // persist to asset entity
         $success = $this->get('persister')->save($asset);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
-        if ( $xmlResponse )
+        if ( $xmlResponse AND ! $success )
         {
             return $xmlResponse;
         }
@@ -117,7 +125,26 @@ class AssetController extends Controller  {
         {
             return $this->redirect($this->generateUrl('cms_core.asset_new', array('siteId' => $siteId) ));
         }
-        return $this->redirect($this->generateUrl('cms_core.asset_read', array('id' => $asset->getId()) ));
+        else if ( ! $success )
+        {
+            return $this->redirect($this->generateUrl('cms_core.asset_read', array('id' => $asset->getId()) ));
+        }
+
+        // persist to history
+        $history = new AssetHistory();
+        $history->setParentId($asset->getId());
+        $history->setContent($asset->getContent());
+        $this->get('persister')->save($history, false, 'saved old version to history');
+
+        // persist to filesystem
+        $this->get('asset_manager')->save($asset->getName(), $asset->getExt(), $asset->getContent());
+
+        // return
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
+        return $this->redirect($this->generateUrl('cms_core.asset_read', array('id' => $asset->getId() ) ));
     }
 
     public function deleteAction()

@@ -83,7 +83,7 @@ abstract class AbstractAssetManager {
         {
             throw new \InvalidArgumentException('Filename must be a string to be valid');
         }
-        if ( preg_match('/[^a-z_\-0-9]/i', $name) )
+        if ( preg_match('/[^a-z_\-0-9]/i', str_replace(':', '', $name)) )
         {
             throw new \InvalidArgumentException('Invalid filename. Filename must be alphanumeric.');
         }

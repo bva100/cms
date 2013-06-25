@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class ContentType
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="assetHistory")
+ * @MongoDB\Document(collection="assetHistory", repositoryClass="Cms\CoreBundle\Repository\assetHistoryRepository")
  */
 class AssetHistory {
 

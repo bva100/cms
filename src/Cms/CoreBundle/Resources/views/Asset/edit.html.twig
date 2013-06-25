@@ -3,11 +3,10 @@
 {% block body %}
     <article>
         <h1>Asset {{ asset.name | default() }}</h1>
-
         {% block notices %}{{ parent() }}{% endblock %}
-
         <form action="{{ path('cms_core.asset_save') }}" method="post">
             <input type="hidden" name="token" value="{{ token }}"/>
+            <input type="hidden" name="id" value="{{ asset.id | default() }}"/>
             <input type="hidden" name="siteId" value="{{ site.id | default() }}"/>
             {{ site.namespace }}:Master:<input type="text" name="name" placeholder="name" value="{{ assetName | default() }}" required/>
             <input type="radio" name="ext" value="css" id='radioExtCss' {% if asset is defined %}{% if asset.ext == 'css' %}checked{% endif %}{% endif %} required/><label for="radioExtCss">stylesheet</label>
@@ -17,8 +16,17 @@
             </div>
             <input type="submit" value="Save"/>
         </form>
+        <section>
+            <h3>History</h3>
+            <ul>
+                {% for history in history  %}
+                    <li>{{ history.content }}</li>
+                {% else %}
+                    <li>no history found</li>
+                {% endfor %}
+            </ul>
+        </section>
     </article>
-
     <nav>
         <a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}">Back to Assets</a>
     </nav>
