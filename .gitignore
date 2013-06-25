@@ -10,3 +10,4 @@
 ###########################
 /src/Cms/CoreBundle/ClientAssets/css/*
 src/Cms/CoreBundle/ClientAssets/js/*
+web/ClientAssets
