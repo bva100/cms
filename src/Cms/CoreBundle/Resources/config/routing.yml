@@ -153,6 +153,37 @@ cms_core.asset_save:
   defaults: { _controller: CmsCoreBundle:Asset:save }
   methods: [POST]
 
+#media
+cms_core.media_new:
+  pattern: /media/new/{siteId}
+  defaults: { _controller: CmsCoreBundle:Media:new }
+  methods: [GET]
+
+cms_core.media_create:
+  pattern: /media
+  defaults: { _controller: CmsCoreBundle:Media:create }
+  methods: [POST]
+
+cms_core.media_read:
+  pattern: /media/{id}
+  defaults: { _controller: CmsCoreBundle:Media:read }
+  methods: [GET]
+
+cms_core.media_update:
+  pattern: /media/update
+  defaults: { _controller: CmsCoreBundle:Media:update }
+  methods: [POST]
+
+cms_core.media_readAll:
+  pattern: /media/all/{siteId}
+  defaults: { _controller: CmsCoreBundle:Media:readAll }
+  methods: [GET]
+
+cms_core.media_delete:
+  pattern: /media/delete
+  defaults: { _controller: CmsCoreBundle:Media:delete }
+  methods: [POST]
+
 
 #client routes
 cms_core.read_locale_nodes:

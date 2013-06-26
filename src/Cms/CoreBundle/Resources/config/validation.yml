@@ -129,7 +129,7 @@ Cms\CoreBundle\Document\Asset:
            - NotBlank: { message: 'Please add an extention' }
            - Choice: { choices: [css, js], message: 'Only js and css extensions are allowed' }
         url:
-           - Url: { message: 'Please add a valid url' }
+           - Url: { message: 'Please add a valid URL' }
 
 Cms\CoreBundle\Document\Template:
     properties:
@@ -146,3 +146,29 @@ Cms\CoreBundle\Document\Template:
           - Type:
              type: string
              message: The value {{ value }} is not a valid {{ type }}.
+
+Cms\CoreBundle\Document\Template:
+    properties:
+        siteId:
+          - NotBlank: { message: 'Please associate this media file with a site id' }
+          - Type:
+              type: string
+              message: 'siteId must be a string'
+        filename:
+          - NotBlank: { message: 'Please add a filename' }
+          - Type:
+              type: string
+              message: 'filename must be a string'
+        storage:
+          - Choice: { choices: [s3], message: 'Storage option is invalid. Please choose: s3' }
+        url:
+          - Url: { message: 'Please add a valid URL' }
+        mime:
+           - Choice:
+              choices: [text/plain, application/msword, audio/basic, audio/mpeg, audio/x-wav, video/x-msvideo, video/quicktime, video/mp4, video/mpeg, video/quicktime, images/jpeg, image/png, gif, image/x-icon ]
+        size:
+           - Type:
+              type: integer
+              message: 'Invalid filesize'
+           - Max: { limit: 10737418240, message: Filesize cannot be larger than 10 gigs. }
+

@@ -87,10 +87,15 @@ class Asset {
      * Set name
      *
      * @param string $name
+     * @throws \InvalidArgumentException
      * @return self
      */
     public function setName($name)
     {
+        if ( preg_match('/[^a-z_\-0-9]/i', str_replace(':', '', $name)) )
+        {
+            throw new \InvalidArgumentException('Invalid filename. Filename must be alphanumeric.');
+        }
         $this->name = $name;
         return $this;
     }
@@ -169,6 +174,28 @@ class Asset {
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return self
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string $content
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
 }

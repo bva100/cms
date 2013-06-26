@@ -1,0 +1,15 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block body %}
+    <h1>Edit Media {{ media.filename }}</h1>
+    {% block notices %}{{ parent() }}{% endblock %}
+    <form action="{{ path('cms_core.media_update') }}" method="post">
+        <input type="hidden" name="token" value="{{ token }}"/>
+        <input type="hidden" name="id" value="{{ media.id }}"/>
+        <input type="text" name="filename" value="{{ media.filename }}"/>
+        <input type="submit" value="save"/>
+    </form>
+    <nav>
+        <a href="{{ path('cms_core.media_readAll', {'siteId':media.siteId}) }}">View All Media</a>
+    </nav>
+{% endblock %}

@@ -15,7 +15,6 @@
             <input type="submit" value="Update"/>
         </form>
     </section>
-
     <section>
         <h3>Content Types</h3>
         <ol>
@@ -41,9 +40,7 @@
             <input type="radio" name="format" value="dynamic"/> dynamic
             <input type="submit" value="Add"/>
         </form>
-
     </section>
-
     <section>
         <h3>Nodes</h3>
         <ul>
@@ -60,16 +57,17 @@
             {% endfor %}
         </ul>
     </section>
-
     <section>
         <h3>Javascripts and Stylesheets</h3>
         <a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}">View All Assets</a>
     </section>
-
+    <section>
+        <h3>Media</h3>
+        <a href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}">View All Media</a>
+    </section>
     <nav>
         <ul>
             <li><a href="{{ path('cms_core.app_index') }}">Back to Admin</a></li>
         </ul>
     </nav>
-
 {% endblock %}
