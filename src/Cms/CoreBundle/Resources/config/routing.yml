@@ -184,6 +184,10 @@ cms_core.media_delete:
   defaults: { _controller: CmsCoreBundle:Media:delete }
   methods: [POST]
 
+cms_core.aws_test:
+  pattern: /aws
+  defaults: { _controller: CmsCoreBundle:Media:aws }
+
 
 #client routes
 cms_core.read_locale_nodes:

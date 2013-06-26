@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class Media
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="media")
+ * @MongoDB\Document(collection="media", repositoryClass="Cms\CoreBundle\Repository\mediaRepository")
  */
 class Media {
 
@@ -45,6 +45,11 @@ class Media {
      * @MongoDB\String
      */
     private $mime;
+
+    /**
+     * @MongoDB\String
+     */
+    private $ext;
 
     /**
      * @MongoDB\Int
@@ -215,6 +220,28 @@ class Media {
     }
 
     /**
+     * Set author
+     *
+     * @param string $author
+     * @return self
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return string $author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
      * Set metadata
      *
      * @param array $metadata
@@ -245,6 +272,22 @@ class Media {
     public function setFile(array $file)
     {
         $this->file = $file;
+        if ( isset($file['name']) )
+        {
+            $this->setFilename($file['name']);
+        }
+        if ( isset($file['type']) )
+        {
+            $this->setMime($file['type']);
+        }
+        if ( isset($file['size']) )
+        {
+            $this->setSize($file['size']);
+        }
+        if ( isset($file['tmp_name']) )
+        {
+            $this->setUrl($file['tmp_name']);
+        }
         return $this;
     }
 
@@ -257,4 +300,5 @@ class Media {
     {
         return $this->file;
     }
+
 }

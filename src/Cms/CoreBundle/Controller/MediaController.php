@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Cms\CoreBundle\Document\Media;
 
+use Aws\S3\S3Client;
+
 class MediaController extends Controller {
 
     public function newAction($siteId)
@@ -51,6 +53,7 @@ class MediaController extends Controller {
         {
             throw new \InvalidArgumentException('Sorry about this... the file upload failed. Please try again.');
         }
+        // persist to db
         $media = new Media();
         $media->setFile($mediaFile);
         $media->setSiteId($siteId);
@@ -62,10 +65,25 @@ class MediaController extends Controller {
         }
         if ( ! $success )
         {
-            return $this->redirect($this->generateUrl('cms_core.media_create', array('siteId' => $siteId) ));
+            return $this->redirect($this->generateUrl('cms_core.media_new', array('siteId' => $siteId) ));
         }
-
-        // persist to s3
+        // persist to storage service
+        $mediaResult = $this->get('media_manager')->setMedia($media)->persist();
+        if ( $mediaResult )
+        {
+            $success = $this->get('persister')->save($mediaResult, false, NULL);
+            $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+            if ( $xmlResponse )
+            {
+                return $xmlResponse;
+            }
+            if ( $success )
+            {
+                return $this->redirect($this->generateUrl('cms_core.media_read', array('id' => $media->getId())));
+            }
+        }
+        $this->get('session')->getFlashBag()->set('notices', 'Media upload failed. Please try again.');
+        return $this->redirect($this->generateUrl('cms_core.media_readAll', array('siteId' => $siteId)));
     }
 
     public function readAction($id)
@@ -77,6 +95,7 @@ class MediaController extends Controller {
         {
             throw $this->createNotFoundException('Media with id '.$id.' not found');
         }
+        $dimensions = $media->getMetadata('dimensions');
         return $this->render('CmsCoreBundle:Media:edit.html.twig', array(
             'token' => $token,
             'notices' => $notices,
@@ -135,6 +154,7 @@ class MediaController extends Controller {
         {
             throw $this->createNotFoundException('Media with id '.$id.' not found');
         }
+        $this->get('media_manager')->setMedia($media)->delete();
         $success = $this->get('persister')->delete($media);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )

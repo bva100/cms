@@ -147,7 +147,7 @@ Cms\CoreBundle\Document\Template:
              type: string
              message: The value {{ value }} is not a valid {{ type }}.
 
-Cms\CoreBundle\Document\Template:
+Cms\CoreBundle\Document\Media:
     properties:
         siteId:
           - NotBlank: { message: 'Please associate this media file with a site id' }
@@ -160,12 +160,15 @@ Cms\CoreBundle\Document\Template:
               type: string
               message: 'filename must be a string'
         storage:
-          - Choice: { choices: [s3], message: 'Storage option is invalid. Please choose: s3' }
-        url:
-          - Url: { message: 'Please add a valid URL' }
+          - Choice: { choices: [S3], message: 'Storage option is invalid. Please choose: S3' }
         mime:
            - Choice:
-              choices: [text/plain, application/msword, audio/basic, audio/mpeg, audio/x-wav, video/x-msvideo, video/quicktime, video/mp4, video/mpeg, video/quicktime, images/jpeg, image/png, gif, image/x-icon ]
+              choices: [text/plain, text/csv, text/vcard, application/msword, application/pdf, application/rss+xml, audio/basic, audio/mpeg, audio/x-wav, video/x-msvideo, video/quicktime, video/mp4, video/mpeg, image/jpeg, image/png, gif, image/x-icon ]
+              message: A {{ value }} is not a valid file type. Accepted types include: text, csv, vcard, msword, pdf, rss(xml), mpeg, x-wav, msvideo, quicktime, mp4, mpeg, jpeg, png, gif, and x-icon.
+        ext:
+           - Choice:
+              choices: [txt, csv, vcf, doc, docx, pdf, xml, au, mpeg, wav, avi, mov, mp4, jpeg, jpg, png, gif, ico]
+              message: The extension {{ value }} is not a valid extion. Valid extensions include: txt, csv, vcf, doc, docx, pdf, xml, au, mpeg, wav, avi, mov, mp4, jpeg, jpg, png, gif and ico.
         size:
            - Type:
               type: integer

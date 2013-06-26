@@ -47,6 +47,11 @@ class Media {
     private $mime;
 
     /**
+     * @MongoDB\String
+     */
+    private $ext;
+
+    /**
      * @MongoDB\Int
      */
     private $size;
@@ -113,6 +118,7 @@ class Media {
     public function setFilename($filename)
     {
         $this->filename = $filename;
+        $this->setExt(pathinfo($filename, PATHINFO_EXTENSION));
         return $this;
     }
 
@@ -193,6 +199,28 @@ class Media {
     }
 
     /**
+     * Set ext
+     *
+     * @param string $ext
+     * @return self
+     */
+    public function setExt($ext)
+    {
+        $this->ext = $ext;
+        return $this;
+    }
+
+    /**
+     * Get ext
+     *
+     * @return string $ext
+     */
+    public function getExt()
+    {
+        return $this->ext;
+    }
+
+    /**
      * Set size
      *
      * @param int $size
@@ -251,11 +279,19 @@ class Media {
     /**
      * Get metadata
      *
+     * @param null $key
      * @return array $metadata
      */
-    public function getMetadata()
+    public function getMetadata($key = null)
     {
-        return $this->metadata;
+        if ( ! isset($key) )
+        {
+            return $this->metadata;
+        }
+        if ( isset($this->metadata[$key]) )
+        {
+            return $this->metadata[$key];
+        }
     }
 
     /**
@@ -278,6 +314,15 @@ class Media {
         if ( isset($file['size']) )
         {
             $this->setSize($file['size']);
+        }
+        if ( isset($file['tmp_name']) )
+        {
+            $this->setUrl($file['tmp_name']);
+            $imageSizeArray = getimagesize($file['tmp_name']);
+            if ( isset($imageSizeArray[3]) )
+            {
+                $this->setMetadata(array('dimensions' => $imageSizeArray[3]));
+            }
         }
         return $this;
     }
