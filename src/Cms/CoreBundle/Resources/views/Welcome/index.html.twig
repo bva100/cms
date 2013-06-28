@@ -1,84 +1,131 @@
 {% extends 'CmsCoreBundle:Welcome:base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        'flat-ui/css/flat-ui.css'
+        '@CmsCoreBundle/Resources/public/css/welcome/index.css'%}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
 {% block title %}PipeStack CMS | Welcome{% endblock %}
 
 {% block body %}
-<div class="container">
-    <nav class="row">
-        <div class="span4">
-            <img src="/logo.png" alt="PipeStack" width="120" height="74" />
-            <span id="logo-name" style="font-size:50px; position: relative; top: 10px; font-weight: bold;">PipeStack</span>
-        </div>
-        <div class="span4 offset4">
+<div id='topnav-container'>
+    <div class="container">
+        <nav class="row">
+            <div class="span4">
+                <img src="/logo.png" alt="PipeStack" width="120" height="74" />
+                <span id="logo-name" style="font-size:50px; position: relative; top: 10px; font-weight: bold;">PipeStack</span>
+            </div>
+            <div class="span4 offset4">
             <span id='topnav-button-container' class="pull-right" style="position: relative; top: 10px">
-                <a href="{{ path('login') }}" class="btn btn-large btn-info">Login</a>
-                <a href="#signup" class="btn btn-large btn-primary">Sign up</a>
+                <a href="{{ path('login') }}" class="btn btn-large btn-inverse">Login</a>
+                <a href="#signup" class="btn btn-large btn-inverse">Sign up</a>
             </span>
-        </div>
-    </nav>
-    <section class="row">
-        <div id='primary-image-wrapper' class="span6">
-
-        </div>
-        <div class="span6">
-            <h1>PipeStack CMS</h1>
-            <p>
-                Bacon ipsum dolor sit amet ham hock ham brisket pork loin biltong pancetta sirloin. Ball tip tail pancetta swine flank bacon. Biltong kielbasa swine tai
-            </p>
-            <a href="#start" class="btn btn-large btn-primary">Get Started For Free</a>
-        </div>
-    </section>
-    <article class="row">
-        <section class="span4">
-            <h2>Blazing Fast</h2>
-            <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
-        </section>
-        <section class="span4">
-            <h2>Cloud Hosted</h2>
-            <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
-        </section>
-        <section class="span4">
-            <h2>RESTful API</h2>
-            <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
-        </section>
-        <section class="span4">
-            <h2>Multi Lingual</h2>
-            <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
-        </section>
-        <section class="span4">
-            <h2>New Technology</h2>
-            <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
-        </section>
-        <section class="span4">
-            <h2>Theme System</h2>
-            <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
-        </section>
-    </article>
-    <div class="row">
-        <section class="span4">
-            <h3>Free Version</h3>
-            <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla.</p>
-            <a href="#singupFree" class="btn btn-primary">Get Started</a>
-        </section>
-        <section class="span4">
-            <h3>Premium Version</h3>
-            <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla.</p>
-            <a href="#singupFree" class="btn btn-primary">Get Started</a>
-        </section>
-        <section class="span4">
-            <h3>Enterprise Version</h3>
-            <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla.</p>
-            <a href="#singupFree" class="btn btn-primary">Get Started</a>
+            </div>
+        </nav>
+    </div>
+</div>
+<div id="primary-content">
+    <div class="container">
+        <section class="row">
+            <div id='primary-image-wrapper' class="span6">
+                <img src="/flat-ui/images/imac.png" alt="PipeStack CMS" width="570" height="472"/>
+            </div>
+            <div class="span6">
+                <h1>PipeStack CMS</h1>
+                <p>
+                    Corned beef meatloaf jerky tail pastrami. Chuck tongue jowl pastrami pork belly. Cow bacon short loin filet mignon pancetta tongue pork loin. Ball tip pancetta tenderloin turducken turkey doner spare ribs leberkas pork swine cow sirloin tri-tip beef ribs. Ribeye t-bone tri-tip biltong. Shank swine jerky pork chop frankfurter strip steak capicola tail shoulder chuck shankle sausage flank. Tri-tip frankfurter shank, pastrami pork loin beef ribs fatback tongue
+                </p>
+                <a href="#start" class="btn btn-large btn-danger">Get Started For Free</a>
+            </div>
         </section>
     </div>
-    <footer class="row">
-        <ul class="span4 offset4">
-            <li><a href="#about">about</a></li>
-            <li><a href="#jobs">jobs</a></li>
-            <li><a href="#contact">contact</a></li>
-            <li><a href="#testimonial">testimonial</a></li>
-            <li><a href="#blog">blog</a></li>
-        </ul>
-    </footer>
+</div>
+<div id="features">
+    <div class="container">
+        <div class="row">
+            <section class="span4">
+                <div class="tile">
+                    <h2>Lightening Fast</h2>
+                    <i class="icon-bolt icon-4x"></i>
+                    <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
+                </div>
+            </section>
+            <section class="span4">
+                <div class="tile">
+                    <h2>Cloud Hosted</h2>
+                    <i class="icon-cloud icon-4x"></i>
+                    <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
+                </div>
+            </section>
+            <section class="span4">
+                <div class="tile">
+                    <h2>Multi Lingual</h2>
+                    <i class="icon-bullhorn icon-4x"></i>
+                    <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
+                </div>
+            </section>
+        </div>
+        <div class="row">
+            <section class="span4">
+                <div class="tile">
+                    <h2>RESTful API</h2>
+                    <i class="icon-globe icon-4x"></i>
+                    <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
+                </div>
+            </section>
+            <section class="span4">
+                <div class="tile">
+                    <h2>New Technology</h2>
+                    <i class="icon-cog icon-4x"></i>
+                    <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
+                </div>
+            </section>
+            <section class="span4">
+                <div class="tile">
+                    <h2>Theme System</h2>
+                    <i class="icon-heart icon-4x"></i>
+                    <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div id="signup-blocks">
+    <div class="container">
+        <div class="row">
+            <section class="span4">
+                <h3>Free Version</h3>
+                <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
+                <a href="#singupFree" class="btn btn-large btn-block btn-info">Get Started</a>
+            </section>
+            <section class="span4">
+                <h3>Premium Version</h3>
+                <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
+                <a href="#singupFree" class="btn btn-large btn-block btn-info">Get Started</a>
+            </section>
+            <section class="span4">
+                <h3>Enterprise Version</h3>
+                <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
+                <a href="#singupFree" class="btn btn-large btn-block btn-info">Get Started</a>
+            </section>
+        </div>
+    </div>
+</div>
+<div id="footer">
+    <div class="container">
+        <footer class="row">
+            <ul class="span4 offset4">
+                <li><a href="#about">about</a></li>
+                <li><a href="#jobs">jobs</a></li>
+                <li><a href="#contact">contact</a></li>
+                <li><a href="#testimonial">testimonial</a></li>
+                <li><a href="#blog">blog</a></li>
+            </ul>
+        </footer>
+    </div>
 </div>
 {% endblock %}

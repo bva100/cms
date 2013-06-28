@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a016b9cecbdf27fec85779d7c050edbf",
+    "hash": "9bfd435fe786c08ac704299ec41d0c9b",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -666,12 +666,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb-odm.git",
-                "reference": "9bbe6a2ec98db4b66230f46f003129e7334943c5"
+                "reference": "0a1324a596a73e5d8ec2a26b957486dd56eba2c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/9bbe6a2ec98db4b66230f46f003129e7334943c5",
-                "reference": "9bbe6a2ec98db4b66230f46f003129e7334943c5",
+                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/0a1324a596a73e5d8ec2a26b957486dd56eba2c7",
+                "reference": "0a1324a596a73e5d8ec2a26b957486dd56eba2c7",
                 "shasum": ""
             },
             "require": {
@@ -731,7 +731,7 @@
                 "odm",
                 "persistence"
             ],
-            "time": "2013-06-17 01:52:45"
+            "time": "2013-06-27 14:07:45"
         },
         {
             "name": "doctrine/mongodb-odm-bundle",
@@ -1741,21 +1741,21 @@
         },
         {
             "name": "symfony/assetic-bundle",
-            "version": "v2.1.3",
+            "version": "v2.3.0",
             "target-dir": "Symfony/Bundle/AsseticBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/AsseticBundle.git",
-                "reference": "v2.1.3"
+                "reference": "v2.3.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/v2.1.3",
-                "reference": "v2.1.3",
+                "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/v2.3.0",
+                "reference": "v2.3.0",
                 "shasum": ""
             },
             "require": {
-                "kriswallsmith/assetic": ">=1.1.0-alpha4,<1.2-dev",
+                "kriswallsmith/assetic": ">=1.1,<2.0",
                 "php": ">=5.3.0",
                 "symfony/framework-bundle": ">=2.1,<3.0"
             },
@@ -1800,7 +1800,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2013-03-25 20:16:21"
+            "time": "2013-05-16 05:32:23"
         },
         {
             "name": "symfony/monolog-bundle",
