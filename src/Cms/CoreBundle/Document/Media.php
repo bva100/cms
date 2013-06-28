@@ -62,6 +62,11 @@ class Media {
     private $author;
 
     /**
+     * @MongoDB\String
+     */
+    private $alt;
+
+    /**
      * @MongoDB\Hash
      */
     private $metadata;
@@ -265,6 +270,28 @@ class Media {
     }
 
     /**
+     * Set alt
+     *
+     * @param string $alt
+     * @return self
+     */
+    public function setAlt($alt)
+    {
+        $this->alt = $alt;
+        return $this;
+    }
+
+    /**
+     * Get alt
+     *
+     * @return string $alt
+     */
+    public function getAlt()
+    {
+        return $this->alt;
+    }
+
+    /**
      * Set metadata
      *
      * @param array $metadata
@@ -318,10 +345,13 @@ class Media {
         if ( isset($file['tmp_name']) )
         {
             $this->setUrl($file['tmp_name']);
-            $imageSizeArray = getimagesize($file['tmp_name']);
-            if ( isset($imageSizeArray[3]) )
+            if ( $this->getMime() === 'image/jpeg' OR $this->getMime() === 'image/jpg' OR $this->getMime() === 'image/png' OR $this->getMime() === 'image/gif' )
             {
-                $this->setMetadata(array('dimensions' => $imageSizeArray[3]));
+                $imageSizeArray = getimagesize($file['tmp_name']);
+                if ( isset($imageSizeArray[3]) )
+                {
+                    $this->setMetadata(array('dimensions' => $imageSizeArray[3]));
+                }
             }
         }
         return $this;

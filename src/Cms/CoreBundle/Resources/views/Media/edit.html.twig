@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Edit Media {{ media.filename }}</h1>
     {% block notices %}{{ parent() }}{% endblock %}
-    <img src="{{ media.url }}" alt="" {{ media.metadata.dimensions | raw }} />
+    <img src="http://d19rtldlpwzovp.cloudfront.net/{{ media.filename }}" alt="" {{ media.metadata.dimensions | raw }} />
     <form action="{{ path('cms_core.media_update') }}" method="post">
         <input type="hidden" name="token" value="{{ token }}"/>
         <input type="hidden" name="id" value="{{ media.id }}"/>

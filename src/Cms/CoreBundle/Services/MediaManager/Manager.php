@@ -116,7 +116,7 @@ class Manager {
             'ACL' => 'public-read',
             'ContentType' => $this->media->getMime(),
             'StorageClass' => $storageClass,
-            'Expires' => 31536000,
+            'Expires' => time() + 31536000,
             'CacheControl' => 'public',
         ));
         $resultsArray = $results->toArray();
