@@ -1,0 +1,18 @@
+body {
+    background-color: #2C3E50;
+}
+.login {
+    margin-top: 6%;
+}
+.login-field {
+    background-color: white;
+}
+#remember-me-label {
+    color: darkgrey;
+    font-size: 16px;
+    margin: 0px 0px 20px 2px;
+}
+#remember-me-label-text {
+    position: relative;
+    top: 2px;
+}

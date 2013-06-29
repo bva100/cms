@@ -1,48 +1,3 @@
-body {
-    font-size: 18px;
-}
-.row {
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-}
-#topnav-container {
-    background-color: #ECF0F1;
-}
-#primary-content {
-    padding-top: 20px;
-    background-color: #2C3E50;
-    color: white;
-}
-h1 {
-    font-size: 60px;
-    margin-bottom: 30px;
-}
-h2.tile-title {
-    font-size: 26px;
-}
-#features {
-    padding-top: 30px;
-    padding-bottom: 5px;
-    color: #34495E;
-}
-#features .tile:hover {
-    cursor: pointer;
-    background-color: #BDC3C7;
-}
-#signup-blocks {
-    padding-top: 20px;
-    background-color: #34495E;
-    color: white;
-}
-#footer {
-    padding-top: 20px;
-    background-color: #edeff1
-}
-#footer ul, #footer li {
-    list-style: none;
-    display: inline-block;
-    padding: 3px 10px 0px;
-}
 @font-face {
     font-family: 'Lato';
     font-style: normal;
@@ -3708,4 +3663,50 @@ body.vjs-full-window {
 .mhl,
 .mal {
   margin-left: 20px;
+}
+
+body {
+    font-size: 18px;
+}
+.row {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+#topnav-container {
+    background-color: #ECF0F1;
+}
+#primary-content {
+    padding-top: 20px;
+    background-color: #2C3E50;
+    color: white;
+}
+h1 {
+    font-size: 60px;
+    margin-bottom: 30px;
+}
+h2.tile-title {
+    font-size: 26px;
+}
+#features {
+    padding-top: 30px;
+    padding-bottom: 5px;
+    color: #34495E;
+}
+#features .tile:hover {
+    cursor: pointer;
+    background-color: #BDC3C7;
+}
+#signup-blocks {
+    padding-top: 20px;
+    background-color: #34495E;
+    color: white;
+}
+#footer {
+    padding-top: 20px;
+    background-color: #edeff1
+}
+#footer ul, #footer li {
+    list-style: none;
+    display: inline-block;
+    padding: 3px 10px 0px;
 }

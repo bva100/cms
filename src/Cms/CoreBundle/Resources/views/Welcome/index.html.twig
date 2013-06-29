@@ -3,8 +3,8 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
-        'flat-ui/css/flat-ui.css'
-        '@CmsCoreBundle/Resources/public/css/welcome/index.css'%}
+        '@CmsCoreBundle/Resources/public/css/welcome/index.css'
+        filter='cssrewrite, ?yui_css' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
@@ -35,11 +35,13 @@
                 <img src="/flat-ui/images/imac.png" alt="PipeStack CMS" width="570" height="472"/>
             </div>
             <div class="span6">
-                <h1>PipeStack CMS</h1>
+                <h1 id='primary-header'>PipeStack CMS</h1>
                 <p>
                     Corned beef meatloaf jerky tail pastrami. Chuck tongue jowl pastrami pork belly. Cow bacon short loin filet mignon pancetta tongue pork loin. Ball tip pancetta tenderloin turducken turkey doner spare ribs leberkas pork swine cow sirloin tri-tip beef ribs. Ribeye t-bone tri-tip biltong. Shank swine jerky pork chop frankfurter strip steak capicola tail shoulder chuck shankle sausage flank. Tri-tip frankfurter shank, pastrami pork loin beef ribs fatback tongue
                 </p>
-                <a href="#start" class="btn btn-large btn-danger">Get Started For Free</a>
+                <div class="row">
+                    <a href="#start" id="primary-cta" class="btn btn-xlarge btn-block btn-danger span4 offset1">Get Started For Free</a>
+                </div>
             </div>
         </section>
     </div>
@@ -48,44 +50,44 @@
     <div class="container">
         <div class="row">
             <section class="span4">
-                <div class="tile">
+                <div class="tile" id='fast-tile'>
                     <h2>Lightening Fast</h2>
                     <i class="icon-bolt icon-4x"></i>
                     <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
                 </div>
             </section>
             <section class="span4">
-                <div class="tile">
+                <div class="tile" id="cloud-tile">
                     <h2>Cloud Hosted</h2>
                     <i class="icon-cloud icon-4x"></i>
                     <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
                 </div>
             </section>
             <section class="span4">
-                <div class="tile">
+                <div class="tile" id="multilingual-tile">
                     <h2>Multi Lingual</h2>
-                    <i class="icon-bullhorn icon-4x"></i>
+                    <i class="icon-globe icon-4x"></i>
                     <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
                 </div>
             </section>
         </div>
         <div class="row">
             <section class="span4">
-                <div class="tile">
+                <div class="tile" id="api-tile">
                     <h2>RESTful API</h2>
-                    <i class="icon-globe icon-4x"></i>
+                    <i class="icon-magic icon-4x"></i>
                     <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
                 </div>
             </section>
             <section class="span4">
-                <div class="tile">
+                <div class="tile" id="cog-tile">
                     <h2>New Technology</h2>
                     <i class="icon-cog icon-4x"></i>
                     <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
                 </div>
             </section>
             <section class="span4">
-                <div class="tile">
+                <div class="tile" id="theme-tile">
                     <h2>Theme System</h2>
                     <i class="icon-heart icon-4x"></i>
                     <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
@@ -94,23 +96,90 @@
         </div>
     </div>
 </div>
+<section id="testimonials">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h2>Who's Talking About PipeStack?</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="quote-block">
+                <div class="span2">
+                    <img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>
+                </div>
+                <div class="span4">
+                    <blockquote>
+                        <i class="icon-quote-right icon-2x pull-right"></i>
+                        <span class=''>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</span>
+                        <small class="pull-right">Brian Anderson, <cite title="Source Title">CEO Ovooko</cite></small>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="quote-block">
+                <div class="span2">
+                    <img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>
+                </div>
+                <div class="span4">
+                    <blockquote>
+                        <i class="icon-quote-right icon-2x pull-right"></i>
+                        <span class=''>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</span>
+                        <small class="pull-right">Brian Anderson, <cite title="Source Title">CEO Ovooko</cite></small>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="quote-block">
+                <div class="span2">
+                    <img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>
+                </div>
+                <div class="span4">
+                    <blockquote>
+                        <i class="icon-quote-right icon-2x pull-right"></i>
+                        <span class=''>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</span>
+                        <small class="pull-right">Brian Anderson, <cite title="Source Title">CEO Ovooko</cite></small>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="quote-block">
+                <div class="span2">
+                    <img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>
+                </div>
+                <div class="span4">
+                    <blockquote>
+                        <i class="icon-quote-right icon-2x pull-right"></i>
+                        <span class=''>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</span>
+                        <small class="pull-right">Brian Anderson, <cite title="Source Title">CEO Ovooko</cite></small>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <div id="signup-blocks">
     <div class="container">
         <div class="row">
             <section class="span4">
-                <h3>Free Version</h3>
-                <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
-                <a href="#singupFree" class="btn btn-large btn-block btn-info">Get Started</a>
+                <div class='tile tile-signup'>
+                    <h3>Free</h3>
+                    <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
+                    <a href="#singupFree" class="btn btn-xlarge btn-primary">Get Free</a>
+                </div>
             </section>
             <section class="span4">
-                <h3>Premium Version</h3>
-                <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
-                <a href="#singupFree" class="btn btn-large btn-block btn-info">Get Started</a>
+                <div class="tile tile-signup">
+                    <h3>Premium</h3>
+                    <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
+                    <a href="#singupFree" class="btn btn-xlarge btn-info">Get Premium</a>
+                </div>
             </section>
             <section class="span4">
-                <h3>Enterprise Version</h3>
-                <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
-                <a href="#singupFree" class="btn btn-large btn-block btn-info">Get Started</a>
+                <div class="tile tile-signup">
+                    <h3>Enterprise</h3>
+                    <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
+                    <a href="#singupFree" class="btn btn-xlarge btn-danger">Get Enterprise</a>
+                </div>
             </section>
         </div>
     </div>
@@ -122,7 +191,7 @@
                 <li><a href="#about">about</a></li>
                 <li><a href="#jobs">jobs</a></li>
                 <li><a href="#contact">contact</a></li>
-                <li><a href="#testimonial">testimonial</a></li>
+                <li><a href="#features">testimonial</a></li>
                 <li><a href="#blog">blog</a></li>
             </ul>
         </footer>

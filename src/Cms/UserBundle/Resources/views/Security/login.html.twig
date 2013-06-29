@@ -1,21 +1,50 @@
-{% if error %}
-    <div>{{ error.message }}</div>
-{% endif %}
+{% extends 'CmsCoreBundle:Welcome:base.html.twig' %}
 
-<form action="{{ path('login_check') }}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsUserBundle/Resources/public/css/login.css'
+        filter='cssrewrite,?yui_css' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password" />
-
-    <input type="checkbox" id="remember_me" name="_remember_me" checked />
-    <label for="remember_me">Keep me logged in</label>
-
-    {#
-        If you want to control the URL the user is redirected to on success (more details below)
-        <input type="hidden" name="_target_path" value="/account" />
-    #}
-
-    <button type="submit">login</button>
-</form>
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <section class="span offset4">
+                <div class="login">
+                    <div class="login-form">
+                        {% if error %}
+                            {% if error.message == 'Bad credentials' %}
+                                <div class="alert alert-warning"><i class="icon-warning-sign"></i> Incorrect email or password</div>
+                            {% endif %}
+                        {% endif %}
+                        <form action="{{ path('login_check') }}" method="post">
+                            <div class="control-group">
+                                <label class="login-field-icon fui-user" for="username"></label>
+                                <input type="text" id="username" class="login-field" name="_username" value="{{ last_username }}" placeholder="email" required/>
+                            </div>
+                            <div class="control-group">
+                                <label class="login-field-icon fui-lock" for="login-pass"></label>
+                                <input type="password" id="login-pass" name="_password" class="login-field" placeholder="password" />
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <label for="remember_me" id='remember-me-label'>
+                                        <input type="checkbox" id="remember_me" name="_remember_me" class="checkbox-type" checked /><span id='remember-me-label-text'> remember me</span>
+                                    </label>
+                                    <input type="submit" value="Login" class="btn btn-danger btn-large btn-block" />
+                                </div>
+                            </div>
+                            {#
+                                If you want to control the URL the user is redirected to on success (more details below)
+                                <input type="hidden" name="_target_path" value="/account" />
+                            #}
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

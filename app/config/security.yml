@@ -18,7 +18,8 @@ security:
         regular:
             pattern : /
             anonymous: ~
-            form_login: ~
+            form_login:
+              default_target_path: cms_core.app_index
             logout: ~
             remember_me:
               key:      J8dTf3u3gvVtXB2zOKDF
@@ -28,7 +29,7 @@ security:
 
         admin_area:
             pattern:    ^/admin$
-            form_login: ~
+            form_login:
             logout: ~
 
     access_control:

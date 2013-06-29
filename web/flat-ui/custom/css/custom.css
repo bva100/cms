@@ -1,0 +1,10 @@
+.alert {
+    background-color: #F1C40F;
+    border: none;
+    border-radius: 3px;
+    color: dimgrey;
+}
+.alert-danger {
+    background-color: #E74C3C;
+    color: white;
+}
