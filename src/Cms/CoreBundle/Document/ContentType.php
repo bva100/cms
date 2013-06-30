@@ -49,6 +49,11 @@ class ContentType {
     /**
      * @MongoDB\Collection
      */
+    private $tags;
+
+    /**
+     * @MongoDB\Collection
+     */
     private $fields;
 
     public function __construct()
@@ -280,6 +285,28 @@ class ContentType {
     }
 
     /**
+     * Set tags
+     *
+     * @param collection $tags
+     * @return self
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    /**
+     * Get tags
+     *
+     * @return collection $tags
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
      * Add a field
      *
      * @param $field
@@ -324,5 +351,4 @@ class ContentType {
     {
         return $this->fields;
     }
-
 }

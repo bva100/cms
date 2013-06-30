@@ -17,5 +17,6 @@
     margin-top: 54px;
 }
 .content-container {
-    margin-left: 230px;
+    margin-left: 280px;
+    max-width: 960px;
 }

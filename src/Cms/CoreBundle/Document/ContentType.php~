@@ -49,6 +49,11 @@ class ContentType {
     /**
      * @MongoDB\Collection
      */
+    private $tags;
+
+    /**
+     * @MongoDB\Collection
+     */
     private $fields;
 
     public function __construct()
