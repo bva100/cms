@@ -6,6 +6,13 @@
     top: 54px;
     left: 0px;
     bottom: 0px;
-    padding: 20px;
-    width: 110px;
+    padding: 0px 18px 0px 17px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ECF0F1;
+}
+.sidebar-nav a {
+    text-decoration: none;
+    color: #2C3E50;
+    margin: 20px 0px;
 }

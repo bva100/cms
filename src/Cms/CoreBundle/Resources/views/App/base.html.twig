@@ -69,20 +69,21 @@
 <div class="span3">
     <div class="sidebar-nav">
         <ul class="nav nav-list">
-            <li><a href="{{ path('cms_core.site_read', {'id':site.id}) }}">Dashboard</a></li>
+            <li><a href="{{ path('cms_core.site_read', {'id':site.id}) }}"><i class="icon-home"></i> Dashboard</a></li>
             <li class="divider"></li>
-            <li><a href="#">Posts</a></li>
-            <li><a href="#">Pages</a></li>
+            <li><a href="#"><i class="icon-pushpin"></i> Posts</a></li>
+            {% for contentType in site.contentTypes   %}
+                <li><a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"><i class="icon-pushpin"></i> {{ contentType.name | title }}</a></li>
+            {% endfor %}
+            <li><a href="#"><i class="icon-file-text"></i> Pages</a></li>
             <li class="divider"></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
+            <li><a href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}"><i class="icon-camera-retro"></i> Media</a></li>
+            <li><a href="#"><i class="icon-comments"></i> Comments</a></li>
+            <li class="divider"></li>
+            <li><a href="#"><i class="icon-eye-open"></i> Themes</a></li>
+            <li><a href="#"><i class="icon-list-ul"></i> Menus</a></li>
+            <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
+            <li><a href="#"><i class="icon-group"></i> Users</a></li>
         </ul>
     </div>
 </div>

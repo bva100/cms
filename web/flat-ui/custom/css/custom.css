@@ -8,9 +8,6 @@
     background-color: #E74C3C;
     color: white;
 }
-.navbar-inner{
-    border-radius: 0px;
-}
 .navbar-inverse .navbar-inner {
     background: #2C3E50;
     filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled = false)");
@@ -18,13 +15,14 @@
     top: 0px;
     left: 0px;
     width: 100%;
+    border-radius: 0px;
     z-index: 10;
 }
 .navbar-inverse .brand {
     border-radius: 0px;
     border-bottom: 0px;
     border-right: 0px;
-    padding: 0px 14px 0px 0px;
+    padding: 0px 14px 0px 14px;
     margin: 0px;
 }
 .navbar-inverse .brand img {
@@ -32,6 +30,9 @@
     top: 2px;
     max-width: 95px;
     max-height: 34px;
+}
+.navbar-inverse .nav > li > a {
+    font-size: 16px;
 }
 .navbar-inverse .nav > li.active > a,
 .navbar-inverse .nav > li.active > a:hover,
