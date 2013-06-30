@@ -1,0 +1,11 @@
+#row-top {
+    margin-top: 54px;
+}
+.sidebar-nav {
+    position: fixed;
+    top: 54px;
+    left: 0px;
+    bottom: 0px;
+    padding: 20px;
+    width: 110px;
+}

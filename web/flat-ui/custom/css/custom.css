@@ -8,3 +8,38 @@
     background-color: #E74C3C;
     color: white;
 }
+.navbar-inner{
+    border-radius: 0px;
+}
+.navbar-inverse .navbar-inner {
+    background: #2C3E50;
+    filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled = false)");
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 10;
+}
+.navbar-inverse .brand {
+    border-radius: 0px;
+    border-bottom: 0px;
+    border-right: 0px;
+    padding: 0px 14px 0px 0px;
+    margin: 0px;
+}
+.navbar-inverse .brand img {
+    position: relative;
+    top: 2px;
+    max-width: 95px;
+    max-height: 34px;
+}
+.navbar-inverse .nav > li.active > a,
+.navbar-inverse .nav > li.active > a:hover,
+.navbar-inverse .nav > li.active > a:focus {
+    background-color: #2980B9;
+    border-bottom-color: #3498DB;
+}
+.sidebar-nav {
+    background-color: #ECF0F1;
+    padding: 20px 0px;
+}

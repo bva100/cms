@@ -1,6 +1,21 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
+{% block title %}
+    {{ site.name }} | PipeStack
+{% endblock %}
+
 {% block body %}
+    {% block classicNavPrimary %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="row" id='row-top'>
+        {% block classicNavAdmin %}
+            {{ parent() }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block bodyCopy %}
     <section>
         <h2>{{ site.name }}</h2>
 

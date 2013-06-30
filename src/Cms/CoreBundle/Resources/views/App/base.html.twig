@@ -1,5 +1,14 @@
 {% extends '::base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/app/base.css'
+        filter='cssrewrite, ?yui_css' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
 {% block notices %}
     {% if notices is not empty %}
         <aside>
@@ -9,4 +18,72 @@
             {% endfor %}
         </aside>
     {% endif %}
+{% endblock %}
+
+{% block classicNavPrimary %}
+<div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target="#nav-collapse-01"></button>
+            <div class="nav-collapse collapse" id="nav-collapse-01">
+                <ul class="nav">
+                    <li class="brand">
+                        <a href="{{ path('cms_core.site_read', {'id': site.id}) }}"><img src="{{ asset('ovooko_logo_large.png') }}" alt="" width="120" height="12.75" style="margin-top: -20px"/></a>
+                    </li>
+                    <li class="active">
+                        <a href="#fakelink">
+                            Admin Panel
+                        </a>
+                    </li>
+                    <li><a href="#fakeLink">Visit Site</a></li>
+                    <li>
+                        <a href="#fakelink">
+                            New
+                        </a>
+                        <ul>
+                            <li><a href="#fakelink">Element One</a></li>
+                            <li>
+                                <a href="#fakelink">Sub menu</a>
+                                <ul>
+                                    <li><a href="#fakelink">Element One</a></li>
+                                    <li><a href="#fakelink">Element Two</a></li>
+                                    <li><a href="#fakelink">Element Three</a></li>
+                                </ul> <!-- /Sub menu -->
+                            </li>
+                            <li><a href="#fakelink">Element Three</a></li>
+                        </ul> <!-- /Sub menu -->
+                    </li>
+                    <li>
+                        <a href="#fakelink">
+                            About Us
+                        </a>
+                    </li>
+                </ul>
+            </div><!--/.nav -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block classicNavAdmin %}
+<div class="span3">
+    <div class="sidebar-nav">
+        <ul class="nav nav-list">
+            <li><a href="{{ path('cms_core.site_read', {'id':site.id}) }}">Dashboard</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Posts</a></li>
+            <li><a href="#">Pages</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+        </ul>
+    </div>
+</div>
 {% endblock %}
