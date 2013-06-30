@@ -1,6 +1,9 @@
 body {
     background-color: #2C3E50;
 }
+.alert {
+    font-size: 18px;
+}
 .login {
     margin-top: 6%;
 }

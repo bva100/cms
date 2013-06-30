@@ -1,12 +1,17 @@
 #user
 cms_core.user_register:
-  pattern: /user/register
-  defaults: { _controller: CmsCoreBundle:User:Register }
+  pattern: /user/register/{account_type}
+  defaults: { _controller: CmsCoreBundle:User:register, account_type = 'free' }
   methods: [GET]
+
+cms_core.user_create:
+  pattern: /user/create
+  defaults: { _controller: CmsCoreBundle:User:create }
+  methods: [POST]
 
 cms_core.user_save:
   pattern:  /user
-  defaults: { _controller: CmsCoreBundle:User:Save }
+  defaults: { _controller: CmsCoreBundle:User:save }
   methods: [POST]
 
 #landing

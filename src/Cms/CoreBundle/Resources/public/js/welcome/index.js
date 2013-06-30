@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
     $('#features .tile').click(function(){
         iconHover($(this), 'on');
     });

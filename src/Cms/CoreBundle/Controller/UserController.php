@@ -53,15 +53,61 @@ class UserController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.app_index'));
     }
 
-
     public function registerAction()
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
+        $firstName = (string)$this->getRequest()->query->get('firstName');
+        $lastName = (string)$this->getRequest()->query->get('lastName');
+        $email = (string)$this->getRequest()->query->get('email');
+        $accountType = (string)$this->getRequest()->query->get('account_type');
+        if ( ! $accountType )
+        {
+            $accountType = 'free';
+        }
         return $this->render('CmsCoreBundle:User:register.html.twig', array(
             'token' => $token,
             'notices' => $notices,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'email' => $email,
+            'accountType' => $accountType,
         ));
+    }
+
+    public function createAction()
+    {
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $accountType = (string)$this->getRequest()->request->get('accountType');
+        $firstName = (string)$this->getRequest()->request->get('firstName');
+        $lastName = (string)$this->getRequest()->request->get('lastName');
+        $email = (string)$this->getRequest()->request->get('email');
+        $rawPassword = (string)$this->getRequest()->request->get('password');
+
+        $user = new User();
+        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+
+        $user->setName(array('first' => $firstName, 'last' => $lastName));
+        $user->setEmail($email);
+        $user->setPassword($encoder->encodePassword($rawPassword,$user->getSalt()));
+        $user->addRole('ROLE_USER');
+        $success = $this->get('persister')->save($user);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
+        if ( ! $success )
+        {
+            return $this->redirect($this->generateUrl('cms_core.user_register', array(
+                'account_type' => $accountType,
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'email' => $email,
+            )));
+        }
+        $this->get('force_login')->login($user);
+        return $this->redirect($this->generateUrl('cms_core.app_index'));
     }
 
 

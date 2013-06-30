@@ -9,6 +9,15 @@
     {% endstylesheets %}
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/welcome/index.js'
+        filter='?yui_js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block title %}PipeStack CMS | Welcome{% endblock %}
 
 {% block body %}
@@ -22,7 +31,7 @@
             <div class="span4 offset4">
             <span id='topnav-button-container' class="pull-right" style="position: relative; top: 10px">
                 <a href="{{ path('login') }}" class="btn btn-large btn-inverse">Login</a>
-                <a href="#signup" class="btn btn-large btn-inverse">Sign up</a>
+                <a href="{{ path('cms_core.user_register') }}" class="btn btn-large btn-inverse">Sign up</a>
             </span>
             </div>
         </nav>
@@ -40,7 +49,7 @@
                     Corned beef meatloaf jerky tail pastrami. Chuck tongue jowl pastrami pork belly. Cow bacon short loin filet mignon pancetta tongue pork loin. Ball tip pancetta tenderloin turducken turkey doner spare ribs leberkas pork swine cow sirloin tri-tip beef ribs. Ribeye t-bone tri-tip biltong. Shank swine jerky pork chop frankfurter strip steak capicola tail shoulder chuck shankle sausage flank. Tri-tip frankfurter shank, pastrami pork loin beef ribs fatback tongue
                 </p>
                 <div class="row">
-                    <a href="#start" id="primary-cta" class="btn btn-xlarge btn-block btn-danger span4 offset1">Get Started For Free</a>
+                    <a href="{{ path('cms_core.user_register') }}" id="primary-cta" class="btn btn-xlarge btn-block btn-danger span4 offset1">Get Started For Free</a>
                 </div>
             </div>
         </section>
@@ -164,21 +173,21 @@
                 <div class='tile tile-signup'>
                     <h3>Free</h3>
                     <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
-                    <a href="#singupFree" class="btn btn-xlarge btn-primary">Get Free</a>
+                    <a href="{{ path('cms_core.user_register', {'account_type':'free'}) }}" class="btn btn-xlarge btn-primary">Get Free</a>
                 </div>
             </section>
             <section class="span4">
                 <div class="tile tile-signup">
                     <h3>Premium</h3>
                     <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
-                    <a href="#singupFree" class="btn btn-xlarge btn-info">Get Premium</a>
+                    <a href="{{ path('cms_core.user_register', {'account_type':'premium'}) }}" class="btn btn-xlarge btn-info">Get Premium</a>
                 </div>
             </section>
             <section class="span4">
                 <div class="tile tile-signup">
                     <h3>Enterprise</h3>
                     <p>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</p>
-                    <a href="#singupFree" class="btn btn-xlarge btn-danger">Get Enterprise</a>
+                    <a href="{{ path('cms_core.user_register', {'account_type':'enterprise'}) }}" class="btn btn-xlarge btn-danger">Get Enterprise</a>
                 </div>
             </section>
         </div>
