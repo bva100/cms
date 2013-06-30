@@ -4,7 +4,14 @@
     {% block classicNavPrimary %}
         {{ parent() }}
     {% endblock %}
-    {% block classicNavAdmin %}
-        {{ parent() }}
-    {% endblock %}
+    <div class="container-fluid">
+        <div class="row-fluid" id='row-top'>
+            <div class="span2 visible-desktop" id='nav-admin-container'>
+                {% block classicNavAdmin %}{{ parent() }}{% endblock %}
+            </div>
+            <div class="span10" id="content-container">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

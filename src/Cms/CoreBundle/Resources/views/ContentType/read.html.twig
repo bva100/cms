@@ -14,15 +14,64 @@
     {{ contentType.name | title }}{{ parent() }}
 {% endblock %}
 
-{% block body %}
+{% block content %}
     {{ parent() }}
-    <div class="row" id="row-top">
-        <div class="content-container span9">
-            <div class="row">
-                <div class="span3">first</div>
-                <div class="span3">second</div>
-                <div class="span3">third</div>
-            </div>
+    <div class="row-fluid">
+        <div class="span8">
+            <h1>{{ contentType.name |title }}s</h1>
+        </div>
+        <div class="span4" style="margin: 14px 14px;">
+            <input type="search" style="height: 17px;" placeholder="Search for {{ contentType.name |title }}"/>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span2">
+            <select name="state" value="state" class="select-block span2">
+                <option value="0">View All States</option>
+                <option value="draft">Drafts</option>
+                <option value="active">Published</option>
+                <option value="scheduled">Scheduled</option>
+            </select>
+        </div>
+        <div class="span2">
+            <select name="month" value="month" class="select-block span2">
+                <option value="0">Show All Dates</option>
+            </select>
+        </div>
+        <div class="span2">
+            <select name="category" value="category" class="select-block span2">
+                <option value="0">View All Categories</option>
+                {% for category in contentType.categories   %}
+                    <option value="{{ category.parent }}">{{ category.parent }}</option>
+                {% else %}
+                    <option value="">None found</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="span2">
+            <select name="tag" value="tag" class="select-block span2">
+                <option value="0">View All Tags</option>
+                {% for tag in contentType.tags   %}
+                    <option value="{{ category.tag }}">{{ category.tag }}</option>
+                {% else %}
+                    <option value="0">none found</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="span2">
+            <select name="author" value="author" class="select-block span2">
+                <option value="0">View All Authors</option>
+                {% for tag in contentType.tags   %}
+                    <option value="{{ category.tag }}">{{ category.tag }}</option>
+                {% else %}
+                    <option value="0">none found</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="span2">
+            <button class="btn btn-primary btn-block">
+                Filter
+            </button>
         </div>
     </div>
 {% endblock %}
