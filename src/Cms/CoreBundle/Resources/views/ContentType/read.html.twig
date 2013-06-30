@@ -1,6 +1,32 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
+{% block title %}
+    {{ contentType.name | title }}{{ parent() }}
+{% endblock %}
+
 {% block body %}
+    {{ parent() }}
+    <div class="container content-container">
+        <div class="row" id="row-top">
+            <div class="span3">
+                first
+            </div>
+            <div class="span3">
+                second
+            </div>
+            <div class="span3">
+                third
+            </div>
+            <div class="span3">
+                fourth
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block bodyCopy %}
     <h1>{{ contentType.name | title }}</h1>
 
     <legend>data</legend>

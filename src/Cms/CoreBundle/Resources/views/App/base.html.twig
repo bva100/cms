@@ -1,90 +1,10 @@
-{% extends '::base.html.twig' %}
+{% extends 'CmsCoreBundle:App:components.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {% stylesheets
-        '@CmsCoreBundle/Resources/public/css/app/base.css'
-        filter='cssrewrite, ?yui_css' %}
-        <link rel="stylesheet" href="{{ asset_url }}"/>
-    {% endstylesheets %}
-{% endblock %}
-
-{% block notices %}
-    {% if notices is not empty %}
-        <aside>
-            <h3>Notice</h3>
-            {% for notice in notices  %}
-                <p>{{ notice }}</p>
-            {% endfor %}
-        </aside>
-    {% endif %}
-{% endblock %}
-
-{% block classicNavPrimary %}
-<div class="navbar navbar-inverse">
-    <div class="navbar-inner">
-        <div class="container">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target="#nav-collapse-01"></button>
-            <div class="nav-collapse collapse" id="nav-collapse-01">
-                <ul class="nav">
-                    <li class="brand">
-                        <a href="{{ path('cms_core.site_read', {'id': site.id}) }}"><img src="{{ asset('ovooko_logo_large.png') }}" alt="" width="120" height="12.75" style="margin-top: -20px"/></a>
-                    </li>
-                    <li class="active">
-                        <a href="#fakelink">
-                            Admin Panel
-                        </a>
-                    </li>
-                    <li><a href="#fakeLink">Visit Site</a></li>
-                    <li>
-                        <a href="#fakelink">
-                            New
-                        </a>
-                        <ul>
-                            <li><a href="#fakelink">Element One</a></li>
-                            <li>
-                                <a href="#fakelink">Sub menu</a>
-                                <ul>
-                                    <li><a href="#fakelink">Element One</a></li>
-                                    <li><a href="#fakelink">Element Two</a></li>
-                                    <li><a href="#fakelink">Element Three</a></li>
-                                </ul> <!-- /Sub menu -->
-                            </li>
-                            <li><a href="#fakelink">Element Three</a></li>
-                        </ul> <!-- /Sub menu -->
-                    </li>
-                    <li>
-                        <a href="#fakelink">
-                            About Us
-                        </a>
-                    </li>
-                </ul>
-            </div><!--/.nav -->
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block classicNavAdmin %}
-<div class="span3">
-    <div class="sidebar-nav">
-        <ul class="nav nav-list">
-            <li><a href="{{ path('cms_core.site_read', {'id':site.id}) }}"><i class="icon-home"></i> Dashboard</a></li>
-            <li class="divider"></li>
-            <li><a href="#"><i class="icon-pushpin"></i> Posts</a></li>
-            {% for contentType in site.contentTypes   %}
-                <li><a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"><i class="icon-pushpin"></i> {{ contentType.name | title }}</a></li>
-            {% endfor %}
-            <li><a href="#"><i class="icon-file-text"></i> Pages</a></li>
-            <li class="divider"></li>
-            <li><a href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}"><i class="icon-camera-retro"></i> Media</a></li>
-            <li><a href="#"><i class="icon-comments"></i> Comments</a></li>
-            <li class="divider"></li>
-            <li><a href="#"><i class="icon-eye-open"></i> Themes</a></li>
-            <li><a href="#"><i class="icon-list-ul"></i> Menus</a></li>
-            <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
-            <li><a href="#"><i class="icon-group"></i> Users</a></li>
-        </ul>
-    </div>
-</div>
+{% block body %}
+    {% block classicNavPrimary %}
+        {{ parent() }}
+    {% endblock %}
+    {% block classicNavAdmin %}
+        {{ parent() }}
+    {% endblock %}
 {% endblock %}
