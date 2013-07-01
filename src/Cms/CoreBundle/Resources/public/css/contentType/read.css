@@ -1,0 +1,49 @@
+h1 {
+    display: inline;
+}
+#add-new {
+    margin-left: 10px;
+    font-size: 18px;
+    text-decoration: none;
+}
+#search-container {
+    margin: 14px 0px;
+}
+#search {
+    /*height: 17px;*/
+    max-width: 410px;
+}
+#header a {
+    color: #3498DB;
+    font-size: 18px;
+}
+.btn-lower {
+    padding-top: 7px;
+}
+#pag-previous {
+    margin-right: 10px;
+}
+#pag-next {
+    width: 52px;
+}
+@media (max-width: 767px) {
+    #search-container {
+        max-width: 692px;
+    }
+    #search {
+        max-width: none;
+    }
+}
+#edit, #delete {
+    width: 82px;
+}
+#edit {
+    margin-right: 10px;
+}
+table {
+    margin-top: 20px;
+}
+#master-checkbox-container {
+    position: relative;
+    top: 12px;
+}

@@ -16,7 +16,7 @@ class NodeController extends Controller {
 
     public function saveAction()
     {
-        $token = (string)$this->getRequest()->request->get('token');
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $host = (string)$this->getRequest()->request->get('host');
@@ -31,10 +31,13 @@ class NodeController extends Controller {
         $title = (string)$this->getRequest()->request->get('title');
         $templateName = (string)$this->getRequest()->request->get('templateName');
         $viewHtml = (string)$this->getRequest()->request->get('viewHtml');
-        // $this->get('csrfToken')->validate($token);
 
         // validate user has access to change and add new nodes
         $node = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id) : new Node();
+        
+        $node->setCreated(time());
+        $node->setUpdated(time());
+
         if ( ! $node )
         {
             throw $this->createNotFoundException('Node with id '.$id.' not found');
@@ -167,7 +170,6 @@ class NodeController extends Controller {
             return $this->redirect($this->generateUrl('cms_core.node_read', array('id' => $id)));
         }
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $node->getSiteId())));
-        
     }
 
 }

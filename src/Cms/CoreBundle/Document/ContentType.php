@@ -14,17 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @package Cms\CoreBundle\Document
  * @MongoDB\EmbeddedDocument
  */
-class ContentType {
-
-    /**
-     * @MongoDB\Id
-     */
-    private $id;
-
-    /**
-     * @MongoDB\String
-     */
-    private $state;
+class ContentType extends Base {
 
     /**
      * @MongoDB\String @MongoDB\Index(unique=true)
@@ -61,38 +51,6 @@ class ContentType {
         $this->formats = array();
         $this->categories = array();
         $this->fields = array();
-    }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set state
-     *
-     * @param string $state
-     * @return self
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-        return $this;
-    }
-
-    /**
-     * Get state
-     *
-     * @return string $state
-     */
-    public function getState()
-    {
-        return $this->state;
     }
 
     /**

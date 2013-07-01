@@ -62,6 +62,12 @@ class ContentTypeController extends Controller {
     public function readAction($siteId, $id)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
+        $page = $this->getRequest()->query->get('page');
+        if ( ! $page )
+        {
+            $page = 1;
+        }
+        
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -73,8 +79,10 @@ class ContentTypeController extends Controller {
             throw $this->createNotFoundException('ConentType with id '.$id.' not found');
         }
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findByContentTypeName($contentType->getName());
+
         return $this->render('CmsCoreBundle:ContentType:read.html.twig', array(
             'token' => $token,
+            'page' => $page,
             'site' => $site,
             'contentType' => $contentType,
             'nodes' => $nodes,

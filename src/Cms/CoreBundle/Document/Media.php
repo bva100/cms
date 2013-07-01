@@ -14,12 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @package Cms\CoreBundle\Document
  * @MongoDB\Document(collection="media", repositoryClass="Cms\CoreBundle\Repository\mediaRepository")
  */
-class Media {
-
-    /**
-     * @MongoDB\Id
-     */
-    private $id;
+class Media extends Base {
 
     /**
      * @MongoDB\String

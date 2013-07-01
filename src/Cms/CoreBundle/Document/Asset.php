@@ -14,12 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @package Cms\CoreBundle\Document
  * @MongoDB\Document(collection="assets", repositoryClass="Cms\CoreBundle\Repository\assetRepository")
  */
-class Asset {
-
-    /**
-     * @MongoDB\Id
-     */
-    private $id;
+class Asset extends Base {
 
     /**
      * @MongoDB\String
@@ -50,16 +45,6 @@ class Asset {
      * @MongoDB\String
      */
     private $content;
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set siteId

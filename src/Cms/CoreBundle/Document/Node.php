@@ -14,17 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @package Cms\CoreBundle\Document
  * @MongoDB\Document(collection="nodes", repositoryClass="Cms\CoreBundle\Repository\NodeRepository")
  */
-class Node {
-
-    /**
-     * @MongoDB\Id
-     */
-    private $id;
-
-    /**
-     * @MongoDB\String
-     */
-    private $state;
+class Node extends Base {
 
     /**
      * @MongoDB\String
@@ -138,38 +128,6 @@ class Node {
         $this->stylesheets = array();
         $this->metatags = array();
         $this->view = array();
-    }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set state
-     *
-     * @param string $state
-     * @return self
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-        return $this;
-    }
-
-    /**
-     * Get state
-     *
-     * @return string $state
-     */
-    public function getState()
-    {
-        return $this->state;
     }
 
     /**
@@ -872,7 +830,8 @@ class Node {
     /**
      * Get a specific view value assocaited with a format
      *
-     * @return hash $view
+     * @param $format
+     * @return array
      */
     public function getView($format)
     {

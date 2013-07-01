@@ -17,11 +17,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 class Theme {
 
     /**
-     * @MongoDB\Id
-     */
-    private $id;
-
-    /**
      * @MongoDB\String
      */
     private $parentId;
@@ -50,16 +45,6 @@ class Theme {
     {
         $this->author = array();
         $this->layouts = array();
-    }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

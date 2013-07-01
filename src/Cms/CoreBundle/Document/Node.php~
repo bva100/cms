@@ -22,6 +22,11 @@ class Node {
     private $id;
 
     /**
+     * @MongoDB\Int
+     */
+    private $versionNumber;
+
+    /**
      * @MongoDB\String
      */
     private $state;
@@ -872,7 +877,8 @@ class Node {
     /**
      * Get a specific view value assocaited with a format
      *
-     * @return hash $view
+     * @param $format
+     * @return array
      */
     public function getView($format)
     {
@@ -892,4 +898,5 @@ class Node {
         return $this->view;
     }
 
+    
 }

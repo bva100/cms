@@ -44,3 +44,7 @@
     background-color: #ECF0F1;
     padding: 20px 0px;
 }
+.checkbox.checked .icons,
+.radio.checked .icons {
+    color: #3498DB;
+}
