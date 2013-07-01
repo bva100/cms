@@ -42,6 +42,7 @@
 				$parent.toggleClass(ch) && checked ? $el.removeAttr(ch) : $el.attr(ch, true);
 				$el.trigger(e).trigger('change'); 
 			}
+            updateBtns();
 		}	 
 		
 	, setCheck: function (option) {		 
@@ -54,7 +55,7 @@
 			
 			$parent[checkAction ? 'addClass' : 'removeClass' ](ch) && checkAction ? $el.attr(ch, true) : $el.removeAttr(ch);
 			$el.trigger(e).trigger('change');				
-		}	 
+		}
 			
 	}
 
