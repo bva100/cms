@@ -14,6 +14,7 @@
     {% javascripts
         'flat-ui/js/bootstrap-select.js'
         'flat-ui/js/flatui-checkbox.js'
+        '@CmsCoreBundle/Resources/public/js/checkboxList.js'
         '@CmsCoreBundle/Resources/public/js/contentType/read.js'
         filter='?yui_js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -80,20 +81,18 @@
             </select>
         </div>
         <div class="span2">
-            <button class="btn btn-info btn-block">
-                Filter
-            </button>
+            <button class="btn btn-info btn-block"><i class="icon-filter"></i> Filter</button>
         </div>
     </div>
     <hr>
     <div class="row-fluid">
         <div class="span4">
-            <button class="btn btn-lower disabled" id='edit'>Edit</button>
-            <button class="btn btn-lower disabled" id='delete'>Delete</button>
+            <button class="btn btn-lower btn-content-action" id='edit' disabled><i class="icon-edit"></i> Edit</button>
+            <button class="btn btn-lower btn-content-action" id='delete' disabled><i class="icon-trash"></i> Trash</button>
         </div>
         <div class="span4 offset4">
-            <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page+1}) }}" class="btn btn-lower pull-right" id='pag-next'>Next</a>
-            <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page-1}) }}" class="btn btn-lower pull-right" id='pag-previous'>Previous</a>
+            <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page+1}) }}" class="btn btn-lower pull-right" id='pag-next'>Next <i class="icon-chevron-right"></i></a>
+            <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page-1}) }}" class="btn btn-lower pull-right" id='pag-previous'><i class="icon-chevron-left"></i> Prev</a>
         </div>
     </div>
     <div class="row-fluid">
@@ -102,7 +101,7 @@
                 <thead>
                 <tr>
                     <th>
-                        <label class="checkbox" for="master-checkbox" id="master-checkbox-container">
+                        <label class="checkbox master-checkbox" for="master-checkbox" id="master-checkbox-container" data-state='off'>
                             <input type="checkbox" data-toggle="checkbox" name="master-checkbox" id="master-checkbox"/>
                         </label>
                     </th>
@@ -119,7 +118,7 @@
                 <tr>
                     <td>
                         <label class="checkbox" for="checkbox-{{ node.id }}">
-                            <input type="checkbox" data-toggle="checkbox" name="checkbox" id="checkbox-{{ node.id }}"/>
+                            <input type="checkbox" class="slave-checkbox" data-toggle="checkbox" name="checkbox" id="checkbox-{{ node.id }}"/>
                         </label>
                     </td>
                     <td>{{ node.title|title }}</td>

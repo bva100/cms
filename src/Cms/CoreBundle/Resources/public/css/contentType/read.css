@@ -20,12 +20,6 @@ h1 {
 .btn-lower {
     padding-top: 7px;
 }
-#pag-previous {
-    margin-right: 10px;
-}
-#pag-next {
-    width: 52px;
-}
 @media (max-width: 767px) {
     #search-container {
         max-width: 692px;
@@ -35,10 +29,16 @@ h1 {
     }
 }
 #edit, #delete {
-    width: 82px;
+    width: 77px;
 }
 #edit {
     margin-right: 10px;
+}
+#pag-next, #pag-previous {
+    width: 54px;
+}
+#pag-previous {
+    margin-right: 12px;
 }
 table {
     margin-top: 20px;
