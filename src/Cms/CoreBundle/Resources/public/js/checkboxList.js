@@ -6,7 +6,7 @@ $(document).ready(function() {
         switchCheckbox($(this));
     });
     $('.btn-checkbox-action').on('click', function(){
-        var token = $("#token").val();
+        token = $("#token").val();
         var action = $(this).attr('data-action');
         var isChecked = checkIfNone();
         if(isChecked == 0){
@@ -15,8 +15,8 @@ $(document).ready(function() {
         var ids = getCheckedIds();
         switch (action){
             case 'delete':
-                ids.forEach(function(id, token){
-                    deleteNode(id);
+                ids.forEach(function(id){
+                    deleteNode(id, token);
                 });
                 break;
             default:
@@ -72,6 +72,10 @@ function getCheckedIds(){
 
 function deleteNode(id, token){
     $.post('/node/delete', {id: id, token: token}, function(data, textStatus, xhr) {
-        alert(xhr.status);
+        if(textStatus == 'success'){
+            $('#tr-' + id).remove();
+        }else{
+            alert('Unsuccessful delete. Please try again.');
+        }
     });
 }

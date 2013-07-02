@@ -149,7 +149,7 @@ class NodeController extends Controller {
 
     public function deleteAction()
     {
-        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id);
         if ( ! $node )
@@ -157,7 +157,7 @@ class NodeController extends Controller {
             throw $this->createNotFoundException('Node with id '.$id.' not found');
         }
         // ensure use has permission to remove this node
-        $success = $this->get('persister')->delete($node);
+        $success = $this->get('persister')->delete($node, false, null);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {
