@@ -25,6 +25,8 @@ class NodeController extends Controller {
         $format = (string)$this->getRequest()->request->get('format');
         $locale = (string)$this->getRequest()->request->get('locale');
         $parentNodeId = (string)$this->getRequest()->request->get('parentNodeId');
+        $authorName = (string)$this->getRequest()->request->get('authorName');
+        
         //left off on categories
         $slugPrefix = (string)$this->getRequest()->request->get('slugPrefix');
         $slug = (string)$this->getRequest()->request->get('slug');
@@ -34,10 +36,6 @@ class NodeController extends Controller {
 
         // validate user has access to change and add new nodes
         $node = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id) : new Node();
-        
-        $node->setCreated(time());
-        $node->setUpdated(time());
-
         if ( ! $node )
         {
             throw $this->createNotFoundException('Node with id '.$id.' not found');
@@ -50,6 +48,10 @@ class NodeController extends Controller {
         {
             // validate user and site have access to this host
             $node->setHost($host);
+        }
+        if ( $authorName )
+        {
+            $node->setAuthor(array('name' => $authorName));
         }
         if ( $contentTypeName )
         {
@@ -96,24 +98,32 @@ class NodeController extends Controller {
         }
         if ( ! $success )
         {
-            return $this->redirect($this->generateUrl('cms_core.node_new', array('siteId' => $siteId, 'contentTypeId' => $contentTypeId)));
+            return $this->redirect($this->generateUrl('cms_core.node_new', array('siteId' => $siteId, 'contentTypeId' => $contentTypeId, 'viewHtml' => $viewHtml, 'title' => $title)));
         }
-        return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $siteId)));
+        return $this->redirect($this->generateUrl('cms_core.node_read', array('id' => $node->getId())));
     }
 
     public function newAction($siteId, $contentTypeId)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
+        $user = $this->get('security.context')->getToken()->getUser();
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
         $contentType = $site->getContentType($contentTypeId);
+
+        $viewHtml = (string)$this->getRequest()->query->get('viewHtml');
+        $title = (string)$this->getRequest()->query->get('title');
+        
         return $this->render('CmsCoreBundle:Node:edit.html.twig', array(
             'token' => $token,
             'notices' => $notices,
+            'user' => $user,
+            'viewHtml' => $viewHtml,
+            'title' => $title,
             'site' => $site,
             'contentType' => $contentType,
         ));
@@ -123,6 +133,7 @@ class NodeController extends Controller {
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
+        $user = $this->get('security.context')->getToken()->getUser();
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id);
         if ( ! $node )
         {
@@ -141,6 +152,7 @@ class NodeController extends Controller {
         return $this->render('CmsCoreBundle:Node:edit.html.twig', array(
             'token' => $token,
             'notices' => $notices,
+            'user' => $user,
             'node' => $node,
             'site' => $site,
             'contentType' => $contentType,

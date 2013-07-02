@@ -118,6 +118,7 @@ class Node extends Base {
 
     public function __construct()
     {
+        $this->setCreated(time());
         $this->setState('active');
         $this->categories = array();
         $this->conversationIds = array();
@@ -424,6 +425,7 @@ class Node extends Base {
     public function setSlug($slug)
     {
         $slug = ltrim($slug, '/');
+        $slug = strtolower($slug);
         $this->slug = $slug;
         return $this;
     }

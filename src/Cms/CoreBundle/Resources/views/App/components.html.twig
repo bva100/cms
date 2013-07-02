@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block classicNavPrimary %}
-<div class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="container">
             <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target="#nav-collapse-01"></button>
@@ -62,11 +62,11 @@
             </div><!--/.nav -->
         </div>
     </div>
-</div>
+</nav>
 {% endblock %}
 
 {% block classicNavAdmin %}
-<div class="sidebar-nav hidden-phone">
+<nav class="sidebar-nav hidden-phone">
     <ul class="nav nav-list">
         <li><a href="{{ path('cms_core.site_read', {'id':site.id}) }}"><i class="icon-home"></i> Dashboard</a></li>
         <li class="divider"></li>
@@ -79,10 +79,10 @@
         <li><a href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}"><i class="icon-camera-retro"></i> Media</a></li>
         <li><a href="#"><i class="icon-comments"></i> Comments</a></li>
         <li class="divider"></li>
-        <li><a href="#"><i class="icon-eye-open"></i> Themes</a></li>
+        <li><a href="#"><i class="icon-eye-open"></i> Theme</a></li>
         <li><a href="#"><i class="icon-list-ul"></i> Menus</a></li>
         <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
         <li><a href="#"><i class="icon-group"></i> Users</a></li>
     </ul>
-</div>
+</nav>
 {% endblock %}

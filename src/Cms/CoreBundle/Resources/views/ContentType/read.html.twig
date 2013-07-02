@@ -29,7 +29,7 @@
     {{ parent() }}
     <div class="row-fluid">
         <div class="span4" id='header'>
-            <h1>{{ contentType.name |title }}</h1>
+            <h1>{{ contentType.name|title }}</h1>
             <a href="{{ path('cms_core.node_new', {'siteId':site.id, 'contentTypeId':contentType.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
         </div>
         <div class="span4 pull-right" id="search-container">
@@ -87,8 +87,8 @@
     <hr>
     <div class="row-fluid">
         <div class="span4">
-            <button class="btn btn-lower btn-checkbox-action" data-action='edit'><i class="icon-edit"></i> Edit</button>
-            <button class="btn btn-lower btn-checkbox-action" data-action='delete'><i class="icon-trash"></i> Trash</button>
+            <button class="btn btn-lower btn-checkbox-action" data-action='edit' id='edit'><i class="icon-edit"></i> Edit</button>
+            <button class="btn btn-lower btn-checkbox-action" data-action='delete' id='delete'><i class="icon-trash"></i> Trash</button>
         </div>
         <div class="span4 offset4">
             <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page+1}) }}" class="btn btn-lower pull-right" id='pag-next'>Next <i class="icon-chevron-right"></i></a>
@@ -117,11 +117,17 @@
                 {% for node in nodes  %}
                 <tr id="tr-{{ node.id }}">
                     <td>
-                        <label class="checkbox" for="checkbox-{{ node.id }}" data-id="{{ node.id }}">
+                        <label class="checkbox checkbox-td" for="checkbox-{{ node.id }}" data-id="{{ node.id }}">
                             <input type="checkbox" class="slave-checkbox selectedId" data-toggle="checkbox" name="content-checkbox" id="checkbox-{{ node.id }}"/>
                         </label>
                     </td>
-                    <td>{{ node.title|title }}</td>
+                    <td>
+                        <h4><a href="/{{ node.slug }}">{{ node.title|title }}</a></h4>
+                        <p class='node-preview'>
+                            {{ node.views['html'] |striptags }}
+                            <a href="/{{ node.slug }}">read more</a>
+                        </p>
+                    </td>
                     {% if node.author.name is defined %}
                         <td><a href="{{ node.author.url|default('#') }}">{{ node.author.name }}</a></td>
                     {% else %}
@@ -146,4 +152,5 @@
         </div>
     </div>
     <input type="hidden" id="token" value="{{ token }}"/>
+    <input type="hidden" id="baseRoot" value="{{ app.request.baseUrl }}"/>
 {% endblock %}

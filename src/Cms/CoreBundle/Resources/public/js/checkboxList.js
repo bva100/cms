@@ -7,10 +7,12 @@ $(document).ready(function() {
     });
     $('.btn-checkbox-action').on('click', function(){
         token = $("#token").val();
+        baseUrl = $("#baseRoot").val();
         var action = $(this).attr('data-action');
         var isChecked = checkIfNone();
         if(isChecked == 0){
             alert('please select an item');
+            return 0;
         }
         var ids = getCheckedIds();
         switch (action){
@@ -18,6 +20,10 @@ $(document).ready(function() {
                 ids.forEach(function(id){
                     deleteNode(id, token);
                 });
+                break;
+            case 'edit':
+                var id = ids[0];
+                window.location.href = baseUrl + '/node/'+id;
                 break;
             default:
                 alert('action not found');
