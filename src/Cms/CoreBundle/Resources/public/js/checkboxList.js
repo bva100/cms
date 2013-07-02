@@ -2,8 +2,27 @@ btnCallbackClass = '.btn-checkbox-action';
 checkboxContainer = 'btn-checkbox-callback';
 
 $(document).ready(function() {
-    $('.checkbox').click(function(){
+    $('.checkbox').on('click', function(){
         switchCheckbox($(this));
+    });
+    $('.btn-checkbox-action').on('click', function(){
+        var token = $("#token").val();
+        var action = $(this).attr('data-action');
+        var isChecked = checkIfNone();
+        if(isChecked == 0){
+            alert('please select an item');
+        }
+        var ids = getCheckedIds();
+        switch (action){
+            case 'delete':
+                ids.forEach(function(id, token){
+                    deleteNode(id);
+                });
+                break;
+            default:
+                alert('action not found');
+                break;
+        }
     })
 });
 
@@ -11,20 +30,16 @@ function switchCheckbox($checkbox){
     if($checkbox.hasClass('master-checkbox')){
         switchAllCheckboxes($checkbox);
     }else{
-        switchCheckbox($checkbox);
+        switchOneCheckbox($checkbox);
     }
-    updateBtns();
     return 1;
 }
 
-function switchCheckbox($checkbox){
-    $realCheckbox = $checkbox.find('.slave-checkbox');
-    if($realCheckbox.is(':checked')){
-        $realCheckbox.prop('checked', false);
-    }else{
-        $realCheckbox.prop('checked', true);
+function switchOneCheckbox($checkbox){
+    if($checkbox.hasClass('checked')){
+        $("#master-checkbox-container").removeClass('checked');
+        $("#master-checkbox-container").attr('data-state', 'off');
     }
-    return 1;
 }
 
 function switchAllCheckboxes($master){
@@ -40,12 +55,23 @@ function switchAllCheckboxes($master){
     return 1;
 }
 
-function updateBtns(){
-    console.log($('input[name=content-checkbox]:checked').length);
-    if($('input[name=content-checkbox]:checked').length > 0){
-        $('.btn-checkbox-callback').prop('disabled', false);
-    }else{
-        $('.btn-checkbox-callback').prop('disabled', 'disabled');
-    }
-    return 1;
+function checkIfNone() {
+    return $('.checked:not(".master-checkbox")').length;
+}
+
+function getCheckedIds(){
+    var ids = [];
+    $(".checked").each(function(){
+        var $this = $(this);
+        if($this.hasClass("checked")){
+            ids.push($this.attr('data-id'));
+        }
+    });
+    return ids;
+}
+
+function deleteNode(id, token){
+    $.post('/node/delete', {id: id, token: token}, function(data, textStatus, xhr) {
+        alert(xhr.status);
+    });
 }

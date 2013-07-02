@@ -14,7 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @package Cms\CoreBundle\Document
  * @MongoDB\Document(collection="themes")
  */
-class Theme {
+class Theme extends Base {
 
     /**
      * @MongoDB\String

@@ -16,7 +16,7 @@ class NodeController extends Controller {
 
     public function saveAction()
     {
-//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $host = (string)$this->getRequest()->request->get('host');
@@ -149,10 +149,8 @@ class NodeController extends Controller {
 
     public function deleteAction()
     {
-        $token = (string)$this->getRequest()->request->get('token');
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
-        $this->get('csrfToken')->validate($token);
-
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id);
         if ( ! $node )
         {

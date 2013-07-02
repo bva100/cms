@@ -87,8 +87,8 @@
     <hr>
     <div class="row-fluid">
         <div class="span4">
-            <button class="btn btn-lower btn-checkbox-callback" id='edit' disabled><i class="icon-edit"></i> Edit</button>
-            <button class="btn btn-lower btn-checkbox-callback" id='delete' disabled><i class="icon-trash"></i> Trash</button>
+            <button class="btn btn-lower btn-checkbox-action" data-action='edit'><i class="icon-edit"></i> Edit</button>
+            <button class="btn btn-lower btn-checkbox-action" data-action='delete'><i class="icon-trash"></i> Trash</button>
         </div>
         <div class="span4 offset4">
             <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page+1}) }}" class="btn btn-lower pull-right" id='pag-next'>Next <i class="icon-chevron-right"></i></a>
@@ -102,7 +102,7 @@
                 <tr>
                     <th>
                         <label class="checkbox master-checkbox" for="master-checkbox" id="master-checkbox-container" data-state='off'>
-                            <input type="checkbox" data-toggle="checkbox" name="master-checkbox" id="master-checkbox"/>
+                            <input type="checkbox" data-toggle="checkbox" name="master-checkbox" id="selectall"/>
                         </label>
                     </th>
                     <th>Title</th>
@@ -117,8 +117,8 @@
                 {% for node in nodes  %}
                 <tr>
                     <td>
-                        <label class="checkbox" for="checkbox-{{ node.id }}">
-                            <input type="checkbox" class="slave-checkbox" data-toggle="checkbox" name="content-checkbox" id="checkbox-{{ node.id }}"/>
+                        <label class="checkbox" for="checkbox-{{ node.id }}" data-id="{{ node.id }}">
+                            <input type="checkbox" class="slave-checkbox selectedId" data-toggle="checkbox" name="content-checkbox" id="checkbox-{{ node.id }}"/>
                         </label>
                     </td>
                     <td>{{ node.title|title }}</td>
@@ -145,6 +145,7 @@
             </table>
         </div>
     </div>
+    <input type="hidden" id="token" value="{{ token }}"/>
 {% endblock %}
 
 

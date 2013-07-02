@@ -42,7 +42,6 @@
 				$parent.toggleClass(ch) && checked ? $el.removeAttr(ch) : $el.attr(ch, true);
 				$el.trigger(e).trigger('change'); 
 			}
-            updateBtns();
 		}	 
 		
 	, setCheck: function (option) {		 
