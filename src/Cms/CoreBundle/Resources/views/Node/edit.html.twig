@@ -1,30 +1,47 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
-{% block body %}
-    <h1>New {{ contentType.name | title }} Node</h1>
-    {% block notices %}{{ parent() }}{% endblock %}
-    <form action="{{ path('cms_core.node_save') }}" method="post">
-        <input type="hidden" name="token" value="{{ token }}"/>
-        <input type="hidden" name="siteId" value="{{ site.id }}"/>
-        <input type="hidden" name="contentTypeId" value="{{ contentType.id }}"/>
-        <input type="hidden" name="contentTypeName" value="{{ contentType.name }}"/>
-        <input type="text" name="title" value="{{ node.title | default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="title"/>
-        <div>
-            <input type="text" name="templateName" value="{{ node.templateName | default() }}" placeholder="template name"/>
+{% block title %}
+    {% if node is defined %}
+        {{ node.title|title }}
+     {% else %}
+        Create a New {{ contentType.name|title }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <section class="row-fluid">
+        <div class="span4">
+            {% if node is defined %}
+                <h1>Edit {{ node.title|title }}</h1>
+             {% else %}
+                 <h1>Create a New {{ contentType.name | title }}</h1>
+            {% endif %}
         </div>
-        <div>
-            <h4>format</h4>
-            <input type="radio" name="format" value="single" {% if node is defined %}{% if node.format == 'single' %}checked{% endif %}{% endif %} id='radio-format-single'/><label for="radio-format-single">Single</label>
-            <input type="radio" name="format" value="loop" {% if node is defined %}{% if node.format == 'loop' %}checked{% endif %}{% endif %}id="radio-format-loop"/><label for="radio-format-loop">Loop</label>
+    </section>
+    <div class="row-fluid">
+        <div class="span10">
+            <form action="{{ path('cms_core.node_save') }}" method="post">
+                <input type="hidden" name="token" value="{{ token }}"/>
+                <input type="hidden" name="siteId" value="{{ site.id }}"/>
+                <input type="hidden" name="contentTypeId" value="{{ contentType.id }}"/>
+                <input type="hidden" name="contentTypeName" value="{{ contentType.name }}"/>
+                <input type="hidden" name="format" value="single"/>
+                <input type="hidden" name="templateName" value="{{ site.name }}:Master:Single"/>
+                <input type="hidden" name="slugPrefix" value="{{ contentType.slugPrefix }}"/>
+
+                <input type="text" name="title" value="{{ node.title | default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="title"/>
+                <input type="text" name="host" value="www.{{ site.domains[0] }}"/>/{{ contentType.slugPrefix }}<input type="text" name="slug" value="{{ node.slug | default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="slug" required/>
+                <div>
+                    <textarea name="viewHtml" id="view-html" cols="20" rows="20" placeholder="html here">{{ node.views['html'] | default() | raw }}</textarea>
+                </div>
+                <p><input type="submit" value="Save"/></p>
+            </form>
         </div>
-        <input type="text" name="host" placeholder="host name" {% if asset is defined %}value="{{ node.host }}"{% else %}value="www.{{ site.domains[0] }}"{% endif %} required/>
-        <input type="hidden" name="slugPrefix" value="{{ contentType.slugPrefix }}"/>
-        /{{ contentType.slugPrefix }}<input type="text" name="slug" value="{{ node.slug | default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="slug" required/>
-        <div>
-            <textarea name="viewHtml" id="view-html" cols="100" rows="30" placeholder="html here">{{ node.views['html'] | default() | raw }}</textarea>
+        <div class="span2">
+            side
         </div>
-        <p><input type="submit" value="Save"/></p>
-    </form>
+    </div>
+
     <nav>
         <a href="{{ path('cms_core.site_read', {'id':site.id}) }}">Back to Site {{ site.name | title }}</a>
     </nav>

@@ -14,17 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @package Cms\CoreBundle\Document
  * @MongoDB\Document(collection="sites", repositoryClass="Cms\CoreBundle\Repository\SiteRepository")
  */
-class Site {
-
-    /**
-     * @MongoDB\Id
-     */
-    private $id;
-
-    /**
-     * @MongoDB\String
-     */
-    private $state;
+class Site extends Base {
 
     /**
      * @MongoDB\String
@@ -51,38 +41,6 @@ class Site {
         $this->setState('active');
         $this->contentType = new \Doctrine\Common\Collections\ArrayCollection();
         $this->domains = array();
-    }
-    
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set state
-     *
-     * @param string $state
-     * @return self
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-        return $this;
-    }
-
-    /**
-     * Get state
-     *
-     * @return string $state
-     */
-    public function getState()
-    {
-        return $this->state;
     }
 
     /**

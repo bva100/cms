@@ -102,4 +102,5 @@ class Template extends Base {
     {
         return $this->content;
     }
+
 }

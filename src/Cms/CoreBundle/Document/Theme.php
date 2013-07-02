@@ -240,4 +240,5 @@ class Theme extends Base {
         $this->author = $author;
         return $this;
     }
+
 }

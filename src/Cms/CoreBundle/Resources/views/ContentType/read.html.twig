@@ -29,8 +29,8 @@
     {{ parent() }}
     <div class="row-fluid">
         <div class="span4" id='header'>
-            <h1>{{ contentType.name |title }}s</h1>
-            <a href="#" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
+            <h1>{{ contentType.name |title }}</h1>
+            <a href="{{ path('cms_core.node_new', {'siteId':site.id, 'contentTypeId':contentType.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
         </div>
         <div class="span4 pull-right" id="search-container">
             <input type="search" id="search" class="span2 pull-right" placeholder="Search for {{ contentType.name | title }}"/>

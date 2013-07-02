@@ -29,6 +29,11 @@ class ContentType extends Base {
     /**
      * @MongoDB\String
      */
+    private $templateName;
+
+    /**
+     * @MongoDB\String
+     */
     private $slugPrefix;
 
     /**
@@ -309,4 +314,28 @@ class ContentType extends Base {
     {
         return $this->fields;
     }
+
+
+    /**
+     * Set templateName
+     *
+     * @param string $templateName
+     * @return self
+     */
+    public function setTemplateName($templateName)
+    {
+        $this->templateName = $templateName;
+        return $this;
+    }
+
+    /**
+     * Get templateName
+     *
+     * @return string $templateName
+     */
+    public function getTemplateName()
+    {
+        return $this->templateName;
+    }
+
 }

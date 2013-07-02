@@ -14,17 +14,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @package Cms\CoreBundle\Document
  * @MongoDB\Document(collection="templates")
  */
-class Template {
-
-    /**
-     * @MongoDB\Id
-     */
-    private $id;
-
-    /**
-     * @MongoDB\String
-     */
-    private $state;
+class Template extends Base {
 
     /**
      * @MongoDB\String
@@ -45,38 +35,6 @@ class Template {
     public function __construct()
     {
         $this->setState('active');
-    }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set state
-     *
-     * @param string $state
-     * @return self
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-        return $this;
-    }
-
-    /**
-     * Get state
-     *
-     * @return string $state
-     */
-    public function getState()
-    {
-        return $this->state;
     }
 
     /**
