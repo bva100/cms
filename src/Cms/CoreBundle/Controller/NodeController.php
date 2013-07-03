@@ -19,7 +19,7 @@ class NodeController extends Controller {
         $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
-        $host = (string)$this->getRequest()->request->get('host');
+        $domain = (string)$this->getRequest()->request->get('domain');
         $contentTypeId = (string)$this->getRequest()->request->get('contentTypeId'); // for redirect only
         $contentTypeName = (string)$this->getRequest()->request->get('contentTypeName');
         $format = (string)$this->getRequest()->request->get('format');
@@ -44,10 +44,9 @@ class NodeController extends Controller {
         {
             $node->setSiteId($siteId);
         }
-        if ( $host )
+        if ( $domain )
         {
-            // validate user and site have access to this host
-            $node->setHost($host);
+            $node->setDomain($domain);
         }
         if ( $authorName )
         {

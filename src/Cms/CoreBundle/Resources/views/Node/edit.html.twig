@@ -51,7 +51,7 @@
                 <input type="hidden" name="authorName" value="{{ user.name('first_last') }}"/>
                 <input type="hidden" name="templateName" value="{{ site.name }}:Master:Single"/>
                 <input type="hidden" name="slugPrefix" value="{{ contentType.slugPrefix }}"/>
-                <input type="hidden" id="host" name="host" value="{{ site.domains[0] }}" />
+                <input type="hidden" id="domain" name="domain" value="{{ site.domains[0] }}" />
                 <input type="hidden" id='slug' name="slug" value="{{ node.slug|default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="slug" required/>
                 <div id="url-container">
                     {% if node.slug is defined %}

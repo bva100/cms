@@ -59,8 +59,8 @@ Cms\CoreBundle\Document\Node:
             - Type:
                 type: string
                 message: The value {{ value }} is not a valid {{ type }}.
-          host:
-            - NotBlank: { message: 'Please add a hostname' }
+          domain:
+            - NotBlank: { message: 'Please add a domain' }
             - Length:
                 min: 5
                 max: 127
