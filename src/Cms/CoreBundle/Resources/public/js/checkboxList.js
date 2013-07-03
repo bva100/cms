@@ -22,7 +22,7 @@ $(document).ready(function() {
                 });
                 break;
             case 'edit':
-                var id = ids[0];
+                var id = ids.length == 1 ? ids[0] : ids[1] ;
                 window.location.href = baseUrl + '/node/'+id;
                 break;
             default:

@@ -152,5 +152,5 @@
         </div>
     </div>
     <input type="hidden" id="token" value="{{ token }}"/>
-    <input type="hidden" id="baseRoot" value=""/>
+    <input type="hidden" id="baseRoot" value="{{ app.request.baseUrl }}"/>
 {% endblock %}
