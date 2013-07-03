@@ -56,17 +56,24 @@
                 <div id="url-container">
                     {% if node.slug is defined %}
                         {% if node.slug != contentType.slugPrefix ~ node.title | lower %}
-                            <span id="host-container">{{ site.domains[0] }}/</span id='slug-full'>{{ node.slug }}</span>
+                            <span id="host-container" class="label label-info">{{ site.domains[0] }}</span> / <span id='slug-full' class="label label-info">{{ node.slug|trim('/') }}</span>
                         {% else %}
-                            <span id="host-container">{{ site.domains[0] }}/<span id="slug-prefix-container">{{ contentType.slugPrefix }}</span><span id="slug-container">{{ node.title }}</span>
+                            <span id="host-container" class="label label-info">{{ site.domains[0] }}</span> / <span id="slug-prefix-container" class="label label-info">{{ contentType.slugPrefix|trim('/') }}</span> / <span id="slug-container" class="label label-info">{{ node.title }}</span>
                         {% endif %}
                     {% else %}
-                        <span id="host-container">{{ site.domains[0] }}/</span><span id="slug-prefix-container">{{ contentType.slugPrefix }}</span><span id="slug-container"></span>
+                        <span id="host-container" class="label label-info">{{ site.domains[0] }}</span> / <span id="slug-prefix-container" class="label label-info">{{ contentType.slugPrefix|trim('/') }}</span> / <span id="slug-container" class="label label-info"></span>
                     {% endif %}
                 </div>
                 <div class="row-fluid">
                     <div class="span12">
-                        <input type="text" name="title" value="{% if node is defined %}{{ node.title }}{% else %}{{ title|default() }}{% endif %}" id="title" class="span12" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="Title" required/>
+                        {% for domain in site.domains  %}
+                            {{ domain }}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <input type="text" name="title" value="{% if node is defined %}{{ node.title }}{% else %}{{ title|default() }}{% endif %}" id="title" class="span12" pattern="^[a-zA-Z][a-zA-Z0-9- \.]{1,64}$" title="title can only contain letters, numbers and spaces. It must be less than 64 characters." placeholder="Title" required/>
                     </div>
                 </div>
                 <div class="row-fluid">

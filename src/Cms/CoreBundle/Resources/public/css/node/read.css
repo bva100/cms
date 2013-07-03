@@ -2,8 +2,9 @@ input[type="text"], textarea {
     font-size: 18px;
 }
 #url-container{
-    padding: 10px 0px 12px 0px;
+    padding: 10px 0px 0px 0px;
     font-size: 20px;
+    font-size: 22px;
 }
 #view-html {
     min-height: 400px;
@@ -11,4 +12,11 @@ input[type="text"], textarea {
 #notice-container {
     position: relative;
     top: 18px;
+}
+.label {
+    font-size: 18px;
+    padding: 4px 8px 6px;
+}
+.label:hover {
+    cursor: pointer;
 }

@@ -24,7 +24,7 @@ class Node extends Base {
     /**
      * @MongoDB\String
      */
-    private $host;
+    private $domain;
 
     /**
      * @MongoDB\String
@@ -144,25 +144,25 @@ class Node extends Base {
     }
 
     /**
-     * Set host
+     * Set domain
      *
-     * @param string $host
+     * @param string $domain
      * @return self
      */
-    public function setHost($host)
+    public function setDomain($domain)
     {
-        $this->host = $host;
+        $this->domain = $domain;
         return $this;
     }
 
     /**
-     * Get host
+     * Get domain
      *
-     * @return string $host
+     * @return string $domain
      */
-    public function getHost()
+    public function getDomain()
     {
-        return $this->host;
+        return $this->domain;
     }
 
     /**

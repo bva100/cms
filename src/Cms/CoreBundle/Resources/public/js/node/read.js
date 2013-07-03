@@ -5,12 +5,17 @@ $(document).ready(function() {
     }
 });
 
+$("#host-container").click(function(){
+
+})
+
 $("#title").blur(function(){
     var text = $(this).val();
     updateSlug(text);
 });
 
 function updateSlug(text){
+    text = text.replace(/\s+/g, '-').toLowerCase();
     $("#slug-container").text(text);
     $("#slug").val(text);
 }

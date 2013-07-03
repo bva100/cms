@@ -129,7 +129,7 @@
                     <td>
                         <h4><a href="/{{ node.slug }}">{{ node.title|title }}</a></h4>
                         <p class='node-preview'>
-                            {{ node.views['html'] |striptags }}
+                            {{ node.views['html']|striptags }}
                             <a href="/{{ node.slug }}">read more</a>
                         </p>
                     </td>
@@ -140,7 +140,7 @@
                     {% endif %}
                     <td>
                         {% for category in node.categories  %}
-                            {{ category.parent }} - {{ cateogry.child | default() }}
+                            {{ category.parent }} - {{ cateogry.child|default() }}
                         {% endfor %}
                     </td>
                     <td>

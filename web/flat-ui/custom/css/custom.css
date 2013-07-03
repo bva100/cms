@@ -13,6 +13,9 @@
     color: white;
     font-size: 18px;
 }
+.label-info {
+    background-color: #3498DB;
+}
 .navbar-inverse .navbar-inner {
     background: #2C3E50;
     filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled = false)");
