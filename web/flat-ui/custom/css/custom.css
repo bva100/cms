@@ -8,6 +8,11 @@
     background-color: #E74C3C;
     color: white;
 }
+.alert-info {
+    background-color: #3498DB;
+    color: white;
+    font-size: 18px;
+}
 .navbar-inverse .navbar-inner {
     background: #2C3E50;
     filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled = false)");

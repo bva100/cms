@@ -194,9 +194,13 @@ cms_core.media_delete:
   defaults: { _controller: CmsCoreBundle:Media:delete }
   methods: [POST]
 
-cms_core.aws_test:
-  pattern: /aws
-  defaults: { _controller: CmsCoreBundle:Media:aws }
+#session routes
+cms_core.session_notices:
+  pattern: /session/notices.{json}
+  defaults: { _controller: CmsCoreBundle:Session:getNotices, _format: json }
+  methods: [GET]
+  requirements:
+    _format: json
 
 
 #client routes

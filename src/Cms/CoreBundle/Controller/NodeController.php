@@ -69,7 +69,7 @@ class NodeController extends Controller {
         {
             $node->setParentNodeId($parentNodeId);
         }
-        if ( $slug )
+        if ( $slug AND $slug !== $node->getSlug() )
         {
             if ( $slugPrefix )
             {
@@ -169,7 +169,7 @@ class NodeController extends Controller {
             throw $this->createNotFoundException('Node with id '.$id.' not found');
         }
         // ensure use has permission to remove this node
-        $success = $this->get('persister')->delete($node, false, null);
+        $success = $this->get('persister')->delete($node);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {
