@@ -62,6 +62,7 @@ class ContentTypeController extends Controller {
     public function readAction($siteId, $id)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
+        $notices = $this->get('session')->getFlashBag()->get('notices');
         $page = $this->getRequest()->query->get('page');
         if ( ! $page )
         {
@@ -82,6 +83,7 @@ class ContentTypeController extends Controller {
 
         return $this->render('CmsCoreBundle:ContentType:read.html.twig', array(
             'token' => $token,
+            'notices' => $notices,
             'page' => $page,
             'site' => $site,
             'contentType' => $contentType,

@@ -89,7 +89,6 @@ class NodeController extends Controller {
         {
             $node->addView('html', $viewHtml);
         }
-        $node->addJavascript('<script>alert("hello scriptkiddie workd")</script>');
         $success = $this->get('persister')->save($node);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
@@ -168,7 +167,7 @@ class NodeController extends Controller {
         {
             throw $this->createNotFoundException('Node with id '.$id.' not found');
         }
-        // ensure use has permission to remove this node
+        // ensure user has permission to remove this node
         $success = $this->get('persister')->delete($node);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )

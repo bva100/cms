@@ -80,6 +80,8 @@ function deleteNode(id, token){
     $.post('/node/delete', {id: id, token: token}, function(data, textStatus, xhr) {
         if(textStatus == 'success'){
             $('#tr-' + id).remove();
+            $("#notices").html('<div id="content-type-alert" class="alert alert-info">Deleted</div>');
+            $("#content-type-alert").show(0).delay(1000).fadeOut(1000);
         }else{
             alert('Unsuccessful delete. Please try again.');
         }

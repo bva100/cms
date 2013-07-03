@@ -47,6 +47,11 @@ h1 {
 .checkbox-td {
     margin-top: 6px;
 }
+#content-type-alert {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 0px;
+}
 table {
     margin-top: 20px;
 }

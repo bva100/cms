@@ -28,21 +28,17 @@
 
 {% block content %}
     <section class="row-fluid">
-        <div class="span4">
+        <div class="span6">
             {% if node is defined %}
                 <h1>Edit {{ node.title|title }}</h1>
              {% else %}
                  <h1>Create a New {{ contentType.name | title }}</h1>
             {% endif %}
         </div>
-    </section>
-    <div class="row-fluid">
-        <div class="span9">
-            {% block notices %}
-                {{ parent() }}
-            {% endblock %}
+        <div class="span3 hide" id='notice-container'>
+            {% block notices %}{{ parent() }}{% endblock %}
         </div>
-    </div>
+    </section>
     <div class="row-fluid">
         <div class="span9">
             <form action="{{ path('cms_core.node_save') }}" method="post">

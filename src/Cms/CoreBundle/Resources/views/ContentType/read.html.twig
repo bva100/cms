@@ -90,7 +90,12 @@
             <button class="btn btn-inverse btn-lower btn-checkbox-action" data-action='edit' id='edit'><i class="icon-edit"></i> Edit</button>
             <button class="btn btn-inverse btn-lower btn-checkbox-action" data-action='delete' id='delete'><i class="icon-trash"></i> Trash</button>
         </div>
-        <div class="span4 offset4">
+        <div class="span4" id='notices'>
+            {% block notices %}
+                {{ parent() }}
+            {% endblock %}
+        </div>
+        <div class="span4">
             <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page+1}) }}" class="btn btn-inverse btn-lower pull-right" id='pag-next'>Next <i class="icon-chevron-right"></i></a>
             <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page-1}) }}" class="btn btn-inverse btn-lower pull-right" id='pag-previous'><i class="icon-chevron-left"></i> Prev</a>
         </div>
