@@ -10,46 +10,46 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 class NodeRepository extends DocumentRepository {
 
     /**
-     * Find one node by host and slug
+     * Find one node by domain and slug
      *
-     * @param string $host
+     * @param string $domain
      * @param string $slug
      */
-    public function findOneByHostAndSlug($host, $slug)
+    public function findOneByDomainAndSlug($domain, $slug)
     {
         return $this->createQueryBuilder()
-            ->field('host')->equals($host)
+            ->field('domain')->equals($domain)
             ->field('slug')->equals($slug)
             ->getQuery()->execute()->getSingleResult();
     }
 
     /**
-     * Find one node by host and slug and locale
+     * Find one node by domain and slug and locale
      *
-     * @param string $host
+     * @param string $domain
      * @param string $slug
      * @param string $locale
      */
-    public function fineOneByHostAndSlugAndLocale($host, $slug, $locale)
+    public function fineOneByDomainAndSlugAndLocale($domain, $slug, $locale)
     {
         return $this->createQueryBuilder()
-            ->field('host')->equals($host)
+            ->field('domain')->equals($domain)
             ->field('slug')->equals($slug)
             ->field('locale')->equals($locale)
             ->getQuery()->execute()->getSingleResult();
     }
 
     /**
-     * Find by host and locale and contentTypeName and Taxonomy. Can paginate if needed.
+     * Find by domain and locale and contentTypeName and Taxonomy. Can paginate if needed.
      *
-     * @param string $host
+     * @param string $domain
      * @param string $locale
      * @param string $contentTypeName
      * @param array $category
      * @param array $tags
      * @param array $params
      */
-    public function findByHostAndLocaleAndContentTypeNameAndTaxonomy($host, $locale, $contentTypeName, array $category, array $tags, array $params)
+    public function findByDomainAndLocaleAndContentTypeNameAndTaxonomy($domain, $locale, $contentTypeName, array $category, array $tags, array $params)
     {
         if ( ! isset($params['offset']) )
         {
@@ -60,7 +60,7 @@ class NodeRepository extends DocumentRepository {
             $params['limit'] = 20;
         }
         $qb = $this->createQueryBuilder()
-            ->field('host')->equals($host)
+            ->field('domain')->equals($domain)
             ->field('locale')->equals($locale)
             ->field('contentTypeName')->equals($contentTypeName)
             ->field('format')->equals('single');

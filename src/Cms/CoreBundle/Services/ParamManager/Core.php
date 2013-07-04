@@ -88,7 +88,7 @@ class Core {
         $params = \explode('/', $this->path);
         $paramsArray =  array(
             'slug' => $this->path,
-            'host' => $this->request->getHost(),
+            'domain' => $this->request->getHost(),
             'locale' => $this->getLocale(),
         );
         if ( count($params) > 1 )

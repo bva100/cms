@@ -4,18 +4,3 @@ $(document).ready(function() {
         $("#notice-container").show(0).delay(1000).fadeOut(1000);
     }
 });
-
-$("#host-container").click(function(){
-
-})
-
-$("#title").blur(function(){
-    var text = $(this).val();
-    updateSlug(text);
-});
-
-function updateSlug(text){
-    text = text.replace(/\s+/g, '-').toLowerCase();
-    $("#slug-container").text(text);
-    $("#slug").val(text);
-}

@@ -77,7 +77,7 @@ class LoopFinder {
         {
             throw new \Exception('nodeRepo must be set prior to calling LoopFinder::getLoopData');
         }
-        return $this->nodeRepo->findByHostAndLocaleAndContentTypeNameAndTaxonomy($loopNode->getHost(), $loopNode->getLocale(), $loopNode->getContentTypeName(), $category, $tags, $params);
+        return $this->nodeRepo->findByDomainAndLocaleAndContentTypeNameAndTaxonomy($loopNode->getDomain(), $loopNode->getLocale(), $loopNode->getContentTypeName(), $category, $tags, $params);
     }
     
 }

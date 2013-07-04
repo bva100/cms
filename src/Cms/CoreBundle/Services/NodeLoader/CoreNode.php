@@ -67,11 +67,11 @@ class CoreNode {
     {
         if ( isset($this->params['locale']) )
         {
-            return $this->nodeRepo->fineOneByHostAndSlugAndLocale( $this->params['host'], $this->params['slug'], $this->params['locale'] );
+            return $this->nodeRepo->fineOneByDomainAndSlugAndLocale( $this->params['domain'], $this->params['slug'], $this->params['locale'] );
         }
         else
         {
-            return $this->nodeRepo->findOneByHostAndSlug($this->params['host'], $this->params['slug']);
+            return $this->nodeRepo->findOneByDomainAndSlug($this->params['domain'], $this->params['slug']);
         }
     }
 
