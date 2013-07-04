@@ -56,33 +56,13 @@
                 <input type="hidden" id="domain" name="domain" value="{% if node.domain is defined %}{{ node.domain }}{% else %}{{ site.domains[0] }}{% endif %}" />
                 <input type="hidden" id='slug' name="slug" value="{{ node.slug|default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" placeholder="slug" required/>
                 <div id="url-container">
-                    {% if node.slug is defined %}
-                        {% if node.slug != contentType.slugPrefix ~ node.title | lower %}
-                            <span id="domain-container" class="label label-info">
-                                {% if node.domain is defined %}
-                                    {{ node.domain }}
-                                {% else %}
-                                    {{ site.domains[0] }}
-                                {% endif %}
-                            </span> / <span id='slug-full' class="label label-info">{{ node.slug|trim('/') }}</span>
+                    <span id="domain-container" class="label label-info">
+                        {% if node.domain is defined %}
+                            {{ node.domain }}
                         {% else %}
-                            <span id="domain-container" class="label label-info">
-                                {% if node.domain is defined %}
-                                    {{ node.domain }}
-                                {% else %}
-                                    {{ site.domains[0] }}
-                                {% endif %}
-                            </span> / <span id="slug-prefix-container" class="label label-info">{{ contentType.slugPrefix|trim('/') }}</span> / <span id="slug-container" class="label label-info">{{ node.title }}</span>
+                            {{ site.domains[0] }}
                         {% endif %}
-                    {% else %}
-                        <span id="domain-container" class="label label-info">
-                            {% if node.domain is defined %}
-                                {{ node.domain }}
-                            {% else %}
-                                {{ site.domains[0] }}
-                            {% endif %}
-                        </span> / <span id="slug-prefix-container" class="label label-info">{{ contentType.slugPrefix|trim('/') }}</span> / <span id="slug-container" class="label label-info"></span>
-                    {% endif %}
+                    </span> / <span id="slug-prefix-container" class="label label-info">{{ contentType.slugPrefix|trim('/') }}</span> / <span id="slug-container" class="label label-info"></span>
                 </div>
                 <div class="row-fluid hide" id="domain-selector-container">
                     <div class="span4">
