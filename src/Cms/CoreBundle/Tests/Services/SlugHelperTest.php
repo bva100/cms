@@ -55,5 +55,22 @@ class SlugHelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('bar/baz', $this->slugHelper->getSlug());
     }
 
+    /**
+     * @covers Cms\CoreBundle\Services\SlugHelper::isSlugTitle
+     * @covers Cms\CoreBundle\Services\SlugHelper::setTitle
+     * @covers Cms\CoreBundle\Services\SlugHelper::setFullSlug
+     */
+    public function testIsTitleSlug()
+    {
+        $fullSlug = 'foo/bar-boom';
+        $title = 'bar boom';
+        $this->slugHelper->setFullSlug($fullSlug);
+        $this->slugHelper->setTitle($title);
+        $this->assertTrue($this->slugHelper->isTitleSlug());
+
+        $title = 'bazboom';
+        $this->slugHelper->setTitle($title);
+        $this->assertFalse($this->slugHelper->isTitleSlug());
+    }
 
 }

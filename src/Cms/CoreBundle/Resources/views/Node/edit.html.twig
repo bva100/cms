@@ -62,7 +62,7 @@
                         {% else %}
                             {{ site.domains[0] }}
                         {% endif %}
-                    </span> / <span id="slug-prefix-container" class="label label-info">{{ contentType.slugPrefix|trim('/') }}</span> / <span id="slug-container" class="label label-info"></span>
+                    </span> / <span id="slug-prefix-container" class="label label-info">{{ contentType.slugPrefix|trim('/') }}</span> / <span id="slug-container" class="label label-info">{{ slug|default() }}</span>
                 </div>
                 <div class="row-fluid hide" id="domain-selector-container">
                     <div class="span4">
@@ -83,12 +83,16 @@
                     <div class="span4">
                         <div id="slug-selector">
                             <label class="radio radio-slug" data-slug-type="title">
-                                <input type="radio" name="slugType" data-toggle="radio" />Use the title
+                                <input type="radio" name="slugType" data-toggle="radio"
+                                {% if isTitleSlug %}checked{% endif %}
+                                />Use the title
                             </label>
                             <label class="radio radio-slug" data-slug-type="custom">
-                                <input type="radio" name="slugType" data-toggle="radio"/> Use a custom slug
+                                <input type="radio" name="slugType" data-toggle="radio"
+                                {% if not isTitleSlug %}checked{% endif %}
+                                /> Use a custom slug
                             </label>
-                            <input type="text" name="customSlug" placeholder="custom slug" id='input-custom-slug' class="span8 hide"/>
+                            <input type="text" name="customSlug" placeholder="custom slug" id='input-custom-slug' value="{{ slug }}" {% if isTitleSlug %}class="span8 hide"{% else %}class="span8"{% endif %}/>
                         </div>
                     </div>
                 </div>

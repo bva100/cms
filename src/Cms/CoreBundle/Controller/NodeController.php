@@ -120,6 +120,9 @@ class NodeController extends Controller {
             'token' => $token,
             'notices' => $notices,
             'user' => $user,
+            'slug' => null,
+            'slugPrefix' => null,
+            'isTitleSlug' => true,
             'viewHtml' => $viewHtml,
             'title' => $title,
             'site' => $site,
@@ -147,11 +150,15 @@ class NodeController extends Controller {
         {
             throw $this->createNotFoundException('contentType with id '.$id.' was not found');
         }
+        $slugHelper = $this->get('slug_helper')->setFullSlug($node->getSlug())->setTitle($node->getTitle());
         return $this->render('CmsCoreBundle:Node:edit.html.twig', array(
             'token' => $token,
             'notices' => $notices,
             'user' => $user,
             'node' => $node,
+            'slug' => $slugHelper->getSlug(),
+            'slugPrefix' => $slugHelper->getSlugPrefix(),
+            'isTitleSlug' => $slugHelper->isTitleSlug(),
             'site' => $site,
             'contentType' => $contentType,
         ));

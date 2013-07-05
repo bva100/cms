@@ -15,11 +15,19 @@ namespace Cms\CoreBundle\Services;
 class SlugHelper {
 
     /**
-     * @var string $fullSlug
+     * @var string
      */
     private $fullSlug;
 
+    /**
+     * @var array
+     */
     private $slugArray;
+
+    /**
+     * @var string
+     */
+    private $title;
 
     /**
      * @param string $fullSlug
@@ -81,5 +89,41 @@ class SlugHelper {
         return $this->slugArray;
     }
 
+    /**
+     * Set title
+     *
+     * @param $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $title;
+    }
+
+    /**
+     * Is this a titled slug?
+     *
+     * @return bool
+     */
+    public function isTitleSlug()
+    {
+        if ( ! isset($this->title) )
+        {
+            return false;
+        }
+        $sluggedTitle = strtolower(str_replace(' ', '-', $this->title));
+        return $sluggedTitle == $this->getSlug() ? true: false;
+    }
 
 }

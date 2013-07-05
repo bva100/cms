@@ -14,6 +14,7 @@ $(".radio-slug").on('click', function(){
     if(slugType === 'title'){
         $title.attr('data-slug-title','on');
         var text = $title.val();
+        $("#slug-selector-container").hide();
     }else{
         var $customSlug = $('#input-custom-slug');
         $title.attr('data-slug-title', 'off');
@@ -37,6 +38,7 @@ $("#title").blur(function(){
 $('#input-custom-slug').blur(function(){
     var text = $(this).val();
     updateSlug(text);
+    $("#slug-selector-container").hide();
 })
 
 function updateSlug(text){

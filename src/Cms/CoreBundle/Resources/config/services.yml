@@ -11,6 +11,7 @@ parameters:
     aws.key.param: AKIAJN6IC7B5YOWD627Q
     aws.secret.param: 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
     aws.s3_storage_factory.class: Cms\CoreBundle\Services\MediaManager\S3StorageFactory
+    cms.slug_helper.class: Cms\CoreBundle\Services\SlugHelper
 
 services:
     asset_manager:
@@ -42,3 +43,5 @@ services:
         arguments: [@media_storage_factory]
         calls:
           - [setBucket, [shinra_test]]
+    slug_helper:
+        class: %cms.slug_helper.class%
