@@ -92,7 +92,18 @@
                                 {% if not isTitleSlug %}checked{% endif %}
                                 /> Use a custom slug
                             </label>
-                            <input type="text" name="customSlug" placeholder="custom slug" id='input-custom-slug' value="{{ slug }}" {% if isTitleSlug %}class="span8 hide"{% else %}class="span8"{% endif %}/>
+                            <div class="row-fluid">
+                                <div class="span10">
+                                    <input type="text" name="customSlug" placeholder="custom slug" id='input-custom-slug' value="{{ slug }}"  {% if isTitleSlug %}class="span10 hide"{% else %}class="span10"{% endif %}/>
+                                </div>
+                                <div class="span2">
+                                    {% if isTitleSlug %}
+                                        <button class="btn btn-info hide" id="button-custom-slug">ok</button>
+                                    {% else %}
+                                        <button class="btn btn-info" id="button-custom-slug">ok</button>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

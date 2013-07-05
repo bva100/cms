@@ -19,6 +19,7 @@ $(".radio-slug").on('click', function(){
         var $customSlug = $('#input-custom-slug');
         $title.attr('data-slug-title', 'off');
         $customSlug.show();
+        $("#button-custom-slug").show();
         var text = $customSlug.val();
     }
     updateSlug(text);
