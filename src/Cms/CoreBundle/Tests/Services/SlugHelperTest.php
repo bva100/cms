@@ -36,12 +36,23 @@ class SlugHelperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @covers Cms\CoreBundle\Services\SlugHelper::setFullSlug
+     * @covers Cms\CoreBundle\Services\SlugHelper::getSlugArray
+     * @covers Cms\CoreBundle\Services\SlugHelper::getSlug
+     * @covers Cms\CoreBundle\Services\SlugHelper::getSlugPrefix
      */
-    public function testSetFullSlug()
+    public function testSetFullSlugAndGetPrefixAndTestSlug()
     {
         $fullSlug = 'foo/bar';
         $this->slugHelper->setFullSlug($fullSlug);
-        echo '<pre>', \var_dump($this->slugHelper); die();
+        $this->assertEquals(array('foo', 'bar'), $this->slugHelper->getSlugArray());
+        $this->assertEquals('foo', $this->slugHelper->getSlugPrefix());
+        $this->assertEquals('bar', $this->slugHelper->getSlug());
+
+        $fullSlug = 'foo/bar/baz';
+        $this->slugHelper->setFullSlug($fullSlug);
+        $this->assertEquals(array('foo', 'bar', 'baz'), $this->slugHelper->getSlugArray());
+        $this->assertEquals('foo', $this->slugHelper->getSlugPrefix());
+        $this->assertEquals('bar/baz', $this->slugHelper->getSlug());
     }
 
 

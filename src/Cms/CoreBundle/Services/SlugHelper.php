@@ -56,6 +56,16 @@ class SlugHelper {
     }
 
     /**
+     * Get slug "affix"
+     *
+     * @return null
+     */
+    public function getSlug()
+    {
+        return ltrim(str_replace($this->getSlugPrefix(), '', $this->fullSlug), '/');
+    }
+
+    /**
      * @return $this
      */
     private function createSlugArray()
