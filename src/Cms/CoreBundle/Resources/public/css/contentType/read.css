@@ -10,15 +10,11 @@ h1 {
     margin: 14px 0px;
 }
 #search {
-    /*height: 17px;*/
     max-width: 410px;
 }
 #header a {
     color: #3498DB;
     font-size: 18px;
-}
-.btn-lower {
-    padding-top: 7px;
 }
 @media (max-width: 767px) {
     #search-container {
@@ -29,16 +25,19 @@ h1 {
     }
 }
 #edit, #delete {
-    width: 77px;
-}
-#edit {
-    margin-right: 10px;
+    max-width: 72px;
+    padding-right: 10px; padding-left: 10px;
 }
 #pag-next, #pag-previous {
-    width: 54px;
+    max-width: 72px;
 }
 #pag-previous {
-    margin-right: 12px;
+    margin-right: 10px;
+}
+@media (max-width: 1170px) {
+    .btn-lower > i {
+        display: none;
+    }
 }
 #master-checkbox-container {
     position: relative;
