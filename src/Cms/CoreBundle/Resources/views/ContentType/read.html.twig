@@ -40,7 +40,7 @@
     </div>
     <div class="row-fluid">
         <div class="span2">
-            <select name="state" value="state" class="select-block span2">
+            <select name="state" value="state" class="select-block span12">
                 <option value="0">View All States</option>
                 <option value="draft">Drafts</option>
                 <option value="active">Published</option>
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="span2">
-            <select name="category" value="category" class="select-block span2">
+            <select name="category" value="category" class="select-block span12">
                 <option value="0">View All Categories</option>
                 {% for category in contentType.categories   %}
                     <option value="{{ category.parent }}">{{ category.parent }}</option>
@@ -76,7 +76,7 @@
             </select>
         </div>
         <div class="span2">
-            <select name="tag" value="tag" class="select-block span2">
+            <select name="tag" value="tag" class="select-block span12">
                 <option value="0">View All Tags</option>
                 {% for tag in contentType.tags   %}
                     <option value="{{ category.tag }}">{{ category.tag }}</option>
@@ -86,7 +86,7 @@
             </select>
         </div>
         <div class="span2">
-            <select name="author" value="author" class="select-block span2">
+            <select name="author" value="author" class="select-block span12">
                 <option value="0">View All Authors</option>
                 {% for tag in contentType.tags   %}
                     <option value="{{ category.tag }}">{{ category.tag }}</option>
@@ -102,8 +102,10 @@
     <hr>
     <div class="row-fluid">
         <div class="span4">
-            <button class="btn btn-inverse btn-lower btn-checkbox-action" data-action='edit' id='edit'><i class="icon-edit"></i> Edit</button>
-            <button class="btn btn-inverse btn-lower btn-checkbox-action" data-action='delete' id='delete'><i class="icon-trash"></i> Trash</button>
+            <div class="row-fluid">
+                <button class="btn btn-inverse btn-lower btn-checkbox-action" data-action='edit' id='edit'><i class="icon-edit"></i> Edit</button>
+                <button class="btn btn-inverse btn-lower btn-checkbox-action" data-action='delete' id='delete'><i class="icon-trash"></i> Trash</button>
+            </div>
         </div>
         <div class="span4" id='notices'>
             {% block notices %}

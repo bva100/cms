@@ -56,11 +56,28 @@
 .radio.checked .icons {
     color: #3498DB;
 }
-i .dropdown-arrow {
-    color: #2C3E50;
+.dropdown-arrow-inverse {
+    border-bottom-color: #34495e !important;
+    border-top-color: #34495e !important;
 }
-
-
+.dropdown-menu li.active > a,
+.dropdown-menu li.selected > a,
+.dropdown-menu li.active > a.highlighted,
+.dropdown-menu li.selected > a.highlighted {
+    background: #3498DB;
+    color: #ffffff;
+}
+.dropdown-menu li.active > a:hover,
+.dropdown-menu li.selected > a:hover,
+.dropdown-menu li.active > a.highlighted:hover,
+.dropdown-menu li.selected > a.highlighted:hover,
+.dropdown-menu li.active > a:focus,
+.dropdown-menu li.selected > a:focus,
+.dropdown-menu li.active > a.highlighted:focus,
+.dropdown-menu li.selected > a.highlighted:focus {
+    background: #2980B9;
+    color: #ffffff;
+}
 .control-group.focus textarea,
 .control-group.focus input[type="text"],
 .control-group.focus input[type="password"],
