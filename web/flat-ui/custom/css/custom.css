@@ -56,6 +56,11 @@
 .radio.checked .icons {
     color: #3498DB;
 }
+i .dropdown-arrow {
+    color: #2C3E50;
+}
+
+
 .control-group.focus textarea,
 .control-group.focus input[type="text"],
 .control-group.focus input[type="password"],

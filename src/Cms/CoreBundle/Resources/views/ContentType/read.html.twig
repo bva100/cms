@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
+        'flat-ui/calendar/jquery-ui-1.10.3.custom.min.css'
         '@CmsCoreBundle/Resources/public/css/contentType/read.css'
         filter='cssrewrite, ?yui_css' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
@@ -14,6 +15,7 @@
     {% javascripts
         'flat-ui/js/bootstrap-select.js'
         'flat-ui/js/flatui-checkbox.js'
+        'flat-ui/js/flatui-calendar.js'
         '@CmsCoreBundle/Resources/public/js/checkboxList.js'
         '@CmsCoreBundle/Resources/public/js/contentType/read.js'
         filter='?yui_js' %}
@@ -46,9 +48,22 @@
             </select>
         </div>
         <div class="span2">
-            <select name="month" value="month" class="select-block span2">
-                <option value="0">Show All Dates</option>
-            </select>
+            <button class="btn btn-info span12 flatui-calendar">
+                <span class="pull-left flatui-calendar-text">View All Dates</span>
+                <span class="caret pull-right"></span>
+            </button>
+            <div class="row-fluid hide" id='flatui-calendar-input-container'>
+                <div class="span12">
+                    <label for="start-date" class="date-input-label">from:</label>
+                    <input type="text" class="flatui-calendar-input-start date-input span12" id='start-date'/>
+                    <label for="end-date" class="date-input-label">to:</label>
+                    <input type="text" class="flatui-calendar-input-end date-input span12" id='end-date'/>
+                    <div class="row-fluid" id="flatui-calendar-input-button-container">
+                            <button class="btn span6" id="flatui-calendar-cancel-dates">clear</button>
+                        <button class="btn btn-info span6" id='flatui-calendar-confirm-dates'>ok</button>
+                    </div>
+                 </div>
+            </div>
         </div>
         <div class="span2">
             <select name="category" value="category" class="select-block span2">

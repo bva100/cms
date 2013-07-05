@@ -9,6 +9,12 @@
     {% endstylesheets %}
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {#<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>#}
+    <script src="/dependencies/jqueryui-1.10.3.min.js"></script>
+{% endblock %}
+
 {% block notices %}
     {% if notices is not empty %}
         <aside>
