@@ -112,3 +112,6 @@ input[type="color"]:focus,
 .uneditable-input:focus {
     border-color: #3498DB;
 }
+.table tbody tr:hover td {
+    background-color: #ECF0F1;
+}

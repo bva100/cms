@@ -90,7 +90,6 @@ class ContentTypeController extends Controller {
         {
             $page = 1;
         }
-        
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -101,8 +100,11 @@ class ContentTypeController extends Controller {
         {
             throw $this->createNotFoundException('ConentType with id '.$id.' not found');
         }
-        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findByContentTypeName($contentType->getName());
-
+        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentType($siteId, $contentType->getName(), array(
+            'limit' => 5,
+            'offset' => 5*($page-1),
+//            'tags' => explode(',', 'dogs,behavior'),
+        ));
         return $this->render('CmsCoreBundle:ContentType:read.html.twig', array(
             'token' => $token,
             'notices' => $notices,

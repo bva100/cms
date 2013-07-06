@@ -1,4 +1,5 @@
 $("#domain-container").on('click', function(){
+    $("#slug-selector-container").hide();
     $("#domain-selector-container").toggle();
 });
 
@@ -26,6 +27,7 @@ $(".radio-slug").on('click', function(){
 });
 
 $("#slug-container").on('click', function(){
+    $("#domain-selector-container").hide();
     $("#slug-selector-container").toggle();
 });
 

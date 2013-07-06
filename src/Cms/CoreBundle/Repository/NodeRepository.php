@@ -88,18 +88,39 @@ class NodeRepository extends DocumentRepository {
      * @param array $params
      * @returns collection of entities
      */
-    public function findBySiteIdAndContentType($siteId, $contentTypeName, array $params = array('offset' => 0, 'limit' => 20))
+    public function findBySiteIdAndContentTypeAndState($siteId, $contentTypeName, $state, array $params = array('offset' => 0, 'limit' => 20))
     {
-        $qb = $this->createQueryBuilder();
-        if ( isset($siteId) )
+        $qb = $this->createQueryBuilder()
+                ->field('siteId')->equals($siteId)
+                ->field('contentTypeName')->equals($contentTypeName);
+        if ( isset($state) )
         {
-            $qb->field('siteId')->equals($siteId);
+            $qb->field('state')->equals($state);
         }
-        if ( isset($contentType) )
+        if ( isset($params['startDate']) )
         {
-            $qb->field('contentTypeName')->equals($contentTypeName);
+            $qb->field('created')->gte($params['startDate']);
+        }
+        if ( isset($params['endDate']) )
+        {
+            $qb->field('created')->lte($params['endDate']);
+        }
+        if ( isset($params['tags']) AND ! empty($params['tags']) )
+        {
+            $qb->field('tags')->in($params['tags']);
         }
         return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
+    }
+
+    /**
+     * @param string $siteId
+     * @param string $contentTypeName
+     * @param array $params
+     * @returns collection of entities
+     */
+    public function findBySiteIdAndContentType($siteId, $contentTypeName, array $params = array('offset' => 0, 'limit' => 20))
+    {
+        return $this->findBySiteIdAndContentTypeAndState($siteId, $contentTypeName, 'active', $params);
     }
 
     /**
@@ -110,15 +131,5 @@ class NodeRepository extends DocumentRepository {
     {
         return $this->findBySiteIdAndContentType($siteId, null, $params);
     }
-
-    /**
-     * @param string $contentTypeName
-     * @param array $params
-     */
-    public function findByContentTypeName($contentTypeName, array $params = array('offset' => 0, 'limit' => 20))
-    {
-        return $this->findBySiteIdAndContentType(null, $contentTypeName, $params);
-    }
-
     
 }
