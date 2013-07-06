@@ -59,6 +59,28 @@ class ContentTypeController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $siteId)));
     }
 
+    public function settingsAction($siteId, $id)
+    {
+        $token = $this->get('csrfToken')->createToken()->getToken();
+        $notices = $this->get('session')->getFlashBag()->get('notices');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$id.' not found');
+        }
+        $contentType = $site->getContentType($id);
+        if ( ! $contentType )
+        {
+            throw $this->createNotFoudnExcpetion('Content type with id '.$id.' not found');
+        }
+        return $this->render('CmsCoreBundle:ContentType:settings.html.twig', array(
+            'token' => $token,
+            'notices' => $notices,
+            'site' => $site,
+            'contentType' => $contentType,
+        ));
+    }
+
     public function readAction($siteId, $id)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();

@@ -1,0 +1,15 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block title %}
+    {{ site.name | title }} Settings {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ site.name | title }} Settings</h1>
+    <legend>Manage Content Types</legend>
+    <ul>
+        {% for contentType in contentTypes  %}
+            <li><a href="{{ path('cms_core.contentType_settings', {'siteId':site.id, 'id':contentType.id}) }}">{{ contentType.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

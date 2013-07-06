@@ -248,14 +248,33 @@ class ContentType extends Base {
     }
 
     /**
-     * Set tags
+     * Add a tag
      *
-     * @param collection $tags
-     * @return self
+     * @param $tag
+     * @return $this
      */
-    public function setTags($tags)
+    public function addTag($tag)
     {
-        $this->tags = $tags;
+        if ( ! \is_string($tag) OR in_array($tag, $this->tags) )
+        {
+            return $this;
+        }
+        $this->tags[] = $tag;
+        return $this;
+    }
+
+    public function removeTag($tag)
+    {
+        if ( ! \is_string($tag) )
+        {
+            return $this;
+        }
+        $keys = \array_keys($this->tags, $tag);
+        foreach ($keys as $key)
+        {
+            unset($this->tags[$key]);
+            $this->tags = array_values($this->tags);
+        }
         return $this;
     }
 

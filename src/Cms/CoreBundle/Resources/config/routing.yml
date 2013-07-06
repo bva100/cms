@@ -26,12 +26,16 @@ cms_core.app_index:
   defaults: { _controller: CmsCoreBundle:App:Index }
   methods: [GET]
 
-
 #site
 cms_core.site_save:
   pattern: /site
   defaults: { _controller: CmsCoreBundle:Site:save }
   methods: [POST]
+
+cms_core.site_settings:
+  pattern: /site/settings/{id}
+  defaults: { _controller: CmsCoreBundle:Site:settings }
+  methods: [GET]
 
 cms_core.site_read:
   pattern: /site/{id}
@@ -50,6 +54,11 @@ cms_core.contentType_save:
   defaults: { _controller: CmsCoreBundle:ContentType:save }
   methods: [POST]
 
+cms_core.contentType_settings:
+  pattern: /contentType/settings/{siteId}/{id}
+  defaults: { _controller: CmsCoreBundle:ContentType:settings }
+  methods: [GET]
+
 cms_core.contentType_read:
   pattern: /contentType/{siteId}/{id}
   defaults: { _controller: CmsCoreBundle:ContentType:read }
@@ -59,7 +68,6 @@ cms_core.contentType_delete:
   pattern: /contentType/delete
   defaults: { _controller: CmsCoreBundle:ContentType:delete }
   methods: [POST]
-
 
 #node
 cms_core.node_delete:

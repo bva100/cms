@@ -89,7 +89,7 @@
         <li class="divider"></li>
         <li><a href="#"><i class="icon-eye-open"></i> Theme</a></li>
         <li><a href="#"><i class="icon-list-ul"></i> Menus</a></li>
-        <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
+        <li><a href="{{ path('cms_core.site_settings', {'id':site.id | default()}) }}"><i class="icon-cog"></i> Settings</a></li>
         <li><a href="#"><i class="icon-group"></i> Users</a></li>
     </ul>
 </nav>

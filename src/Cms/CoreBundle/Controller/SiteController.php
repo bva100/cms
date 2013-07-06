@@ -45,6 +45,21 @@ class SiteController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $site->getId())));
     }
 
+    public function settingsAction($id)
+    {
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$id.' not found');
+        }
+        // ensure user has access to sites settings
+        $contentTypes = $site->getContentTypes();
+        return $this->render('CmsCoreBundle:Site:settings.html.twig', array(
+            'site' => $site,
+            'contentTypes' => $contentTypes,
+        ));
+    }
+
     public function readAction($id)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();

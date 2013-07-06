@@ -1,0 +1,21 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block title %}
+    {{ contentType.name | title }} Settings {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <article>
+        <div class="row-fluid">
+            <div class="span12">
+                <h1>{{ contentType.name | title }} Settings</h1>
+            </div>
+        </div>
+    </article>
+
+    <nav class="row-fluid">
+        <div class="span12">
+            <a href="{{ path('cms_core.site_settings', {'id':site.id}) }}">Back to {{ site.name |title }} Settings</a>
+        </div>
+    </nav>
+{% endblock %}
