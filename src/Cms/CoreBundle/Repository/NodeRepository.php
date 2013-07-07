@@ -99,16 +99,38 @@ class NodeRepository extends DocumentRepository {
         }
         if ( isset($params['startDate']) )
         {
-            $qb->field('created')->gte($params['startDate']);
+            $qb->field('created')->gte((int)$params['startDate']);
         }
         if ( isset($params['endDate']) )
         {
-            $qb->field('created')->lte($params['endDate']);
+            $qb->field('created')->lte((int)$params['endDate']);
         }
         if ( isset($params['tags']) AND ! empty($params['tags']) )
         {
-            $qb->field('tags')->in($params['tags']);
+            $qb->field('tags')->in((string)$params['tags']);
         }
+        if ( isset($params['categoryParent']) )
+        {
+            $qb->field('categories.parent')->equals((string)$params['categoryParent']);
+        }
+        if ( isset($params['categorySub']) )
+        {
+            $qb->field('categories.sub')->equals((string)$category['categorySub']);
+        }
+        if ( isset($params['authorFirstName']) )
+        {
+            $qb->field('author.name.first')->equals(ucfirst($params['authorFirstName']));
+        }
+        if ( isset($params['authorLastName']) )
+        {
+            $qb->field('author.name.last')->equals(ucfirst($params['authorLastName']));
+        }
+        if ( isset($params['search']) )
+        {
+            $qb->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
+            $qb->addOr($qb->expr()->field('view.html')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
+        }
+        
         return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
 

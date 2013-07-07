@@ -85,6 +85,19 @@ class ContentTypeController extends Controller {
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
+        $state = $this->getRequest()->query->get('state');
+        $startDate = $this->getRequest()->query->get('startDate');
+        $endDate = $this->getRequest()->query->get('endDate');
+        $categoryParent = $this->getRequest()->query->get('categoryParent');
+        $categorySub = $this->getRequest()->query->get('categorySub');
+        $authorFirstName = $this->getRequest()->query->get('authorFirstName');
+        $authorLastName = $this->getRequest()->query->get('authorLastName');
+        $search = $this->getRequest()->query->get('search');
+        $tags = $this->getRequest()->query->get('tags');
+        if ( $tags )
+        {
+            $tags = explode(',', $tags);
+        }
         $page = $this->getRequest()->query->get('page');
         if ( ! $page )
         {
@@ -103,7 +116,14 @@ class ContentTypeController extends Controller {
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentType($siteId, $contentType->getName(), array(
             'limit' => 5,
             'offset' => 5*($page-1),
-//            'tags' => explode(',', 'dogs,behavior'),
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'tags' => $tags,
+            'categoryParent' => $categoryParent,
+            'categorySub' => $categorySub,
+            'authorFirstName' => $authorFirstName,
+            'authorLastName' => $authorLastName,
+            'search' => $search,
         ));
         return $this->render('CmsCoreBundle:ContentType:read.html.twig', array(
             'token' => $token,
