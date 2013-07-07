@@ -7,7 +7,7 @@ $(document).ready(function() {
     });
     $('.btn-checkbox-action').on('click', function(){
         token = $("#token").val();
-        baseUrl = $("#baseRoot").val();
+        baseUrl = $("#baseUrl").val();
         var action = $(this).attr('data-action');
         var isChecked = checkIfNone();
         if(isChecked == 0){
