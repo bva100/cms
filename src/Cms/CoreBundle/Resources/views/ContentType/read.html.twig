@@ -229,8 +229,8 @@
                 <button class="btn btn-inverse btn-lower span3 btn-checkbox-action delete" data-action='delete'><i class="icon-trash"></i> Trash</button>
             </div>
             <div class="span4 offset4">
-                <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page+1}) }}" class="btn btn-inverse btn-lower span3 pull-right pag-next">Next <i class="icon-chevron-right"></i></a>
-                <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id, 'page':page-1}) }}" class="btn btn-inverse btn-lower span3 pull-right pag-previous" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</a>
+                <button class="btn btn-inverse btn-lower span3 pull-right pag-next">Next <i class="icon-chevron-right"></i></button>
+                <button class="btn btn-inverse btn-lower span3 pull-right pag-previous" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
             </div>
         </div>
     {% endif %}

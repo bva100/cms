@@ -15,6 +15,18 @@ $(".load-data").click(function(){
     loadData();
 });
 
+$(".pag-next").click(function(){
+    $page = $("#page");
+    $page.val( parseInt($page.val()) + 1 );
+    loadData();
+});
+
+$(".pag-previous").click(function(){
+    $page = $("#page");
+    $page.val( parseInt($page.val())-1 );
+    loadData();
+});
+
 function queryStringParams(){
     var str = '';
     var page = document.getElementById('page').value;
