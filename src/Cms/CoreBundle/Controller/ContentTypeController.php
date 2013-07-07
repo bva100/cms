@@ -100,6 +100,7 @@ class ContentTypeController extends Controller {
         {
             $page = 1;
         }
+        $nextPage = 5*($page-1) >= 5 ? false : true ;
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -125,8 +126,9 @@ class ContentTypeController extends Controller {
         return $this->render('CmsCoreBundle:ContentType:read.html.twig', array(
             'token' => $token,
             'notices' => $notices,
-            'page' => $page,
             'site' => $site,
+            'page' => $page,
+            'nextPage' => $nextPage,
             'state' => $state,
             'contentType' => $contentType,
             'nodes' => $nodes,
