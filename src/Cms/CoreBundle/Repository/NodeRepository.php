@@ -107,7 +107,7 @@ class NodeRepository extends DocumentRepository {
         }
         if ( isset($params['tags']) AND ! empty($params['tags']) )
         {
-            $qb->field('tags')->in((string)$params['tags']);
+            $qb->field('tags')->in($params['tags']);
         }
         if ( isset($params['categoryParent']) )
         {
@@ -115,7 +115,7 @@ class NodeRepository extends DocumentRepository {
         }
         if ( isset($params['categorySub']) )
         {
-            $qb->field('categories.sub')->equals((string)$category['categorySub']);
+            $qb->field('categories.sub')->equals((string)$params['categorySub']);
         }
         if ( isset($params['authorFirstName']) )
         {

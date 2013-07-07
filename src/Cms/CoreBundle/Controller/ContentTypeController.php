@@ -94,10 +94,7 @@ class ContentTypeController extends Controller {
         $authorLastName = $this->getRequest()->query->get('authorLastName');
         $search = $this->getRequest()->query->get('search');
         $tags = $this->getRequest()->query->get('tags');
-        if ( $tags )
-        {
-            $tags = explode(',', $tags);
-        }
+        $tagArray = $tags ? explode(',', $tags) : array();
         $page = $this->getRequest()->query->get('page');
         if ( ! $page )
         {
@@ -113,12 +110,12 @@ class ContentTypeController extends Controller {
         {
             throw $this->createNotFoundException('ConentType with id '.$id.' not found');
         }
-        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentType($siteId, $contentType->getName(), array(
+        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentTypeAndState($siteId, $contentType->getName(), $state, array(
             'limit' => 5,
             'offset' => 5*($page-1),
             'startDate' => $startDate,
             'endDate' => $endDate,
-            'tags' => $tags,
+            'tags' => $tagArray,
             'categoryParent' => $categoryParent,
             'categorySub' => $categorySub,
             'authorFirstName' => $authorFirstName,
@@ -130,8 +127,17 @@ class ContentTypeController extends Controller {
             'notices' => $notices,
             'page' => $page,
             'site' => $site,
+            'state' => $state,
             'contentType' => $contentType,
             'nodes' => $nodes,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'categoryParent' => $categoryParent,
+            'categorySub' => $categorySub,
+            'tags' => $tags,
+            'authorFirstName' => $authorFirstName,
+            'authorLastName' => $authorLastName,
+            'search' => $search,
         ));
     }
 

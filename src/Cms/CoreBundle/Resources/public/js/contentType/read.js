@@ -6,6 +6,45 @@ $(document).ready(function() {
     $('#tags').tagsInput();
 });
 
+$(".load-data-form").submit(function(event){
+    event.preventDefault();
+    loadData();
+});
+
+$(".load-data").click(function(){
+    loadData();
+});
+
+function queryStringParams(){
+    var str = '';
+    var page = document.getElementById('page').value;
+    var state = document.getElementById('input-state').value;
+    var startDate = document.getElementById('start-date').value;
+    var endDate = document.getElementById('end-date').value;
+    var tags = document.getElementById('tags').value;
+    var categoryParent =  document.getElementById('category-parent').value;
+    var categorySub =  document.getElementById('category-sub').value;
+    var authorFirstName = document.getElementById('author-first-name').value;
+    var authorLastName = document.getElementById('author-last-name').value;
+    var search = document.getElementById('search').value;
+    str = str+'?page='+page;
+    if(state){str = str+'&state='+encodeURIComponent(state);}
+    if(startDate){str = str+'&startDate='+encodeURIComponent(startDate)}
+    if(endDate){str = str+'&endDate='+encodeURIComponent(endDate)}
+    if(tags){str = str+'&tags='+encodeURIComponent(tags)}
+    if(categoryParent){str = str+'&categoryParent='+encodeURIComponent(categoryParent)}
+    if(categorySub){str = str+'&categorySub='+encodeURIComponent(categorySub)}
+    if(authorFirstName){str = str+'&authorFirstName='+encodeURIComponent(authorFirstName)}
+    if(authorLastName){str = str+'&authorLastName='+encodeURIComponent(authorLastName)}
+    if(search){str = str+'&search='+encodeURIComponent(search)}
+    return str;
+}
+
+function loadData(){
+    queryStringParams = queryStringParams();
+    window.location = window.location.pathname + queryStringParams;
+}
+
 $('a[disabled=disabled]').click(function(event){
     event.preventDefault();
     return false;
