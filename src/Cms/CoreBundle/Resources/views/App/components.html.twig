@@ -94,3 +94,20 @@
     </ul>
 </nav>
 {% endblock %}
+
+{% block footer %}
+    <div class="row-fluid">
+        <footer id='primary-footer'>
+            <div class="span10">
+                <ul>
+                    <li>Thanks for publishing your content on <a href="{{ path('_welcome') }}">PipeStack</a></li>
+                    <li>|</li>
+                    <li>Need a hand? <a href="#">Get Help</a></li>
+                </ul>
+            </div>
+            <div class="span2">
+                Using version Alpha - 1.0
+            </div>
+        </footer>
+    </div>
+{% endblock %}

@@ -30,211 +30,249 @@
 
 {% block content %}
     {{ parent() }}
-    <div class="row-fluid">
-        <div class="span6" id='header'>
-            <h1>{{ contentType.name|title }}</h1>
-            <a href="{{ path('cms_core.node_new', {'siteId':site.id, 'contentTypeId':contentType.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
-        </div>
-        <div class="span4 pull-right" id="search-container">
-            <form class="load-data-form">
-                <input type="search" id="search" class="span2 pull-right" value="{{ search }}" placeholder="Search"/>
-            </form>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span2">
-            <select name="state"  class="select-block span2" id='input-state'>
-                <option value="">View All States</option>
-                <option value="draft" {% if state == 'draft' %}selected{% endif %}>Drafts</option>
-                <option value="active" {% if state == 'active' %}selected{% endif %}>Published</option>
-                <option value="scheduled" {% if state == 'scheduled' %}selected{% endif %}>Scheduled</option>
-            </select>
-        </div>
-        <div class="span2">
-            <button class="btn btn-info span12 flatui-calendar">
-                <span class="pull-left flatui-calendar-text">
-                    {% if startDate or endDate %}
-                        Change Dates
-                    {% else %}
-                        View All Dates
-                    {% endif %}
-                </span>
-                <span class="caret pull-right"></span>
-            </button>
-            <div class="row-fluid hide" id='flatui-calendar-input-container'>
-                <div class="span12">
-                    <label for="start-date" class="date-input-label">From:</label>
-                    <input type="text" class="flatui-calendar-input-start date-input span12" id='start-date' value="{% if startDate %}{{ startDate|date('m/d/Y') }}{% endif %}"/>
-                    <label for="end-date" class="date-input-label">To:</label>
-                    <input type="text" class="flatui-calendar-input-end date-input span12" id='end-date' value="{% if endDate %}{{ endDate|date('m/d/Y') }}{% endif %}"/>
-                    <div class="row-fluid" id="flatui-calendar-input-button-container">
-                            <button class="btn span6" id="flatui-calendar-cancel-dates">clear</button>
-                        <button class="btn btn-info span6" id='flatui-calendar-confirm-dates'>ok</button>
-                    </div>
-                 </div>
-            </div>
-        </div>
-        <div class="span2">
-            <button class="btn btn-info span12" id='category-opener'>
-                <span class="pull-left" id='category-opener-text'>
-                    {% if categoryParent or categorySub %}
-                        Change Category
-                    {% else %}
-                        View Category
-                    {% endif %}
-                </span>
-                <span class="caret pull-right"></span>
-            </button>
-            <div class="row-fluid hide" id="category-container">
-                <div class="span12">
-                    <label for="category-parent">Parent:</label>
-                    <input type="text" class="span12" id="category-parent" value="{{ categoryParent|default() }}"/>
-                    <label for="category-sub">Sub:</label>
-                    <input type="text" class="span12" id="category-sub" value="{{ categorySub|default() }}"/>
-                    <div class="row-fluid" id="category-button-container">
-                        <button class="btn span6" id="category-cancel">clear</button>
-                        <button class="btn btn-info span6" id='category-confirm'>ok</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="span2">
-            <button class="btn btn-info span12" id='tag-opener'>
-                <span class="pull-left" id='tag-opener-text'>
-                    {% if tags %}
-                        Change Tags
-                    {% else %}
-                        View All Tags
-                    {% endif %}
-                </span>
-                <span class="caret pull-right"></span>
-            </button>
-            <div class="row-fluid hide" id="tag-container">
-                <div class="span12">
-                    <label for="tags">Tags:</label>
-                    <input type="text"  class="span12" name='tags' id="tags" value="{{ tags|default() }}" />
-                    <div class="row-fluid" id="tag-button-container">
-                        <button class="btn span6" id="tag-cancel">clear</button>
-                        <button class="btn btn-info span6" id='tag-confirm'>ok</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="span2">
-            <button class="btn btn-info span12" id='author-opener'>
-                <span class="pull-left" id='author-opener-text'>
-                    {% if authorFirstName or authorLastName %}
-                        Change Author
-                    {% else %}
-                        View All Authors
-                    {% endif %}
-                </span>
-                <span class="caret pull-right"></span>
-            </button>
-            <div class="row-fluid hide" id="author-container">
-                <div class="span12">
-                    <label for="author-first-name">First Name:</label>
-                    <input type="text" class="span12" id="author-first-name" value="{{ authorFirstName|title|default() }}"/>
-                    <label for="author-last-name">Last Name:</label>
-                    <input type="text" class="span12" id="author-last-name" value="{{ authorLastName|title|default() }}"/>
-                    <div class="row-fluid" id="author-input-button-container">
-                        <button class="btn span6" id="author-cancel">clear</button>
-                        <button class="btn btn-info span6" id='author-confirm'>ok</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="span2">
-            <button class="btn btn-info btn-block load-data"><i class="icon-filter"></i> Filter</button>
-        </div>
-    </div>
-    <hr>
-    <div class="row-fluid">
-        <div class="span4">
-            <button class="btn btn-inverse btn-lower span3 btn-checkbox-action edit" data-action='edit'><i class="icon-edit"></i> Edit</button>
-            <button class="btn btn-inverse btn-lower span3 btn-checkbox-action delete" data-action='delete'><i class="icon-trash"></i> Trash</button>
-        </div>
-        <div class="span4" id='notices'>
-            {% block notices %}
-                {{ parent() }}
-            {% endblock %}
-        </div>
-        <div class="span4">
-            <button class="btn btn-inverse btn-lower span3 pull-right pag-next" {% if nextPage == false %}disabled="disabled"{% endif %}>Next <i class="icon-chevron-right"></i></button>
-            <button class="btn btn-inverse btn-lower span3 pull-right pag-previous" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span12">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>
-                        <label class="checkbox master-checkbox" for="master-checkbox" id="master-checkbox-container" data-state='off'>
-                            <input type="checkbox" data-toggle="checkbox" name="master-checkbox" id="selectall"/>
-                        </label>
-                    </th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Categories</th>
-                    <th>Tags</th>
-                    <th>Commments</th>
-                    <th>Created</th>
-                </tr>
-                </thead>
-                <tbody class="checkbox-container">
-                {% for node in nodes  %}
-                <tr id="tr-{{ node.id }}">
-                    <td>
-                        <label class="checkbox checkbox-td" for="checkbox-{{ node.id }}" data-id="{{ node.id }}">
-                            <input type="checkbox" class="slave-checkbox selectedId" data-toggle="checkbox" name="content-checkbox" id="checkbox-{{ node.id }}"/>
-                        </label>
-                    </td>
-                    <td>
-                        <h4><a href="/{{ node.slug }}">{{ node.title|title }}</a></h4>
-                        <p class='node-preview'>
-                            {{ node.views['html']|striptags|truncate(203) }}
-                            {% if node.views['html']|striptags|length > 203 %}
-                                <a href="/{{ node.slug }}">read more</a>
-                            {% endif %}
-                        </p>
-                    </td>
-                    {% if node.author.name is defined %}
-                        <td><a href="{{ node.author.url|default('#') }}">{{ node.author.name }}</a></td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                    <td>
-                        {% for category in node.categories  %}
-                            {{ category.parent }} - {{ cateogry.child|default() }}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for tag in node.tags  %}
-                            {{ tag }}
-                        {% endfor %}
-                    </td>
-                    <td>{{ comment|default()|length }}</td>
-                    <td>{{  node.created }}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    {% if nodes.count > 5 %}
+    <article>
         <div class="row-fluid">
-            <div class="span4">
-                <button class="btn btn-inverse btn-lower span3 btn-checkbox-action edit" data-action='edit'><i class="icon-edit"></i> Edit</button>
-                <button class="btn btn-inverse btn-lower span3 btn-checkbox-action delete" data-action='delete'><i class="icon-trash"></i> Trash</button>
+            <div class="span6" id='header'>
+                <h1>{{ contentType.name|title }}</h1>
+                <a href="{{ path('cms_core.node_new', {'siteId':site.id, 'contentTypeId':contentType.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
             </div>
-            <div class="span4 offset4">
-                <button class="btn btn-inverse btn-lower span3 pull-right pag-next" {% if nextPage == false %}disabled="disabled"{% endif %}>Next <i class="icon-chevron-right"></i></button>
-                <button class="btn btn-inverse btn-lower span3 pull-right pag-previous" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
+            <div class="span4 pull-right" id="search-container">
+                <form class="load-data-form">
+                    <input type="search" id="search" class="span2 pull-right" value="{{ search }}" placeholder="Search"/>
+                </form>
             </div>
         </div>
-    {% endif %}
-    <input type="hidden" id="token" value="{{ token }}"/>
-    <input type="hidden" id="page" value="{{ page }}"/>
-    <input type="hidden" id='baseUrl' value="{{ app.request.baseUrl }}"/>
+        <div id="mobile-filter-options" class="visible-phone mobile-gap">
+            <button class="btn btn-info btn-block open-filter-options">open filter options</button>
+        </div>
+        <div id="filter-options" class="hidden-phone">
+            <div class="row-fluid">
+                <div class="span2">
+                    <select name="state" class="select-block span2" id='input-state'>
+                        <option value="">View State</option>
+                        <option value="draft" {% if state == 'draft' %}selected{% endif %}>Drafts</option>
+                        <option value="active" {% if state == 'active' %}selected{% endif %}>Published</option>
+                        <option value="scheduled" {% if state == 'scheduled' %}selected{% endif %}>Scheduled</option>
+                    </select>
+                </div>
+                <div class="span2">
+                    <button class="btn btn-info mobile-gap span12 flatui-calendar">
+                    <span class="pull-left flatui-calendar-text">
+                        {% if startDate or endDate %}
+                            <span class="select-extra">Change </span>Dates
+                        {% else %}
+                            <span class="select-extra">View </span>Dates
+                        {% endif %}
+                    </span>
+                        <span class="caret pull-right"></span>
+                    </button>
+                    <div class="row-fluid hide" id='flatui-calendar-input-container'>
+                        <div class="span12">
+                            <label for="start-date" class="date-input-label">From:</label>
+                            <input type="text" class="flatui-calendar-input-start date-input span12" id='start-date' value="{% if startDate %}{{ startDate|date('m/d/Y') }}{% endif %}"/>
+                            <label for="end-date" class="date-input-label">To:</label>
+                            <input type="text" class="flatui-calendar-input-end date-input span12" id='end-date' value="{% if endDate %}{{ endDate|date('m/d/Y') }}{% endif %}"/>
+                            <div class="row-fluid" id="flatui-calendar-input-button-container">
+                                <button class="btn span6 mobile-gap" id="flatui-calendar-cancel-dates">clear</button>
+                                <button class="btn btn-info span6 hidden-phone" id='flatui-calendar-confirm-dates'>ok</button>
+                                <hr class="hidden-desktop">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span2">
+                    <button class="btn btn-info span12 mobile-gap" id='category-opener'>
+                    <span class="pull-left" id='category-opener-text'>
+                        {% if categoryParent or categorySub %}
+                            <span class="select-extra">Change </span>Category
+                        {% else %}
+                            <span class="select-extra">View </span>Category
+                        {% endif %}
+                    </span>
+                        <span class="caret pull-right"></span>
+                    </button>
+                    <div class="row-fluid hide" id="category-container">
+                        <div class="span12">
+                            <label for="category-parent">Parent:</label>
+                            <input type="text" class="span12" id="category-parent" value="{{ categoryParent|default() }}"/>
+                            <label for="category-sub">Sub:</label>
+                            <input type="text" class="span12" id="category-sub" value="{{ categorySub|default() }}"/>
+                            <div class="row-fluid" id="category-button-container">
+                                <button class="btn span6 mobile-gap" id="category-cancel">clear</button>
+                                <button class="btn btn-info span6 hidden-phone" id='category-confirm'>ok</button>
+                                <hr class="hidden-desktop">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span2">
+                    <button class="btn btn-info span12 mobile-gap" id='tag-opener'>
+                    <span class="pull-left" id='tag-opener-text'>
+                        {% if tags %}
+                            <span class="select-extra">Change </span>Tags
+                        {% else %}
+                            <span class="select-extra">View </span>Tags
+                        {% endif %}
+                    </span>
+                        <span class="caret pull-right"></span>
+                    </button>
+                    <div class="row-fluid hide" id="tag-container">
+                        <div class="span12">
+                            <label for="tags">Tags:</label>
+                            <input type="text"  class="span12" name='tags' id="tags" value="{{ tags|default() }}" />
+                            <div class="row-fluid" id="tag-button-container">
+                                <button class="btn span6 mobile-gap" id="tag-cancel">clear</button>
+                                <button class="btn btn-info span6 hidden-phone" id='tag-confirm'>ok</button>
+                                <hr class="hidden-desktop">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span2">
+                    <button class="btn btn-info span12 mobile-gap" id='author-opener'>
+                    <span class="pull-left" id='author-opener-text'>
+                        {% if authorFirstName or authorLastName %}
+                            <span class="select-extra">Change </span>Author
+                        {% else %}
+                            <span class="select-extra">View </span>Authors
+                        {% endif %}
+                    </span>
+                        <span class="caret pull-right"></span>
+                    </button>
+                    <div class="row-fluid hide" id="author-container">
+                        <div class="span12">
+                            <label for="author-first-name">First Name:</label>
+                            <input type="text" class="span12" id="author-first-name" value="{{ authorFirstName|title|default() }}"/>
+                            <label for="author-last-name">Last Name:</label>
+                            <input type="text" class="span12" id="author-last-name" value="{{ authorLastName|title|default() }}"/>
+                            <div class="row-fluid" id="author-input-button-container">
+                                <button class="btn span6 mobile-gap" id="author-cancel">clear</button>
+                                <button class="btn btn-info span6 hidden-phone" id='author-confirm'>ok</button>
+                                <hr class="hidden-desktop">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span2">
+                    <button class="btn btn-primary btn-block load-data"><i class="icon-filter"></i> Filter</button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row-fluid hidden-phone">
+            <div class="span4">
+                <button class="btn btn-inverse btn-lower span3 btn-checkbox-action mobile-gap edit" data-action='edit'><i class="icon-edit"></i> Edit</button>
+                <button class="btn btn-inverse btn-lower span3 btn-checkbox-action mobile-gap delete" data-action='delete'><i class="icon-trash"></i> Trash</button>
+            </div>
+            <div class="span4" id='notices'>
+                {% block notices %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+            <div class="span4">
+                <button class="btn btn-inverse btn-lower span3 pull-right mobile-gap pag-next" {% if nextPage == false %}disabled="disabled"{% endif %}>Next <i class="icon-chevron-right"></i></button>
+                <button class="btn btn-inverse btn-lower span3 pull-right mobile-gap pag-previous" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
+            </div>
+        </div>
+        <div class="row-fluid visible-phone">
+            <div class="span12">
+                <span class="pull-left">
+                    <button class="btn btn-inverse btn-checkbox-action" data-action='edit'><i class="icon-edit mobile-icon"></i>edit</button>
+                    <button class="btn btn-inverse btn-checkbox-action" data-action='delete'><i class="icon-trash mobile-icon"></i>trash</button>
+                </span>
+                <span class="pull-right">
+                    <button class="btn btn-inverse pag-previous"><i class="icon-chevron-left mobile-icon"></i>prev</button>
+                    <button class="btn btn-inverse pag-next">next<i class="icon-chevron-right mobile-icon"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <label class="checkbox master-checkbox" for="master-checkbox" id="master-checkbox-container" data-state='off'>
+                                <input type="checkbox" data-toggle="checkbox" name="master-checkbox" id="selectall"/>
+                            </label>
+                        </th>
+                        <th class="data-group-1">Title</th>
+                        <th class="data-group-2">Author</th>
+                        <th class="data-group-3">Categories</th>
+                        <th class="data-group-4">Tags</th>
+                        <th class="data-group-4">Commments</th>
+                        <th class="data-group-1">Created</th>
+                    </tr>
+                    </thead>
+                    <tbody class="checkbox-container">
+                    {% for node in nodes  %}
+                    <tr id="tr-{{ node.id }}">
+                        <td>
+                            <label class="checkbox checkbox-td" for="checkbox-{{ node.id }}" data-id="{{ node.id }}">
+                                <input type="checkbox" class="slave-checkbox selectedId" data-toggle="checkbox" name="content-checkbox" id="checkbox-{{ node.id }}"/>
+                            </label>
+                        </td>
+                        <td class="data-group-1">
+                            <h4><a href="/{{ node.slug }}">{{ node.title|title }}</a></h4>
+                            <p class='node-preview hidden-phone'>
+                                {{ node.views['html']|striptags|truncate(203) }}
+                                {% if node.views['html']|striptags|length > 203 %}
+                                    <a href="/{{ node.slug }}">read more</a>
+                                {% endif %}
+                            </p>
+                        </td>
+                        {% if node.author.name is defined %}
+                            <td class="data-group-2"><a href="{{ node.author.url|default('#') }}">{{ node.author.name }}</a></td>
+                        {% else %}
+                            <td class="data-group-2"></td>
+                        {% endif %}
+                        <td class="data-group-3">
+                            {% for category in node.categories  %}
+                                {{ category.parent }} - {{ cateogry.child|default() }}
+                            {% endfor %}
+                        </td>
+                        <td class="data-group-4">
+                            {% for tag in node.tags  %}
+                                {{ tag }}
+                            {% endfor %}
+                        </td>
+                        <td class="data-group-4">{{ comment|default()|length }}</td>
+                        <td class="data-group-1">{{  node.created|date('F j, Y ') }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if nodes.count > 5 %}
+            <div class="row-fluid hidden-phone">
+                <div class="span4">
+                    <button class="btn btn-inverse btn-lower span3 btn-checkbox-action mobile-gap edit" data-action='edit'><i class="icon-edit"></i> Edit</button>
+                    <button class="btn btn-inverse btn-lower span3 btn-checkbox-action mobile-gap delete" data-action='delete'><i class="icon-trash"></i> Trash</button>
+                </div>
+                <div class="span4 offset4">
+                    <button class="btn btn-inverse btn-lower span3 pull-right mobile-gap pag-next" {% if nextPage == false %}disabled="disabled"{% endif %}>Next <i class="icon-chevron-right"></i></button>
+                    <button class="btn btn-inverse btn-lower span3 pull-right mobile-gap pag-previous" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
+                </div>
+            </div>
+            <div class="row-fluid visible-phone">
+                <div class="span12">
+                <span class="pull-left">
+                    <button class="btn btn-inverse btn-checkbox-action" data-action='edit'><i class="icon-edit mobile-icon"></i>edit</button>
+                    <button class="btn btn-inverse btn-checkbox-action" data-action='delete'><i class="icon-trash mobile-icon"></i>trash</button>
+                </span>
+                <span class="pull-right">
+                    <button class="btn btn-inverse pag-previous"><i class="icon-chevron-left mobile-icon"></i>prev</button>
+                    <button class="btn btn-inverse pag-next">next<i class="icon-chevron-right mobile-icon"></i></button>
+                </span>
+                </div>
+            </div>
+        {% endif %}
+        <input type="hidden" id="token" value="{{ token }}"/>
+        <input type="hidden" id="page" value="{{ page }}"/>
+        <input type="hidden" id='baseUrl' value="{{ app.request.baseUrl }}"/>
+        {% block footer %}
+            {{ parent() }}
+        {% endblock %}
+    </article>
 {% endblock %}

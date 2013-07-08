@@ -120,3 +120,13 @@ $("#author-confirm").on('click', function(){
     }
     $("#author-container").hide();
 });
+
+$(".open-filter-options").on('click', function(){
+    $("#filter-options").toggleClass('hidden-phone', function(){
+        if($(this).hasClass('hidden-phone')){
+            $(".open-filter-options").text('open filter options').addClass('btn-info');
+        }else{
+            $(".open-filter-options").text('close filter options').removeClass('btn-info');
+        }
+    });
+});

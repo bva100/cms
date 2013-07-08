@@ -16,28 +16,6 @@ h1 {
     color: #3498DB;
     font-size: 18px;
 }
-@media (max-width: 767px) {
-    #search-container {
-        max-width: 692px;
-    }
-    #search {
-        max-width: none;
-    }
-}
-.edit, .delete {
-    max-width: 79px;
-}
-.pag-next, .pag-previous {
-    max-width: 80px;
-}
-.pag-previous {
-    margin-right: 8px;
-}
-@media (max-width: 1170px) {
-    .btn-lower > i {
-        display: none;
-    }
-}
 #master-checkbox-container {
     position: relative;
     top: 12px;
@@ -62,4 +40,49 @@ table thead {
 }
 .ui-datepicker {
     margin-top: 10px;
+}
+@media (min-width: 767px) {
+    .edit, .delete {
+        max-width: 79px;
+    }
+    .pag-next, .pag-previous {
+        max-width: 80px;
+    }
+    .pag-previous {
+        margin-right: 8px;
+    }
+}
+@media (max-width: 400px){
+    .data-group-2 {
+        display: none;
+    }
+}
+@media (max-width: 767px) {
+    #search-container {
+        max-width: 100%;
+    }
+    #search {
+        max-width: none;
+    }
+    .data-group-3 {
+        display: none;
+    }
+}
+@media (max-width: 979px) {
+    .mobile-gap {
+        margin-bottom: 10px;
+    }
+    .data-group-4 {
+        display: none;
+    }
+}
+@media (max-width: 1025px){
+    .select-extra{
+        display: none;
+    }
+}
+@media (max-width: 1270px) {
+    .btn-lower > i {
+        display: none;
+    }
 }

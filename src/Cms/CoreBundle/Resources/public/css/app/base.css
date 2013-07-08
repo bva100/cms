@@ -19,6 +19,22 @@
 #nav-admin-container {
     width: 12%;
 }
+footer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+footer li {
+    display: inline;
+}
+footer a {
+    color: #1ABC9C;
+}
+#primary-footer {
+    margin-top: 40px;
+    border-top: 1px solid #ECF0F1;
+    padding: 20px 0px 40px 0px;
+}
 @media (min-width: 1200px) and (max-width: 1300px) {
     #nav-admin-container {width: 13%;}
 }
