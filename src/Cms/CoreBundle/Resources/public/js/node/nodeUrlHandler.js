@@ -1,3 +1,5 @@
+var oldTitle = document.getElementById('title').value;
+
 $("#domain-container").on('click', function(){
     $("#slug-selector-container").hide();
     $("#domain-selector-container").toggle();
@@ -32,9 +34,14 @@ $("#slug-container").on('click', function(){
 });
 
 $("#title").blur(function(){
-    if($(this).attr('data-slug-title') === 'on'){
-        var text = $(this).val();
-        updateSlug(text);
+    if($(this).attr('data-slug-title') === 'on' && document.getElementById('title').value != oldTitle){
+        if(document.getElementById("state").value == 'active'){
+            oldTitle = ($(this).val());
+            if( ! confirm("Would you like to update the url to match this new title?")){
+                return 0;
+            }
+        }
+        updateSlug($(this).val());
     }
 });
 
