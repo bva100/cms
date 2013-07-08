@@ -81,7 +81,7 @@ table thead {
         display: none;
     }
 }
-@media (max-width: 1270px) {
+@media (max-width: 1281px) {
     .btn-lower > i {
         display: none;
     }
