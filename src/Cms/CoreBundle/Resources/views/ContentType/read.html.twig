@@ -54,6 +54,7 @@
                         <option value="active" {% if state == 'active' %}selected{% endif %}>Published</option>
                         <option value="scheduled" {% if state == 'scheduled' %}selected{% endif %}>Scheduled</option>
                     </select>
+                    <button class="btn btn-info hide" id="confirm-input-state">Confirm</button>
                 </div>
                 <div class="span2">
                     <button class="btn btn-info mobile-gap span12 flatui-calendar">
@@ -244,30 +245,28 @@
                 </table>
             </div>
         </div>
-        {% if nodes.count > 5 %}
-            <div class="row-fluid hidden-phone">
-                <div class="span4">
-                    <button class="btn btn-inverse btn-lower span3 btn-checkbox-action mobile-gap edit" data-action='edit'><i class="icon-edit"></i> Edit</button>
-                    <button class="btn btn-inverse btn-lower span3 btn-checkbox-action mobile-gap delete" data-action='delete'><i class="icon-trash"></i> Trash</button>
-                </div>
-                <div class="span4 offset4">
-                    <button class="btn btn-inverse btn-lower span3 pull-right mobile-gap pag-next" {% if nextPage == false %}disabled="disabled"{% endif %}>Next <i class="icon-chevron-right"></i></button>
-                    <button class="btn btn-inverse btn-lower span3 pull-right mobile-gap pag-previous" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
-                </div>
+        <div class="row-fluid hidden-phone">
+            <div class="span4">
+                <button class="btn btn-inverse btn-lower span3 btn-checkbox-action mobile-gap edit" data-action='edit'><i class="icon-edit"></i> Edit</button>
+                <button class="btn btn-inverse btn-lower span3 btn-checkbox-action mobile-gap delete" data-action='delete'><i class="icon-trash"></i> Trash</button>
             </div>
-            <div class="row-fluid visible-phone">
-                <div class="span12">
-                <span class="pull-left">
-                    <button class="btn btn-inverse btn-checkbox-action" data-action='edit'><i class="icon-edit mobile-icon"></i></button>
-                    <button class="btn btn-inverse btn-checkbox-action" data-action='delete'><i class="icon-trash mobile-icon"></i></button>
-                </span>
-                <span class="pull-right">
-                    <button class="btn btn-inverse pag-previous"><i class="icon-chevron-left mobile-icon"></i></button>
-                    <button class="btn btn-inverse pag-next"><i class="icon-chevron-right mobile-icon"></i></button>
-                </span>
-                </div>
+            <div class="span4 offset4">
+                <button class="btn btn-inverse btn-lower span3 pull-right mobile-gap pag-next" {% if nextPage == false %}disabled="disabled"{% endif %}>Next <i class="icon-chevron-right"></i></button>
+                <button class="btn btn-inverse btn-lower span3 pull-right mobile-gap pag-previous" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
             </div>
-        {% endif %}
+        </div>
+        <div class="row-fluid visible-phone">
+            <div class="span12">
+            <span class="pull-left">
+                <button class="btn btn-inverse btn-checkbox-action" data-action='edit'><i class="icon-edit mobile-icon"></i></button>
+                <button class="btn btn-inverse btn-checkbox-action" data-action='delete'><i class="icon-trash mobile-icon"></i></button>
+            </span>
+            <span class="pull-right">
+                <button class="btn btn-inverse pag-previous"><i class="icon-chevron-left mobile-icon"></i></button>
+                <button class="btn btn-inverse pag-next"><i class="icon-chevron-right mobile-icon"></i></button>
+            </span>
+            </div>
+        </div>
         <input type="hidden" id="token" value="{{ token }}"/>
         <input type="hidden" id="page" value="{{ page }}"/>
         <input type="hidden" id='baseUrl' value="{{ app.request.baseUrl }}"/>

@@ -230,11 +230,35 @@ class ContentType extends Base {
     /**
      * Get categories
      *
+     * @param bool sort
      * @return array $categories
      */
-    public function getCategories()
+    public function getCategories($sort = true)
     {
-        return $this->categories;
+        $categories = $this->categories;
+        if ( $sort )
+        {
+            array_multisort($categories);
+//            usort($categories, function($a, $b){
+//                $aStr = $a['parent'];
+//                if ( isset($a['sub']) )
+//                {
+//                    $aStr = $aStr.$a['sub'];
+//                }
+//                $bStr = $b['parent'];
+//                if ( isset($b['sub']) )
+//                {
+//                    $bStr = $b['sub'];
+//                }
+//                if ( strripos($aStr, $bStr) !== false )
+//                {
+//                    return 1;
+//                }
+//                strcasecmp($aStr, $bStr);
+//                $aStr > $bStr ? 1 : ($aStr < $bStr ? -1 : 0);
+//            });
+        }
+        return $categories;
     }
 
     /**

@@ -119,7 +119,7 @@ class Node extends Base {
     public function __construct()
     {
         $this->setCreated(time());
-        $this->setState('active');
+        $this->setState('draft');
         $this->categories = array();
         $this->conversationIds = array();
         $this->tags = array();
@@ -336,11 +336,17 @@ class Node extends Base {
     /**
      * Get categories
      *
-     * @return hash $categories
+     * @param bool sort
+     * @return array $categories
      */
-    public function getCategories()
+    public function getCategories($sort = true)
     {
-        return $this->categories;
+        $categories = $this->categories;
+        if ( $sort )
+        {
+            array_multisort($categories);
+        }
+        return $categories;
     }
 
     /**

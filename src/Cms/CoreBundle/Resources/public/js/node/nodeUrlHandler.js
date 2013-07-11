@@ -19,11 +19,11 @@ $(".radio-slug").on('click', function(){
         var text = $title.val();
         $("#slug-selector-container").hide();
     }else{
-        var $customSlug = $('#input-custom-slug');
+//        var $customSlug = $('#input-custom-slug');
         $title.attr('data-slug-title', 'off');
-        $customSlug.show();
+        $('#input-custom-slug-container').show();
         $("#button-custom-slug").show();
-        var text = $customSlug.val();
+        var text = $('#input-custom-slug').val();
     }
     updateSlug(text);
 });

@@ -16,6 +16,11 @@ $(document).ready(function() {
         }
     });
 
+    $(".flatui-calendar").datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+    });
+
     $(".flatui-calendar").on('click', function () {
         $("#flatui-calendar-input-container").toggle();
         $(this).blur();

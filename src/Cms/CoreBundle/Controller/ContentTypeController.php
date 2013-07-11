@@ -16,14 +16,12 @@ class ContentTypeController extends Controller {
 
     public function saveAction()
     {
-        $token = (string)$this->getRequest()->request->get('token');
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $name = (string)$this->getRequest()->request->get('name');
         $slugPrefix = (string)$this->getRequest()->request->get('slugPrefix');
         $formatType = (string)$this->getRequest()->request->get('format');
-        $this->get('csrfToken')->validate($token);
-
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -173,6 +171,37 @@ class ContentTypeController extends Controller {
             return $this->redirect($this->generateUrl('cms_core.contentType_read', array('id' => $id, 'siteId' => $siteId)));
         }
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $siteId)));
+    }
+
+    public function addCategoryAction()
+    {
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $siteId = (string)$this->getRequest()->request->get('siteId');
+        $id = (string)$this->getRequest()->request->get('id');
+        $parent = (string)$this->getRequest()->request->get('parent');
+        if ( ! $parent )
+        {
+            throw new \Exception('Parent is required for a new category');
+        }
+        $sub = (string)$this->getRequest()->request->get('sub');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
+        }
+        $contentType = $site->getContentType($id);
+        if ( ! $contentType )
+        {
+            throw $this->createNotFoundExcpetion('Content type with id '.$id.' not found');
+        }
+        $contentType->addCategory($parent, $sub ? $sub : null);
+        $success = $this->get('persister')->save($site);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
+        return $this->redirect($this->generateUrl('cms_core.contentType_read', array('siteId' => $siteId, 'id' => $id) ));
     }
 
 }

@@ -69,6 +69,11 @@ cms_core.contentType_delete:
   defaults: { _controller: CmsCoreBundle:ContentType:delete }
   methods: [POST]
 
+cms_core.contentType_addCategory:
+  pattern: /contentType/addCategory
+  defaults: { _controller: CmsCoreBundle:ContentType:addCategory }
+  methods: [POST]
+
 #node
 cms_core.node_delete:
   pattern: /node/delete

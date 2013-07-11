@@ -16,16 +16,19 @@ class NodeController extends Controller {
 
     public function saveAction()
     {
-        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $domain = (string)$this->getRequest()->request->get('domain');
         $contentTypeId = (string)$this->getRequest()->request->get('contentTypeId'); // for redirect only
         $contentTypeName = (string)$this->getRequest()->request->get('contentTypeName');
+        $state = (string)$this->getRequest()->request->get('state');
         $format = (string)$this->getRequest()->request->get('format');
         $locale = (string)$this->getRequest()->request->get('locale');
         $parentNodeId = (string)$this->getRequest()->request->get('parentNodeId');
-        $authorName = (string)$this->getRequest()->request->get('authorName');
+        $authorFirstName = (string)$this->getRequest()->request->get('authorFirstName');
+        $authorLastName = (string)$this->getRequest()->request->get('authorLastName');
+        $authorId = (string)$this->getRequest()->request->get('authorId');
         
         //left off on categories
         $slugPrefix = (string)$this->getRequest()->request->get('slugPrefix');
@@ -48,9 +51,13 @@ class NodeController extends Controller {
         {
             $node->setDomain($domain);
         }
-        if ( $authorName )
+        if ( $authorFirstName AND $authorLastName AND $authorId )
         {
-            $node->setAuthor(array('name' => $authorName));
+            $node->setAuthor(array(
+                'firstName' => $authorFirstName,
+                'lastName' => $authorLastName,
+                'id' => $authorId,
+            ));
         }
         if ( $contentTypeName )
         {
@@ -64,6 +71,11 @@ class NodeController extends Controller {
         {
             $node->setLocale($locale);
         }
+        if ( $state )
+        {
+            $node->setState($state);
+        }
+        
         if ( $parentNodeId )
         {
             $node->setParentNodeId($parentNodeId);
@@ -89,7 +101,8 @@ class NodeController extends Controller {
             $node->addView('html', $viewHtml);
         }
         $success = $this->get('persister')->save($node);
-        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        $nodeId = $success ? $node->getId() : '';
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success, array('onSuccess' => $nodeId));
         if ( $xmlResponse )
         {
             return $xmlResponse;
@@ -120,6 +133,7 @@ class NodeController extends Controller {
             'token' => $token,
             'notices' => $notices,
             'user' => $user,
+            'node' => null,
             'slug' => null,
             'slugPrefix' => null,
             'isTitleSlug' => true,
@@ -150,6 +164,8 @@ class NodeController extends Controller {
         {
             throw $this->createNotFoundException('contentType with id '.$id.' was not found');
         }
+        $categories = $contentType->getCategories();
+        echo '<pre>', \var_dump($categories); die();
         $slugHelper = $this->get('slug_helper')->setFullSlug($node->getSlug())->setTitle($node->getTitle());
         return $this->render('CmsCoreBundle:Node:edit.html.twig', array(
             'token' => $token,
@@ -161,6 +177,7 @@ class NodeController extends Controller {
             'isTitleSlug' => $slugHelper->isTitleSlug(),
             'site' => $site,
             'contentType' => $contentType,
+            'categories' => $categories,
         ));
     }
 

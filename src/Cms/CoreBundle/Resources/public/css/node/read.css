@@ -1,16 +1,15 @@
 input[type="text"], textarea {
     font-size: 18px;
 }
+a {
+    font-size: 15px;
+    font-weight: bold;
+}
 #url-container{
-    padding: 10px 0px 20px 0px;
     font-size: 22px;
 }
 #view-html {
     min-height: 400px;
-}
-#notice-container {
-    position: relative;
-    top: 18px;
 }
 .label {
     font-size: 18px;
@@ -23,10 +22,49 @@ input[type="text"], textarea {
     margin-bottom: 20px;
 }
 #domain-selector {
-    margin-top: -20px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
-#slug-selector {
-    margin-top: -20px;
-    margin-bottom: 24px;
+#notice-container {
+    min-height: 48px;
+}
+#input-state {
+    margin-top: 20px;
+}
+.ui-datepicker {
+    margin-top: 10px;
+}
+#publish-holder button {
+    margin-bottom: 10px;
+}
+#publish-holder i {
+    margin-right: 5px;
+}
+.holder {
+    margin-bottom: 20px;
+}
+#tags-holder{
+    font-size: 15px;
+}
+#tags-holder h4 {
+    margin-bottom: 20px;
+}
+#state-container {
+    margin-bottom: 20px;
+}
+#category-list li {
+    list-style-type: none;
+    font-size: 15px;
+}
+#category-list label {
+    font-size: 16px;
+    line-height: 30px;
+}
+#category-list i:hover {
+    cursor: pointer;
+}
+.category-indented {
+    padding-left: 10px;
+}
+.category-toggle-icon {
+    margin-left: 4px;
 }

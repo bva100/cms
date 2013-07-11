@@ -1,9 +1,5 @@
 Cms\CoreBundle\Document\Site:
     properties:
-        state:
-          - NotBlank: { message: 'Please add a state' }
-          - Choice:
-              choices: [active, deleted]
         name:
           - NotBlank: { message: 'Please add a name' }
           - Length:

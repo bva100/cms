@@ -35,6 +35,17 @@ footer a {
     border-top: 1px solid #ECF0F1;
     padding: 20px 0px 40px 0px;
 }
+.holder {
+    font-size: 18px;
+    border-radius: 5px;
+    border: 1px solid #ECF0F1;
+    padding: 4px 10px;
+}
+.holder h4 {
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #ECF0F1;
+}
 @media (min-width: 1200px) and (max-width: 1300px) {
     #nav-admin-container {width: 13%;}
 }
