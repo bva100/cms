@@ -16,7 +16,6 @@ class ContentTypeController extends Controller {
 
     public function saveAction()
     {
-//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $name = (string)$this->getRequest()->request->get('name');
@@ -28,7 +27,6 @@ class ContentTypeController extends Controller {
             throw $this->createNotFoundException('Site not found. Be sure the proper siteId was passed.');
         }
         // validate that current user has access to edit sites content types here
-
         $contentType = $id ? $site->getContentType($id) : new ContentType();
         if ( $name )
         {
@@ -175,7 +173,6 @@ class ContentTypeController extends Controller {
 
     public function addCategoryAction()
     {
-//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $id = (string)$this->getRequest()->request->get('id');
         $parent = (string)$this->getRequest()->request->get('parent');

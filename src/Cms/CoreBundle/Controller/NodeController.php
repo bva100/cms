@@ -16,7 +16,6 @@ class NodeController extends Controller {
 
     public function saveAction()
     {
-//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $domain = (string)$this->getRequest()->request->get('domain');
@@ -29,8 +28,8 @@ class NodeController extends Controller {
         $authorFirstName = (string)$this->getRequest()->request->get('authorFirstName');
         $authorLastName = (string)$this->getRequest()->request->get('authorLastName');
         $authorId = (string)$this->getRequest()->request->get('authorId');
-        
-        //left off on categories
+        $categories = $this->getRequest()->request->get('categories');
+echo '<pre>', \var_dump($categories); die();        
         $slugPrefix = (string)$this->getRequest()->request->get('slugPrefix');
         $slug = (string)$this->getRequest()->request->get('slug');
         $title = (string)$this->getRequest()->request->get('title');
@@ -99,6 +98,10 @@ class NodeController extends Controller {
         if ( $viewHtml )
         {
             $node->addView('html', $viewHtml);
+        }
+        if ( is_array($categories) AND ! is_empty($categories) )
+        {
+            $node->setCategories = $categories;
         }
         $success = $this->get('persister')->save($node);
         $nodeId = $success ? $node->getId() : '';

@@ -67,3 +67,12 @@ a {
 .category-sub {
     padding-left: 40px;
 }
+.category-parent-name {
+    min-width: 160px;
+}
+.category-sub-checkbox {
+    padding-left: 30px;
+}
+#add-category-save {
+    color: #3498DB;
+}

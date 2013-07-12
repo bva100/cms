@@ -84,7 +84,8 @@ function switchToggleIcon($td){
 }
 
 $(".save-node").on('click', function(){
-    save(getParams());
+    getCategories();
+//    save(getParams());
 });
 
 $(".preview-node").on('click', function(){
@@ -159,7 +160,19 @@ function getParams(){
     objParams['authorFirstName'] = document.getElementById('input-author-first-name').value;
     objParams['authorLastName'] = document.getElementById('input-author-last-name').value;
     objParams['authorImage'] = document.getElementById('input-author-image').value;
+    objParams['categories'] = getCategories();
     return objParams;
+}
+
+function getCategories(){
+    var $checked =  $("#table-category .checked");
+    var array = [];
+    $checked.each(index){
+        array[] = $checked.
+    }
+
+
+    return 0;
 }
 
 function save(params, urlAffix){

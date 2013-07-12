@@ -152,7 +152,7 @@
                         <h4>Publish</h4>
                         <div class="row-fluid">
                             <div class="span6">
-                                <button class="btn btn-info save-node span12"><i class="icon-save"></i> Save</button>
+                                <button class="btn btn-info save-node span12" {% if node.state == 'active' %}disabled{% endif %}><i class="icon-save"></i> Save</button>
                             </div>
                             <div class="span6">
                                 <button class="btn btn-inverse publish-node span12"><i class="icon-ok-sign"></i> {% if node.state is defined and node.state == 'active' %}Update{% else %}Publish{% endif %}</button>
@@ -211,13 +211,13 @@
                                                         <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ category.parent }}"/>
                                                     </label>
                                                 </td>
-                                                <td class="category-parent-name" style="min-width: 160px;">{{ category.parent|title }}</td>
+                                                <td class="category-parent-name">{{ category.parent|title }}</td>
                                                 <td class="category-toggle-icon" data-state='closed' data-parent="{{ category.parent }}"><i class="icon-chevron-sign-left"></i></td>
                                             </tr>
                                             {% for subCategory in contentType.categories  %}
                                                 {% if subCategory.sub is defined and subCategory.parent == category.parent %}
                                                     <tr class="category-sub parent-{{ category.parent }} hide">
-                                                        <td style="padding-left: 30px;">
+                                                        <td class="category-sub-checkbox">
                                                             <label class="checkbox" for="checkbox-{{ subCategory.parent }}-{{ subCategory.sub }}" data-parent="{{ subCategory.parent|lower }}">
                                                                 <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ subCategory.parent }}-{{ subCategory.sub }}"/>
                                                             </label>
@@ -247,8 +247,11 @@
                             </div>
                         </div>
                         <div class="row-fluid">
-                            <div class="span12">
-                                <a href="#categories-holder" id="add-category-opener"><i class="icon-plus-sign"></i> Add a Category</a>
+                            <div class="span9">
+                                <a href="#categories-holder-here" id="add-category-opener"><i class="icon-plus-sign"></i> Add a Category</a>
+                            </div>
+                            <div class="span3">
+                                <a href="#save-category-add" class="save-node" id="add-category-save">Save</a>
                             </div>
                         </div>
                         <div class="row-fluid hide" id='add-category-container'>

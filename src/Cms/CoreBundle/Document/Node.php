@@ -264,13 +264,15 @@ class Node extends Base {
     }
 
     /**
-     * Not used
+     * Set categories
      *
-     * @throws \Exception
+     * @param array $categories
+     * @return $this
      */
-    public function setCategories()
+    public function setCategories(array $categories)
     {
-        throw new \Exception('Please use the addCategory method instead of setCategories');
+        $this->categories = $categories;
+        return $this;
     }
 
     /**
