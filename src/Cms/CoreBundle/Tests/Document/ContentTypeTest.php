@@ -97,7 +97,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
 
         $this->contentType->addCategory('hello, world', 'PHP is cool');
         $this->assertCount(2, $this->contentType->getCategories());
-        $this->assertEquals(array(0 => array('parent' => 'foo', 'sub' => 'bar'), 1 => array('parent' => 'hello, world', 'sub' => 'PHP is cool') ), $this->contentType->getCategories());
+        $this->assertEquals(array(0 => array('parent' => 'foo', 'sub' => 'bar'), 1 => array('parent' => 'hello, world', 'sub' => 'php is cool') ), $this->contentType->getCategories());
 
         $this->contentType->addCategory('dog');
         $this->assertCount(3, $this->contentType->getCategories());
@@ -116,6 +116,19 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertCount(4, $this->contentType->getCategories());
         $this->contentType->addCategory(null);
         $this->assertCount(4, $this->contentType->getCategories());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\ContentType::addCategory
+     * @covers \Cms\CoreBundle\Document\ContentType::getCategories
+     * @covers \Cms\CoreBundle\Document\ContentType::removeCategory
+     */
+    public function testAddCategoryWithoutParent()
+    {
+        $this->contentType->addCategory('foo', 'bar');
+        $categories = $this->contentType->getCategories();
+        $this->assertCount(1, $categories);
+        $this->assertEquals(array('parent' => 'foo', 'sub' => 'bar'), $categories[0]);
     }
 
     /**

@@ -52,7 +52,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
 
         $this->node->addCategory('hello, world', 'PHP is cool');
         $this->assertCount(2, $this->node->getCategories());
-        $this->assertEquals(array(0 => array('parent' => 'foo', 'sub' => 'bar'), 1 => array('parent' => 'hello, world', 'sub' => 'PHP is cool') ), $this->node->getCategories());
+        $this->assertEquals(array(0 => array('parent' => 'foo', 'sub' => 'bar'), 1 => array('parent' => 'hello, world', 'sub' => 'php is cool') ), $this->node->getCategories(false));
 
         $this->node->addCategory('dog');
         $this->assertCount(3, $this->node->getCategories());

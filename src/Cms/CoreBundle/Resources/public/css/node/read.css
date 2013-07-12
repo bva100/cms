@@ -61,6 +61,9 @@ a {
 #table-category i:hover {
     cursor: pointer;
 }
+#table-category .category-parent-name:hover {
+    cursor: pointer;
+}
 .category-sub {
     padding-left: 40px;
 }

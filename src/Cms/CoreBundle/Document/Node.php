@@ -323,7 +323,7 @@ class Node extends Base {
         {
             $remove['sub'] = $sub;
         }
-        foreach ($this->getCategories() as $categoryKey => $categoryArray)
+        foreach ($this->categories as $categoryKey => $categoryArray)
         {
             if ( $categoryArray === $remove )
             {
