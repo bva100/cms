@@ -194,7 +194,7 @@ class ContentTypeController extends Controller {
         {
             throw $this->createNotFoundExcpetion('Content type with id '.$id.' not found');
         }
-        $contentType->addCategory($parent, $sub ? $sub : null);
+        $contentType->addCategory($parent, $sub ? $sub : null, true);
         $success = $this->get('persister')->save($site);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )

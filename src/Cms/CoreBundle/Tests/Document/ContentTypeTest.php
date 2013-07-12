@@ -121,14 +121,21 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers \Cms\CoreBundle\Document\ContentType::addCategory
      * @covers \Cms\CoreBundle\Document\ContentType::getCategories
-     * @covers \Cms\CoreBundle\Document\ContentType::removeCategory
      */
-    public function testAddCategoryWithoutParent()
+    public function testAddCategoryForceParent()
     {
-        $this->contentType->addCategory('foo', 'bar');
+        $this->contentType->addCategory('foo', 'bar', true);
         $categories = $this->contentType->getCategories();
-        $this->assertCount(1, $categories);
-        $this->assertEquals(array('parent' => 'foo', 'sub' => 'bar'), $categories[0]);
+        $this->assertCount(2, $categories);
+        $this->assertContains(array('parent' => 'foo', 'sub' => 'bar'), $categories);
+        $this->assertContains(array('parent' => 'foo'), $categories);
+
+        $this->contentType->addCategory('foo', 'bar', true);
+        $categories = $this->contentType->getCategories();
+        $this->assertCount(2, $categories);
+        $this->contentType->addCategory('foo');
+        $categories = $this->contentType->getCategories();
+        $this->assertCount(2, $categories);
     }
 
     /**

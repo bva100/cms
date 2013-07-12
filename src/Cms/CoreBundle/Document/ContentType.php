@@ -168,13 +168,14 @@ class ContentType extends Base {
     }
 
     /**
-     * Add a new category. Does not allow duplicates.
+     * Add a new category. Does not allow duplicates. Can force addition of parent category by setting third parameter to true
      *
      * @param $parent
      * @param null $sub
+     * @param bool $forceParent
      * @return $this
      */
-    public function addCategory($parent, $sub = null)
+    public function addCategory($parent, $sub = null, $forceParent = false)
     {
         if ( ! \is_string($parent) )
         {
@@ -186,6 +187,14 @@ class ContentType extends Base {
         {
             $newCategory['sub'] = strtolower($sub);
         }
+        if ( $forceParent AND isset($newCategory['sub']) )
+        {
+            if ( ! in_array($newCategory, $this->categories) )
+            {
+                $this->categories[] = array('parent' => $newCategory['parent']);
+            }
+        }
+        
         foreach ($this->categories as $categoryKey => $categoryArray)
         {
             if ( $categoryArray === $newCategory )
