@@ -39,18 +39,6 @@ $("#cancel-add-category").on('click', function(){
     clearAddCategory();
 });
 
-$(".category-toggle-icon").on('click', function(){
-    test = $(this).parents('.category-parent');
-    test.find('li').hide();
-//        .find("[data-parent='" + parent + "']").hide();
-});
-
-$(".category-parent").on('click', function(){
-    var parent = $(this).attr('data-parent');
-    var list = $("ul").find("[data-parent='" + parent + "']").show();
-    $(this).appendTo(html(list));
-});
-
 $(".confirm-add-category").on('click', function(){
     var path = document.getElementById('add-category-path').value;
     params = getParams();
@@ -67,6 +55,33 @@ $(".confirm-add-category").on('click', function(){
         }
     });
 });
+
+$(".category-toggle-icon").on('click', function(){
+    var parentStr = $(this).attr('data-parent');
+    switchCategorySub(parentStr);
+    switchToggleIcon($(this));
+});
+
+$(".category-parent-name").on('click', function(){
+    var $td = $(this).next();
+    switchCategorySub($td.attr('data-parent'));
+    switchToggleIcon($td);
+});
+
+function switchCategorySub(parentStr){
+    $('.parent-'+parentStr).toggle();
+}
+
+function switchToggleIcon($td){
+    var state = $td.attr('data-state');
+    if(state === 'opened'){
+        $td.html('<i class="icon-chevron-sign-left"></i>');
+        $td.attr('data-state', 'closed');
+    }else{
+        $td.html('<i class="icon-chevron-sign-down"></i>');
+        $td.attr('data-state', 'opened');
+    }
+}
 
 $(".save-node").on('click', function(){
     save(getParams());
@@ -95,6 +110,14 @@ $(".publish-node").on('click', function(){
     params = getParams();
     params.state = 'active';
     saveAndPreview(params);
+});
+
+$(".category-toggle-icon").on('click', function(){
+    var parentStr =  $(this).attr('data-parent').toLowerCase();
+    var dataContainer = $(".category-data tr[data-parent='"+parentStr+"']");
+    var data = '';
+    var results = $("#table-category-clone tr[data-parent='"+parentStr+"']").html();
+    dataContainer.html(data);
 });
 
 function clearAddCategory(){
@@ -167,16 +190,4 @@ function saveAndPreview(params){
             return 0;
         }
     });
-}
-
-function addNewCategory(catParams){
-    var title = catParams.parent;
-    if(catParams.sub){
-
-    }
-    var catNonce = catParams.parent;
-    if(catParams.sub){
-        catNonce = catNonce+'-'+catParams.sub;
-    }
-    var newCat = document.createElement('<label class="checkbox category-checkbox" for="checkbox-'+catNonce+'"><input type="checkbox"  data-toggle="checkbox" name="category-checkbox" id="checkbox-'+catNonce+'"/>{{ category.parent|title }} {% if category.sub is defined %}- {{ category.sub|title }}{% endif %}</label>')
 }

@@ -181,10 +181,10 @@ class ContentType extends Base {
             return $this;
         }
         $newCategory = array();
-        $newCategory['parent'] = $parent;
+        $newCategory['parent'] = strtolower($parent);
         if ( isset($sub) AND \is_string($sub) )
         {
-            $newCategory['sub'] = $sub;
+            $newCategory['sub'] = strtolower($sub);
         }
         foreach ($this->categories as $categoryKey => $categoryArray)
         {
@@ -228,6 +228,17 @@ class ContentType extends Base {
     }
 
     /**
+     * Remove all categories
+     *
+     * @return $this
+     */
+    public function removeAllCategories()
+    {
+        $this->categories = array();
+        return $this;
+    }
+
+    /**
      * Get categories
      *
      * @param bool sort
@@ -239,24 +250,6 @@ class ContentType extends Base {
         if ( $sort )
         {
             array_multisort($categories);
-//            usort($categories, function($a, $b){
-//                $aStr = $a['parent'];
-//                if ( isset($a['sub']) )
-//                {
-//                    $aStr = $aStr.$a['sub'];
-//                }
-//                $bStr = $b['parent'];
-//                if ( isset($b['sub']) )
-//                {
-//                    $bStr = $b['sub'];
-//                }
-//                if ( strripos($aStr, $bStr) !== false )
-//                {
-//                    return 1;
-//                }
-//                strcasecmp($aStr, $bStr);
-//                $aStr > $bStr ? 1 : ($aStr < $bStr ? -1 : 0);
-//            });
         }
         return $categories;
     }

@@ -287,10 +287,10 @@ class Node extends Base {
             return $this;
         }
         $newCategory = array();
-        $newCategory['parent'] = $parent;
+        $newCategory['parent'] = strtolower($parent);
         if ( isset($sub) AND \is_string($sub) )
         {
-            $newCategory['sub'] = $sub;
+            $newCategory['sub'] = strtolower($sub);
         }
         foreach ($this->categories as $categoryKey => $categoryArray)
         {

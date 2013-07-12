@@ -202,24 +202,48 @@
                         <h4>Categories</h4>
                         <div class="row-fluid">
                             <div class="span12" id='categories-inner-container'>
-                                <ul id="category-list">
+                                <table id="table-category">
                                     {% for category in contentType.categories  %}
-                                        <li {% if category.sub is defined %}
-                                                class="category-indented hide"
-                                            {% else %}
-                                                class="category-parent"
-                                            {% endif %}
-                                            data-parent="{{ category.parent }}">
-                                            <label class="checkbox category-checkbox" style="display: inline" for="checkbox-{{ category.parent }}{% if category.sub is defined %}-{{ category.sub}}{% endif %}">
-                                                <input type="checkbox"  data-toggle="checkbox" name="category-checkbox" id="checkbox-{{ category.parent }}{% if category.sub is defined %}-{{ category.sub }}{% endif %}"/>
-                                                {{ category.parent|title }} {% if category.sub is defined %}- {{ category.sub|title }}{% endif %}
-                                            </label>
-                                            {% if not category.sub is defined %}<i class="icon-chevron-sign-left category-toggle-icon" style="display: inline"></i>{% endif %}
-                                        </li>
-                                    {% else %}
-                                        <li>no categories found</li>
+                                        {% if not category.sub is defined %}
+                                            <tr class="category-parent">
+                                                <td>
+                                                    <label class="checkbox" for="checkbox-{{ category.parent }}" data-parent="{{ category.parent|lower }}">
+                                                        <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ category.parent }}"/>
+                                                    </label>
+                                                </td>
+                                                <td class="category-parent-name" style="min-width: 160px;">{{ category.parent|title }}</td>
+                                                <td class="category-toggle-icon" data-state='closed' data-parent="{{ category.parent }}"><i class="icon-chevron-sign-left"></i></td>
+                                            </tr>
+                                            {% for subCategory in contentType.categories  %}
+                                                {% if subCategory.sub is defined and subCategory.parent == category.parent %}
+                                                    <tr class="category-sub parent-{{ category.parent }} hide">
+                                                        <td style="padding-left: 30px;">
+                                                            <label class="checkbox" for="checkbox-{{ subCategory.parent }}-{{ subCategory.sub }}" data-parent="{{ subCategory.parent|lower }}">
+                                                                <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ subCategory.parent }}-{{ subCategory.sub }}"/>
+                                                            </label>
+                                                        </td>
+                                                        <td>{{ subCategory.sub|title }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endfor %}
-                                </ul>
+                                </table>
+                                <table class="hide" id="table-category-clone">
+                                    {% for category in contentType.categories %}
+                                        {% if category.sub is defined %}
+                                            <tr class="category-sub parent-{{ category.parent|lower }}" data-parent="{{ category.parent|lower }}">
+                                                <td>
+                                                    <label class="checkbox" for="checkbox-{{ category.parent }}-{{ category.sub }}">
+                                                        <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ category.parent }}-{{ category.sub }}"/>
+                                                    </label>
+                                                </td>
+                                                <td style="min-width: 180px;">{{ category.sub|title }}</td>
+                                                <td class="category-toggle-icon"><i class="icon-chevron-sign-left pull-right"></i></td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </table>
                             </div>
                         </div>
                         <div class="row-fluid">

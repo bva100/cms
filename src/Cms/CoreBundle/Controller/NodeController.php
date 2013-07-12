@@ -165,7 +165,6 @@ class NodeController extends Controller {
             throw $this->createNotFoundException('contentType with id '.$id.' was not found');
         }
         $categories = $contentType->getCategories();
-        echo '<pre>', \var_dump($categories); die();
         $slugHelper = $this->get('slug_helper')->setFullSlug($node->getSlug())->setTitle($node->getTitle());
         return $this->render('CmsCoreBundle:Node:edit.html.twig', array(
             'token' => $token,
