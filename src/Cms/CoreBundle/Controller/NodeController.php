@@ -28,8 +28,8 @@ class NodeController extends Controller {
         $authorFirstName = (string)$this->getRequest()->request->get('authorFirstName');
         $authorLastName = (string)$this->getRequest()->request->get('authorLastName');
         $authorId = (string)$this->getRequest()->request->get('authorId');
-        $categories = $this->getRequest()->request->get('categories');
-echo '<pre>', \var_dump($categories); die();        
+        $categories = json_decode((string)$this->getRequest()->request->get('categoriesJSON'));
+        $tags = (string)$this->getRequest()->request->get('tagsJSON');
         $slugPrefix = (string)$this->getRequest()->request->get('slugPrefix');
         $slug = (string)$this->getRequest()->request->get('slug');
         $title = (string)$this->getRequest()->request->get('title');
@@ -74,7 +74,6 @@ echo '<pre>', \var_dump($categories); die();
         {
             $node->setState($state);
         }
-        
         if ( $parentNodeId )
         {
             $node->setParentNodeId($parentNodeId);
@@ -99,9 +98,9 @@ echo '<pre>', \var_dump($categories); die();
         {
             $node->addView('html', $viewHtml);
         }
-        if ( is_array($categories) AND ! is_empty($categories) )
+        if ( is_array($categories) AND ! empty($categories) )
         {
-            $node->setCategories = $categories;
+            $node->setCategories($categories);
         }
         $success = $this->get('persister')->save($node);
         $nodeId = $success ? $node->getId() : '';
@@ -168,12 +167,14 @@ echo '<pre>', \var_dump($categories); die();
             throw $this->createNotFoundException('contentType with id '.$id.' was not found');
         }
         $categories = $contentType->getCategories();
+        $nodeCategories = $node->getCategories(false, 'HTML');
         $slugHelper = $this->get('slug_helper')->setFullSlug($node->getSlug())->setTitle($node->getTitle());
         return $this->render('CmsCoreBundle:Node:edit.html.twig', array(
             'token' => $token,
             'notices' => $notices,
             'user' => $user,
             'node' => $node,
+            'nodeCategories' => $nodeCategories,
             'slug' => $slugHelper->getSlug(),
             'slugPrefix' => $slugHelper->getSlugPrefix(),
             'isTitleSlug' => $slugHelper->isTitleSlug(),

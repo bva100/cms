@@ -152,7 +152,7 @@
                         <h4>Publish</h4>
                         <div class="row-fluid">
                             <div class="span6">
-                                <button class="btn btn-info save-node span12" {% if node.state == 'active' %}disabled{% endif %}><i class="icon-save"></i> Save</button>
+                                <button class="btn btn-info save-node span12" {% if node and node.state == 'active' %}disabled{% endif %}><i class="icon-save"></i> Save</button>
                             </div>
                             <div class="span6">
                                 <button class="btn btn-inverse publish-node span12"><i class="icon-ok-sign"></i> {% if node.state is defined and node.state == 'active' %}Update{% else %}Publish{% endif %}</button>
@@ -171,7 +171,7 @@
                                 <select name="state" class="select-block span2" id="input-state">
                                     <option value="draft" {% if node and node.state == 'draft' %}selected{% endif %}>Draft</option>
                                     <option value="pending" {% if node and node.state == 'pending' %}selected{% endif %}>Pending Review</option>
-                                    {% if node.state == 'active' %}
+                                    {% if node and node.state == 'active' %}
                                         <option value="active" selected>Publish</option>
                                     {% endif %}
                                 </select>
@@ -204,11 +204,12 @@
                             <div class="span12" id='categories-inner-container'>
                                 <table id="table-category">
                                     {% for category in contentType.categories  %}
+                                        {% set HTMLCategoryName = category.parent %}
                                         {% if not category.sub is defined %}
                                             <tr class="category-parent">
                                                 <td>
-                                                    <label class="checkbox" for="checkbox-{{ category.parent }}" data-parent="{{ category.parent|lower }}">
-                                                        <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ category.parent }}"/>
+                                                    <label class="checkbox" for="checkbox-{{ category.parent }}" data-parent="{{ category.parent|lower }}" data-category="{{ category.parent }}">
+                                                        <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ category.parent }}" {% if nodeCategories is defined and HTMLCategoryName in nodeCategories %}checked{% endif %}/>
                                                     </label>
                                                 </td>
                                                 <td class="category-parent-name">{{ category.parent|title }}</td>
@@ -216,31 +217,17 @@
                                             </tr>
                                             {% for subCategory in contentType.categories  %}
                                                 {% if subCategory.sub is defined and subCategory.parent == category.parent %}
+                                                    {% set HTMLCategoryName = subCategory.parent ~ '-' ~ subCategory.sub %}
                                                     <tr class="category-sub parent-{{ category.parent }} hide">
-                                                        <td class="category-sub-checkbox">
-                                                            <label class="checkbox" for="checkbox-{{ subCategory.parent }}-{{ subCategory.sub }}" data-parent="{{ subCategory.parent|lower }}">
-                                                                <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ subCategory.parent }}-{{ subCategory.sub }}"/>
+                                                        <td class="category-sub-checkbox"> 
+                                                            <label class="checkbox" for="checkbox-{{ subCategory.parent }}-{{ subCategory.sub }}" data-parent="{{ subCategory.parent|lower }}" data-category="{{ subCategory.parent }}-{{ subCategory.sub }}">
+                                                                <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ subCategory.parent }}-{{ subCategory.sub }}" {% if nodeCategories is defined and HTMLCategoryName in nodeCategories %}checked{% endif %}/>
                                                             </label>
                                                         </td>
                                                         <td>{{ subCategory.sub|title }}</td>
                                                     </tr>
                                                 {% endif %}
                                             {% endfor %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </table>
-                                <table class="hide" id="table-category-clone">
-                                    {% for category in contentType.categories %}
-                                        {% if category.sub is defined %}
-                                            <tr class="category-sub parent-{{ category.parent|lower }}" data-parent="{{ category.parent|lower }}">
-                                                <td>
-                                                    <label class="checkbox" for="checkbox-{{ category.parent }}-{{ category.sub }}">
-                                                        <input type="checkbox" data-toggle="checkbox" id="checkbox-{{ category.parent }}-{{ category.sub }}"/>
-                                                    </label>
-                                                </td>
-                                                <td style="min-width: 180px;">{{ category.sub|title }}</td>
-                                                <td class="category-toggle-icon"><i class="icon-chevron-sign-left pull-right"></i></td>
-                                            </tr>
                                         {% endif %}
                                     {% endfor %}
                                 </table>
@@ -308,7 +295,7 @@
         {{ parent() }}
     {% endblock %}
     <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
-    <input type="hidden" id="save-path" value="{{ path('cms_core.node_save') }}" />
+    <input type="text" id="save-path" value="{{ path('cms_core.node_save') }}" />
     <input type="hidden" id="delete-path" value="{{ path('cms_core.node_delete') }}"/>
     <input type="hidden" id="read-content-type-path" value="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"/>
     <input type="hidden" id="add-category-path" value="{{ path('cms_core.contentType_addCategory') }}"/>

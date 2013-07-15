@@ -73,6 +73,9 @@ a {
 .category-sub-checkbox {
     padding-left: 30px;
 }
+.category-title {
+    min-width: 180px;
+}
 #add-category-save {
     color: #3498DB;
 }

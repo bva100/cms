@@ -84,8 +84,7 @@ function switchToggleIcon($td){
 }
 
 $(".save-node").on('click', function(){
-    getCategories();
-//    save(getParams());
+    save(getParams());
 });
 
 $(".preview-node").on('click', function(){
@@ -160,19 +159,31 @@ function getParams(){
     objParams['authorFirstName'] = document.getElementById('input-author-first-name').value;
     objParams['authorLastName'] = document.getElementById('input-author-last-name').value;
     objParams['authorImage'] = document.getElementById('input-author-image').value;
-    objParams['categories'] = getCategories();
+    objParams['categoriesJSON'] = JSON.stringify(getCategories());
     return objParams;
 }
 
 function getCategories(){
-    var $checked =  $("#table-category .checked");
-    var array = [];
-    $checked.each(index){
-        array[] = $checked.
-    }
+    var categories = [];
+    var result = {};
+    $("#categories-holder .checked").each(function(){
+        var categoryArray = $(this).attr('data-category').split('-');
+        if(categoryArray.length > 1){
+            result = {'parent': categoryArray[0], 'sub': categoryArray[1]};
+        }else{
+            result = {'parent': categoryArray[0]};
+        }
+        categories.push(result);
+    });
+    return categories;
+}
 
-
-    return 0;
+function getRawCategories(){
+    var categories = [];
+    $("#categories-holder .checked").each(function(){
+        categories.push($(this).attr('data-category'));
+    });
+    return categories;
 }
 
 function save(params, urlAffix){

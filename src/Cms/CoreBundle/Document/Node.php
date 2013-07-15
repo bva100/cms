@@ -341,13 +341,28 @@ class Node extends Base {
      * @param bool sort
      * @return array $categories
      */
-    public function getCategories($sort = true)
+    public function getCategories($sort = true, $format = '')
     {
         $categories = $this->categories;
         if ( $sort )
         {
             array_multisort($categories);
         }
+        if ( $format === 'HTML' )
+        {
+            $results = array();
+            foreach ($categories as $category)
+            {
+                $str = $category['parent'];
+                if ( isset($category['sub']) )
+                {
+                    $str = $str.'-'.$category['sub'];
+                }
+                $results[] = $str;
+            }
+            $categories = $results;
+        }
+
         return $categories;
     }
 
