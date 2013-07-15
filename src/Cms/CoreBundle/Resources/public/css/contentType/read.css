@@ -28,9 +28,7 @@ h1 {
     font-size: 15px;
     margin-bottom: 0px;
 }
-#input-state {
-    background-color: #3498DB;
-}
+#input-state {}
 table {
     margin-top: 20px;
 }

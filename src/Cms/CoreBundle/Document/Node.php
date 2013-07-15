@@ -74,6 +74,11 @@ class Node extends Base {
     /**
      * @MongoDB\String
      */
+    private $description;
+
+    /**
+     * @MongoDB\String
+     */
     private $templateName;
 
     /**
@@ -371,9 +376,9 @@ class Node extends Base {
      *
      * @throws \Exception
      */
-    public function setTags()
+    public function setTags(array $tags)
     {
-        throw new \Exception('Please use the addTag method instead of setTags');
+        $this->tags = array_map('strtolower', $tags);
     }
 
     /**
@@ -384,6 +389,7 @@ class Node extends Base {
      */
     public function addTag($tag)
     {
+        $tag = strtolower($tag);
         if ( ! \is_string($tag) OR in_array($tag, $this->tags) )
         {
             return $this;
@@ -398,6 +404,7 @@ class Node extends Base {
         {
             return $this;
         }
+        $tags = strtolower($tag);
         $keys = \array_keys($this->tags, $tag);
         foreach ($keys as $key)
         {
@@ -412,8 +419,12 @@ class Node extends Base {
      *
      * @return collection $tags
      */
-    public function getTags()
+    public function getTags($format = null)
     {
+        if ( isset($format) )
+        {
+            return implode(',', $this->tags);
+        }
         return $this->tags;
     }
 
@@ -485,6 +496,28 @@ class Node extends Base {
         return $this->title;
     }
 
+    /**
+     * Set description
+     *
+     * @param $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+    
     /**
      * Set templateName
      *

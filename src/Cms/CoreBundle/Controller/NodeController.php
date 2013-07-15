@@ -29,10 +29,11 @@ class NodeController extends Controller {
         $authorLastName = (string)$this->getRequest()->request->get('authorLastName');
         $authorId = (string)$this->getRequest()->request->get('authorId');
         $categories = json_decode((string)$this->getRequest()->request->get('categoriesJSON'));
-        $tags = (string)$this->getRequest()->request->get('tagsJSON');
+        $tags = json_decode((string)$this->getRequest()->request->get('tagsJSON'));
         $slugPrefix = (string)$this->getRequest()->request->get('slugPrefix');
         $slug = (string)$this->getRequest()->request->get('slug');
         $title = (string)$this->getRequest()->request->get('title');
+        $description = (string)$this->getRequest()->request->get('description');
         $templateName = (string)$this->getRequest()->request->get('templateName');
         $viewHtml = (string)$this->getRequest()->request->get('viewHtml');
 
@@ -90,6 +91,10 @@ class NodeController extends Controller {
         {
             $node->setTitle($title);
         }
+        if ( $description )
+        {
+            $node->setDescription($description);
+        }
         if ( $templateName )
         {
             $node->setTemplateName($templateName);
@@ -101,6 +106,10 @@ class NodeController extends Controller {
         if ( is_array($categories) AND ! empty($categories) )
         {
             $node->setCategories($categories);
+        }
+        if ( is_array($tags) AND ! empty($tags) )
+        {
+            $node->setTags($tags);
         }
         $success = $this->get('persister')->save($node);
         $nodeId = $success ? $node->getId() : '';

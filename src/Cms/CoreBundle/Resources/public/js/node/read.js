@@ -153,6 +153,7 @@ function getParams(){
     objParams['domain'] = document.getElementById('domain').value;
     objParams['slug'] = document.getElementById('slug').value;
     objParams['title'] = document.getElementById('title').value;
+    objParams['description'] = document.getElementById('input-description').value;
     objParams['viewHtml'] = document.getElementById('view-html').value;
     objParams['description'] = document.getElementById('input-description').value;
     objParams['authorId'] = document.getElementById('input-author-id').value;
@@ -160,6 +161,7 @@ function getParams(){
     objParams['authorLastName'] = document.getElementById('input-author-last-name').value;
     objParams['authorImage'] = document.getElementById('input-author-image').value;
     objParams['categoriesJSON'] = JSON.stringify(getCategories());
+    objParams['tagsJSON'] = JSON.stringify(getTags());
     return objParams;
 }
 
@@ -176,6 +178,10 @@ function getCategories(){
         categories.push(result);
     });
     return categories;
+}
+
+function getTags(){
+    return document.getElementById('tags').value.split(',');
 }
 
 function getRawCategories(){
