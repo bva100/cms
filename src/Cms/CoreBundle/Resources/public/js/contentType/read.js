@@ -124,7 +124,7 @@ $("#author-confirm").on('click', function(){
 $(".open-filter-options").on('click', function(){
     $("#filter-options").toggleClass('hidden-phone', function(){
         if($(this).hasClass('hidden-phone')){
-            $(".open-filter-options").text('open filter options').addClass('btn-info');
+            $(".open-filter-options").text('open filter options');
         }else{
             $(".open-filter-options").text('close filter options').removeClass('btn-info');
         }

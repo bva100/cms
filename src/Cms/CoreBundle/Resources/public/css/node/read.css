@@ -102,3 +102,31 @@ a {
         margin-bottom: 10px;
     }
 }
+.fields-container {
+    margin-top: 15px;
+}
+.fields-container h4 {
+    font-size: 14px;
+    margin-bottom: 3px;
+    display: inline-block;
+}
+.field-key-value-pairs-container {
+    border: solid 2px #BDC3C7;
+    border-radius: 6px;
+    min-height: 67px;
+    padding: 30px;
+    font-size: 20px;
+}
+.field-key-value-pairs-container footer {
+    border-top: 1px solid #ECF0F1;
+    padding: 20px 0px 0px 0px;
+}
+.add-field {
+    border-top: 1px solid #ECF0F1;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+.field-key {
+    position: relative;
+    top: 8px;
+}

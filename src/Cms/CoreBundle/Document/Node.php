@@ -87,7 +87,7 @@ class Node extends Base {
     private $conversationIds;
 
     /**
-     * @MongoDB\Hash
+     * @MongoDB\Collection
      */
     private $fields;
 
@@ -589,13 +589,15 @@ class Node extends Base {
     }
 
     /**
-     * Not used
+     * Set an array of key value field pairs
      *
-     * @throws \Exception
+     * @param array $fields
+     * @return $this
      */
-    public function setFields()
+    public function setFields(array $fields)
     {
-        throw new \Exception('setFields method is not used. Please use the addField method insetead.');
+        $this->fields = $fields;
+        return $this;
     }
 
     /**

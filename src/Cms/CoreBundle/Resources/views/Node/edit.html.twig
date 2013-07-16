@@ -132,8 +132,45 @@
                 </div>
                 <div class="row-fluid">
                     <div class="span12">
-                        <label for="input-fields">Fields</label>
-                        <textarea name="fields" id="input-fields" class="span12" cols="30" rows="4" placeholder="Fields"></textarea>
+                        <section class="fields-container">
+                            <h4>Fields:</h4>
+                            <div class="field-key-value-pairs-container">
+                                <div class="field-key-value-pairs-inner">
+                                    {% for field in node.fields %}
+                                        <div class="row-fluid field-key-value-pairs">
+                                            <div class="span4">
+                                                <input type="hidden" class="field-key-input" value="{{ field.key }}"/>
+                                                <span class="field-key">{{ field.key }}</span>
+                                            </div>
+                                            <div class="span8">
+                                                <input type="text" class="span12 field-value" value="{{ field.value }}" placeholder="add a value for {{ field.key }}"/>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <footer>
+                                            <div class="row-fluid">
+                                                <button class="btn btn-inverse edit-fields span2"><i class="icon-edit"></i> Edit</button>
+                                                <button class="btn btn-inverse add-field-toggler span2"><i class="icon-plus-sign"></i> Add</button>
+                                                <button class="btn btn-info save-node span2 offset6"><i class="icon-save"></i> Save</button>
+                                            </div>
+                                            <div class="row-fluid add-field hide">
+                                                <div class="span12">
+                                                    <div class="row-fluid">
+                                                        <div class="span10">
+                                                            <input type="text" class="span12" id="input-new-field-key" placeholder="New field name"/>
+                                                        </div>
+                                                        <button class="btn btn-primary span2 create-field-key"><i class="icon-plus-sign"></i> Create</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
                 <input type="hidden" name="authorId" id="input-author-id"/>

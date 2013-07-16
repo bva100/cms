@@ -39,6 +39,27 @@ $("#cancel-add-category").on('click', function(){
     clearAddCategory();
 });
 
+$(".edit-fields").on('click', function(event){
+    event.preventDefault();
+});
+
+$(".add-field-toggler").on('click', function(event){
+    event.preventDefault();
+    var $this = $(this);
+    var $addField = $(".add-field");
+    $addField.toggle();
+    $("#input-new-field-key").focus();
+});
+
+$(".create-field-key").on('click', function(event){
+    event.preventDefault();
+    var key = document.getElementById('input-new-field-key');
+    var field = createNewField(key.value);
+    $(".field-key-value-pairs-inner").append(field);
+    key.value = '';
+    $(".add-field").hide();
+});
+
 $(".confirm-add-category").on('click', function(){
     var path = document.getElementById('add-category-path').value;
     params = getParams();
@@ -67,21 +88,6 @@ $(".category-parent-name").on('click', function(){
     switchCategorySub($td.attr('data-parent'));
     switchToggleIcon($td);
 });
-
-function switchCategorySub(parentStr){
-    $('.parent-'+parentStr).toggle();
-}
-
-function switchToggleIcon($td){
-    var state = $td.attr('data-state');
-    if(state === 'opened'){
-        $td.html('<i class="icon-chevron-sign-left"></i>');
-        $td.attr('data-state', 'closed');
-    }else{
-        $td.html('<i class="icon-chevron-sign-down"></i>');
-        $td.attr('data-state', 'opened');
-    }
-}
 
 $(".save-node").on('click', function(){
     save(getParams());
@@ -119,6 +125,21 @@ $(".category-toggle-icon").on('click', function(){
     var results = $("#table-category-clone tr[data-parent='"+parentStr+"']").html();
     dataContainer.html(data);
 });
+
+function switchCategorySub(parentStr){
+    $('.parent-'+parentStr).toggle();
+}
+
+function switchToggleIcon($td){
+    var state = $td.attr('data-state');
+    if(state === 'opened'){
+        $td.html('<i class="icon-chevron-sign-left"></i>');
+        $td.attr('data-state', 'closed');
+    }else{
+        $td.html('<i class="icon-chevron-sign-down"></i>');
+        $td.attr('data-state', 'opened');
+    }
+}
 
 function clearAddCategory(){
     $("#add-category-parent").val('');
@@ -162,6 +183,7 @@ function getParams(){
     objParams['authorImage'] = document.getElementById('input-author-image').value;
     objParams['categoriesJSON'] = JSON.stringify(getCategories());
     objParams['tagsJSON'] = JSON.stringify(getTags());
+    objParams['fieldsJSON'] = JSON.stringify(getFields());
     return objParams;
 }
 
@@ -180,16 +202,32 @@ function getCategories(){
     return categories;
 }
 
-function getTags(){
-    return document.getElementById('tags').value.split(',');
-}
-
 function getRawCategories(){
     var categories = [];
     $("#categories-holder .checked").each(function(){
         categories.push($(this).attr('data-category'));
     });
     return categories;
+}
+
+function getTags(){
+    return document.getElementById('tags').value.split(',');
+}
+
+function createNewField(key){
+    return '<div class="row-fluid field-key-value-pairs"><div class="span4"><input type="hidden" class="field-key-input" value="'+key+'"/><span class="field-key">'+key+'</span></div><div class="span8"><input type="text" class="span12 field-value" placeholder="add a value for '+key+'"/></div></div>';
+}
+
+function getFields(){
+    var fields = [];
+    var obj = {};
+    $(".field-key-value-pairs").each(function(){
+        obj.key = $(this).find('.field-key').text();
+        obj.value = $(this).find('.field-value').val();
+        fields.push(obj);
+        obj = {};
+    });
+    return fields;
 }
 
 function save(params, urlAffix){
