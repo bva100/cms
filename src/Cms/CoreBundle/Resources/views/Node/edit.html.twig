@@ -133,13 +133,13 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <section class="fields-container">
-                            <h4>Fields:</h4>
-                            <div class="field-key-value-pairs-container">
+                            <h4>Fields: {% if contentType.fields|length == 0 and node.fields|length == 0 %}<a href="#add-field" class="field-key-value-pairs-container-toggler"> <i class="icon-plus-sign"></i> Add</a>{% endif %}</h4>
+                            <div class="field-key-value-pairs-container {% if contentType.fields|length == 0 and node.fields|length == 0 %}hide{% endif %}">
                                 <div class="field-key-value-pairs-inner">
                                     {% for field in node.fields %}
-                                        <div class="row-fluid field-key-value-pairs">
+                                        <div class="row-fluid field-key-value-pairs" data-field-key="{{ field.key }}" data-field-value="{{ field.value }}">
                                             <div class="span4">
-                                                <input type="hidden" class="field-key-input" value="{{ field.key }}"/>
+                                                <input type="hidden" class="field-key-input span12" value="{{ field.key }}"/>
                                                 <span class="field-key">{{ field.key }}</span>
                                             </div>
                                             <div class="span8">
@@ -151,7 +151,7 @@
                                 <div class="row-fluid">
                                     <div class="span12">
                                         <footer>
-                                            <div class="row-fluid">
+                                            <div class="row-fluid" id='add-field-footer-btn-container'>
                                                 <button class="btn btn-inverse edit-fields span2"><i class="icon-edit"></i> Edit</button>
                                                 <button class="btn btn-inverse add-field-toggler span2"><i class="icon-plus-sign"></i> Add</button>
                                                 <button class="btn btn-info save-node span2 offset6"><i class="icon-save"></i> Save</button>
@@ -332,9 +332,6 @@
             </div>
         </div>
     </section>
-    <nav>
-        <a href="{{ path('cms_core.contentType_read', {'id':contentType.id, 'siteId':site.id}) }}">Back to {{ contentType.name|title }}</a>
-    </nav>
     {% block footer %}
         {{ parent() }}
     {% endblock %}

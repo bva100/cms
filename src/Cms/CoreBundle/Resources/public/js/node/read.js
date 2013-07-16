@@ -43,12 +43,45 @@ $(".edit-fields").on('click', function(event){
     event.preventDefault();
 });
 
+$(".field-key-value-pairs-container-toggler").on('click', function(event){
+    event.preventDefault();
+    $('.field-key-value-pairs-container').show();
+    $(this).hide();
+    toggleAddField();
+});
+
 $(".add-field-toggler").on('click', function(event){
     event.preventDefault();
-    var $this = $(this);
-    var $addField = $(".add-field");
-    $addField.toggle();
-    $("#input-new-field-key").focus();
+    toggleAddField();
+});
+
+$(".edit-fields").on('click', function(event){
+    event.preventDefault();
+    if($(this).hasClass('btn-inverse')){
+        $(this).removeClass("btn-inverse").addClass('btn-primary').html('<i class="icon-save"> Done</i>');
+        $(".add-field-toggler").hide();
+        $("#add-field-footer-btn-container .save-node").hide();
+        $(".field-key-input").attr('type', 'text').parent('div').removeClass('span4').addClass('span10');
+        $(".field-key").hide();
+        $(".field-value").hide();
+        $(".field-key-value-pairs").append('<button class="btn btn-danger remove-field" style="position: relative; left: 10px;"><i class="icon-trash"> Delete</i></button>');
+        $(".remove-field").on('click', function(event){
+            event.preventDefault();
+            if(confirm('Are you sure you want to remove this field?')){
+                var $container = $(this).parent('div');
+                var field = {'key':$container.attr('data-field-key'), 'value':$container.attr('data-field-value')}
+                $container.remove();
+            }
+        });
+    }else{
+        $(this).removeClass('btn-primary').addClass('btn-inverse').html('<i class="icon-edit"></i> Edit');
+        $(".add-field-toggler").show();
+        $("#add-field-footer-btn-container .save-node").show();
+        $(".field-key-input").attr('type', 'hidden').parent('div').removeClass('span10').addClass('span4');
+        $(".field-key").show();
+        $(".field-value").show();
+        $(".remove-field").remove();
+    }
 });
 
 $(".create-field-key").on('click', function(event){
@@ -228,6 +261,12 @@ function getFields(){
         obj = {};
     });
     return fields;
+}
+
+function toggleAddField(){
+    var $addField = $(".add-field");
+    $addField.toggle();
+    $("#input-new-field-key").focus();
 }
 
 function save(params, urlAffix){
