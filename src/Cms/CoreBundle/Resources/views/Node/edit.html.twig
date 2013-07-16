@@ -133,20 +133,34 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <section class="fields-container">
-                            <h4>Fields: {% if contentType.fields|length == 0 and node.fields|length == 0 %}<a href="#add-field" class="field-key-value-pairs-container-toggler"> <i class="icon-plus-sign"></i> Add</a>{% endif %}</h4>
-                            <div class="field-key-value-pairs-container {% if contentType.fields|length == 0 and node.fields|length == 0 %}hide{% endif %}">
+                            <h4>Fields: {% if contentType.fields|length == 0 and (not node or node.fields|length == 0) %}<a href="#add-field" class="field-key-value-pairs-container-toggler"> <i class="icon-plus-sign"></i> Add</a>{% endif %}</h4>
+                            <div class="field-key-value-pairs-container {% if contentType.fields|length == 0 and (not node or node.fields|length == 0) %}hide{% endif %}">
                                 <div class="field-key-value-pairs-inner">
-                                    {% for field in node.fields %}
-                                        <div class="row-fluid field-key-value-pairs" data-field-key="{{ field.key }}" data-field-value="{{ field.value }}">
-                                            <div class="span4">
-                                                <input type="hidden" class="field-key-input span12" value="{{ field.key }}"/>
-                                                <span class="field-key">{{ field.key }}</span>
+                                    {% if node and node.fields|length > 0 %}
+                                        {% for field in node.fields %}
+                                            <div class="row-fluid field-key-value-pairs" data-field-key="{{ field.key }}" data-field-value="{{ field.value }}">
+                                                <div class="span4">
+                                                    <input type="hidden" class="field-key-input span12" value="{{ field.key }}"/>
+                                                    <span class="field-key">{{ field.key }}</span>
+                                                </div>
+                                                <div class="span8">
+                                                    <input type="text" class="span12 field-value" value="{{ field.value }}" placeholder="add a value for {{ field.key }}"/>
+                                                </div>
                                             </div>
-                                            <div class="span8">
-                                                <input type="text" class="span12 field-value" value="{{ field.value }}" placeholder="add a value for {{ field.key }}"/>
+                                        {% endfor %}
+                                    {% elseif contentType.fields|length > 0 %}
+                                        {% for field in contentType.fields  %}
+                                            <div class="row-fluid field-key-value-pairs" data-field-key="{{ field.key }}" data-field-value="{{ field.value }}">
+                                                <div class="span4">
+                                                    <input type="hidden" class="field-key-input span12" value="{{ field.key }}"/>
+                                                    <span class="field-key">{{ field.key }}</span>
+                                                </div>
+                                                <div class="span8">
+                                                    <input type="text" class="span12 field-value" value="{{ field.value }}" placeholder="add a value for {{ field.key }}"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                    {% endfor %}
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                                 <div class="row-fluid">
                                     <div class="span12">

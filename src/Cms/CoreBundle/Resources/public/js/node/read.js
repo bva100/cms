@@ -84,6 +84,10 @@ $(".edit-fields").on('click', function(event){
     }
 });
 
+$(".field-key-input").on('blur', function(){
+    $(this).next().text($(this).val());
+});
+
 $(".create-field-key").on('click', function(event){
     event.preventDefault();
     var key = document.getElementById('input-new-field-key');
