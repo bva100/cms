@@ -37,6 +37,7 @@ class NodeController extends Controller {
         $description = (string)$this->getRequest()->request->get('description');
         $templateName = (string)$this->getRequest()->request->get('templateName');
         $viewHtml = (string)$this->getRequest()->request->get('viewHtml');
+        $viewText = strip_tags((string)$this->getRequest()->request->get('viewText'));
 
         // validate user has access to change and add new nodes
         $node = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id) : new Node();
@@ -103,6 +104,10 @@ class NodeController extends Controller {
         if ( $viewHtml )
         {
             $node->addView('html', $viewHtml);
+        }
+        if ( $viewText )
+        {
+            $node->addView('text', $viewText);
         }
         if ( is_array($categories) AND ! empty($categories) )
         {

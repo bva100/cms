@@ -13,6 +13,10 @@ $(document).ready(function() {
     if(alertOn){
         $("#inner-notice-container").show(0).delay(1000).fadeOut(1000);
     }
+    tinyMCE.init({
+        skin: 'flat',
+        selector: "#view-html",
+    });
 });
 
 $("#state-container-opener").on('click', function(){
@@ -212,7 +216,8 @@ function getParams(){
     objParams['slug'] = document.getElementById('slug').value;
     objParams['title'] = document.getElementById('title').value;
     objParams['description'] = document.getElementById('input-description').value;
-    objParams['viewHtml'] = document.getElementById('view-html').value;
+    objParams['viewHtml'] = tinyMCE.activeEditor.getContent();
+    objParams['viewText'] = tinyMCE.activeEditor.getContent({format: 'raw'});
     objParams['description'] = document.getElementById('input-description').value;
     objParams['authorId'] = document.getElementById('input-author-id').value;
     objParams['authorFirstName'] = document.getElementById('input-author-first-name').value;
