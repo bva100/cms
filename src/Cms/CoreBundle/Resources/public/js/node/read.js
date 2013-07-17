@@ -14,7 +14,15 @@ $(document).ready(function() {
         $("#inner-notice-container").show(0).delay(1000).fadeOut(1000);
     }
     tinyMCE.init({
+        plugins: 'link, table, save, fullscreen, charmap, image, code, paste, media, contextmenu',
+        save_enablewhendirty: true,
+        save_onsavecallback: function() {saveAJAX(getParams())},
         skin: 'flat',
+        visual: false,
+        statusbar: true,
+        menubar: "view, edit, insert, format, table, tools",
+        toolbar: "undo, redo | bold, italic | alignleft, aligncenter, alignright, justify | bullist, numlist  outdent, indent |  code, charmap, link, image",
+        schema: "html5",
         selector: "#view-html",
     });
 });
@@ -131,7 +139,7 @@ $(".category-parent-name").on('click', function(){
 });
 
 $(".save-node").on('click', function(){
-    save(getParams());
+    saveAJAX(getParams());
 });
 
 $(".preview-node").on('click', function(){
@@ -278,6 +286,16 @@ function toggleAddField(){
     $("#input-new-field-key").focus();
 }
 
+function saveAJAX(params){
+    $.post(savePath, params, function(data, textStatus, xhr) {
+        if(textStatus === 'success'){
+            $("#notice-container").html('<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert" style="color: white">&times;</button><i class="icon-bullhorn" style="margin-right: 5px;"></i> Save Complete</div>');
+        }else{
+            alert('Unable to save. Please be sure you are logged in and try again. If problem persists please contact customer services.');
+        }
+    });
+}
+
 function save(params, urlAffix){
     if(!urlAffix){
         urlAffix = '';
@@ -286,7 +304,7 @@ function save(params, urlAffix){
         if(textStatus === 'success'){
             window.location.href = savePath + '/' + data + urlAffix;
         }else{
-            alert('Unable to save. Please try again. If problem persists please contact customer services.');
+            alert('Unable to save. Please be sure you are logged in and try again. If problem persists please contact customer services.');
         }
     });
 }
