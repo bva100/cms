@@ -115,3 +115,31 @@ input[type="color"]:focus,
 .table tbody tr:hover td {
     background-color: #ECF0F1;
 }
+.login-container {
+    padding-top: 22%;
+}
+.login-form:before {
+    content: '';
+    border-style: none;
+    border-width: 0;
+    border-color: none;
+}
+.login-form .login-field {
+    padding: none;
+}
+.login-form label {
+    z-index: 200;
+}
+@media (max-width: 700px) {
+    .login-form label[for='username'], .login-form label[for='login-pass'] {
+        display: none;
+    }
+    .login-form .login-field {
+        position: relative;
+        left: -20px;
+    }
+    .login-form .btn {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}

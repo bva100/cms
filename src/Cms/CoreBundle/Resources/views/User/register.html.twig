@@ -14,7 +14,7 @@
     <div class="container">
         <div class="row">
             <section class="span offset4 primary-section">
-                <div class="login">
+                <div class="login-container">
                     <div class="login-form">
                         {% for notice in notices  %}
                             <div class="alert"><i class="icon-warning-sign"></i> {{ notice }}</div>
@@ -23,17 +23,17 @@
                             <input type="hidden" name="token" value="{{ token }}"/>
                             <input type="hidden" name="accountType" value="{{ accountType }}"/>
                             <div class="control-group">
-                                <input type="text" id="first-name" class="login-field" name="firstName" placeholder="first name" value="{{ firstName|default() }}" pattern="^[A-Za-z_]{1,20}$" title="First name must be all letters and no longer than 20 characters" required/>
+                                <input type="text" id="first-name" class="login-field span" name="firstName" placeholder="first name" value="{{ firstName|default() }}" pattern="^[A-Za-z_]{1,20}$" title="First name must be all letters and no longer than 20 characters" required/>
                             </div>
                             <div class="control-group">
-                                <input type="text" id="last-name" class="login-field" name="lastName" placeholder="last name" value="{{ lastName|default }}" pattern="^[A-Za-z_]{1,35}$" title="Last name must be all letters and no longer than 35 characters" required/>
+                                <input type="text" id="last-name" class="login-field span" name="lastName" placeholder="last name" value="{{ lastName|default }}" pattern="^[A-Za-z_]{1,35}$" title="Last name must be all letters and no longer than 35 characters" required/>
                             </div>
                             <div class="control-group">
-                                <input type="email" name="email" class="login-field" value="{{ email|default() }}" placeholder="email" required/>
+                                <input type="email" name="email" class="login-field span" value="{{ email|default() }}" placeholder="email" required/>
                             </div>
                             <div class="control-group">
                                 <label for="login-pass"></label>
-                                <input type="password" id="login-pass" name="password" class="login-field" placeholder="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="must be at least 8 characters and must have one uppercase letter and one number" required/>
+                                <input type="password" id="login-pass" name="password" class="login-field span" placeholder="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="must be at least 8 characters and must have one uppercase letter and one number" required/>
                             </div>
                             <div class="control-group">
                                 <div class="controls">

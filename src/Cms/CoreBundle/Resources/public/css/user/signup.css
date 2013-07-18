@@ -5,6 +5,10 @@
     display: block;
     margin: 0px auto;
 }
-.login-field {
-
+@media (max-width: 700px) {
+    .login-form {
+        background-color: #2C3E50;
+        padding: 0px;
+        padding-left: 12px;
+    }
 }
