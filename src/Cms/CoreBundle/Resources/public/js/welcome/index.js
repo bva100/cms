@@ -1,14 +1,13 @@
+var isTouch = 'ontouchstart' in document.documentElement;
+
 $(document).ready(function(){
-    $('#features .tile').click(function(){
-        iconHover($(this), 'on');
-    });
-
-    $("#features .tile").hover(function() {
-        iconHover($(this), true);
-    }, function() {
-        iconHover($(this), false);
-    });
-
+    if(!isTouch){
+        $("#features .tile").hover(function() {
+            iconHover($(this), true);
+        }, function() {
+            iconHover($(this), false);
+        });
+    }
 });
 
 function iconHover($parent, action) {

@@ -24,15 +24,15 @@
 <div id='topnav-container'>
     <div class="container">
         <nav class="row">
-            <div class="span4">
+            <div class="span pull-left">
                 <img src="/logo.png" alt="PipeStack" width="120" height="74" />
                 <span id="logo-name" style="font-size:50px; position: relative; top: 10px; font-weight: bold;">PipeStack</span>
             </div>
-            <div class="span4 offset4">
-            <span id='topnav-button-container' class="pull-right" style="position: relative; top: 10px">
-                <a href="{{ path('login') }}" class="btn btn-large btn-inverse">Login</a>
-                <a href="{{ path('cms_core.user_register') }}" class="btn btn-large btn-inverse">Sign up</a>
-            </span>
+            <div class="span pull-right">
+                <span id='topnav-button-container' class="pull-right" style="position: relative; top: 10px">
+                    <a href="{{ path('login') }}" class="btn btn-large btn-inverse">Login</a>
+                    <a href="{{ path('cms_core.user_register') }}" class="btn btn-large btn-inverse">Sign up</a>
+                </span>
             </div>
         </nav>
     </div>
@@ -40,17 +40,20 @@
 <div id="primary-content">
     <div class="container">
         <section class="row">
-            <div id='primary-image-wrapper' class="span6">
+            <div id='primary-image-wrapper' class="span6 hidden-phone">
                 <img src="/flat-ui/images/imac.png" alt="PipeStack CMS" width="570" height="472"/>
             </div>
             <div class="span6">
-                <h1 id='primary-header'>PipeStack CMS</h1>
+                <h1 id='primary-header'>PipeStack</h1>
+                <div class="visible-phone" id="mobile-imac-container">
+                    <img src="/flat-ui/images/imac.png" alt="PipeStack CMS" width="300" height="248"/>
+                </div>
                 <p>
                     Corned beef meatloaf jerky tail pastrami. Chuck tongue jowl pastrami pork belly. Cow bacon short loin filet mignon pancetta tongue pork loin. Ball tip pancetta tenderloin turducken turkey doner spare ribs leberkas pork swine cow sirloin tri-tip beef ribs. Ribeye t-bone tri-tip biltong. Shank swine jerky pork chop frankfurter strip steak capicola tail shoulder chuck shankle sausage flank. Tri-tip frankfurter shank, pastrami pork loin beef ribs fatback tongue
                 </p>
-                <div class="row">
-                    <a href="{{ path('cms_core.user_register') }}" id="primary-cta" class="btn btn-xlarge btn-block btn-danger span4 offset1">Get Started For Free</a>
-                </div>
+
+                    <a href="{{ path('cms_core.user_register') }}" id="primary-cta" class="btn btn-xlarge btn-danger">Get Started For Free</a>
+
             </div>
         </section>
     </div>
@@ -135,7 +138,7 @@
                 <h2>Who's Talking About PipeStack?</h2>
             </div>
         </div>
-        <div class="row">
+        <div class="row row-top">
             <div class="quote-block">
                 <div class="span2">
                     <img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>
@@ -219,7 +222,7 @@
 <div id="footer">
     <div class="container">
         <footer class="row">
-            <ul class="span4 offset4">
+            <ul class="span4">
                 <li><a href="#about">about</a></li>
                 <li><a href="#jobs">jobs</a></li>
                 <li><a href="#contact">contact</a></li>

@@ -12,12 +12,17 @@ body {
     padding-top: 30px;
     background-color: #2C3E50;
     color: white;
+    text-align: center;
+}
+#primary-image-wrapper {
+    text-align: center;
 }
 #primary-content h1 {
     text-align: center;
 }
 #primary-cta {
     margin-top: 20px;
+    width: 80%;
 }
 h1 {
     font-size: 60px;
@@ -71,9 +76,8 @@ h2.tile-title {
 }
 #testimonials h2 {
     text-align: center;
-    padding-bottom: 30px;
-    border-bottom: solid 2px #ffffff;
-    margin-bottom: -30px;
+    padding-bottom: 0px;
+    margin-top: 40px;
     font-size: 26px;
 }
 .quote-block {
@@ -129,4 +133,37 @@ blockquote {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 7px;
+}
+#footer ul {
+    width: 100%;
+    text-align: center;
+}
+#mobile-imac-container {
+    margin-bottom: 14px;
+}
+@media (max-width: 767px){
+    #features {
+        background-color: #ffffff;
+    }
+    #features .row {
+        margin-bottom: 0px;
+    }
+    .tile {
+        border-radius: 0px;
+    }
+    #testimonials h2 {
+        margin-bottom: -20px;
+    }
+    #testimonials .row {
+        margin-bottom: 0px;
+    }
+    #testimonials .row-top {
+        margin-bottom: -60px;
+    }
+    #signup-blocks {
+        background-color: #ffffff;
+    }
+    #footer {
+        background-color: #ffffff;
+    }
 }
