@@ -80,6 +80,9 @@ h2.tile-title {
     margin-top: 40px;
     font-size: 26px;
 }
+#testimonials .row-title {
+    margin-bottom: 0px;
+}
 .quote-block {
     margin-top: 60px;
 }
@@ -165,5 +168,10 @@ blockquote {
     }
     #footer {
         background-color: #ffffff;
+    }
+}
+@media (min-width: 990px) and (max-width: 1200px) {
+    #new-tech-affix {
+        display: none;
     }
 }
