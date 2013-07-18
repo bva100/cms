@@ -20,8 +20,8 @@ $(document).ready(function() {
         skin: 'flat',
         visual: false,
         statusbar: true,
-        menubar: "view, edit, insert, format, table, tools",
-        toolbar: "undo, redo | bold, italic | alignleft, aligncenter, alignright, justify | bullist, numlist  outdent, indent |  code, charmap, link, image",
+        menubar: "view, edit, insert, format, table",
+        toolbar: "undo, redo | bold, italic | alignleft, aligncenter, alignright, justify | bullist, numlist  outdent, indent |  code | charmap, link, image",
         schema: "html5",
         selector: "#view-html",
     });

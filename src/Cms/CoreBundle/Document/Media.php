@@ -71,11 +71,16 @@ class Media extends Base {
      */
     private $file;
 
+    /**
+     * @MongoDB\Collection
+     */
+    private $contentTypeIds;
+
     public function __construct()
     {
         $this->metadata = array();
+        $this->contentTypeIds = array();
     }
-
 
     /**
      * Get id
@@ -360,6 +365,47 @@ class Media extends Base {
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * Add a content type id
+     *
+     * @param $contentTypeId
+     * @return $this
+     */
+    public function addContentTypeId($contentTypeId)
+    {
+        if ( ! \is_string($contentTypeId) OR in_array($contentTypeId, $this->contentTypeIds) )
+        {
+            return $this;
+        }
+        $this->contentTypeIds[] = $contentTypeId;
+        return $this;
+    }
+
+    public function removeContentTypeId($contentTypeId)
+    {
+        if ( ! \is_string($contentTypeId) )
+        {
+            return $this;
+        }
+        $keys = \array_keys($this->contentTypeIds, $contentTypeId);
+        foreach ($keys as $key)
+        {
+            unset($this->contentTypeIds[$key]);
+            $this->contentTypeIds = array_values($this->contentTypeIds);
+        }
+        return $this;
+    }
+
+    /**
+     * Get contentTypeIds
+     *
+     * @return array contentTypeIds
+     */
+    public function getContentTypeIds()
+    {
+        return $this->contentTypeIds;
     }
 
 }
