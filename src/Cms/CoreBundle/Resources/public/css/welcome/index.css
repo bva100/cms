@@ -54,6 +54,15 @@ h2.tile-title {
 .icon-heart-hover {
     color: #C0392B;
 }
+.icon-tablet-hover {
+    color: #E67E22;
+}
+.icon-sitemap-hover {
+    color: #16A085;
+}
+.icon-thumbs-up-hover {
+    color: #2980B9;
+}
 #testimonials {
     padding-top: 20px;
     padding-bottom: 100px;
@@ -95,6 +104,10 @@ blockquote {
 }
 .tile-signup .btn {
     width: 70%;
+}
+.tile i {
+    position: relative;
+    bottom: 12px;
 }
 #footer {
     padding-top: 20px;

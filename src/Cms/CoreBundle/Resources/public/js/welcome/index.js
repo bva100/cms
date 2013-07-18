@@ -32,6 +32,15 @@ function iconHover($parent, action) {
         case 'theme-tile':
             hoverClassName = 'icon-heart-hover';
             break;
+        case 'mobile-tile':
+            hoverClassName = 'icon-tablet-hover';
+            break;
+        case 'multidomain-tile':
+            hoverClassName = 'icon-sitemap-hover';
+            break;
+        case 'easy-to-use-tile':
+            hoverClassName = 'icon-thumbs-up-hover';
+            break;
         default:
             hoverClassName = '';
             break;

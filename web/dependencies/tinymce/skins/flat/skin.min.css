@@ -296,10 +296,11 @@ i.mce-i-backcolor{text-shadow:none;background:#BBB}
 
 .mce-container-body {border:2px solid #BDC3C7;border-radius:6px;}
 .mce-stack-layout-item{border:0px; border-radius:6px}
+.mce-container-body .mce-toolbar {padding-top:2px;padding-bottom:4px;}
 .mce-container-body .mce-flow-layout, .mce-edit-area .mce-container .mce-panel .mce-stack-layout-item{border:0px;}
 .mce-container-body .mce-stack-layout{border:0px; border-top: 1px solid #BDC3C7; border-top-right-radius: 0px; border-top-left-radius: 0px;}
 .mce-menu, .mce-menu .mce-text, .mce-text, .mce-menu .mce-ico {color:#2C3E50}
-.mce-menu {border-radius: 5px; border: 0px}
+.mce-menu {border-radius: 5px; border: 0px;}
 .mce-menu .mce-container-body {border:0px}
 .mce-container-body .mce-stack-layout .mce-menu {color:#2C3E50}
 .mce-menu .mce-active {background-color:#1ABC9C}

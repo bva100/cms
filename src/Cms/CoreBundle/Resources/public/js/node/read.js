@@ -25,7 +25,19 @@ $(document).ready(function() {
         schema: "html5",
         selector: "#view-html",
     });
+    filepicker.setKey('AMPdbi1aZQuuzMBLLznNWz');
 });
+
+$(".upload-media").on('click', function(event){
+    event.preventDefault();
+    upload();
+});
+
+function upload(){
+    filepicker.pickAndStore({},{location: 'S3', access: 'public'},function(InkBlobs){
+        console.log(JSON.stringify(InkBlobs));
+    });
+}
 
 $("#state-container-opener").on('click', function(){
     $("#state-container").toggle();
