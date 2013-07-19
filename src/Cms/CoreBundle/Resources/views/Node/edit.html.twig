@@ -337,11 +337,11 @@
                     <div class="holder" id="featured-image-holder">
                         <h4>Featured Image</h4>
                         <div class="row-fluid">
-                            <div class="span12">
+                            <div class="span12 featured-image-container upload-media upload-featured">
                                 {% if node and node.image %}
-                                    <img src="{{ node.image }}" width="200"/>
+                                    <img src="{{ node.image }}" class="span12" id="input-featured-image"/>
                                 {% else %}
-                                    <button class="btn btn-info upload-media" data-upload-type='featured-image'>upload</button>
+                                    <button class="btn btn-info">upload</button>
                                 {% endif %}
                             </div>
                         </div>
@@ -359,4 +359,5 @@
     <input type="hidden" id="read-content-type-path" value="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"/>
     <input type="hidden" id="add-category-path" value="{{ path('cms_core.contentType_addCategory') }}"/>
     <input type="hidden" id="state" value="{{ node.state|default('draft') }}"/>
+    <input type="hidden" id="media-add-path" value="{{ path('cms_core.media_add') }}"/>
 {% endblock %}

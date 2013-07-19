@@ -31,6 +31,7 @@ class NodeController extends Controller {
         $categories = json_decode((string)$this->getRequest()->request->get('categoriesJSON'));
         $tags = json_decode((string)$this->getRequest()->request->get('tagsJSON'));
         $fields = json_decode((string)$this->getRequest()->request->get('fieldsJSON'));
+        $image = (string)$this->getRequest()->request->get('featuredImage');
         $slugPrefix = (string)$this->getRequest()->request->get('slugPrefix');
         $slug = (string)$this->getRequest()->request->get('slug');
         $title = (string)$this->getRequest()->request->get('title');
@@ -109,6 +110,10 @@ class NodeController extends Controller {
         {
             $node->addView('text', $viewText);
         }
+        if ( $image )
+        {
+            $node->setImage($image);
+        }
         if ( is_array($categories) AND ! empty($categories) )
         {
             $node->setCategories($categories);
@@ -121,7 +126,6 @@ class NodeController extends Controller {
         {
             $node->setFields($fields);
         }
-        
         $success = $this->get('persister')->save($node);
         $nodeId = $success ? $node->getId() : '';
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success, array('onSuccess' => $nodeId));

@@ -187,6 +187,11 @@ cms_core.media_create:
   defaults: { _controller: CmsCoreBundle:Media:create }
   methods: [POST]
 
+cms_core.media_add:
+  pattern: /media/add
+  defaults: { _controller: CmsCoreBundle:Media:add }
+  methods: [POST]
+
 cms_core.media_read:
   pattern: /media/{id}
   defaults: { _controller: CmsCoreBundle:Media:read }

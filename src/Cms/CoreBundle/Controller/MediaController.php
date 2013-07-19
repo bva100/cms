@@ -35,7 +35,7 @@ class MediaController extends Controller {
     public function createAction()
     {
         $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
-        $siteId = $this->getRequest()->request->get('siteId');
+        $siteId = (string)$this->getRequest()->request->get('siteId');
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -88,20 +88,39 @@ class MediaController extends Controller {
 
     public function addAction()
     {
-        $siteId = $this->getRequest()->request->get('siteId');
+        $id = (string)$this->getRequest()->request->get('id');
+        $siteId = (string)$this->getRequest()->request->get('siteId');
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
-        $user = $this->get('security.context')->getToken()->getUser();
         // ensure user has permissions to add media to this site
+        $user = $this->get('security.context')->getToken()->getUser();
+        $nodeId = (string)$this->getRequest()->request->get('nodeId');
+        if ( $nodeId )
+        {
+            $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($nodeId);
+            if ( ! $node )
+            {
+                throw $this->createNotFoundException('Node with id '.$nodeId.' not found');
+            }
+            // ensure user has permissions to add media to this node
+        }
         $filename = (string)$this->getRequest()->request->get('filename');
         $storage = (string)$this->getRequest()->request->get('storage');
         $url = (string)$this->getRequest()->request->get('url');
         $mime = (string)$this->getRequest()->request->get('mime');
-        $size = (string)$this->getRequest()->request->get('size');
-        $media = new Media();
+        $size = (int)$this->getRequest()->request->get('size');
+        $media = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Media')->find($id) : new Media();
+        if ( ! $media )
+        {
+            throw $this->createNotFoundException('Media with id '.$id.' not found');
+        }
+        if ( $siteId )
+        {
+            $media->setSiteId($siteId);
+        }
         if ( $filename )
         {
             $media->setFilename($filename);
@@ -122,12 +141,11 @@ class MediaController extends Controller {
         {
             $media->setSize($size);
         }
-        if ( $ )
+        if ( $nodeId )
         {
-            
+            $media->addNodeId($nodeId);
         }
-        
-        $success = $this->get('persister')->save($media);
+        $success = $this->get('persister')->save($media, false, false);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {

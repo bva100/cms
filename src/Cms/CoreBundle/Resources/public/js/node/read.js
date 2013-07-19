@@ -2,6 +2,7 @@ var savePath = document.getElementById('save-path').value;
 var deletePath = document.getElementById('delete-path').value;
 var readContentTypePath = document.getElementById('read-content-type-path').value;
 var baseUrl = document.getElementById('base-url').value;
+var mediaAddPath = document.getElementById('media-add-path').value;
 
 $(document).ready(function() {
     $('select').selectpicker();
@@ -30,13 +31,44 @@ $(document).ready(function() {
 
 $(".upload-media").on('click', function(event){
     event.preventDefault();
-    upload();
+    if($(this).hasClass('upload-featured')){
+       upload('featured');
+    }else{
+       upload('standard');
+    }
 });
 
-function upload(){
+function upload(type){
     filepicker.pickAndStore({},{location: 'S3', access: 'public'},function(InkBlobs){
-        console.log(JSON.stringify(InkBlobs));
+        var params = getParams();
+        var mediaParams = convertInkToMediaParams(InkBlobs[0], params.siteId, params.id);
+        $.post(mediaAddPath, mediaParams, function(data, textStatus, xhr) {
+            if(textStatus == 'success'){
+                if(type == 'featured'){
+                   $(".featured-image-container").html('<img src="'+mediaParams.url+'" class="span12" id="input-featured-image">');
+                }else{
+                   alert('added' + mediaParams.url);
+                }
+            }else{
+                alert('Upload failed. Please try again');
+            }
+        });
     });
+}
+
+function convertInkToMediaParams(ink, siteId, nodeId ){
+    mediaParams = {};
+    mediaParams.filename = ink.key;
+    mediaParams.storage = 'S3';
+    mediaParams.url = ink.url;
+    mediaParams.mime = ink.mimetype;
+    mediaParams.size = ink.size;
+    mediaParams.siteId = siteId;
+
+    if(nodeId){
+        mediaParams.nodeId = nodeId;
+    }
+    return mediaParams;
 }
 
 $("#state-container-opener").on('click', function(){
@@ -243,6 +275,7 @@ function getParams(){
     objParams['authorFirstName'] = document.getElementById('input-author-first-name').value;
     objParams['authorLastName'] = document.getElementById('input-author-last-name').value;
     objParams['authorImage'] = document.getElementById('input-author-image').value;
+    objParams['featuredImage'] = $("#input-featured-image").attr('src');
     objParams['categoriesJSON'] = JSON.stringify(getCategories());
     objParams['tagsJSON'] = JSON.stringify(getTags());
     objParams['fieldsJSON'] = JSON.stringify(getFields());
@@ -304,6 +337,7 @@ function saveAJAX(params){
             $("#notice-container").html('<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert" style="color: white">&times;</button><i class="icon-bullhorn" style="margin-right: 5px;"></i> Save Complete</div>');
         }else{
             alert('Unable to save. Please be sure you are logged in and try again. If problem persists please contact customer services.');
+            return 0;
         }
     });
 }
