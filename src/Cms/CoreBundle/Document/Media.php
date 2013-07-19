@@ -74,7 +74,7 @@ class Media extends Base {
     /**
      * @MongoDB\Collection
      */
-    private $contentTypeIds;
+    private $nodeIds;
 
     public function __construct()
     {
@@ -368,44 +368,44 @@ class Media extends Base {
     }
 
     /**
-     * Add a content type id
+     * Add a node id
      *
-     * @param $contentTypeId
+     * @param $nodeId
      * @return $this
      */
-    public function addContentTypeId($contentTypeId)
+    public function addNodeId($nodeId)
     {
-        if ( ! \is_string($contentTypeId) OR in_array($contentTypeId, $this->contentTypeIds) )
+        if ( ! \is_string($nodeId) OR in_array($nodeId, $this->contentTypeIds) )
         {
             return $this;
         }
-        $this->contentTypeIds[] = $contentTypeId;
+        $this->nodeIds[] = $nodeId;
         return $this;
     }
 
-    public function removeContentTypeId($contentTypeId)
+    public function removeNodeId($nodeId)
     {
-        if ( ! \is_string($contentTypeId) )
+        if ( ! \is_string($nodeId) )
         {
             return $this;
         }
-        $keys = \array_keys($this->contentTypeIds, $contentTypeId);
+        $keys = \array_keys($this->nodeIds, $nodeId);
         foreach ($keys as $key)
         {
-            unset($this->contentTypeIds[$key]);
-            $this->contentTypeIds = array_values($this->contentTypeIds);
+            unset($this->nodeIds[$key]);
+            $this->nodeIds = array_values($this->nodeIds);
         }
         return $this;
     }
 
     /**
-     * Get contentTypeIds
+     * Get nodeIds
      *
-     * @return array contentTypeIds
+     * @return array nodeIds
      */
-    public function getContentTypeIds()
+    public function getNodeIds()
     {
-        return $this->contentTypeIds;
+        return $this->nodeIds;
     }
 
 }

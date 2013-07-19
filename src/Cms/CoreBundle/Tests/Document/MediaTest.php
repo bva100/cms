@@ -40,19 +40,19 @@ class MediaTest extends \PHPUnit_Framework_TestCase {
      */
     public function testAddContentTypeIds()
     {
-        $this->media->addContentTypeId('1');
-        $this->media->addContentTypeId('2');
-        $this->media->addContentTypeId('3');
-        $this->assertCount(3, $this->media->getContentTypeIds());
-        $this->assertEquals(array('1', '2', '3'), $this->media->getContentTypeIds());
+        $this->media->addNodeId('1');
+        $this->media->addNodeId('2');
+        $this->media->addNodeId('3');
+        $this->assertCount(3, $this->media->getNodeIds());
+        $this->assertEquals(array('1', '2', '3'), $this->media->getNodeIds());
 
-        $this->media->removeContentTypeId('2');
-        $this->assertCount(2, $this->media->getContentTypeIds());
-        $this->assertEquals(array('1', '3'), $this->media->getContentTypeIds());
-        $this->media->removeContentTypeId('1');
-        $this->assertEquals(array('3'), $this->media->getContentTypeIds());
-        $this->media->removeContentTypeId('3');
-        $this->assertEmpty($this->media->getContentTypeIds());
+        $this->media->removeNodeId('2');
+        $this->assertCount(2, $this->media->getNodeIds());
+        $this->assertEquals(array('1', '3'), $this->media->getNodeIds());
+        $this->media->removeNodeId('1');
+        $this->assertEquals(array('3'), $this->media->getNodeIds());
+        $this->media->removeNodeId('3');
+        $this->assertEmpty($this->media->getNodeIds());
     }
 
 }

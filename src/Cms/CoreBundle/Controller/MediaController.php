@@ -86,6 +86,56 @@ class MediaController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.media_readAll', array('siteId' => $siteId)));
     }
 
+    public function addAction()
+    {
+        $siteId = $this->getRequest()->request->get('siteId');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$id.' not found');
+        }
+        $user = $this->get('security.context')->getToken()->getUser();
+        // ensure user has permissions to add media to this site
+        $filename = (string)$this->getRequest()->request->get('filename');
+        $storage = (string)$this->getRequest()->request->get('storage');
+        $url = (string)$this->getRequest()->request->get('url');
+        $mime = (string)$this->getRequest()->request->get('mime');
+        $size = (string)$this->getRequest()->request->get('size');
+        $media = new Media();
+        if ( $filename )
+        {
+            $media->setFilename($filename);
+        }
+        if ( $storage )
+        {
+            $media->setStorage($storage);
+        }
+        if ( $url )
+        {
+            $media->setUrl($url);
+        }
+        if ( $mime )
+        {
+            $media->setMime($mime);
+        }
+        if ( $size )
+        {
+            $media->setSize($size);
+        }
+        if ( $ )
+        {
+            
+        }
+        
+        $success = $this->get('persister')->save($media);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
+        return $this->redirect($this->generateUrl('cms_core.site_read', array('siteId' => $siteId)));
+    }
+
     public function readAction($id)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
