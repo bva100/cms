@@ -176,7 +176,7 @@ class Persister {
     public function save($object, $lazy = false, $onSuccess = 'save complete')
     {
         $errors = $this->validator->validate($object);
-        if ( \count($errors) > 0 AND $onSuccess )
+        if ( \count($errors) > 0 )
         {
             if ( isset($this->flashBag) )
             {
@@ -194,7 +194,7 @@ class Persister {
         {
             $this->flush();
         }
-        if ( isset($this->flashBag) )
+        if ( isset($this->flashBag) AND $onSuccess )
         {
             $this->flashBag->add('notices', $onSuccess);
         }

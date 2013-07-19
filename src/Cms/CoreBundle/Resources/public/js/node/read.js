@@ -49,6 +49,9 @@ function upload(type){
                 }else{
                    alert('added' + mediaParams.url);
                 }
+                if(params.id){
+                   saveAJAX(getParams());
+                }                                                                                                                                                                                                                                                                                                                                                                        
             }else{
                 alert('Upload failed. Please try again');
             }
@@ -64,7 +67,6 @@ function convertInkToMediaParams(ink, siteId, nodeId ){
     mediaParams.mime = ink.mimetype;
     mediaParams.size = ink.size;
     mediaParams.siteId = siteId;
-
     if(nodeId){
         mediaParams.nodeId = nodeId;
     }

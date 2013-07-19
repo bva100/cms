@@ -126,7 +126,7 @@ class NodeController extends Controller {
         {
             $node->setFields($fields);
         }
-        $success = $this->get('persister')->save($node);
+        $success = $this->get('persister')->save($node, false, false);
         $nodeId = $success ? $node->getId() : '';
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success, array('onSuccess' => $nodeId));
         if ( $xmlResponse )
