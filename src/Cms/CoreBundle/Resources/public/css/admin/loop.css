@@ -1,0 +1,43 @@
+h1 {
+    display: inline;
+}
+#add-new {
+    margin-left: 10px;
+    font-size: 18px;
+    text-decoration: none;
+}
+#search-container {
+    margin: 4px 0px 16px;
+}
+#search {
+    max-width: 410px;
+}
+#header a {
+    color: #3498DB;
+    font-size: 18px;
+}
+.ui-datepicker {
+    margin-top: 10px;
+}
+table {
+    margin-top: 20px;
+}
+table a {
+    text-decoration: none;
+    color: #3498DB;
+}
+table thead {
+    font-size: 16px;
+}
+#master-checkbox-container {
+    position: relative;
+    top: 12px;
+}
+.checkbox-td {
+    margin-top: 6px;
+}
+@media (max-width: 1281px) {
+    .btn-lower > i {
+        display: none;
+    }
+}

@@ -1,46 +1,7 @@
-h1 {
-    display: inline;
-}
-#add-new {
-    margin-left: 10px;
-    font-size: 18px;
-    text-decoration: none;
-}
-#search-container {
-    margin: 14px 0px;
-}
-#search {
-    max-width: 410px;
-}
-#header a {
-    color: #3498DB;
-    font-size: 18px;
-}
-#master-checkbox-container {
-    position: relative;
-    top: 12px;
-}
-.checkbox-td {
-    margin-top: 6px;
-}
 #content-type-alert {
     text-align: center;
     font-size: 15px;
     margin-bottom: 0px;
-}
-#input-state {}
-table {
-    margin-top: 20px;
-}
-table a {
-    text-decoration: none;
-    color: #3498DB;
-}
-table thead {
-    font-size: 16px;
-}
-.ui-datepicker {
-    margin-top: 10px;
 }
 @media (min-width: 767px) {
     .edit, .delete {
@@ -79,11 +40,6 @@ table thead {
 }
 @media (max-width: 1025px){
     .select-extra{
-        display: none;
-    }
-}
-@media (max-width: 1281px) {
-    .btn-lower > i {
         display: none;
     }
 }

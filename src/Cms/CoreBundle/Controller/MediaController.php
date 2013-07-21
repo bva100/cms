@@ -198,6 +198,15 @@ class MediaController extends Controller {
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
+        $search = (string)$this->getRequest()->query->get('search');
+        $startDate = (string)$this->getRequest()->query->get('startDate');
+        $endDate = (string)$this->getRequest()->query->get('endDate');
+        $page = $this->getRequest()->query->get('page');
+        if ( ! $page )
+        {
+            $page = 1;
+        }
+        $nextPage = 5*($page-1) >= 5 ? false : true ;
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -205,11 +214,16 @@ class MediaController extends Controller {
         }
         // ensure user has access to read site
         $media = $this->get('persister')->getRepo('CmsCoreBundle:Media')->findAllBySiteId($siteId);
-        return $this->render('CmsCoreBundle:Media:index.html.twig', array(
+        return $this->render('CmsCoreBundle:Media:read.html.twig', array(
             'token' => $token,
             'notices' => $notices,
             'site' => $site,
             'media' => $media,
+            'search' => $search,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'page' => $page,
+            'nextPage' => $nextPage,
         ));
     }
 

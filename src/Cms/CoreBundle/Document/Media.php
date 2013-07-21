@@ -57,11 +57,6 @@ class Media extends Base {
     private $author;
 
     /**
-     * @MongoDB\String
-     */
-    private $alt;
-
-    /**
      * @MongoDB\Hash
      */
     private $metadata;
@@ -267,28 +262,6 @@ class Media extends Base {
     public function getAuthor()
     {
         return $this->author;
-    }
-
-    /**
-     * Set alt
-     *
-     * @param string $alt
-     * @return self
-     */
-    public function setAlt($alt)
-    {
-        $this->alt = $alt;
-        return $this;
-    }
-
-    /**
-     * Get alt
-     *
-     * @return string $alt
-     */
-    public function getAlt()
-    {
-        return $this->alt;
     }
 
     /**

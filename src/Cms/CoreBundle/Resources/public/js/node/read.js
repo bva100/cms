@@ -15,16 +15,31 @@ $(document).ready(function() {
         $("#inner-notice-container").show(0).delay(1000).fadeOut(1000);
     }
     tinyMCE.init({
-        plugins: 'link, table, save, fullscreen, charmap, image, code, paste, media, contextmenu',
+        plugins: 'link, table, save, fullscreen, charmap, code, paste, media, contextmenu',
         save_enablewhendirty: true,
         save_onsavecallback: function() {saveAJAX(getParams())},
         skin: 'flat',
         visual: false,
         statusbar: true,
         menubar: "view, edit, insert, format, table",
-        toolbar: "undo, redo | bold, italic | alignleft, aligncenter, alignright, justify | bullist, numlist  outdent, indent |  code | charmap, link, image",
+        toolbar: "undo, redo | bold, italic, strikethrough | alignleft, aligncenter, alignright, justify | bullist, numlist  outdent, indent |  code | charmap, link, image, cms-media",
         schema: "html5",
         selector: "#view-html",
+        image_advtab: false,
+        setup: function(editor) {
+            editor.addButton('cms-media', {
+                type: 'button',
+                icon: 'image',
+                style: 'float: right;',
+                onclick: function(){
+
+                },
+            });
+        },
+        image_list: [
+            {title: 'My image 1', value: 'http://www.tinymce.com/my1.gif'},
+            {title: 'My image 2', value: 'http://www.moxiecode.com/my2.gif'}
+        ]
     });
     filepicker.setKey('AMPdbi1aZQuuzMBLLznNWz');
 });
@@ -37,6 +52,11 @@ $(".upload-media").on('click', function(event){
        upload('standard');
     }
 });
+
+function insertMedia(html){
+    var editor = tinyMCE.activeEditor;
+    editor.selection.setContent(html);
+}
 
 function upload(type){
     filepicker.pickAndStore({},{location: 'S3', access: 'public'},function(InkBlobs){
