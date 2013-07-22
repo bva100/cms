@@ -224,7 +224,7 @@ class Persister {
         {
             $this->flush();
         }
-        if ( isset($this->flashBag) )
+        if ( isset($this->flashBag) and $onSuccess )
         {
             $this->flashBag->add('notices', $onSuccess);
         }

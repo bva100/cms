@@ -19,4 +19,36 @@ class mediaRepository extends DocumentRepository {
             ->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
 
+    public function findAllBySiteIdAndType($siteId, $type, array $params = array('offset' => 0, 'limit' => 20))
+    {
+        $qb = $this->createQueryBuilder()
+            ->field('siteId')->equals($siteId);
+        if ( isset($type) )
+        {
+            $qb->field('mime')->equals(new \MongoRegex($type.'.*/'));
+        }
+        if ( isset($params['startDate']) )
+        {
+            $qb->field('created')->gte((int)$params['startDate']);
+        }
+        if ( isset($params['endDate']) )
+        {
+            $qb->field('created')->lte((int)$params['endDate']);
+        }
+        if ( isset($params['association']) )
+        {
+            if ( $params['association'] === 'unattached' )
+            {
+                $qb->addOr($qb->expr()->field('nodeIds')->equals(null));
+                $qb->addOr($qb->expr()->field('nodeIds')->size(0));
+            }
+        }
+        if ( isset($params['search']) )
+        {
+            $qb->addOr($qb->expr()->field('metadata.title')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
+            $qb->addOr($qb->expr()->field('metadata.description')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
+        }
+        return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
+    }
+
 }

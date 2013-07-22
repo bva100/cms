@@ -17,6 +17,7 @@
     'flat-ui/js/bootstrap-select.js'
     'flat-ui/js/flatui-checkbox.js'
     'flat-ui/js/flatui-calendar.js'
+    '@CmsCoreBundle/Resources/public/js/stringParams.js'
     '@CmsCoreBundle/Resources/public/js/checkboxList.js'
     '@CmsCoreBundle/Resources/public/js/media/read.js'
     filter='?yui_js' %}
@@ -33,11 +34,11 @@
         <div class="row-fluid">
             <div class="span6" id='header'>
                 <h1>Media</h1>
-                <a href="#" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
+                <a href="{{ path('cms_core.media_new', {'siteId':site.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
             </div>
             <div class="span3 pull-right" id="search-container">
                 <form class="load-data-form">
-                    <input type="search" id="search" class="span12 pull-right" value="{{ search }}" placeholder="Search"/>
+                    <input type="search" id="input-search" class="span12 pull-right" value="{{ search }}" placeholder="Search"/>
                 </form>
             </div>
         </div>
@@ -47,11 +48,11 @@
         <div id="filter-options" class="hidden-phone">
             <div class="row-fluid">
                 <div class="span3">
-                    <select name="type" class="select-block span12" id='input-general-type'>
+                    <select name="type" class="select-block span12" id='input-type'>
                         <option value="">View All Types</option>
-                        <option value="image" >Images</option>
-                        <option value="audio">Audio</option>
-                        <option value="video">Video</option>
+                        <option value="image" {% if type == 'image' %}selected{% endif %}>Images</option>
+                        <option value="audio" {% if type == 'audio' %}selected{% endif %}>Audio</option>
+                        <option value="video"{% if type == 'video' %}selected{% endif %}>Video</option>
                     </select>
                 </div>
                 <div class="span3">
@@ -68,9 +69,9 @@
                     <div class="row-fluid hide" id='flatui-calendar-input-container'>
                         <div class="span12">
                             <label for="start-date" class="date-input-label">From:</label>
-                            <input type="text" class="flatui-calendar-input-start date-input span12" id='start-date' value="{% if startDate %}{{ startDate|date('m/d/Y') }}{% endif %}"/>
+                            <input type="text" class="flatui-calendar-input-start date-input span12" id='input-start-date' value="{% if startDate %}{{ startDate|date('m/d/Y') }}{% endif %}"/>
                             <label for="end-date" class="date-input-label">To:</label>
-                            <input type="text" class="flatui-calendar-input-end date-input span12" id='end-date' value="{% if endDate %}{{ endDate|date('m/d/Y') }}{% endif %}"/>
+                            <input type="text" class="flatui-calendar-input-end date-input span12" id='input-end-date' value="{% if endDate %}{{ endDate|date('m/d/Y') }}{% endif %}"/>
                             <div class="row-fluid" id="flatui-calendar-input-button-container">
                                 <button class="btn span6 mobile-gap" id="flatui-calendar-cancel-dates">clear</button>
                                 <button class="btn btn-info span6 hidden-phone" id='flatui-calendar-confirm-dates'>ok</button>
@@ -80,10 +81,9 @@
                     </div>
                 </div>
                 <div class="span3">
-                    <select name="association" class="select-block span12" id='input-association'>
+                    <select name="input-association" class="select-block span12" id='input-association'>
                         <option value="">View All Associations</option>
-                        <option value="attached" >Attached</option>
-                        <option value="unattached">Unattached</option>
+                        <option value="unattached" {% if association == 'unattached' %}selected{% endif %}>Unattached</option>
                     </select>
                 </div>
                 <div class="span3">
@@ -202,4 +202,8 @@
             {{ parent() }}
         {% endblock %}
     </article>
+    <input type="hidden" id="token" value="{{ token }}"/>
+    <input type="hidden" id="site-id" value="{{ site.id }}"/>
+    <input type="hidden" id="page" value="{{ page }}"/>
+    <input type="hidden" id="delete-media-path" value="{{ path('cms_core.media_delete') }}"/>
 {% endblock %}

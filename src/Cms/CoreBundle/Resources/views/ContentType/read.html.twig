@@ -217,9 +217,11 @@
                         <td class="data-group-1">
                             <h4><a href="/{{ node.slug }}">{{ node.title|title }}</a></h4>
                             <p class='node-preview hidden-phone'>
-                                {{ node.views['html']|striptags|truncate(203) }}
-                                {% if node.views['html']|striptags|length > 203 %}
-                                    <a href="/{{ node.slug }}">read more</a>
+                                {% if node.views['html'] is defined %}
+                                    {{ node.views['html']|striptags|truncate(203) }}
+                                    {% if node.views['html']|striptags|length > 203 %}
+                                        <a href="/{{ node.slug }}">read more</a>
+                                    {% endif %}
                                 {% endif %}
                             </p>
                         </td>

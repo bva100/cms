@@ -96,7 +96,7 @@ class ContentTypeController extends Controller {
         {
             $page = 1;
         }
-        $nextPage = 5*($page-1) >= 5 ? false : true ;
+        $nextPage = 12*($page-1) >= 12 ? false : true ;
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -108,8 +108,8 @@ class ContentTypeController extends Controller {
             throw $this->createNotFoundException('ConentType with id '.$id.' not found');
         }
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentTypeAndState($siteId, $contentType->getName(), $state, array(
-            'limit' => 5,
-            'offset' => 5*($page-1),
+            'limit' => 12,
+            'offset' => 12*($page-1),
             'startDate' => $startDate,
             'endDate' => $endDate,
             'tags' => $tagArray,

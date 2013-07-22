@@ -198,22 +198,31 @@ class MediaController extends Controller {
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
-        $search = (string)$this->getRequest()->query->get('search');
-        $startDate = (string)$this->getRequest()->query->get('startDate');
-        $endDate = (string)$this->getRequest()->query->get('endDate');
+        $search = $this->getRequest()->query->get('search');
+        $startDate = $this->getRequest()->query->get('startDate');
+        $endDate = $this->getRequest()->query->get('endDate');
+        $association = $this->getRequest()->query->get('association');
+        $type = $this->getRequest()->query->get('type');
         $page = $this->getRequest()->query->get('page');
         if ( ! $page )
         {
             $page = 1;
         }
-        $nextPage = 5*($page-1) >= 5 ? false : true ;
+        $nextPage = 12*($page-1) >= 12 ? false : true ;
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
         // ensure user has access to read site
-        $media = $this->get('persister')->getRepo('CmsCoreBundle:Media')->findAllBySiteId($siteId);
+        $media = $this->get('persister')->getRepo('CmsCoreBundle:Media')->findAllBySiteIdAndType($siteId, $type, array(
+            'offset' => 12*($page-1),
+            'limit' => 12,
+            'search' => $search,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'association' => $association,
+        ));
         return $this->render('CmsCoreBundle:Media:read.html.twig', array(
             'token' => $token,
             'notices' => $notices,
@@ -224,12 +233,13 @@ class MediaController extends Controller {
             'endDate' => $endDate,
             'page' => $page,
             'nextPage' => $nextPage,
+            'type' => $type,
+            'association' => $association,
         ));
     }
 
     public function deleteAction()
     {
-        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $media = $this->get('persister')->getRepo('CmsCoreBundle:Media')->find($id);
         if ( ! $media )
@@ -237,7 +247,7 @@ class MediaController extends Controller {
             throw $this->createNotFoundException('Media with id '.$id.' not found');
         }
         $this->get('media_manager')->setMedia($media)->delete();
-        $success = $this->get('persister')->delete($media);
+        $success = $this->get('persister')->delete($media, false, false);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {

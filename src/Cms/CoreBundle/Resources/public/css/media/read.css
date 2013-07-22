@@ -7,10 +7,10 @@
 }
 @media (min-width: 767px) {
     .edit, .delete {
-        max-width: 130px;
+        max-width: 128px;
     }
     .pag-next, .pag-previous {
-        max-width: 130px;
+        max-width: 128px;
     }
     .pag-previous {
         margin-right: 8px;
