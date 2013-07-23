@@ -6,7 +6,6 @@ $(document).ready(function() {
     $(".select .dropdown-toggle").addClass('btn-info');
     $(".dropdown-menu").addClass('dropdown-inverse');
     $(".dropdown-arrow").addClass('dropdown-arrow-inverse');
-    getParams();
 });
 
 $('.btn-checkbox-action').on('click', function(){
@@ -22,6 +21,9 @@ $('.btn-checkbox-action').on('click', function(){
         case 'delete':
             ids.forEach(function(id){
                 deleteMedia(id, token);
+            }, function(){
+                $("#notices").html('<div id="content-type-alert" class="alert alert-info" style="margin-top: 14px;">Deleted</div>');
+                $("#content-type-alert").show(0).delay(1000).fadeOut(1000);
             });
             break;
         case 'edit':
@@ -84,7 +86,7 @@ function deleteMedia(id, token){
     $.post(deleteMediaPath, {id: id, token:token}, function(data, textStatus, xhr) {
         if(textStatus == 'success'){
             $('#tr-' + id).remove();
-            $("#notices").html('<div id="content-type-alert" class="alert alert-info" style="margin-top: 14px;">Deleted</div>');
+            $("#notices").html('<div id="content-type-alert" class="alert alert-danger" style="margin-top: 14px;">Removing...</div>');
             $("#content-type-alert").show(0).delay(1000).fadeOut(1000);
         }else{
            alert('Deletion failed, please try again. If the problem persists please contact customer support.');

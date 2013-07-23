@@ -1,0 +1,15 @@
+#media-list {
+    border: 1px solid #ECF0F1;
+    font-size: 18px;
+    padding: 20px 10px;
+    text-align: center;
+}
+li {
+    list-style: none;
+}
+.media-item {
+    padding: 20px 0px;
+}
+#media-upload-complete {
+    padding-right: 20px;
+}

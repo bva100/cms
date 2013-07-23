@@ -10,7 +10,7 @@ $(document).ready(function() {
     $(".dropdown-menu").addClass('dropdown-inverse');
     $(".dropdown-arrow").addClass('dropdown-arrow-inverse');
     $('#tags').tagsInput();
-	var alertOn = $(".alert").length > 0;
+    var alertOn = $(".alert").length > 0;
     if(alertOn){
         $("#inner-notice-container").show(0).delay(1000).fadeOut(1000);
     }
@@ -41,15 +41,15 @@ $(document).ready(function() {
             {title: 'My image 2', value: 'http://www.moxiecode.com/my2.gif'}
         ]
     });
-    filepicker.setKey('AMPdbi1aZQuuzMBLLznNWz');
+    filepicker.setKey(filepickerKey);
 });
 
 $(".upload-media").on('click', function(event){
     event.preventDefault();
     if($(this).hasClass('upload-featured')){
-       upload('featured');
+        upload('featured');
     }else{
-       upload('standard');
+        upload('standard');
     }
 });
 
@@ -65,32 +65,18 @@ function upload(type){
         $.post(mediaAddPath, mediaParams, function(data, textStatus, xhr) {
             if(textStatus == 'success'){
                 if(type == 'featured'){
-                   $(".featured-image-container").html('<img src="'+mediaParams.url+'" class="span12" id="input-featured-image">');
+                    $(".featured-image-container").html('<img src="'+mediaParams.url+'" class="span12" id="input-featured-image">');
                 }else{
-                   alert('added' + mediaParams.url);
+                    alert('added' + mediaParams.url);
                 }
                 if(params.id){
-                   saveAJAX(getParams());
-                }                                                                                                                                                                                                                                                                                                                                                                        
+                    saveAJAX(getParams());
+                }
             }else{
                 alert('Upload failed. Please try again');
             }
         });
     });
-}
-
-function convertInkToMediaParams(ink, siteId, nodeId ){
-    mediaParams = {};
-    mediaParams.filename = ink.key;
-    mediaParams.storage = 'S3';
-    mediaParams.url = ink.url;
-    mediaParams.mime = ink.mimetype;
-    mediaParams.size = ink.size;
-    mediaParams.siteId = siteId;
-    if(nodeId){
-        mediaParams.nodeId = nodeId;
-    }
-    return mediaParams;
 }
 
 $("#state-container-opener").on('click', function(){
