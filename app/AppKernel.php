@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Cms\PersisterBundle\CmsPersisterBundle(),
             new Cms\ValidatorBundle\CmsValidatorBundle(),
             new Cms\UserBundle\CmsUserBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

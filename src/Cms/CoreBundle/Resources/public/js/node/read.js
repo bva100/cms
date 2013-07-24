@@ -32,7 +32,7 @@ $(document).ready(function() {
                 icon: 'image',
                 style: 'float: right;',
                 onclick: function(){
-
+                    mediaSelector();
                 },
             });
         },
@@ -378,4 +378,8 @@ function saveAndPreview(params){
             return 0;
         }
     });
+}
+
+function mediaSelector(){
+    alert('hello casey!');
 }

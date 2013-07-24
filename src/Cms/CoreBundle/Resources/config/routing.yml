@@ -192,8 +192,13 @@ cms_core.media_add:
   defaults: { _controller: CmsCoreBundle:Media:add }
   methods: [POST]
 
+cms_core.media_readAll:
+  pattern: /media/all/{siteId}
+  defaults: { _controller: CmsCoreBundle:Media:readAll }
+  methods: [GET]
+
 cms_core.media_read:
-  pattern: /media/{id}
+  pattern: /media/{siteId}/{id}
   defaults: { _controller: CmsCoreBundle:Media:read }
   methods: [GET]
 
@@ -201,11 +206,6 @@ cms_core.media_update:
   pattern: /media/update
   defaults: { _controller: CmsCoreBundle:Media:update }
   methods: [POST]
-
-cms_core.media_readAll:
-  pattern: /media/all/{siteId}
-  defaults: { _controller: CmsCoreBundle:Media:readAll }
-  methods: [GET]
 
 cms_core.media_delete:
   pattern: /media/delete

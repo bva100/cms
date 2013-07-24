@@ -1,16 +1,72 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
-{% block body %}
-    <h1>Edit Media {{ media.filename }}</h1>
-    {% block notices %}{{ parent() }}{% endblock %}
-    <img src="http://d19rtldlpwzovp.cloudfront.net/{{ media.filename }}" alt="" {{ media.metadata.dimensions | raw }} />
-    <form action="{{ path('cms_core.media_update') }}" method="post">
-        <input type="hidden" name="token" value="{{ token }}"/>
-        <input type="hidden" name="id" value="{{ media.id }}"/>
-        <input type="text" name="filename" value="{{ media.filename }}" required/>
-        <input type="submit" value="save"/>
-    </form>
-    <nav>
-        <a href="{{ path('cms_core.media_readAll', {'siteId':media.siteId}) }}">View All Media</a>
-    </nav>
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/media/edit.css'
+        filter='cssrewrite, ?yui_css' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/media/edit.js'
+        filter='?yui_js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    Edit {{ media.title|default('Media') }} {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <article>
+        <hgroup class="row-fluid">
+            <div class="span9">
+                <h1 id="primary-header">Edit {{ media.metadata.title|default('Media') }}</h1>
+            </div>
+            <div class="span3">
+                <div id="notices">
+                    {% block notices %}
+                        {{ parent() }}
+                    {% endblock %}
+                </div>
+            </div>
+        </hgroup>
+        <section class="row-fluid">
+            <div class="span9">
+                <div class="row-fluid">
+                    {% if 'image' in media.mime %}
+                        <div class="span8">
+                            <img src="{{ media.url }}" title="{{ media.metadata.title|default() }}" alt="{{ media.metadata.alt|default() }}" width="{{ media.metadata.width|default() }}" height="{{ media.metadata.height|default() }}"/>
+                        </div>
+                    {% endif %}
+                </div>
+                <div id="meta-container">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <label for="input-title">Title:</label>
+                            <input type="text" value="{{ media.metadata.title|default() }}" class="span12" id="input-title" placeholder="Add a title"/>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <label for="input-alt">Alernative:</label>
+                            <input type="text" value="{{ media.metadata.alt|default() }}" class="span12" id="input-alt" placeholder="Add text to display when image cannot be shown"/>
+                        </div>
+                    </div>
+                    <button class="btn btn-info pull-right save">Save</button>
+                </div>
+            </div>
+            <div class="span3">
+                crop tools here
+            </div>
+        </section>
+    </article>
+    <input type="hidden" id="site-id" value="{{ site.id }}"/>
+    <input type="hidden" id="id" value="{{ media.id }}"/>
+    <input type="hidden" id="save-path" value="{{ path('cms_core.media_update') }}"/>
 {% endblock %}

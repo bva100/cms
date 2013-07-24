@@ -1,5 +1,7 @@
 var deleteMediaPath = document.getElementById('delete-media-path').value;
 var page = document.getElementById('page').value;
+var baseUrl = document.getElementById('base-url').value;
+var siteId = document.getElementById('site-id').value;
 
 $(document).ready(function() {
     $('select').selectpicker();
@@ -27,9 +29,8 @@ $('.btn-checkbox-action').on('click', function(){
             });
             break;
         case 'edit':
-            alert('not yet setup');
-//            var id = ids.length == 1 ? ids[0] : ids[1] ;
-//            window.location.href = baseUrl + '/node/'+id;
+            var id = ids.length == 1 ? ids[0] : ids[1] ;
+            window.location.href = baseUrl + '/media/'+siteId+'/'+id;
             break;
         default:
             alert('action not found');

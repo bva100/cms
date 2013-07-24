@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Cms\CoreBundle\Document\Media;
-
 use Aws\S3\S3Client;
 
 class MediaController extends Controller {
@@ -154,10 +153,15 @@ class MediaController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.site_read', array('siteId' => $siteId)));
     }
 
-    public function readAction($id)
+    public function readAction($siteId, $id)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$id.' not found');
+        }
         $media = $this->get('persister')->getRepo('CmsCoreBundle:Media')->find($id);
         if ( ! $media )
         {
@@ -167,15 +171,16 @@ class MediaController extends Controller {
         return $this->render('CmsCoreBundle:Media:edit.html.twig', array(
             'token' => $token,
             'notices' => $notices,
+            'site' => $site,
             'media' => $media,
         ));
     }
 
     public function updateAction()
     {
-        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $filename = (string)$this->getRequest()->request->get('filename');
+        $metadata = json_decode((string)$this->getRequest()->request->get('metadata'));
         $media = $this->get('persister')->getRepo('CmsCoreBundle:Media')->find($id);
         if ( ! $media )
         {
@@ -185,7 +190,11 @@ class MediaController extends Controller {
         {
             $media->setFilename($filename);
         }
-        $success = $this->get('persister')->save($media);
+        if ( $metadata )
+        {
+            $media->setMetadata($metadata);
+        }
+        $success = $this->get('persister')->save($media, false, false);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {
@@ -198,6 +207,7 @@ class MediaController extends Controller {
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
+        $format = (string)$this->getRequest()->query->get('format');
         $search = $this->getRequest()->query->get('search');
         $startDate = $this->getRequest()->query->get('startDate');
         $endDate = $this->getRequest()->query->get('endDate');
@@ -208,7 +218,12 @@ class MediaController extends Controller {
         {
             $page = 1;
         }
-        $nextPage = 12*($page-1) >= 12 ? false : true ;
+        $limit = (int)$this->getRequest()->query->get('limit');
+        if ( ! $limit )
+        {
+            $limit = 12;
+        }
+        $nextPage = $limit*($page-1) >= $limit ? false : true ;
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -216,26 +231,42 @@ class MediaController extends Controller {
         }
         // ensure user has access to read site
         $media = $this->get('persister')->getRepo('CmsCoreBundle:Media')->findAllBySiteIdAndType($siteId, $type, array(
-            'offset' => 12*($page-1),
-            'limit' => 12,
+            'offset' => $limit*($page-1),
+            'limit' => $limit,
             'search' => $search,
             'startDate' => $startDate,
             'endDate' => $endDate,
             'association' => $association,
         ));
-        return $this->render('CmsCoreBundle:Media:read.html.twig', array(
-            'token' => $token,
-            'notices' => $notices,
-            'site' => $site,
-            'media' => $media,
-            'search' => $search,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-            'page' => $page,
-            'nextPage' => $nextPage,
-            'type' => $type,
-            'association' => $association,
-        ));
+        
+        if ( $format === 'json' )
+        {
+            $serializer = $this->get('jms_serializer');
+            $array = array();
+            foreach ($media as $mediaSingle) {
+                $array[] = $mediaSingle;
+            }
+            $response = new Response( $serializer->serialize($array, 'json') );
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+        else
+        {
+            return $this->render('CmsCoreBundle:Media:read.html.twig', array(
+                'token' => $token,
+                'notices' => $notices,
+                'site' => $site,
+                'media' => $media,
+                'search' => $search,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'page' => $page,
+                'limit' => $limit,
+                'nextPage' => $nextPage,
+                'type' => $type,
+                'association' => $association,
+            ));
+        }
     }
 
     public function deleteAction()
