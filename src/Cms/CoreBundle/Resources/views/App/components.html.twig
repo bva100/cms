@@ -111,3 +111,25 @@
         </footer>
     </div>
 {% endblock %}
+
+{% block mediaModal %}
+    <div class="modal hide fade" id="media-modal-container">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Modal header</h3>
+        </div>
+        <div class="modal-body row-fluid">
+            <h3 id="media-modal-loader">Loading media...</h3>
+            <div class="span9">
+                <div id="primary-media-data-container" class="row-fluid"></div>
+            </div>
+            <div class="span2">
+                <div id="primary-media-editor" class="row-fluid"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+            <a href="#" class="btn btn-info insert-media" data-editor='tinyMCE'>Insert</a>
+        </div>
+    </div>
+{% endblock %}

@@ -4,6 +4,7 @@
     {{ parent() }}
     {% stylesheets
         'flat-ui/calendar/jquery-ui-1.10.3.custom.min.css'
+        '@CmsCoreBundle/Resources/public/css/bigModal.css'
         '@CmsCoreBundle/Resources/public/css/node/read.css'
         filter='cssrewrite, ?yui_css' %}
     <link rel="stylesheet" href="{{ asset_url }}" xmlns="http://www.w3.org/1999/html"/>
@@ -13,9 +14,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="/dependencies/tinymce/tinymce.min.js"></script>
-    <script type="text/javascript">
-        (function(a){if(window.filepicker){return}var b=a.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"===a.location.protocol?"https:":"http:")+"//api.filepicker.io/v1/filepicker.js";var c=a.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c);var d={};d._queue=[];var e="pick,pickMultiple,pickAndStore,read,write,writeUrl,export,convert,store,storeUrl,remove,stat,setKey,constructWidget,makeDropPane".split(",");var f=function(a,b){return function(){b.push([a,arguments])}};for(var g=0;g<e.length;g++){d[e[g]]=f(e[g],d._queue)}window.filepicker=d})(document);
-    </script>
+    {#<script type="text/javascript">#}
+        {#(function(a){if(window.filepicker){return}var b=a.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"===a.location.protocol?"https:":"http:")+"//api.filepicker.io/v1/filepicker.js";var c=a.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c);var d={};d._queue=[];var e="pick,pickMultiple,pickAndStore,read,write,writeUrl,export,convert,store,storeUrl,remove,stat,setKey,constructWidget,makeDropPane".split(",");var f=function(a,b){return function(){b.push([a,arguments])}};for(var g=0;g<e.length;g++){d[e[g]]=f(e[g],d._queue)}window.filepicker=d})(document);#}
+    {#</script>#}
     {% javascripts
         'flat-ui/js/flatui-radio.js'
         'flat-ui/js/bootstrap-select.js'
@@ -40,6 +41,9 @@
 {% endblock %}
 
 {% block content %}
+    {% block mediaModal %}
+        {{ parent() }}
+    {% endblock %}
     <section class="row-fluid">
         <div class="span12">
             {% if node %}
@@ -352,10 +356,6 @@
         </div>
     </section>
 
-    <div id="primary-media-data-container">
-        here dog
-    </div>
-
     {% block footer %}
         {{ parent() }}
     {% endblock %}
@@ -368,4 +368,5 @@
     <input type="hidden" id="add-category-path" value="{{ path('cms_core.contentType_addCategory') }}"/>
     <input type="hidden" id="media-add-path" value="{{ path('cms_core.media_add') }}"/>
     <input type="hidden" id="media-read-all-path" value="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}"/>
+    <input type="hidden" id="media-save-path" value="{{ path('cms_core.media_update') }}"/>
 {% endblock %}

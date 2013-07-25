@@ -130,6 +130,20 @@ input[type="color"]:focus,
 .login-form label {
     z-index: 200;
 }
+.modal {
+    border-radius: 3px;
+    border: none;
+    -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+            box-shadow: none;
+}
+.modal .modal-header {
+    border-bottom: 1px solid #ECF0F1;
+}
+.modal .modal-footer {
+    border-top: 1px solid #ECF0F1;
+    background-color: #ffffff;
+}
 @media (max-width: 700px) {
     .login-form label[for='username'], .login-form label[for='login-pass'] {
         display: none;

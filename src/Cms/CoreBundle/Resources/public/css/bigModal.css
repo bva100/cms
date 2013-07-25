@@ -1,0 +1,17 @@
+body .modal {
+    width: 90%; /* desired relative width */
+    left: 5%; /* (100%-width)/2 */
+    margin-left: auto;
+    margin-right: auto;
+}
+body .modal-body {
+    width: auto;
+    height: auto:
+    max-height: 100%;
+}
+#media-modal-loader {
+    text-align: center;
+}
+.media-preview:hover {
+   cursor: pointer;
+}

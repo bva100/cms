@@ -32,16 +32,12 @@ $(document).ready(function() {
                 icon: 'image',
                 style: 'float: right;',
                 onclick: function(){
-                    mediaSelector();
+                    showMediaModal();
                 },
             });
         },
-        image_list: [
-            {title: 'My image 1', value: 'http://www.tinymce.com/my1.gif'},
-            {title: 'My image 2', value: 'http://www.moxiecode.com/my2.gif'}
-        ]
     });
-    filepicker.setKey(filepickerKey);
+//    filepicker.setKey(filepickerKey);
 });
 
 $(".upload-media").on('click', function(event){
@@ -378,8 +374,4 @@ function saveAndPreview(params){
             return 0;
         }
     });
-}
-
-function mediaSelector(){
-    alert('hello casey!');
 }
