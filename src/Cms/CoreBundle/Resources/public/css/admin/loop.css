@@ -36,6 +36,13 @@ table thead {
 .checkbox-td {
     margin-top: 6px;
 }
+.label {
+    padding: 6px;
+    font-size: 14px;
+}
+.label:hover {
+    cursor: pointer;
+}
 @media (max-width: 1281px) {
     .btn-lower > i {
         display: none;

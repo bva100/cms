@@ -218,8 +218,8 @@
                             <h4><a href="/{{ node.slug }}">{{ node.title|title }}</a></h4>
                             <p class='node-preview hidden-phone'>
                                 {% if node.views['html'] is defined %}
-                                    {{ node.views['html']|striptags|truncate(203) }}
-                                    {% if node.views['html']|striptags|length > 203 %}
+                                    {{ node.views['html']|striptags|truncate(158) }}
+                                    {% if node.views['html']|striptags|length > 158 %}
                                         <a href="/{{ node.slug }}">read more</a>
                                     {% endif %}
                                 {% endif %}
@@ -230,17 +230,39 @@
                         {% else %}
                             <td class="data-group-2"></td>
                         {% endif %}
-                        <td class="data-group-3">
-                            {% for category in node.categories  %}
-                                {{ category.parent }} - {{ cateogry.child|default() }}
-                            {% endfor %}
+                        <td class="data-group-3 label-counter" style="text-align: center">
+                            <div class="label label-inverse label-loop" title="Categories">
+                                {{ node.categories|default()|length }}
+                                <div class="list-container hide">
+                                    <ul>
+                                        {% for category in node.categories  %}
+                                            <li>{{ category.parent }} {{ category.sub|default() }}</li>
+                                        {% else %}
+                                            <li>None</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
                         </td>
-                        <td class="data-group-4">
-                            {% for tag in node.tags  %}
-                                {{ tag }}
-                            {% endfor %}
+                        <td class="data-group-4 label-counter" style="text-align: center">
+                            <div class="label label-inverse label-loop" title="Tags">
+                                {{ node.tags|default()|length }}
+                                <div class="list-container hide">
+                                    <ul>
+                                        {% for tag in node.tags  %}
+                                            <li>{{ tag }}</li>
+                                        {% else %}
+                                            <li>None</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
                         </td>
-                        <td class="data-group-4">{{ comment|default()|length }}</td>
+                        <td class="data-group-4 label-counter" style="text-align: center">
+                            <div class="label label-inverse label-loop">
+                                {{ comments|default()|length }}
+                            </div>
+                        </td>
                         <td class="data-group-1">{{  node.created|date('F j, Y ') }}</td>
                     </tr>
                     {% endfor %}

@@ -120,6 +120,10 @@ class NodeController extends Controller {
         }
         if ( is_array($tags) AND ! empty($tags) )
         {
+            if ( count($tags) === 1 AND $tags[0] === "" )
+            {
+                $tags = array();
+            }
             $node->setTags($tags);
         }
         if ( is_array($fields) AND ! empty($fields) )

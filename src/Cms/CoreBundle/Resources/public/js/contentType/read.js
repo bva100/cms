@@ -6,6 +6,15 @@ $(document).ready(function() {
     $('#tags').tagsInput();
 });
 
+$(".label-loop").popover({
+    'placement':'left',
+    'trigger': 'hover',
+    'html':true,
+    'content': function(){
+        return $(this).find('.list-container').html();
+    },
+});
+
 $('.btn-checkbox-action').on('click', function(){
     token = $("#token").val();
     baseUrl = $("#baseUrl").val();

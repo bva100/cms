@@ -16,6 +16,9 @@
 .label-info {
     background-color: #3498DB;
 }
+.label-inverse {
+    background-color: #2C3E50;
+}
 .navbar-inverse .navbar-inner {
     background: #2C3E50;
     filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled = false)");
