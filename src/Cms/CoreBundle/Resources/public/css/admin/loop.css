@@ -29,6 +29,13 @@ table a {
 table thead {
     font-size: 16px;
 }
+.quick-action {
+    list-style: none;
+}
+.quick-action li {
+    display: inline;
+    padding-right: 4px;
+}
 #master-checkbox-container {
     position: relative;
     top: 12px;

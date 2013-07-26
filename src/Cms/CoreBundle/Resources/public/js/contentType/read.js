@@ -1,3 +1,5 @@
+var isTouch = 'ontouchstart' in document.documentElement;
+
 $(document).ready(function() {
     $('select').selectpicker();
     $(".select .dropdown-toggle").addClass('btn-info');
@@ -13,6 +15,23 @@ $(".label-loop").popover({
     'content': function(){
         return $(this).find('.list-container').html();
     },
+});
+
+if(!isTouch){
+    $(".checkbox-container td").mouseover(function(){
+        $(this).find('.quick-action').show();
+    });
+    $(".checkbox-container td").mouseout(function(){
+        $(this).find('.quick-action').hide();
+    });
+}
+
+$('.quick-delete-action').on('click', function(event){
+    event.preventDefault();
+    var id = $(this).attr('data-id');
+    if(confirm('Are you sure you want to delete this?')){
+        deleteNode(id);
+    }                                                                                                                                                                                                                                                                                                                                                                        
 });
 
 $('.btn-checkbox-action').on('click', function(){
@@ -41,18 +60,6 @@ $('.btn-checkbox-action').on('click', function(){
     }
 });
 
-function deleteNode(id, token){
-    $.post('/node/delete', {id: id, token: token}, function(data, textStatus, xhr) {
-        if(textStatus == 'success'){
-            $('#tr-' + id).remove();
-            $("#notices").html('<div id="content-type-alert" class="alert alert-info">Deleted</div>');
-            $("#content-type-alert").show(0).delay(1000).fadeOut(1000);
-        }else{
-            alert('Unsuccessful delete. Please try again.');
-        }
-    });
-}
-
 $(".load-data-form").submit(function(event){
     event.preventDefault();
     loadData();
@@ -73,6 +80,18 @@ $(".pag-previous").click(function(){
     $page.val( parseInt($page.val())-1 );
     loadData();
 });
+
+function deleteNode(id, token){
+    $.post('/node/delete', {id: id, token: token}, function(data, textStatus, xhr) {
+        if(textStatus == 'success'){
+            $('#tr-' + id).remove();
+            $("#notices").html('<div id="content-type-alert" class="alert alert-info">Deleted</div>');
+            $("#content-type-alert").show(0).delay(1000).fadeOut(1000);
+        }else{
+            alert('Unsuccessful delete. Please try again.');
+        }
+    });
+}
 
 function queryStringParams(){
     var str = '';

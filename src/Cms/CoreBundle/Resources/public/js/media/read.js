@@ -2,6 +2,7 @@ var deleteMediaPath = document.getElementById('delete-media-path').value;
 var page = document.getElementById('page').value;
 var baseUrl = document.getElementById('base-url').value;
 var siteId = document.getElementById('site-id').value;
+var isTouch = 'ontouchstart' in document.documentElement;
 
 $(document).ready(function() {
     $('select').selectpicker();
@@ -9,6 +10,15 @@ $(document).ready(function() {
     $(".dropdown-menu").addClass('dropdown-inverse');
     $(".dropdown-arrow").addClass('dropdown-arrow-inverse');
 });
+
+if(!isTouch){
+    $(".checkbox-container td").mouseover(function(){
+        $(this).find('.quick-action').show();
+    });
+    $(".checkbox-container td").mouseout(function(){
+        $(this).find('.quick-action').hide();
+    });
+}
 
 $('.btn-checkbox-action').on('click', function(){
     var token = document.getElementById('token').value;

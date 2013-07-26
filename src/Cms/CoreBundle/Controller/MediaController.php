@@ -247,7 +247,7 @@ class MediaController extends Controller {
             'startDate' => $startDate,
             'endDate' => $endDate,
             'association' => $association,
-            'sort' => array('by' => $sortBy, 'order' => $sortOrder),]
+            'sort' => array('by' => $sortBy, 'order' => $sortOrder),
         ));
         
         if ( $format === 'json' )
