@@ -11,6 +11,15 @@ $(".media-modal-opener").on('click', function(){
     showMediaModal();
 });
 
+$(".media-modal-filter").on('click', function(){
+    loadMediaData(getMediaModalParams());
+});
+
+$("#form-media-modal-filter").on('submit', function(event){
+    event.preventDefault();
+    loadMediaData(getMediaModalParams());
+});
+
 $(".insert-media").on('click', function(){
     var editor = $(this).attr('data-editor');
     var selectedMedia = getSelected();
@@ -27,12 +36,21 @@ $(".insert-media").on('click', function(){
 
 function showMediaModal(){
     $("#media-modal-container").modal('show');
+    loadMediaData(getMediaModalParams());
     return 1;
 }
 
 function getMediaModalParams(){
     mediaModalParams = {};
-    mediaModalParams.limit = 14;
+    mediaModalParams.limit = 18;
+    var search = document.getElementById('media-modal-input-search').value;
+    if(search){
+        mediaModalParams.search = search;
+    }
+    var type = document.getElementById('media-modal-input-type').value;
+    if(type){
+        mediaModalParams.type = type;
+    }
     return mediaModalParams;
 }
 
@@ -51,7 +69,7 @@ $(".media-load-upload").on('click', function(event){
 
 $(".media-load-library").on('click', function(event){
     event.preventDefault();
-    loadMediaData();
+    loadMediaData(getMediaModalParams());
 });
 
 function loadUploader(){
@@ -81,6 +99,7 @@ function uploadInline(iframeId){
 }
 
 function loadMediaData(params){
+    $("#primary-media-data-container").html('');
     $.get(getMediaReadAllPath('json'), params, function(data, textStatus, xhr) {
         if(textStatus === 'success'){
             $(".media-load-upload").css('color', '#16A085');
@@ -94,7 +113,7 @@ function loadMediaData(params){
             for (var i=0; i<data.length; i++)
             {
                 mediaHTML = document.createElement('div');
-                mediaHTML.innerHTML = "<img src='"+data[i].url+"' class='span3 media-preview' style='padding: 10px' data-media-json='"+JSON.stringify(data[i])+"'/>";
+                mediaHTML.innerHTML = "<img src='"+data[i].url+"' class='span2 media-preview' style='padding: 10px' data-media-json='"+JSON.stringify(data[i])+"'/>";
                 primaryMediaDataContainer.appendChild(mediaHTML);
             }
             $(".media-preview").on('click', function(){

@@ -148,7 +148,7 @@ class NodeRepository extends DocumentRepository {
      * @param string $siteId
      * @param array $params
      */
-    public function findBySiteId($siteId, array $params = array('offset' => 0, 'limit' => 20))
+    public function findBySiteId($siteId, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
     {
         return $this->findBySiteIdAndContentType($siteId, null, $params);
     }

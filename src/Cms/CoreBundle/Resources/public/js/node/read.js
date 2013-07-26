@@ -28,6 +28,7 @@ $(document).ready(function() {
         image_advtab: false,
         setup: function(editor) {
             editor.addButton('cms-media', {
+                title: 'Media',
                 type: 'button',
                 icon: 'image',
                 style: 'float: right;',

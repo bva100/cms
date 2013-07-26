@@ -1,10 +1,10 @@
-body .modal {
+body .modal-big {
     width: 90%; /* desired relative width */
     left: 5%; /* (100%-width)/2 */
     margin-left: auto;
     margin-right: auto;
 }
-body .modal-body {
+body .modal-big .modal-body {
     width: auto;
     height: auto:
     max-height: 100%;
@@ -27,6 +27,18 @@ body .modal-body {
     position: relative;
     top: 6px;
 }
-.media-anchor-visited a{
-    color: grey;
+#media-modal-search {
+    margin-left: 4px; max-width:250px
+}
+#primary-media-editor {
+    margin-top: 44px;
+}
+@media(max-width: 797px){
+    body .modal-big{
+        position: absolute;
+        top: 0px;
+    }
+    .modal-big .media-modal-search {
+        width: 100%;
+    }
 }

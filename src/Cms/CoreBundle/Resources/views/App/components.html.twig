@@ -113,7 +113,7 @@
 {% endblock %}
 
 {% block mediaModal %}
-    <div class="modal hide" id="media-modal-container">
+    <div class="modal modal-big hide" id="media-modal-container">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <ul id="media-modal-options">
@@ -124,7 +124,25 @@
         <div class="modal-body row-fluid" id="media-library-container">
             <h3 id="media-modal-loader">Loading media...</h3>
             <div class="span9">
-                <div id="primary-media-data-container" class="row-fluid"></div>
+                <div class="row-fluid">
+                    <div class="span4" id="media-modal-search">
+                        <form id='form-media-modal-filter'>
+                            <input type="text" class="span12" id="media-modal-input-search" placeholder="Search"/>
+                        </form>
+                    </div>
+                    <div class="span2">
+                        <select name="type" class="select-block span3" id='media-modal-input-type' style="z-index: 99999">
+                            <option value="">Types</option>
+                            <option value="image">Images</option>
+                            <option value="audio">Audio</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </div>
+                    <div class="span2">
+                        <button class="btn btn-info span12 media-modal-filter"><i class="icon-filter"></i> Filter</button>
+                    </div>
+                </div>
+                <div id="primary-media-data-container" class="row-fluid" style="min-height: 200px"></div>
             </div>
             <div class="span2">
                 <div id="primary-media-editor" class="row-fluid"></div>
