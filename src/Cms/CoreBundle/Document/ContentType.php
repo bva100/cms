@@ -189,12 +189,11 @@ class ContentType extends Base {
         }
         if ( $forceParent AND isset($newCategory['sub']) )
         {
-            if ( ! in_array($newCategory, $this->categories) )
+            if ( ! \in_array(array('parent' => $newCategory['parent']), $this->categories) )
             {
                 $this->categories[] = array('parent' => $newCategory['parent']);
             }
         }
-        
         foreach ($this->categories as $categoryKey => $categoryArray)
         {
             if ( $categoryArray === $newCategory )

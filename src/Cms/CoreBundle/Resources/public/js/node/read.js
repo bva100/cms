@@ -158,20 +158,12 @@ $(".create-field-key").on('click', function(event){
 });
 
 $(".confirm-add-category").on('click', function(){
-    var path = document.getElementById('add-category-path').value;
-    params = getParams();
-    catParams = {};
-    catParams.siteId = params.siteId;
-    catParams.id = document.getElementById('input-content-type-id').value;
-    catParams.parent = document.getElementById('add-category-parent').value;
-    catParams.sub = document.getElementById('add-category-sub').value;
-    $.post(path, catParams, function(data, textStatus, xhr) {
-        if(textStatus === 'success'){
-            save(params, '#categories-holder');
-        }else{
-            alert('Unable to add new category. Please try again.');
-        }
-    });
+    addCategory();
+});
+
+$("#add-category-form").on('submit', function(event){
+    event.preventDefault();
+    addCategory();
 });
 
 $(".category-toggle-icon").on('click', function(){
@@ -307,6 +299,23 @@ function getRawCategories(){
         categories.push($(this).attr('data-category'));
     });
     return categories;
+}
+
+function addCategory(){
+    var path = document.getElementById('add-category-path').value;
+    params = getParams();
+    catParams = {};
+    catParams.siteId = params.siteId;
+    catParams.id = document.getElementById('input-content-type-id').value;
+    catParams.parent = document.getElementById('add-category-parent').value;
+    catParams.sub = document.getElementById('add-category-sub').value;
+    $.post(path, catParams, function(data, textStatus, xhr) {
+        if(textStatus === 'success'){
+            save(params, '#categories-holder');
+        }else{
+            alert('Unable to add new category. Please try again.');
+        }
+    });
 }
 
 function getTags(){

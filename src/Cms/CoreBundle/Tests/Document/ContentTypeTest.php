@@ -131,11 +131,17 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains(array('parent' => 'foo'), $categories);
 
         $this->contentType->addCategory('foo', 'bar', true);
-        $categories = $this->contentType->getCategories();
-        $this->assertCount(2, $categories);
+        $this->assertCount(2, $this->contentType->getCategories());
         $this->contentType->addCategory('foo');
-        $categories = $this->contentType->getCategories();
-        $this->assertCount(2, $categories);
+        $this->assertCount(2, $this->contentType->getCategories());
+        $this->contentType->addCategory('foo', null, false);
+        $this->assertCount(2, $this->contentType->getCategories());
+        $this->contentType->addCategory('foo', 'baz', true);
+        $this->assertCount(3, $this->contentType->getCategories());
+        $this->assertEquals(array(array('parent' => 'foo'), array('parent' => 'foo', 'sub' => 'bar'), array('parent' => 'foo', 'sub' => 'baz')), $this->contentType->getCategories());
+        $this->contentType->addCategory('baz', 'boom', true);
+        $this->assertCount(5, $this->contentType->getCategories());
+
     }
 
     /**
