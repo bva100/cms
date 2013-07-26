@@ -88,7 +88,7 @@ class NodeRepository extends DocumentRepository {
      * @param array $params
      * @returns collection of entities
      */
-    public function findBySiteIdAndContentTypeAndState($siteId, $contentTypeName, $state, array $params = array('offset' => 0, 'limit' => 20))
+    public function findBySiteIdAndContentTypeAndState($siteId, $contentTypeName, $state, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
     {
         $qb = $this->createQueryBuilder()
                 ->field('siteId')->equals($siteId)
@@ -130,8 +130,7 @@ class NodeRepository extends DocumentRepository {
             $qb->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
             $qb->addOr($qb->expr()->field('view.html')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
         }
-        
-        return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
+        return $qb->sort($params['sort']['by'], $params['sort']['order'])->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
 
     /**

@@ -213,6 +213,16 @@ class MediaController extends Controller {
         $endDate = $this->getRequest()->query->get('endDate');
         $association = $this->getRequest()->query->get('association');
         $type = $this->getRequest()->query->get('type');
+        $sortBy = (string)$this->getRequest()->query->get('sortBy');
+        if ( ! $sortBy )
+        {
+            $sortBy = 'created';
+        }
+        $sortOrder = (string)$this->getRequest()->query->get('sortOrder');
+        if ( $sortOrder )
+        {
+            $sortOrder = 'desc';
+        }
         $page = $this->getRequest()->query->get('page');
         if ( ! $page )
         {
@@ -237,6 +247,7 @@ class MediaController extends Controller {
             'startDate' => $startDate,
             'endDate' => $endDate,
             'association' => $association,
+            'sort' => array('by' => $sortBy, 'order' => $sortOrder),]
         ));
         
         if ( $format === 'json' )

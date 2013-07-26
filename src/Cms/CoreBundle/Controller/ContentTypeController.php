@@ -91,12 +91,27 @@ class ContentTypeController extends Controller {
         $search = $this->getRequest()->query->get('search');
         $tags = $this->getRequest()->query->get('tags');
         $tagArray = $tags ? explode(',', $tags) : array();
+        $sortBy = (string)$this->getRequest()->query->get('sortBy');
+        if ( ! $sortBy )
+        {
+            $sortBy = 'created';
+        }
+        $sortOrder = (string)$this->getRequest()->query->get('sortOrder');
+        if ( ! $sortOrder )
+        {
+            $sortOrder = 'desc';
+        }
+        $limit = $this->getRequest()->query->get('limit');
+        if ( ! $limit )
+        {
+            $limit = 12;
+        }
         $page = $this->getRequest()->query->get('page');
         if ( ! $page )
         {
             $page = 1;
         }
-        $nextPage = 12*($page-1) >= 12 ? false : true ;
+        $nextPage = $limit*($page-1) >= $limit ? false : true;
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -108,8 +123,8 @@ class ContentTypeController extends Controller {
             throw $this->createNotFoundException('ConentType with id '.$id.' not found');
         }
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentTypeAndState($siteId, $contentType->getName(), $state, array(
-            'limit' => 12,
-            'offset' => 12*($page-1),
+            'limit' => $limit,
+            'offset' => $limit*($page-1),
             'startDate' => $startDate,
             'endDate' => $endDate,
             'tags' => $tagArray,
@@ -118,6 +133,7 @@ class ContentTypeController extends Controller {
             'authorFirstName' => $authorFirstName,
             'authorLastName' => $authorLastName,
             'search' => $search,
+            'sort' => array('by' => $sortBy, 'order' => $sortOrder),
         ));
         return $this->render('CmsCoreBundle:ContentType:read.html.twig', array(
             'token' => $token,
