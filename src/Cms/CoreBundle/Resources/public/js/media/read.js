@@ -11,6 +11,13 @@ $(document).ready(function() {
     $(".dropdown-arrow").addClass('dropdown-arrow-inverse');
 });
 
+$(".quick-delete-action").on('click', function(){
+    var id = $(this).attr('data-id');
+    if(confirm('Are you sure you want to delete this?')){
+        deleteMedia(id);
+    }
+});
+
 if(!isTouch){
     $(".checkbox-container td").mouseover(function(){
         $(this).find('.quick-action').show();
@@ -96,7 +103,7 @@ function getParams(){
 function deleteMedia(id, token){
     $.post(deleteMediaPath, {id: id, token:token}, function(data, textStatus, xhr) {
         if(textStatus == 'success'){
-            $('#tr-' + id).remove();
+            $('#tr-' + id).hide('slow').remove();
             $("#notices").html('<div id="content-type-alert" class="alert alert-danger" style="margin-top: 14px;">Removing...</div>');
             $("#content-type-alert").show(0).delay(1000).fadeOut(1000);
         }else{

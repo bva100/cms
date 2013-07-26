@@ -37,7 +37,7 @@ $(document).ready(function() {
             });
         },
     });
-//    filepicker.setKey(filepickerKey);
+    filepicker.setKey(filepickerKey);
 });
 
 $(".upload-media").on('click', function(event){

@@ -219,7 +219,7 @@ class MediaController extends Controller {
             $sortBy = 'created';
         }
         $sortOrder = (string)$this->getRequest()->query->get('sortOrder');
-        if ( $sortOrder )
+        if ( ! $sortOrder )
         {
             $sortOrder = 'desc';
         }

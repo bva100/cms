@@ -66,6 +66,9 @@
             </div>
         </section>
     </article>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
     <input type="hidden" id="site-id" value="{{ site.id }}"/>
     <input type="hidden" id="id" value="{{ media.id }}"/>
     <input type="hidden" id="save-path" value="{{ path('cms_core.media_update') }}"/>

@@ -1,5 +1,7 @@
 var mediaReadAllPath = document.getElementById('media-read-all-path').value;
 var mediaSavePath = document.getElementById('media-save-path').value;
+var siteId = document.getElementById('site-id').value;
+var nodeId = document.getElementById('node-id').value;
 
 $(document).ready(function() {
     loadMediaData(getMediaModalParams());
@@ -42,9 +44,49 @@ function getMediaReadAllPath(format){
     }
 }
 
+$(".media-load-upload").on('click', function(event){
+    event.preventDefault();
+    loadUploader();
+});
+
+$(".media-load-library").on('click', function(event){
+    event.preventDefault();
+    loadMediaData();
+});
+
+function loadUploader(){
+    $(".media-load-upload").css('color', '#95A5A6');
+    $(".media-load-library").css('color', '#16A085');
+    $("#media-library-container").hide();
+    $("#media-uploader-container").show();
+    uploadInline("media-upload-iframe");
+}
+
+function uploadInline(iframeId){
+    filepicker.pickAndStore({'container':iframeId},{location: 'S3', access: 'public'},function(InkBlobs){
+        var mediaParams = convertInkToMediaParams(InkBlobs[0], siteId, nodeId ? nodeId : null);
+        $.post(mediaAddPath, mediaParams, function(data, textStatus, xhr) {
+            if(textStatus == 'success'){
+                var title = mediaParams.title ? mediaParams.title : '';
+                var alt = mediaParams.alt ? mediaParams.alt : '';
+                var html = '<img src="'+mediaParams.url+'" alt="'+alt+'" title="'+title+'"/>';
+                var mce = tinyMCE.activeEditor;
+                mce.selection.setContent(html);
+                $("#media-modal-container").modal('hide');
+            }else{
+                alert('Upload failed. Please try again');
+            }
+        });
+    });
+}
+
 function loadMediaData(params){
     $.get(getMediaReadAllPath('json'), params, function(data, textStatus, xhr) {
         if(textStatus === 'success'){
+            $(".media-load-upload").css('color', '#16A085');
+            $(".media-load-library").css('color', '#95A5A6');
+            $("#media-uploader-container").hide();
+            $("#media-library-container").show();
             var mediaLoader = document.getElementById('media-modal-loader');
             var primaryMediaDataContainer = document.getElementById('primary-media-data-container');
             var mediaHTML = '';
@@ -87,6 +129,7 @@ function displayEditor(media){
     html +='</div></div><div class="row-fluid"><div class="span12" style="margin-bottom: 10px;"><img src="'+media.url+'"/></div></div>';
     html +='<div class="row-fluid"><div class="span12"><form id="edit-media-form"><input type="text" id="input-media-edit-title" class="span12" style="margin: 10px 0px; font-size: 12px;" value="'+title+'" placeholder="title"/><input type="text" id="input-media-edit-alt" class="span12" style="margin: 10px 0px; font-size: 12px;" value="'+alt+'" placeholder="alt"/><button class="btn btn-info btn-block media-edit-save">Save</button></form></div></div>';
     editor.innerHTML = html;
+    $("#input-media-edit-title").focus();
     $("#edit-media-form").on('submit', function(event){
         event.preventDefault();
         var newMedia = getNewMediaParams(media);

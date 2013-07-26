@@ -73,6 +73,7 @@ class Media extends Base {
 
     public function __construct()
     {
+        $this->created = time();
         $this->metadata = array();
         $this->contentTypeIds = array();
     }
