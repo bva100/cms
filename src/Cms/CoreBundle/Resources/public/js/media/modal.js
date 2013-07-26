@@ -20,6 +20,18 @@ $("#form-media-modal-filter").on('submit', function(event){
     loadMediaData(getMediaModalParams());
 });
 
+$(".media-modal-pag-next").on('click', function(){
+    var params = getMediaModalParams();
+    params.page++;
+    loadMediaData(params);
+});
+
+$(".media-modal-pag-previous").on('click', function(){
+    var params = getMediaModalParams();
+    params.page--;
+    loadMediaData(params);
+});
+
 $(".insert-media").on('click', function(){
     var editor = $(this).attr('data-editor');
     var selectedMedia = getSelected();
@@ -41,16 +53,21 @@ function showMediaModal(){
 }
 
 function getMediaModalParams(){
-    mediaModalParams = {};
-    mediaModalParams.limit = 18;
     var search = document.getElementById('media-modal-input-search').value;
+    var type = document.getElementById('media-modal-input-type').value;
+    var page = document.getElementById('media-modal-input-page').value;
+    var mediaModalParams = {};
+    mediaModalParams.limit = 18;
     if(search){
         mediaModalParams.search = search;
     }
-    var type = document.getElementById('media-modal-input-type').value;
     if(type){
         mediaModalParams.type = type;
     }
+    if(!page){
+        page = 1;
+    }
+    mediaModalParams.page = page;
     return mediaModalParams;
 }
 
@@ -102,6 +119,7 @@ function loadMediaData(params){
     $("#primary-media-data-container").html('');
     $.get(getMediaReadAllPath('json'), params, function(data, textStatus, xhr) {
         if(textStatus === 'success'){
+            showHideMediaModalPag(data.length, params.limit, params.page);
             $(".media-load-upload").css('color', '#16A085');
             $(".media-load-library").css('color', '#95A5A6');
             $("#media-uploader-container").hide();
@@ -128,6 +146,19 @@ function loadMediaData(params){
             return 0;
         }
     });
+}
+
+function showHideMediaModalPag(count, limit, page){
+    if(count < limit){
+        $(".media-modal-pag-next").addClass('disabled');
+    }else{
+        $(".media-modal-pag-next").removeClass('disabled');
+    }
+    if(page < 2){
+        $(".media-modal-pag-previous").addClass('disabled');
+    }else{
+        $(".media-modal-pag-previous").removeClass('disabled');
+    }
 }
 
 function displayEditor(media){
