@@ -87,7 +87,6 @@ class MongoTwigLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterf
                     true;
             }
         }
-        
         return null;
     }
 

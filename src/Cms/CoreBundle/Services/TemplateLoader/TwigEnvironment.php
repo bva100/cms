@@ -28,7 +28,7 @@ class TwigEnvironment {
      */
     public function __construct($kernal)
     {
-        $this->cacheDir = $kernal->getCacheDir().'/twig/';
+        $this->cacheDir = $kernal->getRootDir().'/cache/client/twig';
     }
 
     /**
@@ -65,8 +65,7 @@ class TwigEnvironment {
 
     public function load()
     {
-        return new \Twig_Environment($this->loader, array('cache' => $this->cacheDir));
+        return new \Twig_Environment($this->loader, array('cache' => $this->cacheDir, 'auto_reload' => true));
     }
-
 
 }

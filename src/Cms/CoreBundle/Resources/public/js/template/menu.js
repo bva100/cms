@@ -37,7 +37,7 @@ function getCodeEditorParams(){
     params.id = document.getElementById('template-id').value;
     params.siteId = document.getElementById('site-id').value;
     params.type = document.getElementById('input-template-type').value;
-    params.content = getCodeEditorContent();
+    params.rawCode = getCodeEditorContent();
     return params;
 }
 

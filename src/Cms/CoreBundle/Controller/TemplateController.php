@@ -48,8 +48,20 @@ class TemplateController extends Controller {
         $state = (string)$this->getRequest()->request->get('state');
         $name = (string)$this->getRequest()->request->get('name');
         $parent = (string)$this->getRequest()->request->get('parent');
-        $content = (string)$this->getRequest()->request->get('content');
+        $rawCode = (string)$this->getRequest()->request->get('rawCode');
+        $extends = (string)$this->getRequest()->request->get('extends');
+        $uses = json_decode((string)$this->getRequest()->request->get('uses'));
         $type = (string)$this->getRequest()->request->get('type');
+
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$id.' not found');
+        }
+        // validate that site has access to extends name and the array of uses template names
+
+        //create content by combining extends, uses and rawCode
+        $content = $rawCode;
         $twigClient = $this->get('twig_client')->setCode($content);
 
         $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();
@@ -83,6 +95,9 @@ class TemplateController extends Controller {
                 $redirect = $this->generateUrl('cms_core.template_read', array('id' => $template->getId() ? $template->getId() : $id));
         }
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+
+        // consider pushing to template history here
+
         if ( $xmlResponse )
         {
             return $xmlResponse;
@@ -140,7 +155,7 @@ class TemplateController extends Controller {
         $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($templateName);
 
         $twigClient = $this->get('twig_client')->setCode($template->getContent());
-        $code = $template->getContent();
+        $code = $twigClient->getRawCode();
         $extends = $twigClient->getExtends();
         $uses = $twigClient->getUses();
 

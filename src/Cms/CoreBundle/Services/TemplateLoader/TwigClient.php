@@ -146,6 +146,19 @@ class TwigClient {
         return $this->getAllInner($this->getStrippedCode(), '{%use', '%}');
     }
 
+    public function getRawCode()
+    {
+        $code = str_replace('{%use', '{% use', $this->getCode());
+        $code = str_replace('{%extends', '{% extends', $code);
+        $rawCode =  preg_replace('/' . preg_quote('{% use') .
+            '.*?' .
+            preg_quote('%}') . '/', '', $code);
+        $rawCode = preg_replace('/' . preg_quote('{% extends') .
+            '.*?' .
+            preg_quote('%}') . '/', '', $rawCode);
+        return trim($rawCode);
+    }
+
     /**
      * Throws an exception if twig code is not valid. Guesses at what the problem is and where the line is. Returns code string if valid.
      *
