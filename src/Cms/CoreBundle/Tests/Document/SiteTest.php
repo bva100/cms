@@ -107,7 +107,7 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \Cms\CoreBundle\Document\Site::hasTempalteName
+     * @covers \Cms\CoreBundle\Document\Site::hasTemplateName
      */
     public function testHasTemplateName()
     {

@@ -58,11 +58,15 @@ class TemplateController extends Controller {
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
-        // validate that site has access to extends name and the array of uses template names
 
         //create content by combining extends, uses and rawCode
         $content = $rawCode;
         $twigClient = $this->get('twig_client')->setCode($content);
+
+        // validate that site has access to extends name and the array of uses template names
+        $uses = array('foo', 'bar');
+        $extends = 'Core:Base:HTML';
+        $twigClient->siteHasAccessExtendsAndUses($site, $extends, $uses);
 
         $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();
         if ( ! $template )
@@ -153,7 +157,6 @@ class TemplateController extends Controller {
         }
         $templateName = $site->getName().':Master:HTML';
         $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($templateName);
-
         $twigClient = $this->get('twig_client')->setCode($template->getContent());
         $code = $twigClient->getRawCode();
         $extends = $twigClient->getExtends();

@@ -171,4 +171,40 @@ class TwigClient {
         return $this->code;
     }
 
+    /**
+     * Checks if site has access to a given template name
+     *
+     * @param Cms\CoreBundle\Document\Site $site
+     * @param $templateName
+     * @return bool
+     */
+    public function siteHasTemplateAccess(\Cms\CoreBundle\Document\Site $site, $templateName)
+    {
+        return $site->hasTemplateName($templateName) ? true : false;
+    }
+
+    /**
+     * Ensure site has access
+     *
+     * @param \Cms\CoreBundle\Document\Site $site
+     * @param $extends
+     * @param array $uses
+     * @return bool
+     * @throws \Exception
+     */
+    public function siteHasAccessExtendsAndUses(\Cms\CoreBundle\Document\Site $site, $extends, array $uses)
+    {
+        if ( ! $this->siteHasTemplateAccess($site, $extends) )
+        {
+            throw new \Exception($site->getName().' does not have access to '.$extends);
+        }
+        foreach ($uses as $use) {
+            if ( ! $this->siteHasTemplateAccess($site, $use) )
+            {
+                throw new \Exception($site->getName().' does not have access to '.$use);
+            }
+        }
+        return true;
+    }
+
 }

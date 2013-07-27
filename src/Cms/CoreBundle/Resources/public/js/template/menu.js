@@ -44,7 +44,7 @@ function getCodeEditorParams(){
 function saveCodeEditor(params, $button){
     $button.text('Saving...').attr('disabled', true);
     $.post(codeSavePath, params, function(data, textStatus, xhr) {
-        if(textStatus === 'success'){
+        if(xhr.status == 200){
             $button.attr('disabled', false).removeClass('btn-info').addClass('btn-primary').text('Saved').delay(1100).queue(function() {
                 $button.removeClass('btn-primary').addClass('btn-info').text('Save');
                 $(this).dequeue();

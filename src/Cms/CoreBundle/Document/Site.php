@@ -46,7 +46,7 @@ class Site extends Base {
         $this->setState('active');
         $this->contentType = new \Doctrine\Common\Collections\ArrayCollection();
         $this->domains = array();
-        $this->templateNames = array();
+        $this->templateNames = array('Core:Base:HTML');
     }
 
     /**
