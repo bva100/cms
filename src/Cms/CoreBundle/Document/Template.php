@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class Template
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="templates")
+ * @MongoDB\Document(collection="templates", repositoryClass="Cms\CoreBundle\Repository\TemplateRepository")
  */
 class Template extends Base {
 
@@ -34,6 +34,7 @@ class Template extends Base {
 
     public function __construct()
     {
+        $this->setCreated(time());
         $this->setState('active');
     }
 

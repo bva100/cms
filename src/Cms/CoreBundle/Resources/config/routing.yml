@@ -122,6 +122,10 @@ cms_core.template_save:
   defaults: { _controller: CmsCoreBundle:Template:save }
   methods: [POST]
 
+cms_core.template_menu:
+  pattern: /template/menu/{siteId}
+  defaults: { _controller: CmsCoreBundle:Template:menu }
+  methods: [GET]
 
 #theme
 cms_core.theme_delete:

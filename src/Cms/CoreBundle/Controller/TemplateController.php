@@ -44,11 +44,13 @@ class TemplateController extends Controller {
     {
         $token = (string)$this->getRequest()->request->get('token');
         $id = (string)$this->getRequest()->request->get('id');
+        $siteId = (string)$this->getRequest()->request->get('siteId');
         $state = (string)$this->getRequest()->request->get('state');
         $name = (string)$this->getRequest()->request->get('name');
         $parent = (string)$this->getRequest()->request->get('parent');
         $content = (string)$this->getRequest()->request->get('content');
-//        $this->get('csrfToken')->validate($token);
+        $type = (string)$this->getRequest()->request->get('type');
+        $twigClient = $this->get('twig_client')->setType($type);
 
         $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();
         if ( ! $template )
@@ -69,9 +71,17 @@ class TemplateController extends Controller {
         }
         if ( $content )
         {
+            $content = $twigClient->validate($content);
             $template->setContent($content);
         }
         $success = $this->get('persister')->save($template);
+        switch($type){
+            case 'menu':
+                $redirect = $this->generateUrl('cms_core.template_menu', array('siteId' => $siteId));
+                break;
+            default:
+                $redirect = $this->generateUrl('cms_core.template_read', array('id' => $template->getId() ? $template->getId() : $id));
+        }
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {
@@ -81,7 +91,7 @@ class TemplateController extends Controller {
         {
             return $this->redirect($this->generateUrl('cms_core.template_readAll'));
         }
-        return $this->redirect($this->generateUrl('cms_core.template_read', array('id' => $template->getId())));
+        return $this->redirect($redirect);
     }
 
     public function deleteAction()
@@ -114,6 +124,28 @@ class TemplateController extends Controller {
         return $this->render('CmsCoreBundle:Template:edit.html.twig', array(
             'token' => $token,
             'notices' => $notices,
+        ));
+    }
+
+    public function menuAction($siteId)
+    {
+        $token = $this->get('csrfToken')->createToken()->getToken();
+        $notices = $this->get('session')->getFlashBag()->get('notices');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$id.' not found');
+        }
+        $templateName = $site->getName().':Master:HTML';
+        $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($templateName);
+        $code = $template->getContent();
+        return $this->render('CmsCoreBundle:Template:menu.html.twig', array(
+            'token' => $token,
+            'notices' => $notices,
+            'site' => $site,
+            'templateName' => $templateName,
+            'template' => $template,
+            'code' => $code,
         ));
     }
 

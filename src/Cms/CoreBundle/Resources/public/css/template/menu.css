@@ -1,0 +1,13 @@
+.holder-includes {
+    font-size: 15px;
+}
+h4 a {
+    text-decoration: none;
+}
+.holder-includes li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.included-item {
+    word-wrap: break-word;
+}

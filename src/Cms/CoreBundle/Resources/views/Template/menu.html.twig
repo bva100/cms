@@ -1,0 +1,70 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/template/menu.css'
+        filter='cssrewrite, ?yui_css' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/template/menu.js'
+        filter='?yui_js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    Menus {{ site.name }} {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <article>
+        <section class="row-fluid">
+            <div class="span6">
+                <h1>Menus and Components</h1>
+            </div>
+        </section>
+        <section class="row-fluid">
+            <div class="span9">
+                {% block notices %}
+                    {{ parent() }}
+                {% endblock %}
+                <form action="{{ path('cms_core.template_save') }}" method="POST">
+                    <input type="hidden" name="token" id="input-token" value="{{ token }}"/>
+                    <input type="hidden" name="siteId" id="input-site-id" value="{{ site.id }}"/>
+                    <input type="hidden" name="id" id="input-id" value="{{ template.id }}"/>
+                    <input type="hidden" name="type" id="input-type" value="menu"/>
+                    <textarea name="content" id="input-content" class="span12" rows="19">{{ code }}</textarea>
+                    <div class="row-fluid">
+                        <button class="btn btn-info span2 pull-right">Save</button>
+                    </div>
+                </form>
+            </div>
+            <div class="span3">
+                <div class="holder holder-includes">
+                    <h4 class="clearfix">
+                        <b class="pull-left">Inheritance</b>
+                        <a href="#edit" class="pull-right edit-inherit">edit</a>
+                    </h4>
+                    <b>Extends:</b>
+                    <ul>
+                        <li>Core:Base:HTML</li>
+                    </ul>
+                    <b>Includes:</b>
+                    <ul id="primary-include-list">
+                        <li class="included-item">DogBlog:Master:CustomBlock</li>
+                        <li class="included-item">other</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        {% block footer %}
+            {{ parent() }}
+        {% endblock %}
+    </article>
+{% endblock %}
