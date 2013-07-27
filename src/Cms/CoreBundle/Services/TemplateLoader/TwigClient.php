@@ -11,43 +11,151 @@ class TwigClient {
 
     protected $twig;
 
-    protected $type;
+    protected $code;
 
+    protected $strippedCode;
+
+    /**
+     * Load and set twig environment
+     */
     public function __construct()
     {
         $this->setTwig(new \Twig_Environment());
     }
 
-    public function setTwig($twig)
+    /**
+     * Set Twig environment
+     *
+     * @param $twig
+     * @return $this
+     */
+    public function setTwig(\Twig_Environment $twig)
     {
         $this->twig = $twig;
         return $this;
     }
 
+    /**
+     * @return \Twig_Environment
+     */
     public function getTwig()
     {
         return $this->twig;
     }
 
-    public function setType($type)
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return $this
+     */
+    public function setCode($code)
     {
-        $this->type = $type;
+        $this->code = $code;
         return $this;
     }
 
-    public function getType()
+    /**
+     * @return string
+     */
+    public function getCode()
     {
-        return $this->type;
+        return $this->code;
     }
 
-    public function validate($code, array $params = array())
+    /**
+     * Set code with no whitespace
+     *
+     * @return $this
+     */
+    public function setStrippedCode()
     {
-        try{
-            $this->twig->parse($this->twig->tokenize($code));
-        }catch (Twig_Error_Syntax $e){
-            echo $e; die();
+        $this->strippedCode = preg_replace('/\s+/', '', $this->code);
+        return $this;
+    }
+
+    /**
+     * Get code with no whitespace. Sets stripped code if not yet set (lazy load).
+     *
+     * @return this
+     */
+    public function getStrippedCode()
+    {
+        if ( ! $this->strippedCode )
+        {
+            $this->setStrippedCode();
         }
-        return $code;
+        return $this->strippedCode;
+    }
+
+    /**
+     * Get the first occurance of the inner string found in between a starting string and ending string
+     *
+     * @param $string
+     * @param $start
+     * @param $end
+     * @return string
+     */
+    private function getOneInner($string, $start, $end)
+    {
+        $string = " ".$string;
+        $ini = strpos($string,$start);
+        if ($ini == 0) return "";
+        $ini += strlen($start);
+        $len = strpos($string,$end,$ini) - $ini;
+        return substr($string,$ini,$len);
+    }
+
+    /**
+     * Get an array of all inner strings found between a starting string and ending string
+     *
+     * @param $string
+     * @param $start
+     * @param $end
+     * @return array
+     */
+    private function getAllInner($string, $start, $end)
+    {
+        $array = array();
+        while($this->getOneInner($string, $start, $end) != false){
+            $result = $this->getOneInner($string, $start, $end);
+            $array[] = trim($result, "'");
+            $line = $start.$result.$end;
+            $string = str_replace($line, '', $string);
+        }
+        return $array;
+    }
+
+    /**
+     * What is being extended in this code?
+     *
+     * @return string
+     */
+    public function getExtends()
+    {
+        return trim($this->getOneInner($this->getStrippedCode(), '{%extends', '%}'), "'");
+    }
+
+    /**
+     * What is being included via Twig's "use" method of this code?
+     *
+     * @return array
+     */
+    public function getUses()
+    {
+        return $this->getAllInner($this->getStrippedCode(), '{%use', '%}');
+    }
+
+    /**
+     * Throws an exception if twig code is not valid. Guesses at what the problem is and where the line is. Returns code string if valid.
+     *
+     * @param array $params
+     * @return string|bool
+     */
+    public function validate(array $params = array())
+    {
+        $this->twig->parse($this->twig->tokenize($this->code));
+        return $this->code;
     }
 
 }

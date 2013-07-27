@@ -11,6 +11,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="/dependencies/ace-builds-master/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     {% javascripts
         '@CmsCoreBundle/Resources/public/js/template/menu.js'
         filter='?yui_js' %}
@@ -34,14 +35,12 @@
                 {% block notices %}
                     {{ parent() }}
                 {% endblock %}
-                <form action="{{ path('cms_core.template_save') }}" method="POST">
+                <form id="save-template-form" action="{{ path('cms_core.template_save') }}" method="POST">
                     <input type="hidden" name="token" id="input-token" value="{{ token }}"/>
-                    <input type="hidden" name="siteId" id="input-site-id" value="{{ site.id }}"/>
-                    <input type="hidden" name="id" id="input-id" value="{{ template.id }}"/>
-                    <input type="hidden" name="type" id="input-type" value="menu"/>
-                    <textarea name="content" id="input-content" class="span12" rows="19">{{ code }}</textarea>
+                    <input type="hidden" name="type" id="input-template-type" value="menu"/>
+                    <div id='input-code-content'>{{ code }}</div>
                     <div class="row-fluid">
-                        <button class="btn btn-info span2 pull-right">Save</button>
+                        <button class="btn btn-info span2 pull-right" style="position: relative; left: 4px;">Save</button>
                     </div>
                 </form>
             </div>
@@ -49,16 +48,20 @@
                 <div class="holder holder-includes">
                     <h4 class="clearfix">
                         <b class="pull-left">Inheritance</b>
-                        <a href="#edit" class="pull-right edit-inherit">edit</a>
+                        <span class="pull-right">
+                            <a href="#edit" class="edit-inherit">edit</a> |
+                            <a href="#add" class="add-inherit">add</a>
+                        </span>
                     </h4>
                     <b>Extends:</b>
                     <ul>
-                        <li>Core:Base:HTML</li>
+                        <li>{{ extends }}</li>
                     </ul>
-                    <b>Includes:</b>
+                    <b>Uses:</b>
                     <ul id="primary-include-list">
-                        <li class="included-item">DogBlog:Master:CustomBlock</li>
-                        <li class="included-item">other</li>
+                        {% for use in uses  %}
+                            <li class="included-item">{{ use }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
@@ -67,4 +70,7 @@
             {{ parent() }}
         {% endblock %}
     </article>
+    <input type="hidden" id="code-save-path" value="{{ path('cms_core.template_save') }}"/>
+    <input type="hidden" id="site-id" value="{{ site.id }}"/>
+    <input type="hidden" id="template-id" value="{{ template.id }}"/>
 {% endblock %}

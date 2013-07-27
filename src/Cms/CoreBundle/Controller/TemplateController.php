@@ -50,7 +50,7 @@ class TemplateController extends Controller {
         $parent = (string)$this->getRequest()->request->get('parent');
         $content = (string)$this->getRequest()->request->get('content');
         $type = (string)$this->getRequest()->request->get('type');
-        $twigClient = $this->get('twig_client')->setType($type);
+        $twigClient = $this->get('twig_client')->setCode($content);
 
         $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();
         if ( ! $template )
@@ -71,10 +71,10 @@ class TemplateController extends Controller {
         }
         if ( $content )
         {
-            $content = $twigClient->validate($content);
+            $content = $twigClient->validate();
             $template->setContent($content);
         }
-        $success = $this->get('persister')->save($template);
+        $success = $this->get('persister')->save($template, false, null);
         switch($type){
             case 'menu':
                 $redirect = $this->generateUrl('cms_core.template_menu', array('siteId' => $siteId));
@@ -138,7 +138,12 @@ class TemplateController extends Controller {
         }
         $templateName = $site->getName().':Master:HTML';
         $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($templateName);
+
+        $twigClient = $this->get('twig_client')->setCode($template->getContent());
         $code = $template->getContent();
+        $extends = $twigClient->getExtends();
+        $uses = $twigClient->getUses();
+
         return $this->render('CmsCoreBundle:Template:menu.html.twig', array(
             'token' => $token,
             'notices' => $notices,
@@ -146,7 +151,23 @@ class TemplateController extends Controller {
             'templateName' => $templateName,
             'template' => $template,
             'code' => $code,
+            'extends' => $extends,
+            'uses' => $uses,
         ));
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
