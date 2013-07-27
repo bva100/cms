@@ -75,4 +75,49 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
         $this->site->removeDomain('foobar.co.es');
         $this->assertEmpty($this->site->getDomains());
     }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Site::addTemplateName
+     * @covers \Cms\CoreBundle\Document\Site::removeTemplateName
+     * @covers \Cms\CoreBundle\Document\Site::getTemplateNames
+     */
+    public function testAddTemplateName()
+    {
+        $this->site->addTemplateName('foobar');
+        $this->site->addTemplateName('bar');
+        $this->site->addTemplateName('foo');
+        $this->assertCount(3, $this->site->getTemplateNames());
+        $this->assertEquals(array('foobar', 'bar', 'foo'), $this->site->getTemplateNames());
+
+        $this->site->addTemplateName('foobar');
+        $this->assertCount(3, $this->site->getTemplateNames());
+        $this->site->addTemplateName('bar');
+        $this->assertCount(3, $this->site->getTemplateNames());
+
+        $this->site->removeTemplateName('foobar');
+        $this->assertCount(2, $this->site->getTemplateNames());
+        $this->assertEquals(array('bar', 'foo'), $this->site->getTemplateNames());
+        $this->site->removeTemplateName('bar');
+        $this->assertCount(1, $this->site->getTemplateNames());
+        $this->site->removeTemplateName('foo');
+        $this->assertEmpty($this->site->getTemplateNames());
+
+        $this->site->setTemplateNames(array('boom', 'bang'));
+        $this->assertCount(2, $this->site->getTemplateNames());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Site::hasTempalteName
+     */
+    public function testHasTemplateName()
+    {
+        $this->site->setTemplateNames(array('foobar', 'baz'));
+        $this->site->addTemplateName('foo');
+        $this->assertCount(3, $this->site->getTemplateNames());
+
+        $this->assertTrue($this->site->hasTemplateName('foobar'));
+        $this->assertFalse($this->site->hasTemplateName('bar'));
+        $this->assertTrue($this->site->hasTemplateName('foo'));
+        $this->assertFalse($this->site->hasTemplateName(1));
+    }
 }

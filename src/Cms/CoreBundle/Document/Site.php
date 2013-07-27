@@ -36,11 +36,17 @@ class Site extends Base {
      */
     private $contentTypes;
 
+    /**
+     * @MongoDB\Collection
+     */
+    private $templateNames;
+
     public function __construct()
     {
         $this->setState('active');
         $this->contentType = new \Doctrine\Common\Collections\ArrayCollection();
         $this->domains = array();
+        $this->templateNames = array();
     }
 
     /**
@@ -209,4 +215,72 @@ class Site extends Base {
         return $this->contentTypes;
     }
 
+    /**
+     * Set template names
+     *
+     * @param array $templateNames
+     * @return $this
+     */
+    public function setTemplateNames(array $templateNames)
+    {
+        $this->templateNames = $templateNames;
+        return $this;
+    }
+
+    /**
+     * Add a template name
+     *
+     * @param $templateName
+     * @return $this
+     */
+    public function addTemplateName($templateName)
+    {
+        if ( is_string($templateName) AND ! in_array($templateName, $this->templateNames) )
+        {
+            $this->templateNames[] = $templateName;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove a template name
+     *
+     * @param $templateName
+     * @return $this
+     */
+    public function removeTemplateName($templateName)
+    {
+        if ( ! is_string($templateName) )
+        {
+            return $this;
+        }
+        $key = array_search($templateName, $this->templateNames);
+        if ( $key !== false )
+        {
+            unset($this->templateNames[$key]);
+            $this->templateNames = array_values($this->templateNames);
+        }
+        return $this;
+    }
+
+    /**
+     * Does site have access to this template name?
+     *
+     * @param $templateName
+     * @return bool
+     */
+    public function hasTemplateName($templateName)
+    {
+        return in_array($templateName, $this->templateNames) ? true : false;
+    }
+
+    /**
+     * Get template names array
+     *
+     * @return array
+     */
+    public function getTemplateNames()
+    {
+        return $this->templateNames;
+    }
 }
