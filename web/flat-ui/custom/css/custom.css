@@ -13,10 +13,14 @@
     color: white;
     font-size: 18px;
 }
+.alert-inverse {
+    background-color: #2C3E50;
+}
 .label-info {
     background-color: #3498DB;
 }
 .label-inverse {
+    color: #ffffff;
     background-color: #2C3E50;
 }
 .navbar-inverse .navbar-inner {

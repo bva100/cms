@@ -83,18 +83,18 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
      */
     public function testAddTemplateName()
     {
-        $this->site->addTemplateName('foobar');
+        $this->site->addTemplateName('Core:Base:HTML');
         $this->site->addTemplateName('bar');
         $this->site->addTemplateName('foo');
         $this->assertCount(3, $this->site->getTemplateNames());
-        $this->assertEquals(array('foobar', 'bar', 'foo'), $this->site->getTemplateNames());
+        $this->assertEquals(array('Core:Base:HTML', 'bar', 'foo'), $this->site->getTemplateNames());
 
-        $this->site->addTemplateName('foobar');
+        $this->site->addTemplateName('Core:Base:HTML');
         $this->assertCount(3, $this->site->getTemplateNames());
         $this->site->addTemplateName('bar');
         $this->assertCount(3, $this->site->getTemplateNames());
 
-        $this->site->removeTemplateName('foobar');
+        $this->site->removeTemplateName('Core:Base:HTML');
         $this->assertCount(2, $this->site->getTemplateNames());
         $this->assertEquals(array('bar', 'foo'), $this->site->getTemplateNames());
         $this->site->removeTemplateName('bar');

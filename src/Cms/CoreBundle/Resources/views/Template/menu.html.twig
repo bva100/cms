@@ -35,6 +35,7 @@
                 {% block notices %}
                     {{ parent() }}
                 {% endblock %}
+                <div id="error-container"></div>
                 <form id="save-template-form" action="{{ path('cms_core.template_save') }}" method="POST">
                     <input type="hidden" name="token" id="input-token" value="{{ token }}"/>
                     <input type="hidden" name="type" id="input-template-type" value="menu"/>

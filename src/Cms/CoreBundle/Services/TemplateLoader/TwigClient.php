@@ -13,6 +13,9 @@ class TwigClient {
 
     protected $code;
 
+    /**
+     * code with no white spaces. Differs from rawCode as raw code has white spaced but does not have includes or use blocks
+     */
     protected $strippedCode;
 
     /**
@@ -148,27 +151,42 @@ class TwigClient {
 
     public function getRawCode()
     {
-        $code = str_replace('{%use', '{% use', $this->getCode());
-        $code = str_replace('{%extends', '{% extends', $code);
-        $rawCode =  preg_replace('/' . preg_quote('{% use') .
+        $rawCode = $this->stripExtends($this->getCode());
+        return $this->stripUse($rawCode);
+    }
+
+    public function stripUse($code)
+    {
+//        $code = str_replace('{%use', '{% use', $code); CANT USE THIS BC YOU CAN STILL ADD ARBITRARY SPACE
+        $code =  preg_replace('/' . preg_quote('{% use') .
             '.*?' .
             preg_quote('%}') . '/', '', $code);
-        $rawCode = preg_replace('/' . preg_quote('{% extends') .
+        return trim($code);
+    }
+
+    public function stripExtends($code)
+    {
+//        $code = str_replace('{%extends', '{% extends', $code); SEE ABOVE
+        $code = preg_replace('/' . preg_quote('{% extends') .
             '.*?' .
-            preg_quote('%}') . '/', '', $rawCode);
-        return trim($rawCode);
+            preg_quote('%}') . '/', '', $code);
+        return trim($code);
     }
 
     /**
-     * Throws an exception if twig code is not valid. Guesses at what the problem is and where the line is. Returns code string if valid.
+     * Returns a string with an exception message if invalid or bool true if valid. Check with !== true.
      *
-     * @param array $params
+     * @param string $code
      * @return string|bool
      */
-    public function validate(array $params = array())
+    public function validate($code)
     {
-        $this->twig->parse($this->twig->tokenize($this->code));
-        return $this->code;
+        try{
+            $this->twig->parse($this->twig->tokenize($code));
+        }catch(\Twig_Error_Syntax $e){
+            return 'Twig Error: '.$e->getMessage();
+        }
+        return true;
     }
 
     /**
@@ -184,32 +202,38 @@ class TwigClient {
     }
 
     /**
-     * Ensure site has access
+     * Ensure site has access. Returns bool true if access is granted and a string with an error message if access is denied. Check with !== true.
      *
      * @param \Cms\CoreBundle\Document\Site $site
      * @param $extends
      * @param array $uses
-     * @return bool
-     * @throws \Exception
+     * @return bool|string
      */
     public function siteHasAccessExtendsAndUses(\Cms\CoreBundle\Document\Site $site, $extends, array $uses)
     {
         if ( ! $this->siteHasTemplateAccess($site, $extends) )
         {
-            throw new \Exception($site->getName().' does not have access to '.$extends);
+            return 'Cannot extend '.$extends.' because '.$site->getName().' does not have access to '.$extends;
         }
         foreach ($uses as $use) {
             if ( ! $this->siteHasTemplateAccess($site, $use) )
             {
-                throw new \Exception($site->getName().' does not have access to '.$use);
+                return 'Cannot use '.$use.' because '.$site->getName().' does not have access to '.$use;
             }
         }
         return true;
     }
 
-    public function createCode($rawCode, $extends = '', array $uses = array())
+    /**
+     * Creates code content out of rawCode, extends and uses
+     *
+     * @param $code
+     * @param string $extends
+     * @param array $uses
+     * @return string
+     */
+    public function createCode($code, $extends = '', array $uses = array())
     {
-        $code = $rawCode;
         if ( ! empty($uses) )
         {
             foreach ($uses as $use) {

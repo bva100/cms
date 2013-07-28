@@ -63,11 +63,23 @@ class TemplateController extends Controller {
         }
 
         $twigClient = $this->get('twig_client');
+        $rawCode = $twigClient->setCode($rawCode)->getRawCode();
         $extends = 'Core:Base:HTML';
         $uses = array('DogBlog:Master:CustomBlock');
-        $twigClient->siteHasAccessExtendsAndUses($site, $extends, $uses);
+        $validationResponse = $twigClient->validate($rawCode);
+        if ( $validationResponse !== true )
+        {
+            $response = new Response($validationResponse);
+            $response->setStatusCode(500);
+            return $response;
+        }
+        $validationResponse = $twigClient->siteHasAccessExtendsAndUses($site, $extends, $uses);
+        if( $validationResponse !== true ){
+            $response = new Response($validationResponse);
+            $response->setStatusCode(500);
+            return $response;
+        }
         $content = $twigClient->createCode($rawCode, $extends, $uses);
-        $twigClient->setCode($content);
 
         $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();
         if ( ! $template )
@@ -88,7 +100,6 @@ class TemplateController extends Controller {
         }
         if ( $content )
         {
-            $content = $twigClient->validate();
             $template->setContent($content);
         }
         $success = $this->get('persister')->save($template, false, null);
