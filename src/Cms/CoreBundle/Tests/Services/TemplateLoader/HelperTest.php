@@ -104,5 +104,14 @@ class HelperTest extends PHPUnit_Framework_TestCase {
         $this->helper->setRawCode($this->codeBlock);
         $this->assertTrue($this->helper->containsExtends());
     }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::containsUses
+     */
+    public function testDoesNotContainUses()
+    {
+        $this->helper->setRawCode($this->codeBlock);
+        $this->assertTrue($this->helper->containsUses());
+    }
     
 }

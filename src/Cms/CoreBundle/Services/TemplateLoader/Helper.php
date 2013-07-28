@@ -85,4 +85,20 @@ class Helper {
         }
     }
 
+    /**
+     * Checks if non white space code contains uses block. Returns bool.
+     * Can be called on its own but is also included in validate method.
+     *
+     * @return bool
+     */
+    public function containsUses()
+    {
+        if ( strpos($this->getNonWhiteSpaceCode(), '{%uses') !== false )
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
