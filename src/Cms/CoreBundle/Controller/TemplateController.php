@@ -52,35 +52,37 @@ class TemplateController extends Controller {
         $rawCode = (string)$this->getRequest()->request->get('rawCode');
         $extends = (string)$this->getRequest()->request->get('extends');
         $uses = json_decode((string)$this->getRequest()->request->get('uses'));
-        if ( ! $uses )
-        {
-            $uses = array();
-        }
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
-
-        $twigClient = $this->get('twig_client');
-        $rawCode = $twigClient->setCode($rawCode)->getRawCode();
         $extends = 'Core:Base:HTML';
-        $uses = array('DogBlog:Master:CustomBlock');
-        $validationResponse = $twigClient->validate($rawCode);
-        if ( $validationResponse !== true )
+        if ( ! $site->hasTemplateName($extends) )
         {
-            $response = new Response($validationResponse);
-            $response->setStatusCode(500);
+            $response = new Response($site->getName().' does not have access to '.$extends);
+            $response->setStatusCode(400);
             return $response;
         }
-        $validationResponse = $twigClient->siteHasAccessExtendsAndUses($site, $extends, $uses);
-        if( $validationResponse !== true ){
-            $response = new Response($validationResponse);
-            $response->setStatusCode(500);
-            return $response;
+        $uses = array('DogBlog:Master:CustomBlock');
+        if ( ! empty($uses) )
+        {
+            foreach ($uses as $use) {
+                if ( ! $site->hasTemplateName($use) )
+                {
+                    $response = new Response($site->getName().' does not have access to '.$use);
+                    $response->setStatusCode(400);
+                    return $response;
+                }
+            }
         }
-        $content = $twigClient->createCode($rawCode, $extends, $uses);
-
+        $helper = $this->get('template_helper')->setRawCode($rawCode);
+        $result = $helper->createCode($extends, $uses);
+        if ( ! $result )
+        {
+            throw new Exception('Unkown template code error');
+        }
+        $content = $result['code'];
         $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();
         if ( ! $template )
         {
@@ -111,9 +113,6 @@ class TemplateController extends Controller {
                 $redirect = $this->generateUrl('cms_core.template_read', array('id' => $template->getId() ? $template->getId() : $id));
         }
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
-
-        // consider pushing to template history here
-
         if ( $xmlResponse )
         {
             return $xmlResponse;
@@ -169,20 +168,16 @@ class TemplateController extends Controller {
         }
         $templateName = $site->getName().':Master:HTML';
         $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($templateName);
-        $twigClient = $this->get('twig_client')->setCode($template->getContent());
-        $code = $twigClient->getRawCode();
-        $extends = $twigClient->getExtends();
-        $uses = $twigClient->getUses();
-
+        $components = $this->get('template_client')->setCode($template->getContent())->getComponents();
         return $this->render('CmsCoreBundle:Template:menu.html.twig', array(
             'token' => $token,
             'notices' => $notices,
             'site' => $site,
             'templateName' => $templateName,
             'template' => $template,
-            'code' => $code,
-            'extends' => $extends,
-            'uses' => $uses,
+            'code' => $components['rawCode'],
+            'extends' => $components['extends'],
+            'uses' => $components['uses'],
         ));
     }
 

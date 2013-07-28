@@ -12,7 +12,8 @@ parameters:
     aws.secret.param: Mc3n0/w7oKZ23S3iTFcnViXyT+JD7zZ9lhdmYF0S
     aws.s3_storage_factory.class: Cms\CoreBundle\Services\MediaManager\S3StorageFactory
     cms.slug_helper.class: Cms\CoreBundle\Services\SlugHelper
-    cms.twig_client.class: Cms\CoreBundle\Services\TemplateLoader\TwigClient
+    cms.template_client.class: Cms\CoreBundle\Services\TemplateLoader\Client
+    cms.template_helper.class: Cms\CoreBundle\Services\TemplateLoader\Helper
 
 services:
     asset_manager:
@@ -20,13 +21,15 @@ services:
     template_loader:
         class: %cms.mongo_twig_load.class%
         arguments: [@doctrine.odm.mongodb.document_manager, CmsCoreBundle:Template ]
-    twig_client:
-        class: %cms.twig_client.class%
     twig_loader:
         class: %cms.twig_environemnt.class%
         arguments: [@kernel]
         calls:
           - [setLoader, [@template_loader]]
+    template_client:
+        class: %cms.template_client.class%
+    template_helper:
+        class: %cms.template_helper.class%
     loop_finder:
         class: %cms.node_loop_finder.class%
     loop_loader:
