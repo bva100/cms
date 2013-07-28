@@ -207,4 +207,20 @@ class TwigClient {
         return true;
     }
 
+    public function createCode($rawCode, $extends = '', array $uses = array())
+    {
+        $code = $rawCode;
+        if ( ! empty($uses) )
+        {
+            foreach ($uses as $use) {
+                $code = "{% use '".$use."' %} \n ".$code;
+            }
+        }
+        if ( $extends )
+        {
+            $code = "{% extends '".$extends."' %}\n ".$code;
+        }
+        return $code;
+    }
+
 }

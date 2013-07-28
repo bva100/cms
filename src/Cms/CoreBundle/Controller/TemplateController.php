@@ -48,25 +48,26 @@ class TemplateController extends Controller {
         $state = (string)$this->getRequest()->request->get('state');
         $name = (string)$this->getRequest()->request->get('name');
         $parent = (string)$this->getRequest()->request->get('parent');
+        $type = (string)$this->getRequest()->request->get('type');
         $rawCode = (string)$this->getRequest()->request->get('rawCode');
         $extends = (string)$this->getRequest()->request->get('extends');
         $uses = json_decode((string)$this->getRequest()->request->get('uses'));
-        $type = (string)$this->getRequest()->request->get('type');
-
+        if ( ! $uses )
+        {
+            $uses = array();
+        }
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
 
-        //create content by combining extends, uses and rawCode
-        $content = $rawCode;
-        $twigClient = $this->get('twig_client')->setCode($content);
-
-        // validate that site has access to extends name and the array of uses template names
-        $uses = array('foo', 'bar');
+        $twigClient = $this->get('twig_client');
         $extends = 'Core:Base:HTML';
+        $uses = array('DogBlog:Master:CustomBlock');
         $twigClient->siteHasAccessExtendsAndUses($site, $extends, $uses);
+        $content = $twigClient->createCode($rawCode, $extends, $uses);
+        $twigClient->setCode($content);
 
         $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();
         if ( ! $template )
