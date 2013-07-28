@@ -93,12 +93,51 @@ class Helper {
      */
     public function containsUses()
     {
-        if ( strpos($this->getNonWhiteSpaceCode(), '{%uses') !== false )
+        if ( strpos($this->getNonWhiteSpaceCode(), '{%use') !== false )
         {
             return true;
         }else{
             return false;
         }
+    }
+
+    /**
+     * Returns an array with status and message indices. If syntax is invalid, status index will be false.
+     *
+     * @return array
+     */
+    public function validateTwigSyntax()
+    {
+        $twig = new \Twig_Environment();
+        try{
+            $twig->parse($twig->tokenize($this->rawCode));
+        }catch(\Twig_Error_Syntax $e){
+            return array('status' => false, 'message' => 'Twig Error: '.$e->getMessage());
+        }
+        return array('status' => true, 'message' => 'twig syntax is valid');
+    }
+
+    /**
+     * Checks if raw code is valid. Returns an array with status and message indices. If invalid, status index will be false
+     *
+     * @return array
+     */
+    public function validate()
+    {
+        $validSyntax = $this->validateTwigSyntax();
+        if ( $validSyntax['status'] === false )
+        {
+            return $validSyntax;
+        }
+        if ( $this->containsUses() )
+        {
+            return array('status' => false, 'message' => 'Code cannot contain the "use" statement. To include another template, please add via the inheritance section.');
+        }
+        if ( $this->containsExtends() )
+        {
+            return array('status' => false, 'message' => 'Code cannot contain the "extends" statement. To include another template, please add via the inheritance section.');
+        }
+        return array('status' => true, 'message' => 'Code is valid');
     }
 
 }

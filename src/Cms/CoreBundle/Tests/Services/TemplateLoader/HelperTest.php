@@ -92,6 +92,15 @@ class HelperTest extends PHPUnit_Framework_TestCase {
      */
     public function testDoesNotContainExtends()
     {
+        $this->helper->setRawCode("{% block foobar %}{% endblock %}");
+        $this->assertFalse($this->helper->containsExtends());
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::containsExtends
+     */
+    public function testDoesNotContainExtendsReal()
+    {
         $this->helper->setRawCode($this->rawCodeBlock);
         $this->assertFalse($this->helper->containsExtends());
     }
@@ -100,6 +109,15 @@ class HelperTest extends PHPUnit_Framework_TestCase {
      * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::containsExtends
      */
     public function testDoesContainExtends()
+    {
+        $this->helper->setRawCode("{% extends 'Core:Base:HTML' %}{% block foobar %}{% endblock %}");
+        $this->assertTrue($this->helper->containsExtends());
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::containsExtends
+     */
+    public function testDoesContainExtendsReal()
     {
         $this->helper->setRawCode($this->codeBlock);
         $this->assertTrue($this->helper->containsExtends());
@@ -110,8 +128,105 @@ class HelperTest extends PHPUnit_Framework_TestCase {
      */
     public function testDoesNotContainUses()
     {
+        $this->helper->setRawCode("{% block foobar %}{% endblock %}");
+        $this->assertFalse($this->helper->containsUses());
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::containsUses
+     */
+    public function testDoesNotContainUsesReal()
+    {
+        $this->helper->setRawCode($this->rawCodeBlock);
+        $this->assertFalse($this->helper->containsUses());
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::containsUses
+     */
+    public function testDoesContainUses()
+    {
+        $this->helper->setRawCode("{% use 'Core:Base:HTML' %}{% block foobar %}{% endblock %}");
+        $this->assertTrue($this->helper->containsUses());
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::containsUses
+     */
+    public function testDoesContainUsesReal()
+    {
         $this->helper->setRawCode($this->codeBlock);
         $this->assertTrue($this->helper->containsUses());
     }
-    
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::validateTwigSyntax
+     */
+    public function testValidateTwigSyntax()
+    {
+        $this->helper->setRawCode($this->rawCodeBlock);
+        $syntaxArray = $this->helper->validateTwigSyntax();
+        $this->assertTrue($syntaxArray['status']);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::validateTwigSyntax
+     */
+    public function testInvalidTwigSyntax()
+    {
+        $this->helper->setRawCode("{% block foobar }{% endblock %}");
+        $syntaxArray = $this->helper->validateTwigSyntax();
+        $this->assertFalse($syntaxArray['status']);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::validate
+     */
+    public function testValid()
+    {
+        $this->helper->setRawCode($this->rawCodeBlock);
+        $validArray = $this->helper->validate();
+        $this->assertTrue($validArray['status']);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::validate
+     */
+    public function testInvalid()
+    {
+        $this->helper->setRawCode($this->codeBlock);
+        $validArray = $this->helper->validate();
+        $this->assertFalse($validArray['status']);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::validate
+     */
+    public function testInvalidIncludeExtends()
+    {
+        $this->helper->setRawCode("{% extends 'Core:Base:HTML' %}{% block foobar %}{% endblock %}");
+        $validArray = $this->helper->validate();
+        $this->assertFalse($validArray['status']);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::validate
+     */
+    public function testInvalidIncludeUses()
+    {
+        $this->helper->setRawCode("{% use 'Core:Base:HTML' %}{% block foobar %}{% endblock %}");
+        $validArray = $this->helper->validate();
+        $this->assertFalse($validArray['status']);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\TemplateLoader\Helper::validate
+     */
+    public function testInvalidIncludeReal()
+    {
+        $this->helper->setRawCode($this->codeBlock);
+        $validArray = $this->helper->validate();
+        $this->assertFalse($validArray['status']);
+    }
+
 }
