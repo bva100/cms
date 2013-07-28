@@ -136,6 +136,7 @@ class TwigClient {
      */
     public function getExtends()
     {
+        // also need to trim "
         return trim($this->getOneInner($this->getStrippedCode(), '{%extends', '%}'), "'");
     }
 
@@ -146,6 +147,7 @@ class TwigClient {
      */
     public function getUses()
     {
+        // also need to trim "
         return $this->getAllInner($this->getStrippedCode(), '{%use', '%}');
     }
 

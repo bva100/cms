@@ -101,6 +101,16 @@ class Helper {
         }
     }
 
+    public function validIncludeName($name)
+    {
+        if(preg_match('/^[a-zA-Z\d:-]+$/', $name) === 1)
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     /**
      * Returns an array with status and message indices. If syntax is invalid, status index will be false.
      *
@@ -138,6 +148,37 @@ class Helper {
             return array('status' => false, 'message' => 'Code cannot contain the "extends" statement. To include another template, please add via the inheritance section.');
         }
         return array('status' => true, 'message' => 'Code is valid');
+    }
+
+    /**
+     * Create code from injected rawCode, and params extends and uses. extends and use takes no syntax. Validates by default.
+     *
+     * @param $extends
+     * @param array $uses
+     * @return array
+     */
+    public function createCode($extends, array $uses = array())
+    {
+        $validRawCodeArray = $this->validate();
+        if ( $validRawCodeArray['status'] === false )
+        {
+            return $validRawCodeArray;
+        }
+        $code = $this->getRawCode();
+        if ( ! empty($uses) )
+        {
+            foreach ($uses as $use) {
+                if ( $this->validIncludeName($use) )
+                {
+                    $code = "{% use '".$use."' %}".$code;
+                }
+            }
+        }
+        if ( $extends AND $this->validIncludeName($extends) )
+        {
+            $code = "{% extends '".$extends."' %}".$code;
+        }
+        return array('status' => true, 'message' => 'success', 'code' => $code);
     }
 
 }
