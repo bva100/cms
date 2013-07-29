@@ -8,6 +8,7 @@ $(document).ready(function() {
     codeEditor.getSession().setUseSoftTabs(true);
     codeEditor.getSession().setTabSize(2);
     DOMeditor.style.fontSize='14px';
+    DOMeditor.style.lineHeight='1.4';
     DOMeditor.style.fontFamily='DejaVu Sans Mono';
     codeEditor.commands.addCommand({
         name: 'saveFile',
