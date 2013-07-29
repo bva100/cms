@@ -74,9 +74,11 @@ class TemplateController extends Controller {
 
         $helper = $this->get('template_helper')->setRawCode($rawCode);
         $result = $helper->createCode($extends, $uses);
-        if ( ! $result )
+        if ( $result['status'] === false )
         {
-            throw new Exception('Unkown template code error');
+            $response = new Response($result['message']);
+            $response->setStatusCode(400);
+            return $response;
         }
         $content = $result['code'];
         $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();

@@ -163,6 +163,32 @@
     </div>
 {% endblock %}
 
+{% block templateIncludes %}
+    <div class="holder holder-includes">
+        <h4 class="clearfix">
+            <b class="pull-left">Includes</b>
+            <span class="pull-right">
+                <a href="#edit" class="edit-includes-action edit-includes">edit</a> <span class="add-includes">|</span>
+                <a href="#add" class="add-includes">add</a>
+            </span>
+        </h4>
+        <b>Extends:</b>
+        <ul id="primary-extends-list">
+            <li class="included-item" data-include-type="extends" data-template-name="{{ extends }}">
+                <a href="#">{{ extends }}</a>
+            </li>
+        </ul>
+        <b>Uses:</b>
+        <ul id="primary-include-list">
+            {% for use in uses  %}
+                <li class="included-item" data-include-type="use" data-template-name="{{ use }}">
+                    <a href="#">{{ use }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
 {% block templateModal %}
     <div class="modal hide" id="template-modal">
         <div class="modal-header">

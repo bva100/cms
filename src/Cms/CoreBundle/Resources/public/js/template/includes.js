@@ -50,7 +50,10 @@ $(".include-new-extends").on('click', function(){
     var takeAction = false;
     if(!oldName){
         takeAction = true;
-    }else if(oldName && confirm('Are you sure want want to extend '+templateName+' in place of '+oldName+' ?')){
+    }else if(oldName === templateName){
+        $("#template-modal").modal('hide');
+    }
+    else if(oldName && confirm('Are you sure want want to extend '+templateName+' in place of '+oldName+' ?')){
         takeAction = true;
     }
     if(takeAction){
@@ -86,6 +89,5 @@ function getUses(){
     $("#primary-include-list .included-item").each(function(){
         arr.push($(this).attr('data-template-name'));
     });
-    console.log(arr);
     return arr;
 }

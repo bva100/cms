@@ -32,14 +32,19 @@ function getCodeEditorContent(){
     return codeEditor.getValue();
 }
 
-function getCodeEditorParams(){
+function getCodeEditorParams(type){
+    if(!type){
+        type = 'template';
+    }
     params = {};
     params.id = document.getElementById('template-id').value;
     params.siteId = document.getElementById('site-id').value;
     params.type = document.getElementById('input-template-type').value;
-    params.rawCode = getCodeEditorContent();
-    params.extends = getExtends();
-    params.uses = JSON.stringify(getUses());
+    if(type === 'template'){
+        params.rawCode = getCodeEditorContent();
+        params.extends = getExtends();
+        params.uses = JSON.stringify(getUses());
+    }
     return params;
 }
 
