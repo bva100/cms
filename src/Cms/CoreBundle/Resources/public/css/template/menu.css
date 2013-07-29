@@ -8,6 +8,9 @@ h4 a {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+.holder-includes li a{
+    text-decoration: none;
+}
 .included-item {
     word-wrap: break-word;
 }

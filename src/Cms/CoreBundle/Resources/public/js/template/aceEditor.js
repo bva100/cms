@@ -38,6 +38,8 @@ function getCodeEditorParams(){
     params.siteId = document.getElementById('site-id').value;
     params.type = document.getElementById('input-template-type').value;
     params.rawCode = getCodeEditorContent();
+    params.extends = getExtends();
+    params.uses = JSON.stringify(getUses());
     return params;
 }
 

@@ -13,7 +13,8 @@
     {{ parent() }}
     <script src="/dependencies/ace-builds-master/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     {% javascripts
-        '@CmsCoreBundle/Resources/public/js/template/menu.js'
+        '@CmsCoreBundle/Resources/public/js/template/aceEditor.js'
+        '@CmsCoreBundle/Resources/public/js/template/includes.js'
         filter='?yui_js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -24,6 +25,9 @@
 {% endblock %}
 
 {% block content %}
+    {% block templateModal %}
+        {{ parent() }}
+    {% endblock %}
     <article>
         <section class="row-fluid">
             <div class="span6">
@@ -48,20 +52,24 @@
             <div class="span3">
                 <div class="holder holder-includes">
                     <h4 class="clearfix">
-                        <b class="pull-left">Inheritance</b>
+                        <b class="pull-left">Includes</b>
                         <span class="pull-right">
-                            <a href="#edit" class="edit-inherit">edit</a> |
-                            <a href="#add" class="add-inherit">add</a>
+                            <a href="#edit" class="edit-includes-action edit-includes">edit</a> <span class="add-includes">|</span>
+                            <a href="#add" class="add-includes">add</a>
                         </span>
                     </h4>
                     <b>Extends:</b>
-                    <ul>
-                        <li>{{ extends }}</li>
+                    <ul id="primary-extends-list">
+                        <li class="included-item" data-include-type="extends" data-template-name="{{ extends }}">
+                            <a href="#">{{ extends }}</a>
+                        </li>
                     </ul>
                     <b>Uses:</b>
                     <ul id="primary-include-list">
                         {% for use in uses  %}
-                            <li class="included-item">{{ use }}</li>
+                            <li class="included-item" data-include-type="use" data-template-name="{{ use }}">
+                                <a href="#">{{ use }}</a>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>

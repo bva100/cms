@@ -162,3 +162,37 @@
         </div>
     </div>
 {% endblock %}
+
+{% block templateModal %}
+    <div class="modal hide" id="template-modal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>
+                <a href="#">Repository</a> |
+                <a href="#">Create</a> |
+                <a href="#">Depot</a>
+            </h4>
+        </div>
+        <div class="modal-body" id="template-modal-repo">
+            <table class="table-hover">
+                {% for template in site.templateNames  %}
+                    <tr data-template-name="{{ template }}">
+                        <td>{{ template }}</td>
+                        <td>
+                            <a href="#preview">preview</a>
+                        </td>
+                        <td>
+                            <a href="#extend" class="include-new-extends">extend</a>
+                        </td>
+                        <td>
+                            <a href="#use" class="include-new-use">use</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-info">Complete</a>
+        </div>
+    </div>
+{% endblock %}

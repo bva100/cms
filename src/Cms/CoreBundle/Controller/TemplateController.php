@@ -57,7 +57,7 @@ class TemplateController extends Controller {
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
-        $extends = 'Core:Base:HTML';
+
         if ( ! $site->hasTemplateName($extends) )
         {
             $response = new Response($site->getName().' does not have access to '.$extends);
@@ -76,6 +76,7 @@ class TemplateController extends Controller {
                 }
             }
         }
+
         $helper = $this->get('template_helper')->setRawCode($rawCode);
         $result = $helper->createCode($extends, $uses);
         if ( ! $result )
