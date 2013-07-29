@@ -168,9 +168,9 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4>
-                <a href="#">Repository</a> |
-                <a href="#">Create</a> |
-                <a href="#">Depot</a>
+                <a href="#repo" class="template-modal-show-repo template-modal-nav template-modal-active-anchor">Repository</a> |
+                <a href="{{ path('cms_core.template_new') }}" target="_blank" class="template-modal-nav">Create</a> |
+                <a href="#depot" class="template-modal-show-depot template-modal-nav">Depot</a>
             </h4>
         </div>
         <div class="modal-body" id="template-modal-repo">
@@ -191,8 +191,12 @@
                 {% endfor %}
             </table>
         </div>
+        <div class="modal-body hide" id="template-modal-depot">
+            <h4>The Depot</h4>
+            <p>Think of the depot as an app store for PipeStack templates, add-ons and plugins. Here, you'll be able to find thrid party templates to add to your repo and include into your code.</p>
+        </div>
         <div class="modal-footer">
-            <a href="#" class="btn btn-info">Complete</a>
+            <a href="#" class="btn" data-dismiss="modal">close</a>
         </div>
     </div>
 {% endblock %}

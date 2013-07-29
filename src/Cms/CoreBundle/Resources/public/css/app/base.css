@@ -46,12 +46,21 @@ footer a {
     margin-bottom: 14px;
     border-bottom: 1px solid #ECF0F1;
 }
+#template-modal a {
+    text-decoration: none;
+}
 #template-modal-repo > table {
     font-size: 16px;
     width: 100%;
 }
 #template-modal-repo tr {
     height: 35px;
+}
+.template-modal-nav {
+    color: #3498DB;
+}
+.template-modal-active-anchor {
+    color: #95A5A6;
 }
 @media (min-width: 1200px) and (max-width: 1300px) {
     #nav-admin-container {width: 13%;}

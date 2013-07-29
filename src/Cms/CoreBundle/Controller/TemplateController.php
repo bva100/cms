@@ -57,23 +57,18 @@ class TemplateController extends Controller {
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
-
-        if ( ! $site->hasTemplateName($extends) )
+        if ( $extends AND ! $site->hasTemplateName($extends) )
         {
             $response = new Response($site->getName().' does not have access to '.$extends);
             $response->setStatusCode(400);
             return $response;
         }
-        $uses = array('DogBlog:Master:CustomBlock');
-        if ( ! empty($uses) )
-        {
-            foreach ($uses as $use) {
-                if ( ! $site->hasTemplateName($use) )
-                {
-                    $response = new Response($site->getName().' does not have access to '.$use);
-                    $response->setStatusCode(400);
-                    return $response;
-                }
+        foreach ($uses as $use) {
+            if ( ! $site->hasTemplateName($use) )
+            {
+                $response = new Response($site->getName().' does not have access to '.$use);
+                $response->setStatusCode(400);
+                return $response;
             }
         }
 
