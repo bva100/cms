@@ -130,4 +130,13 @@ class ThemeController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.theme_readAll'));
     }
 
+    public function wizardAction()
+    {
+        $id = (string)$this->getRequest()->query->get('id');
+        $theme = $id ?  $this->get('persister')->getRepo('CmsCoreBundle:Theme')->find($id) : new Theme();
+        return $this->render('CmsCoreBundle:Theme:wizard.html.twig', array(
+           'theme' =>  $theme,
+        ));
+    }
+
 }

@@ -143,6 +143,11 @@ cms_core.theme_readAll:
   defaults: { _controller: CmsCoreBundle:Theme:readAll }
   methods: [GET]
 
+cms_core.theme_wizard:
+  pattern: /theme/wizard
+  defaults: { _controller: CmsCoreBundle:Theme:wizard }
+  methods: [GET]
+
 cms_core.theme_read:
   pattern: /theme/{id}
   defaults: { _controller: CmsCoreBundle:Theme:read }
@@ -152,7 +157,6 @@ cms_core.theme_save:
   pattern: /theme
   defaults: { _controller: CmsCoreBundle:Theme:save }
   methods: [POST]
-
 
 #assets
 cms_core.asset_delete:

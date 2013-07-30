@@ -136,8 +136,8 @@ class Theme extends Base {
     /**
      * Set componentTemplateName
      *
-     * @param string $componentTemplateName
-     * @return self
+     * @param $componentTemplateName
+     * @return $this
      */
     public function setComponentTemplateName($componentTemplateName)
     {
@@ -156,13 +156,15 @@ class Theme extends Base {
     }
 
     /**
-     * Not used
+     * Set layouts.
      *
-     * @throws \Exception
+     * @param array $layouts
+     * @return $this
      */
-    public function setLayouts()
+    public function setLayouts(array $layouts)
     {
-        throw new \Exception('the setLayouts method is not used. Please use addLayout instead');
+        $this->layouts = $layouts;
+        return $this;
     }
 
     /**

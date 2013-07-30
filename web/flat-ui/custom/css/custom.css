@@ -164,6 +164,20 @@ input[type="color"]:focus,
     border-top: 1px solid #ECF0F1;
     background-color: #ffffff;
 }
+.todo li {
+    background: #34495e url(/flat-ui/images/todo/todo.png) 92% center no-repeat;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 2) {
+    .todo li {
+        background-image: url(/flat-ui/images/todo/todo-2x.png);
+    }
+    .todo li.todo-done {
+        background-image: url(/flat-ui/images/todo/done-2x.png);
+    }
+    .todo-search {
+        background-image: url(/flat-ui/images/todo/search-2x.png);
+    }
+}
 @media (max-width: 700px) {
     .login-form label[for='username'], .login-form label[for='login-pass'] {
         display: none;

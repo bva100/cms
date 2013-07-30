@@ -1,0 +1,116 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/theme/wizard.css'
+        filter='cssrewrite, ?yui_css' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/theme/wizard.js'
+        filter='?yui_js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ theme.name|default('New') }} Theme {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="row-fluid">
+                    <nav class="span12 todo">
+                        <div class="theme-name-container clearfix">
+                            <h4 class="theme-name pull-left">{{ theme.name|default('New Theme') }}</h4>
+                            <span class="pull-right"><i class="theme-name-icon icon-eye-open icon-large"></i></span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="todo-icon"><i class="icon-info-sign"></i></div>
+                                <div class="todo-content">
+                                    <h4 class="todo-name">
+                                        <strong>Basic Info</strong>
+                                    </h4>
+                                    <span>Name, Author, Url, Images</span>
+                                </div>
+                            </li>
+                            <li class="todo-done">
+                                <div class="todo-icon"><i class="icon-puzzle-piece"></i></div>
+                                <div class="todo-content">
+                                    <h4 class="todo-name">
+                                        <strong>Components</strong>
+                                    </h4>
+                                    Create Twig Blocks
+                                </div>
+                            </li>
+                            <li>
+                                <div class="todo-icon"><i class="icon-list-alt"></i></div>
+                                <div class="todo-content">
+                                    <h4 class="todo-name">
+                                        <strong>Layouts</strong>
+                                    </h4>
+                                    <span>Design the Templates</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="todo-icon"><i class="icon-trophy"></i></div>
+                                <div class="todo-content">
+                                    <h4 class="todo-name">
+                                        <strong>Complete</strong>
+                                    </h4>
+                                    <span>Save it, Ship it, Use it</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <section class="span9">
+                <div id="wizard-content">
+                    <div class="row-fluid wizard-header">
+                        <div class="span12 clearfix">
+                            <div class="progress pull-left span6">
+                                <div class="bar span6" style="width: 45%;"></div>
+                            </div>
+                            <a href="#" class="close">&times;</a>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="wizard-body span12">
+                            <div class="flat-form-container theme-basic">
+                                <form id="theme-basic-form" class="wizard-form">
+                                    <label for="input-theme-name">Theme Name:*</label>
+                                    <input type="text" class="span12" id="input-theme-name" value="{{ theme.name|default() }}" placeholder="Type name of theme"/>
+                                    <label for="input-theme-author-name">Author's Name/Organization:*</label>
+                                    <input type="text" class="span12" id="input-theme-author-name" value="{{ theme.author.name|default() }}" placeholder="Type author's/organization's name"/>
+                                    <label for="input-theme-author-url">Author's Website:</label>
+                                    <input type="text" class="span12" id="input-theme-author-url" value="{{ theme.author.url|default() }}" placeholder="Add author's website URL"/>
+                                    <label for="input-theme-author-image">Url to Author's Image or Logo:</label>
+                                    <input type="text" class="span12" id="input-theme-author-url" value="{{ theme.author.image|default() }}" placeholder="Add author's image URL"/>
+                                    <label for="input-theme-image">Screenshot URL:</label>
+                                    <input type="text" class="span12" id="input-theme-image" value="{{ theme.image|default() }}" placeholder="Add the URL to a screenshot image"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="wizard-footer">
+                            <button class="btn btn-primary wizard-previous pull-left" id="author-form-submit" disabled="true">Previous</button>
+                            <button class="btn btn-primary wizard-next pull-right">Save and Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <input type="hidden" id="theme" value="{{ theme | serialize('json') }}"/>
+    <input type="hidden" id="input-theme-name" class="theme-name" value="{{ theme.name|default() }}"/>
+{% endblock %}
