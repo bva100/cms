@@ -1,7 +1,7 @@
 .container-fluid {
     margin-top: 20px;
 }
-.theme-name-container {
+.wizard-nav-name-container {
     position: relative;
     background: #1abc9c;
     background-size: 16px 16px;
@@ -9,12 +9,12 @@
     color: #34495e;
     padding: 19px 25px 20px;
 }
-.theme-name-container h4 {
+.wizard-nav-name-container h4 {
     font-size: 19px;
     font-weight: bold;
     color: #34495E;
 }
-.theme-name-icon {
+.wizard-nav-name-icon {
     position: relative;
     top: 4px;
 }
@@ -25,7 +25,7 @@ h4 {
     border: 1px solid #BDC3C7;
     padding: 20px;
     border-radius: 6px;
-    background-color: #34495E;
+    background-color: #2C3E50;
 }
 .wizard-header {
     border-bottom: 1px solid #ffffff;
@@ -40,7 +40,7 @@ h4 {
     color: white;
 }
 .flat-form-container {
-    background-color: #34495E;
+    background-color: #2C3E50;
     color: #1ABC9C;
 }
 .flat-form-container label {
@@ -48,7 +48,7 @@ h4 {
 }
 .flat-form-container input {
     border: none;
-    background-color: #34495E;
+    background-color: #2F4256;
     color: white;
     font-size: 18px;
     word-wrap: break-word;
@@ -61,4 +61,39 @@ h4 {
 .wizard-footer {
     padding-top: 25px;
     border-top: 1px solid #ffffff;
+}
+#primary-progress-label {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 32px;
+}
+#primary-progress-label .percent-complete {
+    margin-right: 5px;
+}
+#input-code-content {
+    position: relative;
+    width: 100%;
+    min-height: 470px;
+    margin-bottom: 20px;
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+}
+.holder-includes {
+    background-color: #34495E;
+    color: white;
+    font-size: 17px;
+    border-radius: 6px;
+    padding: 23px;
+}
+.holder-includes a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #1ABC9C;
+}
+.todo-active {
+    color: #1ABC9C;
+}
+.todo-active .todo-name {
+    color: #1ABC9C;
 }

@@ -195,26 +195,35 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4>
                 <a href="#repo" class="template-modal-show-repo template-modal-nav template-modal-active-anchor">Repository</a> |
-                <a href="{{ path('cms_core.template_new') }}" target="_blank" class="template-modal-nav">Create</a> |
+                {% if site is defined %}
+                    <a href="{{ path('cms_core.template_new') }}" target="_blank" class="template-modal-nav">Create</a> |
+                {% endif %}
                 <a href="#depot" class="template-modal-show-depot template-modal-nav">Depot</a>
             </h4>
         </div>
         <div class="modal-body" id="template-modal-repo">
             <table class="table-hover">
-                {% for template in site.templateNames  %}
-                    <tr data-template-name="{{ template }}">
-                        <td>{{ template }}</td>
-                        <td>
-                            <a href="#preview">preview</a>
-                        </td>
-                        <td>
-                            <a href="#extend" class="include-new-extends">extend</a>
-                        </td>
-                        <td>
-                            <a href="#use" class="include-new-use">use</a>
-                        </td>
+                {% if site is defined %}
+                    {% for template in site.templateNames  %}
+                        <tr data-template-name="{{ template }}">
+                            <td>{{ template }}</td>
+                            <td>
+                                <a href="#preview">preview</a>
+                            </td>
+                            <td>
+                                <a href="#extend" class="include-new-extends">extend</a>
+                            </td>
+                            <td>
+                                <a href="#use" class="include-new-use">use</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <h3>Themer's Repo</h3>
+                        <p>Here, the themer will be able to select from a list of add-ons which are available. The themer can also purchase core components from the PipeStack Depot to add to their repo. Coming soon...</p>
                     </tr>
-                {% endfor %}
+                {% endif %}
             </table>
         </div>
         <div class="modal-body hide" id="template-modal-depot">

@@ -136,6 +136,8 @@ class ThemeController extends Controller {
         $theme = $id ?  $this->get('persister')->getRepo('CmsCoreBundle:Theme')->find($id) : new Theme();
         return $this->render('CmsCoreBundle:Theme:wizard.html.twig', array(
            'theme' =>  $theme,
+            'extends' => null, // set dynamically with JS
+            'uses' => null, // set dynamically with JS
         ));
     }
 

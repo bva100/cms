@@ -1,6 +1,7 @@
 var DOMeditor = document.getElementById('input-code-content');
 var codeEditor = ace.edit("input-code-content");
 var codeSavePath = document.getElementById('code-save-path').value;
+var type = document.getElementById('input-template-type').value;
 
 $(document).ready(function() {
     codeEditor.setTheme("ace/theme/textmate");
@@ -33,18 +34,19 @@ function getCodeEditorContent(){
     return codeEditor.getValue();
 }
 
-function getCodeEditorParams(type){
-    if(!type){
-        type = 'template';
-    }
-    params = {};
+function getCodeEditorParams(){
+    var params = {};
     params.id = document.getElementById('template-id').value;
-    params.siteId = document.getElementById('site-id').value;
     params.type = document.getElementById('input-template-type').value;
-    if(type === 'template'){
-        params.rawCode = getCodeEditorContent();
+    params.rawCode = getCodeEditorContent();
+    if(type === 'template' || type === 'templateTheme' || type === 'menu'){
+        params.name = document.getElementById('input-template-name').value;
+        params.state = document.getElementById('input-template-state').value;
         params.extends = getExtends();
         params.uses = JSON.stringify(getUses());
+    }
+    if(type === 'template' || type === 'menu'){
+        params.siteId = document.getElementById('site-id').value;
     }
     return params;
 }

@@ -53,11 +53,11 @@ class TemplateController extends Controller {
         $extends = (string)$this->getRequest()->request->get('extends');
         $uses = json_decode((string)$this->getRequest()->request->get('uses'));
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
-        if ( ! $site )
+        if ( ! $site AND $type !== 'templateTheme' )
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
-        if ( $extends AND ! $site->hasTemplateName($extends) )
+        if ($site AND $extends AND ! $site->hasTemplateName($extends) )
         {
             $response = new Response($site->getName().' does not have access to '.$extends);
             $response->setStatusCode(400);
@@ -92,8 +92,9 @@ class TemplateController extends Controller {
         }
         if ( $name )
         {
+            //in beta version, this should be validated using namespace helper service in combination with type var
             $template->setName($name);
-        }
+    }
         if ( $parent )
         {
             $template->setParent($parent);
@@ -103,17 +104,17 @@ class TemplateController extends Controller {
             $template->setContent($content);
         }
         $success = $this->get('persister')->save($template, false, null);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
         switch($type){
             case 'menu':
                 $redirect = $this->generateUrl('cms_core.template_menu', array('siteId' => $siteId));
                 break;
             default:
                 $redirect = $this->generateUrl('cms_core.template_read', array('id' => $template->getId() ? $template->getId() : $id));
-        }
-        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
-        if ( $xmlResponse )
-        {
-            return $xmlResponse;
         }
         if ( ! $success )
         {
