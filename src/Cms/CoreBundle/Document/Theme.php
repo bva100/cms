@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * Class Theme
  * @package Cms\CoreBundle\Document
- * @MongoDB\Document(collection="themes")
+ * @MongoDB\EmbeddedDocument
  */
 class Theme extends Base {
 
@@ -22,14 +22,9 @@ class Theme extends Base {
     private $parentId;
 
     /**
-     * @MongoDB\String @MongoDB\Index(unique=true)
+     * @MongoDB\String
      */
     private $name;
-
-    /**
-     * @MongoDB\Hash
-     */
-    private $author;
 
     /**
      * @MongoDB\String
@@ -43,7 +38,6 @@ class Theme extends Base {
 
     public function __construct()
     {
-        $this->author = array();
         $this->layouts = array();
     }
 
@@ -89,38 +83,6 @@ class Theme extends Base {
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Add an author value object with properties of name, image and url
-     *
-     * @param array $author
-     * @return $this
-     */
-    public function addAuthor(array $author)
-    {
-        $this->removeAuthor();
-        if ( isset($author['name']) AND is_string($author['name']) )
-        {
-            $this->author['name'] = $author['name'];
-        }
-        if ( isset($author['image']) AND is_string($author['image']) )
-        {
-            $this->author['image'] = $author['image'];
-        }
-        if ( isset($author['url']) AND is_string($author['url']) )
-        {
-            $this->author['url'] = $author['url'];
-        }
-        return $this;
-    }
-
-    /**
-     * Remove author value object
-     */
-    public function removeAuthor()
-    {
-        $this->author = array();
     }
 
     /**
@@ -228,19 +190,6 @@ class Theme extends Base {
     public function getLayouts()
     {
         return $this->layouts;
-    }
-
-
-    /**
-     * Set author
-     *
-     * @param hash $author
-     * @return self
-     */
-    public function setAuthor($author)
-    {
-        $this->author = $author;
-        return $this;
     }
 
 }

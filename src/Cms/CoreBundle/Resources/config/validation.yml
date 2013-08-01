@@ -1,4 +1,6 @@
 Cms\CoreBundle\Document\Site:
+    constraints:
+      - Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique: name
     properties:
         name:
           - NotBlank: { message: 'Please add a name' }
@@ -129,6 +131,8 @@ Cms\CoreBundle\Document\Asset:
            - Url: { message: 'Please add a valid URL' }
 
 Cms\CoreBundle\Document\Template:
+    constraints:
+      - Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique: namespace
     properties:
         name:
            - NotBlank: { message: 'Please add a name to tempalte' }
@@ -171,4 +175,20 @@ Cms\CoreBundle\Document\Media:
               type: integer
               message: 'Invalid filesize'
            - Max: { limit: 10737418240, message: Filesize cannot be larger than 10 gigs. }
+
+Cms\CoreBundle\Document\ThemeOrg:
+    constraints:
+      - Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique: namespace
+    properties:
+        organization:
+          - NotBlank: { message: 'Please add the name of the organization/author' }
+          - Type: {type: string, message: 'Organization must be a string' }
+        namespace:
+          - NotBlank: { message: 'Please add a name to this theme profile' }
+        website:
+          - Url: { message: 'Please add a valid url for the website value. be sure to include "http://" '}
+        image:
+          - UrL: { message: 'Please add a valid url for the image value. be sure to include "http://" '}
+
+
 

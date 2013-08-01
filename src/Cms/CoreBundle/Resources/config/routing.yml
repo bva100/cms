@@ -127,6 +127,22 @@ cms_core.template_menu:
   defaults: { _controller: CmsCoreBundle:Template:menu }
   methods: [GET]
 
+#themeOrg
+cms_core.themeOrg_save:
+  pattern: /theme-org/save
+  defaults: { _controller: CmsCoreBundle:ThemeOrg:save }
+  methods: [POST]
+
+cms_core.themeOrg_read:
+  pattern: /theme-org/edit/{id}
+  defaults: { _controller: CmsCoreBundle:ThemeOrg:read }
+  methods: [GET]
+
+cms_core.themeOrg_new:
+  pattern: /theme-org/new
+  defaults: { _controller: CmsCoreBundle:ThemeOrg:new }
+  methods: [GET]
+
 #theme
 cms_core.theme_delete:
   pattern: /theme/delete
