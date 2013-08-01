@@ -29,7 +29,7 @@ class Theme extends Base {
     /**
      * @MongoDB\String
      */
-    private $componentTemplateName;
+    private $description;
 
     /**
      * @MongoDB\Collection
@@ -86,35 +86,25 @@ class Theme extends Base {
     }
 
     /**
-     * Get author
+     * Set description
      *
-     * @return array $author
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * Set componentTemplateName
-     *
-     * @param $componentTemplateName
+     * @param string $description
      * @return $this
      */
-    public function setComponentTemplateName($componentTemplateName)
+    public function setDescription($description)
     {
-        $this->componentTemplateName = $componentTemplateName;
+        $this->description = $description;
         return $this;
     }
 
     /**
-     * Get componentTemplateName
+     * Get description
      *
-     * @return string $componentTemplateName
+     * @return string
      */
-    public function getComponentTemplateName()
+    public function getDescription()
     {
-        return $this->componentTemplateName;
+        return $this->description;
     }
 
     /**

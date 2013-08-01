@@ -4,7 +4,7 @@
 
 {% block body %}
     <section>
-        <h1>Welcome To The App {{ user.email }}</h1>
+        <h1>Welcome To PipeStack</h1>
         <p>
             Select some stuff here and do some stuff here while you're at it
         </p>
@@ -31,8 +31,15 @@
             <input type="submit" value="Create"/>
         </form>
     </section>
-
-    <section>
-        <a href="{{ path('cms_core.template_readAll') }}">View Templates</a>
-    </section>
+    <nav>
+        <ul>
+            <li><a href="{{ path('cms_core.themeOrg_readAll') }}">View Theme Organizations</a></li>
+            <li><a href="{{ path('cms_core.template_readAll') }}">View Templates</a></li>
+        </ul>
+    </nav>
+    <footer>
+        {% block footer %}
+            {{ parent() }}
+        {% endblock %}
+    </footer>
 {% endblock %}

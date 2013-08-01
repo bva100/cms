@@ -132,10 +132,10 @@ Cms\CoreBundle\Document\Asset:
 
 Cms\CoreBundle\Document\Template:
     constraints:
-      - Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique: namespace
+      - Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique: name
     properties:
         name:
-           - NotBlank: { message: 'Please add a name to tempalte' }
+           - NotBlank: { message: 'Please add a name to template' }
            - Length:
               min: 3
               max: 127

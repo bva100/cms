@@ -40,9 +40,54 @@ class TemplateController extends Controller {
         ));
     }
 
+    public function saveComponentsAction()
+    {
+        $id = (string)$this->getRequest()->request->get('id');
+        $themeName = (string)$this->getRequest()->request->get('themeName');
+        $rawCode = $this->getRequest()->request->get('rawCode');
+        $uses = json_decode((string)$this->getRequest()->request->get('uses')); // add for BETA
+        $themeOrgId = (string)$this->getRequest()->request->get('themeOrgId');
+        $themeId = (string)$this->getRequest()->request->get('themeId');
+        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($themeOrgId);
+        if ( ! $themeOrg )
+        {
+            throw $this->createNotFoundException('Theme Org with ID'.$id.' not found');
+        }
+        $theme = $themeOrg->getTheme($themeId);
+        if ( ! $theme )
+        {
+            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
+        }
+        $template = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id) : new Template();
+        if ( ! $template )
+        {
+            throw $this->createNotFoundException('Template with id '.$id.' not found');
+        }
+        $template->setThemeId($themeId);
+        if ( $themeName )
+        {
+            $name = $themeOrg->getNamespace().':'.$themeName.':Components';
+            $template->setName($name);
+        }
+        if ( $rawCode )
+        {
+            if ( strpos($rawCode, "{% set master_html = namespace ~ ':Master:HTML' %}{% extends master_html %}") !== 1 )
+            {
+                $rawCode = "{% set master_html = namespace ~ ':Master:HTML' %}{% extends master_html %}".$rawCode;
+            }
+            $template->setContent($rawCode);
+        }
+        $success = $this->get('persister')->save($template);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
+        return $this->redirect($this->generateUrl('cms_core.template_readAll'));
+    }
+
     public function saveAction()
     {
-        $token = (string)$this->getRequest()->request->get('token');
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $state = (string)$this->getRequest()->request->get('state');

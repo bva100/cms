@@ -35,8 +35,8 @@
                 <div class="row-fluid">
                     <nav class="span12 todo">
                         <div class="wizard-nav-name-container clearfix">
-                            <h4 class="theme-name pull-left">{{ theme.name|default() }}</h4>
-                            <span class="pull-right"><i class="wizard-nav-name-icon icon-eye-open icon-large"></i></span>
+                            <h4 class="theme-name pull-left">Theme To Do List</h4>
+                            <span class="pull-right"><i class="icon-list-ul icon-large"></i></span>
                         </div>
                         <ul>
                             <li class="todo-active" id="todo-basic-info">
@@ -101,21 +101,19 @@
                     </div>
                     <div class="row-fluid">
                         <div class="wizard-body span12">
-                            <div class="wizard-body-item theme-basic flat-form-container hide">
+                            <div class="wizard-body-item theme-basic flat-form-container">
                                 <form id="theme-basic-form" class="wizard-form">
+                                    <input type="hidden" name="themeOrgId" id="input-theme-org-id" value="{{ themeOrg.id }}"/>
+                                    <input type="hidden" name="themeId" id="input-theme-id" value="{{ theme.id|default() }}"/>
                                     <label for="input-theme-name">Theme Name:*</label>
-                                    <input type="text" class="span12" id="input-theme-name" value="{{ theme.name|default() }}" placeholder="Type name of theme"/>
-                                    <label for="input-theme-author-name">Author's Name/Organization:*</label>
-                                    <input type="text" class="span12" id="input-theme-author-name" value="{{ theme.author.name|default() }}" placeholder="Type author's/organization's name"/>
-                                    <label for="input-theme-author-url">Author's Website:</label>
-                                    <input type="text" class="span12" id="input-theme-author-url" value="{{ theme.author.url|default() }}" placeholder="Add author's website URL"/>
-                                    <label for="input-theme-author-image">Url to Author's Image or Logo:</label>
-                                    <input type="text" class="span12" id="input-theme-author-url" value="{{ theme.author.image|default() }}" placeholder="Add author's image URL"/>
+                                    <input type="text" class="span12" id="input-theme-name" value="{{ theme.name|default() }}" placeholder="Type the name of your new theme"/>
                                     <label for="input-theme-image">Screenshot URL:</label>
-                                    <input type="text" class="span12" id="input-theme-image" value="{{ theme.image|default() }}" placeholder="Add the URL to a screenshot image"/>
+                                    <input type="text" class="span12" id="input-theme-image" value="{{ theme.image|default() }}" placeholder="Add the URL to a screenshot image (can skip for now)"/>
+                                    <label for="input-theme-description">Description:</label>
+                                    <textarea id="input-theme-description" class="span12" placeholder="Write a brief description of this theme" rows="8">{{ theme.description|default() }}</textarea>
                                 </form>
                             </div>
-                            <div class="wizard-body-item theme-components">
+                            <div class="wizard-body-item theme-components hide">
                                 <div id="error-container"></div>
                                 <form id="save-template-form" action="{{ path('cms_core.template_save') }}" method="POST">
                                     <div id='input-code-content'>Add your twig blocks and HTML code here</div>
@@ -143,5 +141,8 @@
     <input type="hidden" id="input-template-name" value=""/>
     <input type="hidden" id="input-template-type" value="templateTheme"/>
     <input type="hidden" id="input-template-state" value="draft"/>
-    <input type="hidden" id="code-save-path" value="{{ path('cms_core.template_save') }}"/>
+    <input type="hidden" id="code-save-path"/>
+    {#save paths#}
+    <input type="hidden" id="template-save-path" value="{{ path('cms_core.template_save') }}"/>
+    <input type="hidden" id="components-save-path" value="{{ path('cms_core.template_components_save') }}"/>
 {% endblock %}

@@ -1,7 +1,5 @@
 var DOMeditor = document.getElementById('input-code-content');
 var codeEditor = ace.edit("input-code-content");
-var codeSavePath = document.getElementById('code-save-path').value;
-var type = document.getElementById('input-template-type').value;
 
 $(document).ready(function() {
     codeEditor.setTheme("ace/theme/textmate");
@@ -35,9 +33,10 @@ function getCodeEditorContent(){
 }
 
 function getCodeEditorParams(){
+    var type = getCodeEditorType();
     var params = {};
     params.id = document.getElementById('template-id').value;
-    params.type = document.getElementById('input-template-type').value;
+    params.type = type;
     params.rawCode = getCodeEditorContent();
     if(type === 'template' || type === 'templateTheme' || type === 'menu'){
         params.name = document.getElementById('input-template-name').value;
@@ -48,12 +47,17 @@ function getCodeEditorParams(){
     if(type === 'template' || type === 'menu'){
         params.siteId = document.getElementById('site-id').value;
     }
+    if(type === 'templateTheme'){
+        params.themeName = document.getElementById('input-theme-name').value;
+        params.themeOrgId = document.getElementById('input-theme-org-id').value;
+        params.themeId = document.getElementById('input-theme-id').value;
+    }
     return params;
 }
 
 function saveCodeEditor(params, $button){
     $button.text('Saving...').attr('disabled', true);
-    $.post(codeSavePath, params, function(data, textStatus, xhr) {
+    $.post(getCodeSavePath(), params, function(data, textStatus, xhr) {
         if(xhr.status == 200){
             $("#error-container").html('');
             $button.attr('disabled', false).removeClass('btn-info').addClass('btn-primary').text('Saved').delay(1100).queue(function() {
@@ -71,4 +75,12 @@ function saveCodeEditor(params, $button){
         });
         $("#error-container").html('<div class="alert alert-danger" style="font-size: 18px;"><i class="icon-warning-sign"></i> '+data.responseText+'</div>');
     });
+}
+
+function getCodeSavePath(){
+    return document.getElementById('code-save-path').value;
+}
+
+function getCodeEditorType(){
+    return document.getElementById('input-template-type').value;
 }

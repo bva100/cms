@@ -14,13 +14,15 @@ use Cms\CoreBundle\Document\Theme;
 
 class ThemeController extends Controller {
 
-    public function readAllAction()
+    public function readAllAction($orgId)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
+        $notices = $this->get('session')->getFlashBag()->get('notices');
         $themes = $this->get('persister')->getRepo('CmsCoreBundle:Theme')->findAll();
         return $this->render('CmsCoreBundle:Theme:index.html.twig', array(
-            'themes' => $themes,
             'token' => $token,
+            'notices' => $notices,
+            'themes' => $themes,
         ));
     }
 
@@ -48,18 +50,19 @@ class ThemeController extends Controller {
 
     public function saveAction()
     {
-        $token = $this->get('csrfToken')->createToken()->getToken();
+        $orgId = (string)$this->getRequest()->request->get('orgId');
         $id = (string)$this->getRequest()->request->get('id');
         $parentId = (string)$this->getRequest()->request->get('parentId');
         $name = (string)$this->getRequest()->request->get('name');
-        $authorName = (string)$this->getRequest()->request->get('authorName');
-        $authorImage = (string)$this->getRequest()->request->get('authorImage');
-        $authorUrl = (string)$this->getRequest()->request->get('authorUrl');
         $componentTemplateName = (string)$this->getRequest()->request->get('componentTemplateName');
         $layout = $this->getRequest()->request->get('layout');
-        $this->get('csrfToken')->validate($token);
-        
-        $theme = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Theme')->find($id) : new Theme();
+
+        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($orgId);
+        if ( ! $themeOrg )
+        {
+            throw $this->createNotFoundException('Theme with id '.$orgId.' not found');
+        }
+        $theme = $id ? $themeOrg->getTheme($id) : new Theme();
         if ( ! $theme )
         {
             throw $this->createNotFoundException('Theme with site id '.$id.' not found');
@@ -72,23 +75,6 @@ class ThemeController extends Controller {
         {
             $theme->setName($name);
         }
-        $author = array();
-        if ( $authorName )
-        {
-            $author['name'] = $authorName;
-        }
-        if ( $authorImage )
-        {
-            $author['image'] = $authorImage;
-        }
-        if ( $authorUrl )
-        {
-            $author['url'] = $authorUrl;
-        }
-        if ( ! empty($author) )
-        {
-            $theme->addAuthor($author);
-        }
         if ( $componentTemplateName )
         {
             $theme->setComponentTemplateName($componentTemplateName);
@@ -99,7 +85,7 @@ class ThemeController extends Controller {
                 $theme->addLayout($layout);
             }
         }
-        $success = $this->get('persister')->save($theme);
+        $success = $this->get('persister')->save($themeOrg);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {
@@ -130,12 +116,18 @@ class ThemeController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.theme_readAll'));
     }
 
-    public function wizardAction()
+    public function wizardAction($orgId)
     {
         $id = (string)$this->getRequest()->query->get('id');
+        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($orgId);
+        if ( ! $themeOrg )
+        {
+            throw $this->createNotFoundException('Theme org with id '.$id.' not found');
+        }
         $theme = $id ?  $this->get('persister')->getRepo('CmsCoreBundle:Theme')->find($id) : new Theme();
         return $this->render('CmsCoreBundle:Theme:wizard.html.twig', array(
-           'theme' =>  $theme,
+            'themeOrg' => $themeOrg,
+            'theme' =>  $theme,
             'extends' => null, // set dynamically with JS
             'uses' => null, // set dynamically with JS
         ));

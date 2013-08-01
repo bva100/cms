@@ -32,6 +32,11 @@ class Template extends Base {
      */
     private $content;
 
+    /**
+     * @MongoDB\String
+     */
+    private $themeId;
+
     public function __construct()
     {
         $this->setCreated(time());
@@ -102,6 +107,28 @@ class Template extends Base {
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set theme Id
+     *
+     * @param string $themeId
+     * @return $this
+     */
+    public function setThemeId($themeId)
+    {
+        $this->themeId = $themeId;
+        return $this;
+    }
+
+    /**
+     * Get themeId
+     *
+     * @return string
+     */
+    public function getThemeId()
+    {
+        return $this->themeId;
     }
     
 }

@@ -1,0 +1,38 @@
+{% extends 'CmsCoreBundle:App:components.html.twig' %}
+
+{% block title %}
+    Read All Theme Orgs | {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1 class="span4">Theme Organization List</h1>
+            <a href="{{ path('cms_core.themeOrg_new') }}" class="span4" style='position: relative; top: 25px;'><i class="icon-plus-sign"></i> Add new</a>
+        </div>
+        <div class="row">
+            <div class="span12">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Organization</th>
+                        <th>name</th>
+                        <th>delete</th>
+                    </tr>
+                    {% for themeOrg in themeOrgs  %}
+                        <tr>
+                            <td>{{ themeOrg.organization }}</td>
+                            <td><a href="{{ path('cms_core.themeOrg_read', {'id':themeOrg.id}) }}">{{ themeOrg.namespace }}</a></td>
+                            <td>
+                                <form action="{{ path('cms_core.themeOrg_delete') }}" method="POST">
+                                    <input type="hidden" name="token" value="{{ token }}"/>
+                                    <input type="hidden" name="id" value="{{ themeOrg.id }}"/>
+                                    <button class="btn btn-danger"><i class="icon-trash"></i> trash</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

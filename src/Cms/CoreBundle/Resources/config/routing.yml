@@ -97,6 +97,11 @@ cms_core.node_read:
 
 
 #template
+cms_core.template_components_save:
+  pattern: /template/components
+  defaults: { _controller: CmsCoreBundle:Template:saveComponents }
+  methods: [POST]
+
 cms_core.template_new:
   pattern: /template/new
   defaults: { _controller: CmsCoreBundle:Template:new }
@@ -143,7 +148,22 @@ cms_core.themeOrg_new:
   defaults: { _controller: CmsCoreBundle:ThemeOrg:new }
   methods: [GET]
 
+cms_core.themeOrg_readAll:
+  pattern: /theme-org/read-all
+  defaults: { _controller: CmsCoreBundle:ThemeOrg:readAll }
+  methods: [GET]
+
+cms_core.themeOrg_delete:
+  pattern: /theme-org/delete
+  defaults: { _controller: CmsCoreBundle:ThemeOrg:delete }
+  methods: [POST]
+
 #theme
+cms_core.theme_wizard:
+  pattern: /theme/wizard/{orgId}
+  defaults: { _controller: CmsCoreBundle:Theme:wizard }
+  methods: [GET]
+
 cms_core.theme_delete:
   pattern: /theme/delete
   defaults: { _controller: CmsCoreBundle:Theme:delete }
@@ -155,13 +175,8 @@ cms_core.theme_new:
   methods: [GET]
 
 cms_core.theme_readAll:
-  pattern: /themes
+  pattern: /themes/{orgId}
   defaults: { _controller: CmsCoreBundle:Theme:readAll }
-  methods: [GET]
-
-cms_core.theme_wizard:
-  pattern: /theme/wizard
-  defaults: { _controller: CmsCoreBundle:Theme:wizard }
   methods: [GET]
 
 cms_core.theme_read:
