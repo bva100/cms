@@ -32,12 +32,24 @@ class Theme extends Base {
     private $description;
 
     /**
+     * @MongoDB\Boolean
+     */
+    private $hasComponents;
+
+    /**
      * @MongoDB\Collection
      */
     private $layouts;
 
+    /**
+     * @MongoDB\Collection
+     */
+    private $images;
+
     public function __construct()
     {
+        $this->setState('draft');
+        $this->setHasComponents(false);
         $this->layouts = array();
     }
 
@@ -105,6 +117,28 @@ class Theme extends Base {
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set bool value for has components template
+     *
+     * @param bool $hasComponents
+     * @return $this
+     */
+    public function setHasComponents($hasComponents)
+    {
+        $this->hasComponents = $hasComponents;
+        return $this;
+    }
+
+    /**
+     * Check if theme has a components template
+     *
+     * @return bool
+     */
+    public function getHasComponents()
+    {
+        return $this->hasComponents;
     }
 
     /**
@@ -180,6 +214,26 @@ class Theme extends Base {
     public function getLayouts()
     {
         return $this->layouts;
+    }
+
+    /**
+     * Set images
+     *
+     * @param array $images
+     */
+    public function setImages(array $images)
+    {
+        $this->images = $images;
+    }
+
+    /**
+     * Get images array
+     *
+     * @return array
+     */
+    public function getImages()
+    {
+        return $this->images;
     }
 
 }

@@ -159,11 +159,6 @@ cms_core.themeOrg_delete:
   methods: [POST]
 
 #theme
-cms_core.theme_wizard:
-  pattern: /theme/wizard/{orgId}
-  defaults: { _controller: CmsCoreBundle:Theme:wizard }
-  methods: [GET]
-
 cms_core.theme_delete:
   pattern: /theme/delete
   defaults: { _controller: CmsCoreBundle:Theme:delete }
@@ -187,6 +182,27 @@ cms_core.theme_read:
 cms_core.theme_save:
   pattern: /theme
   defaults: { _controller: CmsCoreBundle:Theme:save }
+  methods: [POST]
+
+#theme wizard
+cms_core.theme_wizard:
+  pattern: /theme/wizard/{orgId}
+  defaults: { _controller: CmsCoreBundle:ThemeWizard:basic }
+  methods: [GET]
+
+cms_core.theme_wizard_save:
+  pattern: /theme/wizard
+  defaults: { _controller: CmsCoreBundle:ThemeWizard:saveTheme }
+  methods: [POST]
+
+cms_core.theme_wizard_components:
+  pattern: /theme/wizard/components/{orgId}/{themeId}
+  defaults: { _controller: CmsCoreBundle:ThemeWizard:components }
+  methods: [GET]
+
+cms_core.theme_wizard_save_components:
+  pattern: /theme/wizard/components
+  defaults: { _controller: CmsCoreBundle:ThemeWizard:saveComponents }
   methods: [POST]
 
 #assets

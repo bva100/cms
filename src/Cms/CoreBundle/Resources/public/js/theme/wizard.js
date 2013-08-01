@@ -1,18 +1,19 @@
-var theme = $.parseJSON(document.getElementById('theme').value);
-
 $(document).ready(function() {
     $("#input-theme-name").focus();
 });
 
 $(".todo li").on('click', function(){
-    selectTodoItem($(this));
-    closeWizardBody();
+    var url = '';
+    var themeId = getThemeId();
     switch($(this).attr('id')){
         case 'todo-basic-info':
-            openTodoBasicInfo();
+            url = getBaseUrl()+'/theme/wizard/'+getThemeOrgId();
+            if(themeId){
+                url += '?id='+themeId;
+            }
             break;
         case 'todo-components':
-            openTodoComponents();
+            url = getBaseUrl()+'/theme/wizard/components/'+getThemeOrgId()+'/'+themeId;
             break;
         case 'todo-layouts':
             openTodoLayouts();
@@ -23,6 +24,7 @@ $(".todo li").on('click', function(){
         default:
             break;
     }
+    window.location.href = url;
 });
 
 $("#input-theme-name").on('change', function(){
@@ -41,6 +43,12 @@ $("#input-theme-name").on('change', function(){
         updateThemeName('');
     }
 });
+
+function openTodoBasicInfo(){
+    $(".theme-basic").show();
+    $(".wizard-save").attr('data-current', 'theme-basic');
+    $("#template-includes-container").hide();
+}
 
 function validateThemeName(name){
     if(!name.match(/^[0-9a-zA-Z]+$/)){
@@ -63,60 +71,19 @@ function updateThemeName(name){
     $(".theme-name").text(name);
 }
 
-function openTodoBasicInfo(){
-    $(".theme-basic").show();
-    $(".wizard-save").attr('data-current', 'theme-basic');
-    $("#template-includes-container").hide();
+function getThemeOrgId(){
+    return document.getElementById('input-theme-org-id').value;
 }
 
-function openTodoComponents(){
-    var params = getThemeParams();
-    setCodeSavePath('components');
-    if(! params.name){
-        alert('Please add the name of this theme before proceeding');
-        openTodoBasicInfo();
-        selectTodoItem($('#todo-basic-info'));
-        $('#input-theme-name').focus();
+function getBaseUrl(){
+    return document.getElementById('base-url').value;
+}
+
+function getThemeId(){
+    var themeIdElem = document.getElementById('input-theme-id');
+    if(themeIdElem){
+        return themeIdElem.value;
+    }else{
         return 0;
     }
-    $("#template-includes-container").show();
-    $(".wizard-save").attr('data-current', 'theme-components');
-    $(".theme-components").show();
-}
-
-function getThemeParams(){
-    var objParams = {};
-    objParams.id =  theme.id ? theme.id : null;
-    objParams.name = document.getElementById('input-theme-name').value;
-    objParams.components = {};
-    objParams.layouts = {};
-    return objParams
-}
-
-function selectTodoItem($item){
-    $(".todo li").removeClass("todo-active");
-    $item.addClass("todo-active");
-    return 1;
-}
-
-function setCodeSavePath(pathname){
-    var path = '';
-    switch(pathname){
-        case 'components':
-            path =  document.getElementById('components-save-path').value;
-            break;
-        default:
-            break;
-    }
-    document.getElementById('code-save-path').value = path;
-    $("#code-save-path").val(path);
-    return 1;
-}
-
-function closeWizardBody(){
-    $(".wizard-body-item").hide();
-}
-
-function save(params){
-    delete objParams.components;
 }

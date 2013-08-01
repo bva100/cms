@@ -1,0 +1,71 @@
+{% extends 'CmsCoreBundle:App:components.html.twig' %}
+
+{% block title %}
+    {{ theme.name|default('New') }} Theme {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/wizard.css'
+    filter='cssrewrite, ?yui_css' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/dependencies/ace-builds-master/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/theme/wizard.js'
+    filter='?yui_js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block todo %}
+    <nav class="todo">
+        <div class="wizard-nav-name-container clearfix">
+            <h4 class="theme-name pull-left">{{ theme.name|default('Theme To Do List') }}</h4>
+            <span class="pull-right"><i class="icon-list-ul icon-large"></i></span>
+        </div>
+        <ul>
+            <li class="{% if theme.name is defined %}todo-done{% endif %}" id="todo-basic-info">
+                <div class="todo-icon"><i class="icon-info-sign"></i></div>
+                <div class="todo-content">
+                    <h4 class="todo-name">
+                        <strong>Basic Info</strong>
+                    </h4>
+                    <span>The Simple Metadata</span>
+                </div>
+            </li>
+            <li class="{% if theme and theme.hasComponents %}todo-done{% endif %}" id="todo-components">
+                <div class="todo-icon"><i class="icon-puzzle-piece"></i></div>
+                <div class="todo-content">
+                    <h4 class="todo-name">
+                        <strong>Components</strong>
+                    </h4>
+                    Create Twig Blocks
+                </div>
+            </li>
+            <li id="todo-layouts">
+                <div class="todo-icon"><i class="icon-list-alt"></i></div>
+                <div class="todo-content">
+                    <h4 class="todo-name">
+                        <strong>Layouts</strong>
+                    </h4>
+                    <span>Design the Templates</span>
+                </div>
+            </li>
+            <li id="todo-complete">
+                <div class="todo-icon"><i class="icon-trophy"></i></div>
+                <div class="todo-content">
+                    <h4 class="todo-name">
+                        <strong>Complete</strong>
+                    </h4>
+                    <span>Save it, Ship it, Use it</span>
+                </div>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
