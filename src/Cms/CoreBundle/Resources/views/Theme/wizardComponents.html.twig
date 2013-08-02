@@ -48,7 +48,7 @@
                     Create Twig Blocks
                 </div>
             </li>
-            <li id="todo-layouts">
+            <li class="{% if layouts is defined and rawCode %}todo-done{% endif %}" id="todo-layouts">
                 <div class="todo-icon"><i class="icon-list-alt"></i></div>
                 <div class="todo-content">
                     <h4 class="todo-name">
@@ -57,6 +57,17 @@
                     <span>Design the Templates</span>
                 </div>
             </li>
+            {% if layouts is defined and layouts|length > 0 %}
+                <div class="nav-layouts">
+                    {% for layout in layouts  %}
+                        <h4>
+                            <a href="{{ path('cms_core.theme_wizard_layouts', {'orgId':themeOrg.id, 'themeId':theme.id, 'layoutName':layout}) }}">
+                                {{ themeOrg.namespace }}:{{ theme.name }}:{{ layout }}
+                            </a>
+                        </h4>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <li id="todo-complete">
                 <div class="todo-icon"><i class="icon-trophy"></i></div>
                 <div class="todo-content">

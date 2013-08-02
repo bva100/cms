@@ -55,6 +55,57 @@
                         <div class="wizard-body span12">
                             <div class="wizard-body-item theme-components">
                                 <div id="error-container"></div>
+                                {% if componentsName is defined %}
+                                    <h4>{{ componentsName }}</h4>
+                                {% endif %}
+                                {% if layouts is defined %}
+                                    <div id="layouts-container">
+                                        <h4 class="layouts-header clearfix">
+                                            <span class="template-layout-name pull-left">
+                                                {% if layoutName %}
+                                                    {{ themeOrg.namespace }}:{{ theme.name }}:{{ layoutName }}
+                                                {% endif %}
+                                            </span>
+                                            <span class="pull-right">
+                                                <a href="#switchLayoutTemplate" class="switch-template-layout"><i class="icon-exchange"></i> Switch</a>
+                                                <span class="vertical-divider">|</span>
+                                                <a href="#addLayoutTemplate" class="add-template-layout"><i class="icon-plus-sign"></i> Add Layout</a>
+                                            </span>
+                                        </h4>
+                                        <div class="new-template-layout hide clearfix">
+                                            <input type="text" name="layoutName" id="input-new-layout-name" class="span12" placeholder="Type new layout name here"/>
+                                            <button class="btn btn-info add-new-layout pull-right">Add</button>
+                                        </div>
+                                        <div class="layout-selector {% if layoutName %}hide{% endif %}">
+                                            {% if layouts|length > 0 %}
+                                                {% if not layoutName %}
+                                                    <h4>Please select a layout</h4>
+                                                    <p>Code must be written for, at least, the single, static and loop layouts before shipping the {{ theme.name }} theme. You can add custom layouts to {{ theme.name }} by clicking "add layout" in the top right hand corner. For more help,
+                                                        <a href="#help">click here.</a></p>
+                                                {% else %}
+                                                    <h4>Switch to which layout?</h4>
+                                                {% endif %}
+                                                <table>
+                                                    {% for layout in layouts  %}
+                                                        <tr>
+                                                            <td class="layout-fullname-td">
+                                                                <a href="{{ path('cms_core.theme_wizard_layouts', {'orgId':themeOrg.id, 'themeId':theme.id, 'layoutName':layout}) }}">
+                                                                    {{ themeOrg.namespace }}:{{ theme.name }}:{{ layout }}
+                                                                </a>
+                                                            </td>
+                                                            <td style="padding-left: 20px">
+                                                                <button class="btn btn-mini btn-danger delete-layout" data-layout-name="{{ layout }}"><i class="icon-trash"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </table>
+                                            {% else %}
+                                                <span>No layouts found but you can always <a href="#addLayoutTemplate" class="add-template-layout" style="text-align: center">create a new layout</a></span>
+                                            {% endif %}
+                                            <a href="#close" class="switch-template-layout pull-right">close</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 <form id="save-template-form" action="{{ path('cms_core.template_save') }}" method="POST">
                                     <div id='input-code-content'>{{ rawCode|default('Add your twig blocks and HTML code here') }}</div>
                                     <div class="row-fluid">
@@ -74,9 +125,16 @@
             </section>
         </div>
     </div>
+    <footer>
+        {% block footer %}
+            {{ parent() }}
+        {% endblock %}
+    </footer>
     <input type="hidden" id="input-template-id" value="{{ template.id|default() }}"/>
     <input type="hidden" id="input-theme-org-id" value="{{ themeOrg.id }}"/>
     <input type="hidden" id="input-theme-id" value="{{ theme.id }}"/>
     <input type="hidden" id="code-save-path" value="{{ path('cms_core.theme_wizard_save_components') }}"/>
+    <input type="hidden" id="add-layout-path" value="{{ path('cms_core.theme_wizard_add_remove_layout', {'actionType':'add'}) }}"/>
+    <input type="hidden" id="remove-layout-path" value="{{ path('cms_core.theme_wizard_add_remove_layout', {'actionType':'remove'}) }}"/>
     <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
 {% endblock %}

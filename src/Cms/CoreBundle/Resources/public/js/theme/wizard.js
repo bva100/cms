@@ -16,7 +16,7 @@ $(".todo li").on('click', function(){
             url = getBaseUrl()+'/theme/wizard/components/'+getThemeOrgId()+'/'+themeId;
             break;
         case 'todo-layouts':
-            openTodoLayouts();
+            url = getBaseUrl() + '/theme/wizard/layouts/'+getThemeOrgId()+'/'+themeId;
             break;
         case 'todo-complete':
             openTodoComplete();

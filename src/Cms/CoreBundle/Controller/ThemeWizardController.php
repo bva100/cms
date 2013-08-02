@@ -46,7 +46,7 @@ class ThemeWizardController extends Controller {
         {
             throw $this->createNotFoundException('Theme Organization with id '.$themeOrgId.' not found');
         }
-        $theme = new Theme(); // add id and load theme here
+        $theme = $id ? $themeOrg->getTheme($id) : new Theme(); // add id and load theme here
         if ( ! $theme )
         {
             throw $this->createNotFoundException('Theme with id '.$id.' not found');
@@ -79,7 +79,7 @@ class ThemeWizardController extends Controller {
         {
             throw $this->createNotFoundException('Theme organzation with id '.$orgId.' not found');
         }
-        // ensure use has access to this theme org
+        // ensure user has access to this theme org
         $theme = $themeOrg->getTheme($themeId);
         if ( ! $theme )
         {
@@ -99,7 +99,77 @@ class ThemeWizardController extends Controller {
             'uses' => null,
             'template' => $template ? $template : null,
             'rawCode' => $rawCode,
+            'componentsName' => $componentsName,
         ));
+    }
+
+    public function layoutsAction($orgId, $themeId)
+    {
+        $layoutName = (string)$this->getRequest()->query->get('layoutName');
+        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($orgId);
+        if ( ! $themeOrg )
+        {
+            throw $this->createNotFoundException('Theme organzation with id '.$orgId.' not found');
+        }
+        // ensure user has access to this theme org
+        $theme = $themeOrg->getTheme($themeId);
+        if ( ! $theme )
+        {
+            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
+        }
+        $layout = '';
+        if ( $layoutName )
+        {
+            if ( ! $theme->hasLayout($layoutName) )
+            {
+                throw $this->createNotFoundException('Layout '.$layoutName.' not found in theme');
+            }
+            $layout = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($themeOrg->getNamespace().':'.$theme->getName().':'.$layoutName);
+        }
+        $template = $layout ? $layout->getContent() : null;
+        $rawCode = $template;
+        $layouts = $theme->getLayouts();
+        return $this->render('CmsCoreBundle:Theme:wizardTemplate.html.twig', array(
+            'themeOrg' => $themeOrg,
+            'theme' => $theme,
+            'extends' => 'Client\'s Child of Components',
+            'uses' => null,
+            'template' => $template,
+            'rawCode' => $rawCode,
+            'layouts' => $layouts,
+            'layoutName' => $layoutName ? $layoutName : null,
+        ));
+    }
+
+    public function addRemoveLayoutAction($actionType)
+    {
+        $orgId = (string)$this->getRequest()->request->get('themeOrgId');
+        $themeId = (string)$this->getRequest()->request->get('themeId');
+        $layoutName = $this->getRequest()->request->get('layoutName');
+        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($orgId);
+        if ( ! $themeOrg )
+        {
+            throw $this->createNotFoundException('Theme organization with id '.$orgId.' not found');
+        }
+        // ensure user has access to this theme org
+        $theme = $themeOrg->getTheme($themeId);
+        if ( ! $theme )
+        {
+            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
+        }
+        if ( ! preg_match('/^[0-9a-zA-Z]+$/', $layoutName) )
+        {
+            throw new \Exception('invalid layout template name');
+        }
+        if ( ! $actionType OR $actionType === 'add' )
+        {
+            $theme->addLayout($layoutName);
+        }else{
+            $theme->removeLayout($layoutName);
+            // also remove from template collection, if it exists
+        }
+        $success = $this->get('persister')->save($themeOrg);
+        return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 
     public function saveComponentsAction()

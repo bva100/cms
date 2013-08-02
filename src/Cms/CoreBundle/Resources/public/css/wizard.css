@@ -104,3 +104,39 @@ h4 {
 .todo-active .todo-name {
     color: #2ECC71;
 }
+.vertical-divider {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.layout-selector{
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 2px solid #BDC3C7;
+    margin-bottom: 20px;
+    position: relative;
+    left: 1px;
+}
+.new-template-layout {
+    margin-bottom: 20px;
+}
+.btn-mini {
+    padding: 3px 6px;
+    font-size: 14px;
+}
+.layout-fullname-td {
+    font-size: 19px;
+}
+.template-layout-name {
+    font-size: 21px;
+}
+.layout-selector h4 {
+    color: #34495E;
+}
+.nav-layouts {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-bottom: 2px;
+    background-color: #34495E;
+    padding-left: 70px;
+}

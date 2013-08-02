@@ -64,9 +64,11 @@ function saveCodeEditor(params, $button){
                 $button.removeClass('btn-primary').addClass('btn-info').text('Save');
                 $(this).dequeue();
             });
+            return 1;
         }else{
             alert('Cannot save at this time. Please be sure you are logged in and try again. If this problem persists, please contact customer service.');
             $button.attr('disabled', false).text('Save');
+            return 0;
         }
     }).fail(function(data, textStatus, xhr){
         $button.attr('disabled', false).removeClass('btn-info').addClass('btn-danger').text('Failed').delay(1100).queue(function() {
@@ -74,7 +76,9 @@ function saveCodeEditor(params, $button){
             $(this).dequeue();
         });
         $("#error-container").html('<div class="alert alert-danger" style="font-size: 18px;"><i class="icon-warning-sign"></i> '+data.responseText+'</div>');
+        return 0;
     });
+    return 1;
 }
 
 function getCodeSavePath(){
