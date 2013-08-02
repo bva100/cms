@@ -75,10 +75,14 @@ function saveCodeEditor(params, $button){
             $button.removeClass('btn-danger').addClass('btn-info').text('Save');
             $(this).dequeue();
         });
-        $("#error-container").html('<div class="alert alert-danger" style="font-size: 18px;"><i class="icon-warning-sign"></i> '+data.responseText+'</div>');
+        $("#error-container").html(createCodeEditorAlert(data.responseText));
         return 0;
     });
     return 1;
+}
+
+function createCodeEditorAlert(response) {
+    return '<div class="alert alert-danger" style="font-size: 18px;"><i class="icon-warning-sign"></i>' + response + '</div>';
 }
 
 function getCodeSavePath(){
