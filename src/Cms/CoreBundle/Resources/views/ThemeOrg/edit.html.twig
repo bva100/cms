@@ -35,35 +35,37 @@
                 </form>
             </div>
         </div>
-        <br>
-        <section class="row">
-            <div class="span12">
-                <table class="table table-hover">
-                    <tr>
-                        <th>Theme Name</th>
-                        <th>Trash</th>
-                    </tr>
-                    <tr>
-                        {% for theme in themeOrg.themes  %}
-                            <td><a href="{{ path('cms_core.theme_wizard', {'orgId':themeOrg.id, 'id':theme.id}) }}">{{ theme.name }}</a></td>
-                            <td>
-                                <form action="{{ path('cms_core.theme_delete') }}" method="POST">
-                                    <input type="hidden" name="token" value="{{ token }}"/>
-                                    <input type="hidden" name="id" value="{{ theme.id }}"/>
-                                    <button class="btn btn-danger"><i class="icon-trash"></i> trash</button>
-                                </form>
-                            </td>
-                        {% endfor %}
-                    </tr>
-                </table>
+        {% if themeOrg is defined %}
+            <br>
+            <section class="row">
+                <div class="span12">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Theme Name</th>
+                            <th>Trash</th>
+                        </tr>
+                        <tr>
+                            {% for theme in themeOrg.themes  %}
+                                <td><a href="{{ path('cms_core.theme_wizard', {'orgId':themeOrg.id, 'id':theme.id}) }}">{{ theme.name }}</a></td>
+                                <td>
+                                    <form action="{{ path('cms_core.theme_delete') }}" method="POST">
+                                        <input type="hidden" name="token" value="{{ token }}"/>
+                                        <input type="hidden" name="id" value="{{ theme.id }}"/>
+                                        <button class="btn btn-danger"><i class="icon-trash"></i> trash</button>
+                                    </form>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </div>
+            </section>
+            <div class="row">
+                <div class="span12">
+                    <a href="{{ path('cms_core.theme_wizard', {'orgId':themeOrg.id}) }}" class="btn btn-info pull-right">Create a New Template</a>
+                </div>
             </div>
-        </section>
-        <div class="row">
-            <div class="span12">
-                <a href="{{ path('cms_core.theme_wizard', {'orgId':themeOrg.id}) }}" class="btn btn-info pull-right">Create a New Template</a>
-            </div>
-        </div>
-        <hr>
+            <hr>
+        {% endif %}
         <nav class="row">
             <div class="span12">
                 <a href="{{ path('cms_core.themeOrg_readAll') }}"><i class="icon-chevron-sign-left"></i> Read All</a>

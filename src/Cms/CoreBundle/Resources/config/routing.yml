@@ -220,6 +220,11 @@ cms_core.theme_wizard_layout_save:
   defaults: { _controller: CmsCoreBundle:ThemeWizard:saveLayout }
   methods: [POST]
 
+cms_core.theme_wizard_complete:
+  pattern: /theme/wizard/complete/{orgId}/{themeId}
+  defaults: { _controller: CmsCoreBundle:ThemeWizard:complete }
+  methods: [GET]
+
 #assets
 cms_core.asset_delete:
   pattern: /asset/delete

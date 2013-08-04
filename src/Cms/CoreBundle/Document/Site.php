@@ -41,6 +41,11 @@ class Site extends Base {
      */
     private $templateNames;
 
+    /**
+     * @MongoDB\String
+     */
+    private $currentThemeId;
+
     public function __construct()
     {
         $this->setState('active');
@@ -283,4 +288,27 @@ class Site extends Base {
     {
         return $this->templateNames;
     }
+
+    /**
+     * Set current theme id
+     *
+     * @param string $currentThemeId
+     * @return $this
+     */
+    public function setCurrentThemeId($currentThemeId)
+    {
+        $this->currentThemeId = $currentThemeId;
+        return $this;
+    }
+
+    /**
+     * Get current theme id
+     *
+     * @return string
+     */
+    public function getCurrentThemeId()
+    {
+        return $this->currentThemeId;
+    }
+
 }

@@ -108,8 +108,8 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                                <form id="save-template-form" action="{{ path('cms_core.template_save') }}" method="POST">
-                                    <div id='input-code-content' class="{% if layouts is defined and not template %}hide{% endif %}">{{ rawCode|default('Add your twig blocks and HTML code here') }}</div>
+                                <form id="save-template-form" action="{{ path('cms_core.template_save') }}" method="POST" class="{% if layoutName is defined and layoutName == null %}hide{% endif %}">
+                                    <div id='input-code-content'>{{ rawCode|default() }}</div>
                                     <div class="row-fluid">
                                         <button class="btn btn-info span2 pull-right" style="position: relative; left: 4px;">Save</button>
                                     </div>
@@ -132,7 +132,7 @@
             {{ parent() }}
         {% endblock %}
     </footer>
-    <input type="text" id="input-template-id" value="{{ template.id|default() }}"/>
+    <input type="hidden" id="input-template-id" value="{{ template.id|default() }}"/>
     <input type="hidden" id="input-theme-org-id" value="{{ themeOrg.id }}"/>
     <input type="hidden" id="input-theme-id" value="{{ theme.id }}"/>
     {% if layouts is defined %}

@@ -30,7 +30,7 @@ class DefaultController extends Controller
         $loop = $this->get('loop_loader')->setNode($node)->setNodeRepo($nodeRepo)->setParams($params)->load();
         $twig = $this->get('twig_loader')->load();
 //        $twig->clearCacheFiles();
-
+        echo '<pre>', \var_dump($loop); die();
         $nameHelper = $this->get('namespace_helper')->setFullname($node->getTemplateName());
         return new Response($twig->render($node->getTemplateName(), array(
             'node' => $node,

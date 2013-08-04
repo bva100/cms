@@ -1,0 +1,77 @@
+{% extends 'CmsCoreBundle:Theme:wizardComponents.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/theme/wizardTemplate.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="row-fluid">
+                    <div class="span12">
+                        {% block todo %}
+                            {{ parent() }}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+            <section class="span9">
+                <div id="wizard-content">
+                    <div class="row-fluid wizard-header">
+                        <div class="span12 clearfix">
+                            <div class="progress pull-left span6">
+                                <div class="bar span6"></div>
+                            </div>
+                            <div class="span2 progress-label" id="primary-progress-label">
+                                <span class="percent-complete">45%</span> Complete
+                            </div>
+                            <a href="#" class="close">&times;</a>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <h1>Almost Done!</h1>
+                            <p>We'll just need to review your code before sending it to the Depot. When you are confident your components and layouts are jsut right, click the "send for review" button below. We'll do our best to promptly review your code. If there are any issues, we will contact you via E-Mail with more detailed instruction. When there are no further outstanding problems, the {{ theme.name }} theme will automatically appear in the Depot.</p>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="wizard-footer">
+                            <button class="btn btn-primary wizard-save wizard-previous pull-left" id="author-form-submit" data-current="theme-basic" disabled="true">Previous</button>
+                            <button class="btn btn-primary wizard-save wizard-next pull-right" data-current='theme-basic'>Send for review</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <footer>
+        {% block footer %}
+            {{ parent() }}
+        {% endblock %}
+    </footer>
+    <input type="hidden" id="input-template-id" value="{{ template.id|default() }}"/>
+    <input type="hidden" id="input-theme-org-id" value="{{ themeOrg.id }}"/>
+    <input type="hidden" id="input-theme-id" value="{{ theme.id }}"/>
+    {% if layouts is defined %}
+        <input type="hidden" id="code-save-path" value="{{ path('cms_core.theme_wizard_layout_save') }}"/>
+    {% else %}
+        <input type="hidden" id="code-save-path" value="{{ path('cms_core.theme_wizard_save_components') }}"/>
+    {% endif %}
+    <input type="hidden" id="add-layout-path" value="{{ path('cms_core.theme_wizard_add_remove_layout', {'actionType':'add'}) }}"/>
+    <input type="hidden" id="remove-layout-path" value="{{ path('cms_core.theme_wizard_add_remove_layout', {'actionType':'remove'}) }}"/>
+    <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
+{% endblock %}

@@ -18,11 +18,7 @@ class ThemeWizardController extends Controller {
     public function basicAction($orgId)
     {
         $id = (string)$this->getRequest()->query->get('id');
-        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($orgId);
-        if ( ! $themeOrg )
-        {
-            throw $this->createNotFoundException('Theme org with id '.$orgId.' not found');
-        }
+        $themeOrg = $this->getThemeOrg($orgId);
         $theme = $id ?  $themeOrg->getTheme($id) : null;
         if ( $id AND ! $theme )
         {
@@ -41,11 +37,7 @@ class ThemeWizardController extends Controller {
         $name = (string)$this->getRequest()->request->get('name');
         $image = (string)$this->getRequest()->request->get('image');
         $description = (string)$this->getRequest()->request->get('description');
-        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($themeOrgId);
-        if ( ! $themeOrg )
-        {
-            throw $this->createNotFoundException('Theme Organization with id '.$themeOrgId.' not found');
-        }
+        $themeOrg = $this->getThemeOrg($themeOrgId);
         $theme = $id ? $themeOrg->getTheme($id) : new Theme(); // add id and load theme here
         if ( ! $theme )
         {
@@ -65,29 +57,16 @@ class ThemeWizardController extends Controller {
         }
         $themeOrg->addTheme($theme);
         $success = $this->get('persister')->save($themeOrg, false, false);
-        $xmlResponse =  $this->get('xmlResponse')->execute($this->getRequest(), $success, array('onSuccess' => $theme->getId()));
-        if ( $xmlResponse )
-        {
-            return $xmlResponse;
-        }
+        return $this->get('xmlResponse')->execute($this->getRequest(), $success, array('onSuccess' => $theme->getId()));
     }
 
     public function componentsAction($orgId, $themeId)
     {
-        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($orgId);
-        if ( ! $themeOrg )
-        {
-            throw $this->createNotFoundException('Theme organzation with id '.$orgId.' not found');
-        }
-        // ensure user has access to this theme org
-        $theme = $themeOrg->getTheme($themeId);
-        if ( ! $theme )
-        {
-            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
-        }
+        $themeOrg = $this->getThemeOrg($orgId);
+        $theme = $this->getTheme($themeOrg, $themeId);
         if ( ! $theme->getName() )
         {
-            throw $this->createNotFoundException('Theme name must exist befor proceeding');
+            throw $this->createNotFoundException('Theme name must exist before proceeding');
         }
         $componentsName = $themeOrg->getNamespace().':'.$theme->getName().':Components';
         $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($componentsName);
@@ -106,17 +85,8 @@ class ThemeWizardController extends Controller {
     public function layoutsAction($orgId, $themeId)
     {
         $layoutName = (string)$this->getRequest()->query->get('layoutName');
-        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($orgId);
-        if ( ! $themeOrg )
-        {
-            throw $this->createNotFoundException('Theme organzation with id '.$orgId.' not found');
-        }
-        // ensure user has access to this theme org
-        $theme = $themeOrg->getTheme($themeId);
-        if ( ! $theme )
-        {
-            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
-        }
+        $themeOrg = $this->getThemeOrg($orgId);
+        $theme = $this->getTheme($themeOrg, $themeId);
         $layout = '';
         if ( $layoutName )
         {
@@ -133,8 +103,8 @@ class ThemeWizardController extends Controller {
             $rawCode = str_replace("{% set ".$themeOrg->getNamespace()."_".$theme->getName()."_components = namespace ~ '-".$components."' %}{% extends ".$themeOrg->getNamespace()."_".$theme->getName()."_components %}", '', $template->getContent());
         }else{
             $template = null;
+            $rawCode = null;
         }
-        $rawCode = null;
         $layouts = $theme->getLayouts();
         return $this->render('CmsCoreBundle:Theme:wizardTemplate.html.twig', array(
             'themeOrg' => $themeOrg,
@@ -153,17 +123,9 @@ class ThemeWizardController extends Controller {
         $orgId = (string)$this->getRequest()->request->get('themeOrgId');
         $themeId = (string)$this->getRequest()->request->get('themeId');
         $layoutName = $this->getRequest()->request->get('layoutName');
-        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($orgId);
-        if ( ! $themeOrg )
-        {
-            throw $this->createNotFoundException('Theme organization with id '.$orgId.' not found');
-        }
+        $themeOrg = $this->getThemeOrg($orgId);
         // ensure user has access to this theme org
         $theme = $themeOrg->getTheme($themeId);
-        if ( ! $theme )
-        {
-            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
-        }
         if ( ! preg_match('/^[0-9a-zA-Z]+$/', $layoutName) )
         {
             throw new \Exception('invalid layout template name');
@@ -193,21 +155,9 @@ class ThemeWizardController extends Controller {
         $uses = json_decode((string)$this->getRequest()->request->get('uses')); // add for BETA
         $themeOrgId = (string)$this->getRequest()->request->get('themeOrgId');
         $themeId = (string)$this->getRequest()->request->get('themeId');
-        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($themeOrgId);
-        if ( ! $themeOrg )
-        {
-            throw $this->createNotFoundException('Theme Org with id '.$themeId.' not found');
-        }
-        $theme = $themeOrg->getTheme($themeId);
-        if ( ! $theme )
-        {
-            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
-        }
-        $template = $templateId ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($templateId) : new Template();
-        if ( ! $template )
-        {
-            throw $this->createNotFoundException('Template with id '.$templateId.' not found');
-        }
+        $themeOrg = $this->getThemeOrg($themeOrgId);
+        $theme = $this->getTheme($themeOrg, $themeId);
+        $template = $this->getTemplate($templateId);
         $template->setThemeId($themeId);
         if ( $rawCode )
         {
@@ -242,21 +192,9 @@ class ThemeWizardController extends Controller {
         $uses = json_decode((string)$this->getRequest()->request->get('uses')); // add for BETA
         $themeOrgId = (string)$this->getRequest()->request->get('themeOrgId');
         $themeId = (string)$this->getRequest()->request->get('themeId');
-        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($themeOrgId);
-        if ( ! $themeOrg )
-        {
-            throw $this->createNotFoundException('Theme Org with id '.$themeId.' not found');
-        }
-        $theme = $themeOrg->getTheme($themeId);
-        if ( ! $theme )
-        {
-            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
-        }
-        $template = $templateId ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($templateId) : new Template();
-        if ( ! $template )
-        {
-            throw $this->createNotFoundException('Template with id '.$templateId.' not found');
-        }
+        $themeOrg = $this->getThemeOrg($themeOrgId);
+        $theme = $this->getTheme($themeOrg, $themeId);
+        $template = $this->getTemplate($templateId);
         $template->setThemeId($themeId);
         if ( $rawCode )
         {
@@ -274,17 +212,47 @@ class ThemeWizardController extends Controller {
             $template->setContent($rawCode);
         }
         $success = $this->get('persister')->save($template);
-        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
-        if ( $xmlResponse )
-        {
-            return $xmlResponse;
-        }
-        if ( ! $success )
-        {
-            return $this->redirect($this->generateUrl(''));
-        }
-        return $this->redirect($this->generateUrl(''));
-        
+        return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 
+    public function completeAction($orgId, $themeId)
+    {
+        $themeOrg = $this->getThemeOrg($orgId);
+        $theme = $this->getTheme($themeOrg, $themeId);
+        return $this->render('CmsCoreBundle:Theme:wizardComplete.html.twig', array(
+            'themeOrg' => $themeOrg,
+            'theme' => $theme,
+        ));
+    }
+
+    public function getThemeOrg($themeOrgId)
+    {
+        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($themeOrgId);
+        if ( ! $themeOrg )
+        {
+            throw $this->createNotFoundException('Theme Organization with id '.$orgId.' not found');
+        }
+        return $themeOrg;
+    }
+
+    public function getTheme($themeOrg, $themeId)
+    {
+        $theme = $themeOrg->getTheme($themeId);
+        if ( ! $theme )
+        {
+            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
+        }
+        return $theme;
+    }
+
+    public function getTemplate($templateId)
+    {
+        $template = $templateId ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($templateId) : new Template();
+        if ( ! $template )
+        {
+            throw $this->createNotFoundException('Template with id '.$templateId.' not found');
+        }
+        return $template;
+    }
+    
 }

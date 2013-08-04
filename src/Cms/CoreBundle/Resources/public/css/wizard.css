@@ -53,9 +53,7 @@ h4 {
     color: #2C3E50;
 }
 .flat-form-container input, .flat-form-container textarea {
-    /*border: none;*/
     background-color: #ffffff;
-    color: white;
     font-size: 18px;
     word-wrap: break-word;
     margin-bottom: 10px;
