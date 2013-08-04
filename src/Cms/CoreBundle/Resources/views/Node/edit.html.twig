@@ -6,7 +6,7 @@
         'flat-ui/calendar/jquery-ui-1.10.3.custom.min.css'
         '@CmsCoreBundle/Resources/public/css/bigModal.css'
         '@CmsCoreBundle/Resources/public/css/node/read.css'
-        filter='cssrewrite, ?yui_css' %}
+        filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}" xmlns="http://www.w3.org/1999/html"/>
     {% endstylesheets %}
 {% endblock %}
@@ -27,7 +27,7 @@
         '@CmsCoreBundle/Resources/public/js/media/modal.js'
         '@CmsCoreBundle/Resources/public/js/node/read.js'
         '@CmsCoreBundle/Resources/public/js/node/nodeUrlHandler.js'
-        filter='?yui_js' %}
+        %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

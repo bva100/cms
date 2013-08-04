@@ -4,7 +4,7 @@
     {{ parent() }}
     {% stylesheets
         '@CmsCoreBundle/Resources/public/css/welcome/index.css'
-        filter='cssrewrite, ?yui_css' %}
+        filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
@@ -13,7 +13,7 @@
     {{ parent() }}
     {% javascripts
         '@CmsCoreBundle/Resources/public/js/welcome/index.js'
-        filter='?yui_js' %}
+        %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
@@ -76,18 +76,18 @@
                 </div>
             </section>
             <section class="span4">
-                <div class="tile" id="multilingual-tile">
-                    <h2>Multi Lingual</h2>
-                    <i class="icon-globe icon-4x"></i>
+                <div class="tile" id="api-tile">
+                    <h2>RESTful API</h2>
+                    <i class="icon-magic icon-4x"></i>
                     <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
                 </div>
             </section>
         </div>
         <div class="row">
             <section class="span4">
-                <div class="tile" id="api-tile">
-                    <h2>RESTful API</h2>
-                    <i class="icon-magic icon-4x"></i>
+                <div class="tile" id="multilingual-tile">
+                    <h2>Multi Lingual</h2>
+                    <i class="icon-globe icon-4x"></i>
                     <p>Bacon ipsum dolor sit amet ham hock ham brisket pork loin. Ball tip tail pancetta swine flank bacon. Biltong kiel basa swine tail. Ball tip tail pancetta. Ball tip tail Brisket.</p>
                 </div>
             </section>

@@ -4,7 +4,7 @@
     {{ parent() }}
     {% stylesheets
         '@CmsCoreBundle/Resources/public/css/media/edit.css'
-        filter='cssrewrite, ?yui_css' %}
+        filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
@@ -13,7 +13,7 @@
     {{ parent() }}
     {% javascripts
         '@CmsCoreBundle/Resources/public/js/media/edit.js'
-        filter='?yui_js' %}
+        %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

@@ -23,16 +23,17 @@
     top: 4px;
 }
 h4 {
-    color: #ffffff
+    color: #2C3E50;
 }
 #wizard-content {
     border: 1px solid #BDC3C7;
     padding: 20px;
     border-radius: 6px;
-    background-color: #2C3E50;
+    background-color: #ffffff;
+    color: #2C3E50;
 }
 .wizard-header {
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid #BDC3C7;
     padding-bottom: 4px;
     margin-bottom: 20px;
 }
@@ -41,39 +42,36 @@ h4 {
     font-size: 32px;
     position: relative;
     top: 3px;
-    color: white;
+    color: #2C3E50;
 }
 .flat-form-container {
-    background-color: #2C3E50;
+    background-color: #ffffff;
     color: #1ABC9C;
 }
 .flat-form-container label {
     font-size: 16px;
+    color: #2C3E50;
 }
 .flat-form-container input, .flat-form-container textarea {
-    border: none;
-    background-color: #2F4256;
+    /*border: none;*/
+    background-color: #ffffff;
     color: white;
     font-size: 18px;
     word-wrap: break-word;
     margin-bottom: 10px;
     font-weight: bold;
-    padding-left: 0px;
-    position: relative;
-    left: -6px;
 }
 .flat-form-container textarea {
-    padding: 8px 6px;
 }
 .wizard-footer {
     padding-top: 25px;
-    border-top: 1px solid #ffffff;
+    border-top: 1px solid #BDC3C7;
 }
 #primary-progress-label {
-    color: white;
     font-size: 18px;
     font-weight: bold;
     line-height: 32px;
+    color: #7F8C8D;
 }
 #primary-progress-label .percent-complete {
     margin-right: 5px;
@@ -83,20 +81,22 @@ h4 {
     width: 100%;
     min-height: 470px;
     margin-bottom: 20px;
-    border: 2px solid #ffffff;
+    border: 2px solid #BDC3C7;
     border-radius: 5px;
 }
 .holder-includes {
     background-color: #34495E;
-    color: white;
+    color: #ffffff;
     font-size: 17px;
     border-radius: 6px;
     padding: 23px;
 }
+.holder-includes b {
+    color: #ffffff;
+}
 .holder-includes a {
     text-decoration: none;
     font-weight: bold;
-    color: #1ABC9C;
 }
 .todo-active {
     color: #2ECC71;

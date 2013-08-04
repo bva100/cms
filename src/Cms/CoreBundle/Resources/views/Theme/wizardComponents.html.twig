@@ -8,7 +8,7 @@
     {{ parent() }}
     {% stylesheets
     '@CmsCoreBundle/Resources/public/css/wizard.css'
-    filter='cssrewrite, ?yui_css' %}
+    filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
@@ -18,7 +18,7 @@
     <script src="/dependencies/ace-builds-master/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     {% javascripts
     '@CmsCoreBundle/Resources/public/js/theme/wizard.js'
-    filter='?yui_js' %}
+    %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

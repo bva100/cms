@@ -6,7 +6,7 @@
         'flat-ui/calendar/jquery-ui-1.10.3.custom.min.css'
         '@CmsCoreBundle/Resources/public/css/admin/loop.css'
         '@CmsCoreBundle/Resources/public/css/contentType/read.css'
-        filter='cssrewrite, ?yui_css' %}
+        filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
@@ -20,7 +20,7 @@
         'flat-ui/js/jquery.tagsinput.js'
         '@CmsCoreBundle/Resources/public/js/checkboxList.js'
         '@CmsCoreBundle/Resources/public/js/contentType/read.js'
-        filter='?yui_js' %}
+        %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

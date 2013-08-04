@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         {% for theme in themeOrg.themes  %}
-                            <td>{{ theme.name }}</td>
+                            <td><a href="{{ path('cms_core.theme_wizard', {'orgId':themeOrg.id, 'id':theme.id}) }}">{{ theme.name }}</a></td>
                             <td>
                                 <form action="{{ path('cms_core.theme_delete') }}" method="POST">
                                     <input type="hidden" name="token" value="{{ token }}"/>

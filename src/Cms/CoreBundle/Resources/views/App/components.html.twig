@@ -4,7 +4,7 @@
     {{ parent() }}
     {% stylesheets
         '@CmsCoreBundle/Resources/public/css/app/base.css'
-        filter='cssrewrite, ?yui_css' %}
+        filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
