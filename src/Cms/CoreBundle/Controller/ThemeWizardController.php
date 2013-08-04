@@ -126,8 +126,15 @@ class ThemeWizardController extends Controller {
             }
             $layout = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($themeOrg->getNamespace().':'.$theme->getName().':'.$layoutName);
         }
-        $template = $layout ? $layout->getContent() : null;
-        $rawCode = $template;
+        if ( $layout )
+        {
+            $template = $layout;
+            $components = $themeOrg->getNamespace().':'.$theme->getName().':Components';
+            $rawCode = str_replace("{% set ".$themeOrg->getNamespace()."_".$theme->getName()."_components = namespace ~ '-".$components."' %}{% extends ".$themeOrg->getNamespace()."_".$theme->getName()."_components %}", '', $template->getContent());
+        }else{
+            $template = null;
+        }
+        $rawCode = null;
         $layouts = $theme->getLayouts();
         return $this->render('CmsCoreBundle:Theme:wizardTemplate.html.twig', array(
             'themeOrg' => $themeOrg,
@@ -165,8 +172,15 @@ class ThemeWizardController extends Controller {
         {
             $theme->addLayout($layoutName);
         }else{
-            $theme->removeLayout($layoutName);
-            // also remove from template collection, if it exists
+            if ( $layoutName !== 'Single' AND $layoutName !== 'Static' AND $layoutName !== 'Loop') 
+            {
+                $theme->removeLayout($layoutName);
+                $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($themeOrg->getNamespace().':'.$theme->getName().':'.$layoutName);
+                if ( $template )
+                {
+                    $this->get('persister')->delete($template);
+                }
+            }
         }
         $success = $this->get('persister')->save($themeOrg);
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
@@ -205,7 +219,7 @@ class ThemeWizardController extends Controller {
             }
             $template->setContent($rawCode);
         }
-        $success = $this->get('persister')->save($template, false, false);
+        $success = $this->get('persister')->save($template);
         if ( ! $success )
         {
             throw new \Exception('Unable to save at this time. Please try again soon');
@@ -218,6 +232,59 @@ class ThemeWizardController extends Controller {
             return $xmlResponse;
         }
         return $this->redirect($this->generateUrl('cms_core.template_readAll'));
+    }
+
+    public function saveLayoutAction()
+    {
+        $templateId = (string)$this->getRequest()->request->get('templateId');
+        $layoutName = (string)$this->getRequest()->request->get('layoutName');
+        $rawCode = $this->getRequest()->request->get('rawCode');
+        $uses = json_decode((string)$this->getRequest()->request->get('uses')); // add for BETA
+        $themeOrgId = (string)$this->getRequest()->request->get('themeOrgId');
+        $themeId = (string)$this->getRequest()->request->get('themeId');
+        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($themeOrgId);
+        if ( ! $themeOrg )
+        {
+            throw $this->createNotFoundException('Theme Org with id '.$themeId.' not found');
+        }
+        $theme = $themeOrg->getTheme($themeId);
+        if ( ! $theme )
+        {
+            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
+        }
+        $template = $templateId ? $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($templateId) : new Template();
+        if ( ! $template )
+        {
+            throw $this->createNotFoundException('Template with id '.$templateId.' not found');
+        }
+        $template->setThemeId($themeId);
+        if ( $rawCode )
+        {
+            if ( ! preg_match('/^[0-9a-zA-Z]+$/', $layoutName) )
+            {
+                throw new \Exception('invalid layout template name');
+            }
+            $name = $themeOrg->getNamespace().':'.$theme->getName().':'.$layoutName;
+            $components = $themeOrg->getNamespace().':'.$theme->getName().':Components';
+            $template->setName($name);
+            if ( strpos($rawCode, "{% set ".$themeOrg->getNamespace()."_".$theme->getName()."_components = namespace ~ '-".$components."' %}{% extends ".$themeOrg->getNamespace()."_".$theme->getName()."_components %}") !== true )
+            {
+                $rawCode = "{% set ".$themeOrg->getNamespace()."_".$theme->getName()."_components = namespace ~ '-".$components."' %}{% extends ".$themeOrg->getNamespace()."_".$theme->getName()."_components %}".$rawCode;
+            }
+            $template->setContent($rawCode);
+        }
+        $success = $this->get('persister')->save($template);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        if ( $xmlResponse )
+        {
+            return $xmlResponse;
+        }
+        if ( ! $success )
+        {
+            return $this->redirect($this->generateUrl(''));
+        }
+        return $this->redirect($this->generateUrl(''));
+        
     }
 
 }

@@ -215,6 +215,11 @@ cms_core.theme_wizard_add_remove_layout:
   defaults: { _controller: CmsCoreBundle:ThemeWizard:addRemoveLayout }
   methods: [POST]
 
+cms_core.theme_wizard_layout_save:
+  pattern: /theme/wizard/layout
+  defaults: { _controller: CmsCoreBundle:ThemeWizard:saveLayout }
+  methods: [POST]
+
 #assets
 cms_core.asset_delete:
   pattern: /asset/delete

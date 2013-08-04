@@ -57,6 +57,7 @@
                                 <div id="error-container"></div>
                                 {% if componentsName is defined %}
                                     <h4>{{ componentsName }}</h4>
+                                    <input type="hidden" id="input-layout-name" value="{{ componentsName }}"/>
                                 {% endif %}
                                 {% if layouts is defined %}
                                     <div id="layouts-container">
@@ -64,6 +65,7 @@
                                             <span class="template-layout-name pull-left">
                                                 {% if layoutName %}
                                                     {{ themeOrg.namespace }}:{{ theme.name }}:{{ layoutName }}
+                                                    <input type="hidden" id="input-layout-name" value="{{ layoutName }}"/>
                                                 {% endif %}
                                             </span>
                                             <span class="pull-right">
@@ -107,7 +109,7 @@
                                     </div>
                                 {% endif %}
                                 <form id="save-template-form" action="{{ path('cms_core.template_save') }}" method="POST">
-                                    <div id='input-code-content'>{{ rawCode|default('Add your twig blocks and HTML code here') }}</div>
+                                    <div id='input-code-content' class="{% if layouts is defined and not template %}hide{% endif %}">{{ rawCode|default('Add your twig blocks and HTML code here') }}</div>
                                     <div class="row-fluid">
                                         <button class="btn btn-info span2 pull-right" style="position: relative; left: 4px;">Save</button>
                                     </div>
@@ -130,10 +132,14 @@
             {{ parent() }}
         {% endblock %}
     </footer>
-    <input type="hidden" id="input-template-id" value="{{ template.id|default() }}"/>
+    <input type="text" id="input-template-id" value="{{ template.id|default() }}"/>
     <input type="hidden" id="input-theme-org-id" value="{{ themeOrg.id }}"/>
     <input type="hidden" id="input-theme-id" value="{{ theme.id }}"/>
-    <input type="hidden" id="code-save-path" value="{{ path('cms_core.theme_wizard_save_components') }}"/>
+    {% if layouts is defined %}
+        <input type="hidden" id="code-save-path" value="{{ path('cms_core.theme_wizard_layout_save') }}"/>
+    {% else %}
+        <input type="hidden" id="code-save-path" value="{{ path('cms_core.theme_wizard_save_components') }}"/>
+    {% endif %}
     <input type="hidden" id="add-layout-path" value="{{ path('cms_core.theme_wizard_add_remove_layout', {'actionType':'add'}) }}"/>
     <input type="hidden" id="remove-layout-path" value="{{ path('cms_core.theme_wizard_add_remove_layout', {'actionType':'remove'}) }}"/>
     <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>

@@ -48,7 +48,7 @@
                     Create Twig Blocks
                 </div>
             </li>
-            <li class="{% if layouts is defined and rawCode %}todo-done{% endif %}" id="todo-layouts">
+            <li class="{% if theme and theme.hasComponents and 'Single' in theme.layouts and 'Static' in theme.layouts and 'Loop' in theme.layouts %}todo-done{% endif %}" id="todo-layouts">
                 <div class="todo-icon"><i class="icon-list-alt"></i></div>
                 <div class="todo-content">
                     <h4 class="todo-name">
