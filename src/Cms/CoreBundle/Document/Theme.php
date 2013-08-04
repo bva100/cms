@@ -50,7 +50,7 @@ class Theme extends Base {
     {
         $this->setState('draft');
         $this->setHasComponents(false);
-        $this->layouts = array();
+        $this->layouts = array('Single', 'Loop', 'Static');
     }
 
     /**
