@@ -1,0 +1,38 @@
+{% extends 'CmsCoreBundle:Settings:base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/settings/themeCurrent.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ site.name|title }} Settings {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% block themeHeader %}
+        {{ parent() }}
+    {% endblock %}
+    <article class="row-fluid">
+        <div class="span12">
+            {% if not theme %}
+                <div id="no-theme">
+                    <h3>Select a Theme</h3>
+                    <p>It appears {{ site.name|title }} does not yet have a theme. Select a theme by clicking on the button below.</p>
+                    <a href="{{ path('cms_core.settings_theme_repo', {'siteId':site.id}) }}" class="btn btn-info">Select A New Theme</a>
+                </div>
+            {% else %}
+                <div id="theme-settings">
+                    create theme settings
+                </div>
+            {% endif %}
+        </div>
+    </article>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

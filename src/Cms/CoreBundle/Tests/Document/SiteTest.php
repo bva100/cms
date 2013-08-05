@@ -120,4 +120,46 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->site->hasTemplateName('foo'));
         $this->assertFalse($this->site->hasTemplateName(1));
     }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Site::setThemes
+     * @covers \Cms\CoreBundle\Document\Site::addTheme
+     * @covers \Cms\CoreBundle\Document\Site::removeTheme
+     * @covers \Cms\CoreBundle\Document\Site::removeThemeById
+     * @covers \Cms\CoreBundle\Document\Site::getThemes
+     */
+    public function testAddTheme()
+    {
+        $this->site->setThemes(array());
+        $this->assertEmpty($this->site->getThemes());
+        $firstTheme = array('id' => '1', 'name' => 'firstTheme', 'description' => 'first theme and a foobar', 'image' => 'firsththeme.com/pic.png');
+        $secondTheme = array('id' => '2', 'name' => 'secondTheme', 'description' => 'second theme and a baz', 'image' => 'secondtheme.com/image.jpg');
+        $thirdTheme = array('id' => '3', 'name' => 'thirdTheme', 'description' => 'third theme and a boom', 'image' => 'thirdtheme.com/gallery-one.png');
+        $themes = array($firstTheme, $secondTheme, $thirdTheme);
+        $this->site->setThemes($themes);
+        $this->assertCount(3, $this->site->getThemes());
+        $this->assertEquals($themes, $this->site->getThemes());
+        $this->site->setThemes(array());
+        $this->assertEmpty($this->site->getThemes());
+
+        $this->site->addTheme($firstTheme);
+        $this->assertEquals(array($firstTheme), $this->site->getThemes());
+        $this->site->addTheme($secondTheme);
+        $this->assertCount(2, $this->site->getThemes());
+        $this->assertEquals(array($firstTheme, $secondTheme), $this->site->getThemes());
+        $this->site->removeTheme($secondTheme);
+        $this->assertEquals(array($firstTheme), $this->site->getThemes());
+        $this->site->removeTheme($firstTheme);
+        $this->assertEmpty($this->site->getThemes());
+
+        $this->site->setThemes($themes);
+        $this->assertCount(3, $this->site->getThemes());
+        $this->site->removeThemeById('1');
+        $this->assertCount(2, $this->site->getThemes());
+        $this->assertEquals(array($secondTheme, $thirdTheme), $this->site->getThemes());
+        $this->site->removeThemeById('2');
+        $this->assertCount(1, $this->site->getThemes());
+        $this->site->removeThemeById('3');
+        $this->assertEmpty($this->site->getThemes());
+    }
 }

@@ -42,9 +42,14 @@ class Site extends Base {
     private $templateNames;
 
     /**
-     * @MongoDB\String
+     * @MongoDB\Collection
      */
-    private $currentThemeId;
+    private $themes;
+
+    /**
+     * @MongoDB\Hash
+     */
+    private $currentTheme;
 
     public function __construct()
     {
@@ -52,6 +57,7 @@ class Site extends Base {
         $this->contentType = new \Doctrine\Common\Collections\ArrayCollection();
         $this->domains = array();
         $this->templateNames = array('Core:Base:HTML');
+        $this->themes = array();
     }
 
     /**
@@ -290,25 +296,101 @@ class Site extends Base {
     }
 
     /**
-     * Set current theme id
+     * Set themes
      *
-     * @param string $currentThemeId
+     * @param array $themes
      * @return $this
      */
-    public function setCurrentThemeId($currentThemeId)
+    public function setThemes(array $themes)
     {
-        $this->currentThemeId = $currentThemeId;
+        $this->themes = $themes;
         return $this;
     }
 
     /**
-     * Get current theme id
+     * Add a theme value object
+     * Structure: id, orgId, name, img,
      *
-     * @return string
+     * @param array $theme
+     * @return $this
      */
-    public function getCurrentThemeId()
+    public function addTheme(array $theme)
     {
-        return $this->currentThemeId;
+        if ( ! in_array($theme, $this->themes) )
+        {
+            $this->themes[] = $theme;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove a theme value object
+     *
+     * @param array $theme
+     * @return $this
+     */
+    public function removeTheme(array $theme)
+    {
+        $key = array_search($theme, $this->themes);
+        if ( $key !== false )
+        {
+            unset($this->themes[$key]);
+            $this->themes = array_values($this->themes);
+        }
+        return $this;
+    }
+
+    /**
+     * Remove theme by ID
+     *
+     * @param $id
+     * @return $this
+     */
+    public function removeThemeById($id)
+    {
+        foreach ($this->themes as $theme) {
+            if ( isset($theme['id']) )
+            {
+                if ( $theme['id'] === $id )
+                {
+                    return $this->removeTheme($theme);
+                }
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Get theme value objects as an array
+     *
+     * @return array
+     */
+    public function getThemes()
+    {
+        return $this->themes;
+    }
+
+    /**
+     * Set current theme value object
+     *
+     * @param $orgId
+     * @param $themeId
+     * @return $this
+     */
+    public function setCurrentTheme($orgId, $themeId)
+    {
+        $this->currentTheme = array('orgId' => $orgId, 'themeId' => $themeId);
+        return $this;
+    }
+
+    /**
+     * Get current theme value object with indices of orgId and themeId
+     *
+     * @return array
+     */
+    public function getCurrentTheme()
+    {
+        return $this->currentTheme;
     }
 
 }

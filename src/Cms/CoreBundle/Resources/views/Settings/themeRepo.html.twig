@@ -1,0 +1,43 @@
+{% extends 'CmsCoreBundle:Settings:base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/settings/themeRepo.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    Themes for {{ site.name|title }} {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% block themeHeader %}
+        {{ parent() }}
+    {% endblock %}
+    <article class="row-fluid">
+        {% for theme in site.themes  %}
+            <div>
+                <div class="span3 theme-holder">
+                    <img src="{{ theme.image|default('logo.png') }}" class="theme-image"/>
+                    <h4>{{ theme.name }}</h4>
+                    <div class="row-fluid">
+                        <button class="btn span6">details</button>
+                        <button class="btn btn-info span6">select</button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="span12" id="no-theme">
+                <h3>No Themes Available</h3>
+                <p>But don't panick! You can pick up some great themes at the Depot!</p>
+                <a href="{{ path('cms_core.settings_theme_depot', {'siteId':site.id}) }}" class="btn btn-info">Go To Depot</a>
+            </div>
+        {% endfor %}
+    </article>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'CmsCoreBundle:Settings:base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/settings/themeDepot.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ site.name|title }} Theme Depot {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% block themeHeader %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="row-fluid">
+        {% for themeOrg in themeOrgs  %}
+            {% for theme in themeOrg.themes  %}
+                <div>
+                    <div class="span3 theme-holder">
+                        <img src="{{ theme.image('featured')|default('') }}" class="theme-image"/>
+                        <h4>{{ theme.name }}</h4>
+                        <p>by: {{ themeOrg.organization }}</p>
+                        <div class="row-fluid">
+                            <button class="btn span6">details</button>
+                            <button class="btn btn-info span6">
+                                {% if theme.name in site.templateNames %}
+                                    select
+                                {% else %}
+                                    add
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

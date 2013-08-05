@@ -1,0 +1,34 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/settings/theme.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/settings/theme.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block themeHeader %}
+    <nav class="row-fluid">
+        <ul class="settingsThemeNav span6 pull-left">
+            <li><a href="{{ path('cms_core.settings_theme_current', {'siteId':site.id}) }}" id="settings-nav-current-theme">Current Theme</a></li>
+            <li class="vertical-divider">|</li>
+            <li><a href="{{ path('cms_core.settings_theme_repo', {'siteId':site.id}) }}" id="settings-nav-available-themes">Available Themes</a></li>
+            <li class="vertical-divider">|</li>
+            <li><a href="{{ path('cms_core.settings_theme_depot', {'siteId':site.id}) }}" id="settings-nav-depot">Depot</a></li>
+        </ul>
+        <form class="pull-right" id="search">
+            <input type="text" name="search" class="span3" id="input-search" placeholder="Search"/>
+        </form>
+    </nav>
+{% endblock %}

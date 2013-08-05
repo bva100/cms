@@ -37,6 +37,11 @@ cms_core.site_settings:
   defaults: { _controller: CmsCoreBundle:Site:settings }
   methods: [GET]
 
+cms_core.site_add_theme:
+  pattern: site/add-theme
+  defaults: { _controller: CmsCoreBundle:Site:addTheme }
+#  methods: [POST]
+
 cms_core.site_read:
   pattern: /site/{id}
   defaults: { _controller: CmsCoreBundle:Site:read }
@@ -130,6 +135,22 @@ cms_core.template_save:
 cms_core.template_menu:
   pattern: /template/menu/{siteId}
   defaults: { _controller: CmsCoreBundle:Template:menu }
+  methods: [GET]
+
+#settings - theme
+cms_core.settings_theme_current:
+  pattern: /settings/theme/current/{siteId}
+  defaults: { _controller: CmsCoreBundle:SettingsTheme:current }
+  methods: [GET]
+
+cms_core.settings_theme_repo:
+  pattern: /settings/theme/repo/{siteId}
+  defaults: { _controller: CmsCoreBundle:SettingsTheme:repo }
+  methods: [GET]
+
+cms_core.settings_theme_depot:
+  pattern: /settings/theme/depot/{siteId}
+  defaults: { _controller: CmsCoreBundle:SettingsTheme:depot }
   methods: [GET]
 
 #themeOrg

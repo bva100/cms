@@ -42,7 +42,7 @@ class Theme extends Base {
     private $layouts;
 
     /**
-     * @MongoDB\Collection
+     * @MongoDB\Hash
      */
     private $images;
 
@@ -227,7 +227,21 @@ class Theme extends Base {
     }
 
     /**
-     * Get images array
+     * Get the url to a specific image (eg "featured"). Returns void if not found.
+     *
+     * @param featured $imageType
+     * @return string
+     */
+    public function getImage($imageType)
+    {
+        if ( isset($this->images[$imageType]) )
+        {
+            return $this->images[$imageType];
+        }
+    }
+
+    /**
+     * Get an array of images
      *
      * @return array
      */

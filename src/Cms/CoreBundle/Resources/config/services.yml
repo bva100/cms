@@ -14,6 +14,7 @@ parameters:
     cms.slug_helper.class: Cms\CoreBundle\Services\SlugHelper
     cms.template_client.class: Cms\CoreBundle\Services\TemplateLoader\Client
     cms.template_helper.class: Cms\CoreBundle\Services\TemplateLoader\Helper
+    cms.theme_template_helper.class: Cms\CoreBundle\Services\ThemeTemplateHelper
 
 services:
     asset_manager:
@@ -51,3 +52,5 @@ services:
           - [setBucket, [shinra_test]]
     slug_helper:
         class: %cms.slug_helper.class%
+    theme_template:
+        class: %cms.theme_template_helper.class%

@@ -1,0 +1,40 @@
+.settingsThemeNav {
+    list-style: none;
+    padding: 25px 0px;
+}
+.settingsThemeNav li {
+    display: inline;
+    font-size: 21px;
+    font-weight: bold;
+}
+.settingsThemeNav a {
+    text-decoration: none;
+}
+.vertical-divider {
+    color: #ECF0F1
+}
+.settingsThemeNav .active-anchor {
+    color: #BDC3C7;
+}
+#search {
+    padding: 17px 0px;
+}
+#no-theme {
+    text-align: center;
+    border: 1px solid #BDC3C7;
+    padding: 20px 0px 30px 0px;
+    border-radius: 5px;
+    background-color: #ECF0F1;
+}
+.theme-holder{
+    padding: 10px;
+    margin: 0px 22px 12px 22px;
+}
+.theme-image {
+    height: 180px;
+    width: 100%;
+    border: 1px solid #ECF0F1;
+}
+.theme-holder .row-fluid {
+    margin-top: 10px;
+}

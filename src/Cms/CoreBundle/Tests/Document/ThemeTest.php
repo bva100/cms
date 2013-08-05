@@ -46,13 +46,13 @@ class ThemeTest extends \PHPUnit_Framework_TestCase {
         $this->theme->addLayout('foo');
         $this->theme->addLayout('bar');
         $this->theme->addLayout('foobar');
-        $this->assertCount(3, $this->theme->getLayouts());
-        $this->assertEquals(array('foo', 'bar', 'foobar'), $this->theme->getLayouts());
+        $this->assertCount(6, $this->theme->getLayouts());
+        $this->assertEquals(array('Single', 'Loop', 'Static', 'foo', 'bar', 'foobar'), $this->theme->getLayouts());
 
         $this->theme->addLayout('foo');
-        $this->assertCount(3, $this->theme->getLayouts());
+        $this->assertCount(6, $this->theme->getLayouts());
         $this->theme->addLayout('bar');
-        $this->assertCount(3, $this->theme->getLayouts());
+        $this->assertCount(6, $this->theme->getLayouts());
     }
 
     /**
@@ -65,17 +65,17 @@ class ThemeTest extends \PHPUnit_Framework_TestCase {
         $this->theme->addLayout('foo');
         $this->theme->addLayout('bar');
         $this->theme->addLayout('foobar');
-        $this->assertCount(3, $this->theme->getLayouts());
+        $this->assertCount(6, $this->theme->getLayouts());
 
         $this->theme->removeLayout('foo');
-        $this->assertCount(2, $this->theme->getLayouts());
+        $this->assertCount(5, $this->theme->getLayouts());
         $this->theme->removeLayout('foo');
-        $this->assertCount(2, $this->theme->getLayouts());
-        $this->assertEquals(array('bar', 'foobar'), $this->theme->getLayouts());
+        $this->assertCount(5, $this->theme->getLayouts());
+        $this->assertEquals(array('Single', 'Loop', 'Static', 'bar', 'foobar'), $this->theme->getLayouts());
         $this->theme->removeLayout('bar');
-        $this->assertCount(1, $this->theme->getLayouts());
-        $this->assertEquals(array('foobar'), $this->theme->getLayouts());
-        $this->theme->removeLayout('foobar');
+        $this->assertCount(4, $this->theme->getLayouts());
+        $this->assertEquals(array('Single', 'Loop', 'Static', 'foobar'), $this->theme->getLayouts());
+        $this->theme->removeLayout('foobar')->removeLayout('Single')->removeLayout('Loop')->removeLayout('Static');
         $this->assertEmpty($this->theme->getLayouts());
     }
 
@@ -92,21 +92,6 @@ class ThemeTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->theme->hasLayout('bar'));
         $this->assertFalse($this->theme->hasLayout('baz'));
         $this->assertFalse($this->theme->hasLayout(1));
-    }
-
-    /**
-     * @covers \Cms\CoreBundle\Document\Theme::addAuthor
-     * @covers \Cms\CoreBundle\Document\Theme::removeAuthor
-     * @covers \Cms\CoreBundle\Document\Theme::getAuthor
-     */
-    public function testSetAuthor()
-    {
-        $this->theme->addAuthor(array('name' => 'foo', 'url' => 'foobar.com', 'image' => 'foobar.com/image.png'));
-        $this->assertEquals(array('name' => 'foo', 'url' => 'foobar.com', 'image' => 'foobar.com/image.png' ), $this->theme->getAuthor());
-        $this->theme->addAuthor(array('name' => 'baz', 'url' => 'bazboom.com'));
-        $this->assertEquals(array('name' => 'baz', 'url' => 'bazboom.com'), $this->theme->getAuthor());
-        $this->theme->removeAuthor();
-        $this->assertEmpty($this->theme->getAuthor());
     }
 
 }
