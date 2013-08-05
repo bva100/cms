@@ -102,10 +102,6 @@ class SiteController extends Controller {
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $themeOrgId = (string)$this->getRequest()->request->get('themeOrgId');
         $themeId = (string)$this->getRequest()->request->get('themeId');
-//        $siteId = $this->getRequest()->query->get('siteId');
-//        $themeOrgId = $this->getRequest()->query->get('themeOrgId');
-//        $themeId = $this->getRequest()->query->get('themeId');
-
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
@@ -116,24 +112,23 @@ class SiteController extends Controller {
         {
             throw $this->createNotFoundException('theme organization with id '.$themeOrgId.' not found');
         }
-        // validate user access
+        // validate user access to themeOrg
         $theme = $themeOrg->getTheme($themeId);
         if ( ! $theme )
         {
             throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
         }
-        // validate user access
-        $helper = $this->get('theme_template')->setSite($site)->setThemeOrg($themeOrg)->setTheme($theme);
+        // validate user access to theme
+        $helper = $this->get('theme_template')->setSite($site)->setThemeOrg($themeOrg)->setTheme($theme)->setPersister($this->get('persister'));
         $nameAffix = $helper->getTemplateNameAffix();
         $site->addTheme(array('id' => $themeId,'orgId' => $themeOrgId,'name' => $theme->getName(),'image' => $theme->getImage('featured')));
         $site->addTemplateName($nameAffix.'Components');
         foreach ($theme->getLayouts() as $templateName){
             $site->addTemplateName($nameAffix.$templateName);
-            $layout = $helper->createChildLayoutTemplate($templateName);
-            $this->get('persister')->save($layout);
+            $helper->saveTemplate($helper->createChildLayoutTemplate($templateName));
         }
-        $components = $helper->createChildComponentsTemplate();
-        $success = $this->get('persister')->save($components);
+        $helper->saveTemplate($helper->createChildComponentsTemplate());
+        $success = $this->get('persister')->save($site);
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 

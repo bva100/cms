@@ -220,6 +220,7 @@ class Theme extends Base {
      * Set images
      *
      * @param array $images
+     * @return void
      */
     public function setImages(array $images)
     {
@@ -229,10 +230,10 @@ class Theme extends Base {
     /**
      * Get the url to a specific image (eg "featured"). Returns void if not found.
      *
-     * @param featured $imageType
-     * @return string
+     * @param string $imageType
+     * @return mixed
      */
-    public function getImage($imageType)
+    public function getImage($imageType = 'featured')
     {
         if ( isset($this->images[$imageType]) )
         {

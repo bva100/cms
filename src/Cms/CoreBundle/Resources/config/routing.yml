@@ -40,7 +40,7 @@ cms_core.site_settings:
 cms_core.site_add_theme:
   pattern: site/add-theme
   defaults: { _controller: CmsCoreBundle:Site:addTheme }
-#  methods: [POST]
+  methods: [POST]
 
 cms_core.site_read:
   pattern: /site/{id}

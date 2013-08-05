@@ -316,7 +316,8 @@ class Site extends Base {
      */
     public function addTheme(array $theme)
     {
-        if ( ! in_array($theme, $this->themes) )
+        $key = array_search($theme, $this->themes);
+        if ( $key === false )
         {
             $this->themes[] = $theme;
         }
