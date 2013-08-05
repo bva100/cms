@@ -25,7 +25,7 @@
                     <h4>{{ theme.name }}</h4>
                     <div class="row-fluid">
                         <button class="btn span6">details</button>
-                        <button class="btn btn-info span6">select</button>
+                        <button class="btn btn-info span6 select-theme" data-theme-id="{{ theme.id }}" data-theme-org-id="{{ theme.orgId }}">select</button>
                     </div>
                 </div>
             </div>
@@ -40,4 +40,7 @@
     {% block footer %}
         {{ parent() }}
     {% endblock %}
+    <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
+    <input type="hidden" id="select-theme-path" value="{{ path('cms_core.site_select_theme') }}"/>
+    <input type="hidden" id="input-site-id" value="{{ site.id }}"/>
 {% endblock %}

@@ -8,6 +8,7 @@
 namespace Cms\CoreBundle\Services;
 
 use \Cms\CoreBundle\Document\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class themeTemplateHelper
@@ -145,6 +146,23 @@ class ThemeTemplateHelper {
     }
 
     /**
+     * Create a master template for a layout
+     *
+     * @param $masterTemplateName
+     * @param $themeTemplateName
+     * @return Template
+     */
+    public function createMasterTemplate($masterTemplateName, $themeTemplateName)
+    {
+        $template = new Template();
+        $template->setName($masterTemplateName);
+        $template->setThemeId($this->theme->getId());
+        $template->setContent("{% extends '".$themeTemplateName."' %}");
+        $template->setState('active');
+        return $template;
+    }
+
+    /**
      * Checks for existence of template before saving
      *
      * @param Template $template
@@ -162,6 +180,34 @@ class ThemeTemplateHelper {
         {
             return $this->persister->save($template);
         }
+    }
+
+    /**
+     * Save a master templates. updates if template exists and creates if template does not.
+     *
+     * @return mixed
+     */
+    public function saveMasterTemplates()
+    {
+        foreach ($this->theme->getLayouts() as $layoutName) {
+            $masterTemplateName = $this->site->getNamespace().':Master:'.$layoutName;
+            $themeTemplateName = $this->getTemplateNameAffix().$layoutName;
+            $template = $this->persister->getRepo('CmsCoreBundle:Template')->findOneByName($masterTemplateName);
+            if ( $template )
+            {
+                $template->setContent("{% extends '".$themeTemplateName."' %}");
+            }
+            else
+            {
+                $template = $this->createMasterTemplate($masterTemplateName, $themeTemplateName);
+            }
+            $success = $this->persister->save($template);
+            if ( ! $success )
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

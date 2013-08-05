@@ -119,6 +119,7 @@ class SiteController extends Controller {
             throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
         }
         // validate user access to theme
+
         $helper = $this->get('theme_template')->setSite($site)->setThemeOrg($themeOrg)->setTheme($theme)->setPersister($this->get('persister'));
         $nameAffix = $helper->getTemplateNameAffix();
         $site->addTheme(array('id' => $themeId,'orgId' => $themeOrgId,'name' => $theme->getName(),'image' => $theme->getImage('featured')));
@@ -130,6 +131,41 @@ class SiteController extends Controller {
         $helper->saveTemplate($helper->createChildComponentsTemplate());
         $success = $this->get('persister')->save($site);
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
+    }
+
+    public function selectThemeAction()
+    {
+        $siteId = (string)$this->getRequest()->request->get('siteId');
+        $themeOrgId = (string)$this->getRequest()->request->get('themeOrgId');
+        $themeId = (string)$this->getRequest()->request->get('themeId');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
+        }
+        $themeOrg = $this->get('persister')->getRepo('CmsCoreBundle:ThemeOrg')->find($themeOrgId);
+        if ( ! $themeOrg )
+        {
+            throw $this->createNotFoundException('theme organization with id '.$themeOrgId.' not found');
+        }
+        // validate user access to themeOrg
+        $theme = $themeOrg->getTheme($themeId);
+        if ( ! $theme )
+        {
+            throw $this->createNotFoundException('Theme with id '.$themeId.' not found');
+        }
+        // validate user and site has access to theme
+
+        $helper = $this->get('theme_template')->setSite($site)->setThemeOrg($themeOrg)->setTheme($theme)->setPersister($this->get('persister'));
+        $results = $helper->saveMasterTemplates();
+        if ( ! $results )
+        {
+            $response = new Response('failed');
+            $response->setStatusCode(500);
+            return $response;
+        }
+        $site->setCurrentTheme($themeOrgId, $themeId);
+        return $this->get('xmlResponse')->execute($this->getRequest(), $this->get('persister')->save($site));
     }
 
 }

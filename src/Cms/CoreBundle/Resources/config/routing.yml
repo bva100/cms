@@ -42,6 +42,11 @@ cms_core.site_add_theme:
   defaults: { _controller: CmsCoreBundle:Site:addTheme }
   methods: [POST]
 
+cms_core.site_select_theme:
+  pattern: site/select-theme
+  defaults: { _controller: CmsCoreBundle:Site:selectTheme }
+  methods: [POST]
+
 cms_core.site_read:
   pattern: /site/{id}
   defaults: { _controller: CmsCoreBundle:Site:read }
