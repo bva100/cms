@@ -57,7 +57,6 @@ cms_core.site_delete:
   defaults: { _controller: CmsCoreBundle:Site:delete }
   methods: [POST]
 
-
 #contentType
 cms_core.contentType_save:
   pattern: /contentType
@@ -82,6 +81,27 @@ cms_core.contentType_delete:
 cms_core.contentType_addCategory:
   pattern: /contentType/addCategory
   defaults: { _controller: CmsCoreBundle:ContentType:addCategory }
+  methods: [POST]
+
+#contentManager
+cms_core.content_manager_readAll:
+  pattern: /contentManager/readAll/{siteId}
+  defaults: { _controller: CmsCoreBundle:ContentManager:readAll }
+  methods: [GET]
+
+cms_core.content_manager_wizard:
+  pattern: /contentManager/wizard/{siteId}
+  defaults: { _controller: CmsCoreBundle:ContentManager:wizard }
+  methods: [GET]
+
+cms_core.content_manager_wizard_save:
+  pattern: /contentManager/wizard/{siteId}
+  defaults: { _controller: CmsCoreBundle:ContentManager:saveBasics }
+  methods: [POST]
+
+cms_core.content_manager_delete:
+  pattern: /contentManager/delete
+  defaults: { _controller: CmsCoreBundle:ContentManager:delete }
   methods: [POST]
 
 #node

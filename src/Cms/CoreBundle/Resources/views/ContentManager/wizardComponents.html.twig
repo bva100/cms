@@ -1,0 +1,93 @@
+{% extends 'CmsCoreBundle:App:components.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/wizard.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/contentManager/wizard.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ contentType.name|default('New') }} Content Type {{ parent() }}
+{% endblock %}
+
+{% block todo %}
+    <nav class="todo">
+        <div class="wizard-nav-name-container clearfix">
+            <h4 class="contentType-name pull-left">{{ contentType.name|default('Content To Do List') }}</h4>
+            <span class="pull-right"><i class="icon-list-ul icon-large"></i></span>
+        </div>
+        <ul>
+            <li class="{% if contentType.name is defined %}todo-done{% endif %}" id="todo-basic-info">
+                <div class="todo-icon"><i class="icon-info-sign"></i></div>
+                <div class="todo-content">
+                    <h4 class="todo-name">
+                        <strong>Basic Info</strong>
+                    </h4>
+                    <span>Name, Slug, Domains, Locales</span>
+                </div>
+            </li>
+            <li class="{% if contentType and contentType.formats|length > 0 %}todo-done{% endif %}" id="todo-formats">
+                <div class="todo-icon"><i class="icon-puzzle-piece"></i></div>
+                <div class="todo-content">
+                    <h4 class="todo-name">
+                        <strong>Formats</strong>
+                    </h4>
+                    Loops, Singles, Statics
+                </div>
+            </li>
+            <li class="{% if contentType and contentType.formats|length > 1%}todo-done{% endif %}" id="todo-loop">
+                <div class="todo-icon"><i class="icon-list-alt"></i></div>
+                <div class="todo-content">
+                    <h4 class="todo-name">
+                        <strong>The Loop</strong>
+                    </h4>
+                    <span>Traverse Node Collections</span>
+                </div>
+            </li>
+            {% if contentType and contentType.formats|length > 0 %}
+                <div class="nav-layouts">
+                    {% for format in contentType.formats  %}
+                        <h4>
+                            <a href="#layoutOpen">{{ format }}</a>
+                        </h4>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <li id="todo-complete">
+                <div class="todo-icon"><i class="icon-trophy"></i></div>
+                <div class="todo-content">
+                    <h4 class="todo-name">
+                        <strong>Complete</strong>
+                    </h4>
+                    <span>Save it, Ship it, Use it</span>
+                </div>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block wizardHeader %}
+    <div class="row-fluid wizard-header">
+        <div class="span12 clearfix">
+            <div class="progress pull-left span6">
+                <div class="bar span6" style="width: 25%"></div>
+            </div>
+            <div class="span2 progress-label" id="primary-progress-label">
+                <span class="percent-complete">25%</span> Complete
+            </div>
+            <a href="{{ path('cms_core.content_manager_readAll', {'siteId':site.id}) }}" class="close close-wizard">&times;</a>
+        </div>
+    </div>
+{% endblock %}

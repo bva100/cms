@@ -1,0 +1,60 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/contentManager/index.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/contentManager/index.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ site.name|title }} Content Manager {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <section class="row-fluid">
+        <div class="span12" id="top-header">
+            <h1>Manage Content Types</h1>
+            <a href="{{ path('cms_core.content_manager_wizard', {'siteId':site.id}) }}"><i class="icon-plus-sign"></i> Add New</a>
+        </div>
+    </section>
+    <section class="row-fluid" id="table-contentType-container">
+        <table class="table table-hover" id="table-contentType">
+            <tr>
+                <th>Name</th>
+                <th>Slug Prefix</th>
+                <th>open</th>
+                <th>trash</th>
+            </tr>
+            {% for contentType in site.contentTypes  %}
+             <tr>
+                 <td>{{ contentType.name }}</td>
+                 <td>{{ contentType.slugPrefix }}</td>
+                 <td ><a href="{{ path('cms_core.content_manager_wizard', {'siteId':site.id, 'contentTypeId':contentType.id}) }}" class="btn btn-info">Open</a></td>
+                 <td>
+                     <form action="{{ path('cms_core.content_manager_delete') }}" method="POST" class="delete-contentType-form">
+                         <input type="hidden" name="token" value="{{ token }}"/>
+                         <input type="hidden" name="siteId" value="{{ site.id }}"/>
+                         <input type="hidden" name="contentTypeId" value="{{ contentType.id }}"/>
+                         <button class="btn btn-danger delete-contentType"><i class="icon-trash"></i> trash</button>
+                     </form>
+                 </td>
+             </tr>
+            {% endfor %}
+        </table>
+    </section>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

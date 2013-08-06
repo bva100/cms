@@ -22,11 +22,18 @@ class ContentType extends Base {
     private $name;
 
     /**
+     * @MongoDB\String
+     */
+    private $description;
+
+    /**
      * @MongoDB\Collection
      */
     private $formats;
 
     /**
+     * Optional. Used to override default template. Not yet implemented.
+     *
      * @MongoDB\String
      */
     private $templateName;
@@ -78,6 +85,28 @@ class ContentType extends Base {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set Description
+     *
+     * @param $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get Description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
