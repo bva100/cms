@@ -1,3 +1,7 @@
+$(document).ready(function() {
+	$("#todo-basic-info").addClass('todo-active');
+});
+
 $("#contentType-basic-form").on('submit', function(){
     saveBasics(getContentTypeBasicParams(), $("#primary-save"));
 });
@@ -16,12 +20,12 @@ function getContentTypeBasicParams(){
 }
 
 function saveBasics(params, $button){
-    $button.text('Saving...').removeClass('btn-primary').attr('disabled', true);
     var savePath = document.getElementById('save-path').value;
+    $button.text('Saving...').removeClass('btn-primary').attr('disabled', true);
     $.post(savePath, params, function(data, textStatus, xhr) {
         if(xhr.status === 200){
             $("#error-container").html('');
-            window.location.href = baseUrl+'/contentManager/wizard/'+siteId+'/'+data;
+            window.location.href = baseUrl+'/contentManager/wizard/formats/'+siteId+'/'+data;
         }else{
             alert('failed');
         }

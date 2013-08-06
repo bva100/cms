@@ -32,7 +32,7 @@ class ContentType extends Base {
     private $formats;
 
     /**
-     * Optional. Used to override default template. Not yet implemented.
+     * Used to override default template. Not yet implemented.
      *
      * @MongoDB\String
      */
@@ -110,13 +110,15 @@ class ContentType extends Base {
     }
 
     /**
-     * Not used
+     * Set formats
      *
-     * @throws \Exception
+     * @param array $formats
+     * @return $this
      */
-    public function setFormats()
+    public function setFormats(array $formats)
     {
-        throw new \Exception('setFormats is not used. Please use addFormat instead');
+        $this->formats = $formats;
+        return $this;
     }
 
     /**

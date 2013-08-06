@@ -3,9 +3,10 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
-        '@CmsCoreBundle/Resources/public/js/contentManager/wizardBasic.js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+    'flat-ui/js/flatui-radio.js'
+    '@CmsCoreBundle/Resources/public/js/contentManager/wizardFormats.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
@@ -25,14 +26,19 @@
                     {% endblock %}
                     <div class="row-fluid">
                         <div class="wizard-body span12">
+                            <h3>Select Content Format Type</h3>
+                            <p>
+                                Currently, there are two types of content formats. The basic <b>"static"</b> is the appropriate choice for a simple HTML5 page. Select <b>"dynamic"</b> if you'll be adding nodes (a node is often called a 'post') and need a loop view (a page with a list of all available 'posts'). Not sure which to choose? Get
+                                <a href="#help">help.</a>
+                            </p>
                             <div class="wizard-body-item theme-basic flat-form-container">
-                                <form id="contentType-basic-form" class="wizard-form">
-                                    <label for="input-name">Content Type Name (singular)*</label>
-                                    <input type="text" id="input-name" class="span12" value="{{ contentType.name|default() }}" placeholder="Add the singular name"/>
-                                    <label for="input-slug-prefix">Slug Prefix</label>
-                                    <input type="text" id="input-slug-prefix" class="span12" value="{{ contentType.slugPrefix|default() }}" placeholder="ex: foobar"/>
-                                    <label for="input-description">Description</label>
-                                    <textarea name="description" id="input-description" class="span12" rows="10">{{ contentType.description|default() }}</textarea>
+                                <form id="contentType-format-form" class="wizard-form">
+                                    <label class="radio radio-format span2 {% if contentType.formats == ['single','loop'] %}checked{% endif %}" data-format="dynamic">
+                                        <input type="radio" name="formatType"  value="dynamic" data-toggle="radio">Dynamic
+                                    </label>
+                                    <label class="radio radio-format span2 {% if contentType.formats == ['static'] %}checked{% endif %}" data-format="static">
+                                        <input type="radio" name="formatType" value="static" data-toggle="radio"/>Static
+                                    </label>
                                 </form>
                             </div>
                         </div>
@@ -52,6 +58,6 @@
     {% endblock %}
     <input type="hidden" id="site-id" value="{{ site.id }}"/>
     <input type="hidden" id="input-contentType-id" value="{{ contentType.id|default() }}"/>
-    <input type="hidden" id="save-path" value="{{ path('cms_core.content_manager_wizard_save', {'siteId':site.id}) }}"/>
+    <input type="hidden" id="save-path" value="{{ path('cms_core.content_manager_wizard_formats', {'siteId':site.id, 'contentTypeId':contentType.id}) }}"/>
     <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
 {% endblock %}

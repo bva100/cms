@@ -104,6 +104,16 @@ cms_core.content_manager_delete:
   defaults: { _controller: CmsCoreBundle:ContentManager:delete }
   methods: [POST]
 
+cms_core.content_manager_wizard_formats:
+  pattern: /contentManager/wizard/formats/{siteId}/{contentTypeId}
+  defaults: { _controller: CmsCoreBundle:ContentManager:formats }
+  methods: [GET]
+
+cms_core.content_manager_wizard_formats_save:
+  pattern: /contentManager/wizard/formats/{siteId}/{contentTypeId}
+  defaults: { _controller: CmsCoreBundle:ContentManager:saveFormats }
+  methods: [POST]
+
 #node
 cms_core.node_delete:
   pattern: /node/delete

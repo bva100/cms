@@ -168,16 +168,23 @@ class Persister {
     }
 
     /**
+     * Persists an ODM object. onSuccess defines flashBagMessage on success. Set the verboseErrors param to true to get explicit error messages returned as a string.
+     *
      * @param $object
      * @param bool $lazy
      * @param string $onSuccess
-     * @return bool
+     * @param bool $verboseErrors
+     * @return bool|string
      */
-    public function save($object, $lazy = false, $onSuccess = 'save complete')
+    public function save($object, $lazy = false, $onSuccess = 'save complete', $verboseErrors = false)
     {
         $errors = $this->validator->validate($object);
         if ( \count($errors) > 0 )
         {
+            if ( $verboseErrors )
+            {
+                return $errors[0];
+            }
             if ( isset($this->flashBag) )
             {
                 foreach ($errors as $error) {
@@ -202,16 +209,23 @@ class Persister {
     }
 
     /**
+     * Removes an object from associated storage. OnSuccess defines the string to in flashBagNotice. Set the verboseErrors param to true to get explicit error messages returned as a string.
+     *
      * @param $object
      * @param bool $lazy
      * @param string $onSuccess
-     * @return bool
+     * @param bool $verboseErrors
+     * @return bool | string
      */
-    public function delete($object, $lazy = false, $onSuccess = 'deleted')
+    public function delete($object, $lazy = false, $onSuccess = 'deleted', $verboseErrors = false)
     {
         $errors = $this->em->remove($object);
         if ( \count($errors) > 0 )
         {
+            if ( $verboseErrors )
+            {
+                return $errors[0];
+            }
             if ( isset($this->flashBag) )
             {
                 foreach ($errors as $error) {

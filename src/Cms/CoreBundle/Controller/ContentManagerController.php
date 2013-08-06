@@ -45,7 +45,7 @@ class ContentManagerController extends Controller {
         $description = (string)$this->getRequest()->request->get('description');
         $site = $this->getSite($siteId);
 
-        $contentType = new ContentType(); // later add id and create contentType if id exists
+        $contentType = $contentTypeId ? $site->getContentType($contentTypeId) : new ContentType();
         if ( ! $contentType )
         {
             throw $this->createNotFoundException('Content Type with id '.$contentTypeId.' not found');
@@ -67,6 +67,39 @@ class ContentManagerController extends Controller {
             $site->addContentType($contentType);
         }
         return $this->get('xmlResponse')->execute($this->getRequest(), $this->get('persister')->save($site), array('onSuccess' => $contentType->getId()));
+    }
+
+    public function formatsAction($siteId, $contentTypeId)
+    {
+        $token = $this->get('csrfToken')->createToken()->getToken();
+        $notices = $this->get('session')->getFlashBag()->get('notices');
+        $site = $this->getSite($siteId);
+        $contentType = $this->getContentType($site, $contentTypeId);
+        return $this->render('CmsCoreBundle:ContentManager:wizardFormats.html.twig', array(
+            'token' => $token,
+            'notices' => $notices,
+            'site' => $site,
+            'contentType' => $contentType,
+        ));
+    }
+
+    public function saveFormatsAction($siteId, $contentTypeId)
+    {
+        $site = $this->getSite($siteId);
+        $contentType = $this->getContentType($site, $contentTypeId);
+        $formatType = (string)$this->getRequest()->request->get('formatType');
+        switch ($formatType){
+            case 'static':
+                $contentType->setFormats(array('static'));
+                break;
+            case 'dynamic':
+                $contentType->setFormats(array('single', 'loop'));
+                break;
+            default:
+                break;
+        }
+        $success = $this->get('persister')->save($site);
+        return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 
     public function deleteAction()
