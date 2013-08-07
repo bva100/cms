@@ -1,27 +1,113 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
-{% block body %}
-    <article>
-        <h1>Assets for {{ site.name | title }}</h1>
-        {% block notices %}{{ parent() }}{% endblock %}
-        <ul>
-            {% for asset in assets  %}
-                <a href="{{ path('cms_core.asset_read', {'id':asset.id}) }}">{{ asset.name | title }}.{{ asset.ext }}</a>
-                <form action="{{ path('cms_core.asset_delete') }}" method="post">
-                    <input type="hidden" name="token" value="{{ token }}"/>
-                    <input type="hidden" name="id" value="{{ asset.id }}"/>
-                    <input type="submit" value="x"/>
-                </form>
-            {% else %}
-                <li><b>No assets found</b></li>
-            {% endfor %}
-        </ul>
-        <div>
-            <a href="{{ path('cms_core.asset_new', {'siteId':site.id}) }}">Create a New Asset</a>
-        </div>
-    </article>
-
-    <nav>
-        <a href="{{ path('cms_core.site_read', {'id':site.id}) }}">Back to {{ site.name | title }}</a>
-    </nav>
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        'flat-ui/js/bootstrap-select.js'
+        '@CmsCoreBundle/Resources/public/js/assets/index.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ site.name|title }} Assets {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <section class="row-fluid">
+        <div class="span4" id="header">
+            <h1>CSS and JS Assets</h1>
+            <a href="#addNew" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
+        </div>
+        <form class="span4 offset2" id="search-form">
+            <div class="span12 pull-right">
+                <input type="search" id="search" class="span12" value="{{ search|default() }}" placeholder="Search"/>
+            </div>
+        </form>
+        <div class="span2" style="margin-top: 4px;">
+            <select name="state" class="select-block span2" id='input-ext'>
+                <option value="">View Type</option>
+                <option value="">All</option>
+                <option value="js">Javascripts</option>
+                <option value="css">Stylesheets</option>
+            </select>
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span12">
+            <table class="table table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Url</th>
+                    <th>Type</th>
+                    <th>Edit</th>
+                    <th>Trash</th>
+                </tr>
+                {% for asset in assets  %}
+                <tr>
+                    <td>
+                        <a href="{{ path('cms_core.asset_read', {'id':asset.id}) }}">{{ asset.name }}</a>
+                    </td>
+                    <td>
+                        {{ asset.url }}
+                    </td>
+                    <td>
+                        {% if asset.ext == 'js' %}
+                            Javascript
+                        {% endif %}
+                        {% if asset.ext == 'css' %}
+                            Stylesheet
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn btn-info">Edit</button>
+                    </td>
+                    <td>
+                        <form action="{{ path('cms_core.asset_delete') }}" method="POST">
+                            <input type="hidden" name="token" id="input-token" value="{{ token }}"/>
+                            <input type="hidden" name="id" id="input-id" value="{{ asset.id }}"/>
+                            <button class="btn btn-danger">Trash</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+{% endblock %}
+
+{#{% block body %}#}
+    {#<article>#}
+        {#<h1>Assets for {{ site.name | title }}</h1>#}
+        {#{% block notices %}{{ parent() }}{% endblock %}#}
+        {#<ul>#}
+            {#{% for asset in assets  %}#}
+                {#<a href="{{ path('cms_core.asset_read', {'id':asset.id}) }}">{{ asset.name | title }}.{{ asset.ext }}</a>#}
+                {#<form action="{{ path('cms_core.asset_delete') }}" method="post">#}
+                    {#<input type="hidden" name="token" value="{{ token }}"/>#}
+                    {#<input type="hidden" name="id" value="{{ asset.id }}"/>#}
+                    {#<input type="submit" value="x"/>#}
+                {#</form>#}
+            {#{% else %}#}
+                {#<li><b>No assets found</b></li>#}
+            {#{% endfor %}#}
+        {#</ul>#}
+        {#<div>#}
+            {#<a href="{{ path('cms_core.asset_new', {'siteId':site.id}) }}">Create a New Asset</a>#}
+        {#</div>#}
+    {#</article>#}
+
+    {#<nav>#}
+        {#<a href="{{ path('cms_core.site_read', {'id':site.id}) }}">Back to {{ site.name | title }}</a>#}
+    {#</nav>#}
+{#{% endblock %}#}

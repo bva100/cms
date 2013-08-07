@@ -36,20 +36,20 @@
         <tr>
             <th>Title</th>
             <th>Created</th>
-            <th>Open</th>
+            <th>Edit</th>
             <th>Trash</th>
         </tr>
         {% for node in nodes  %}
         <tr>
             <td>
-                <a href="{{ path('cms_core.content_manager_wizard_static', {'siteId':site.id, 'contentTypeId':'null', 'contentTypeName':node.contentTypeName}) }}">{{ node.title|title }}</a>
+                <b><a href="http://{{ node.domain }}/{{ node.slug }}">{{ node.title|title }}</a></b>
                 <p>{{ node.description|truncate(158) }}</p>
             </td>
             <td>
                 {{ node.created|date('F j, Y ') }}
             </td>
             <td>
-                <a href="{{ path('cms_core.content_manager_wizard_static', {'siteId':site.id, 'contentTypeId':'null', 'contentTypeName':node.contentTypeName}) }}" class="btn btn-info">Open</a>
+                <a href="{{ path('cms_core.content_manager_wizard_static', {'siteId':site.id, 'contentTypeId':'null', 'contentTypeName':node.contentTypeName}) }}" class="btn btn-info">Edit</a>
             </td>
             <td>
                 <button class="btn btn-danger content-type-delete" data-content-type-name="{{ node.contentTypeName }}" data-node-id={{ node.id }}>Trash</button>

@@ -161,7 +161,6 @@ class AssetController extends Controller  {
         }
         $histories = $this->get('persister')->getRepo('CmsCoreBundle:AssetHistory')->findAllByParentId($asset->getId());
         $siteId = $asset->getSiteId();
-
         $this->get('asset_manager')->delete($asset->getName(), $asset->getExt());
         foreach ($histories as $history)
         {

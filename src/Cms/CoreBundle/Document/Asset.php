@@ -120,7 +120,7 @@ class Asset extends Base {
     /**
      * Set acl
      *
-     * @param collection $acl
+     * @param array $acl
      * @return self
      */
     public function setAcl($acl)
@@ -132,7 +132,7 @@ class Asset extends Base {
     /**
      * Get acl
      *
-     * @return collection $acl
+     * @return array $acl
      */
     public function getAcl()
     {
