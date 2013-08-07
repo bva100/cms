@@ -125,6 +125,7 @@ class ContentTypeController extends Controller {
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentTypeAndState($siteId, $contentType->getName(), $state, array(
             'limit' => $limit,
             'offset' => $limit*($page-1),
+            'format' => 'single',
             'startDate' => $startDate,
             'endDate' => $endDate,
             'tags' => $tagArray,

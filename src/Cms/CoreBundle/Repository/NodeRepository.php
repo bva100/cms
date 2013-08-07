@@ -48,6 +48,8 @@ class NodeRepository extends DocumentRepository {
      * @param array $category
      * @param array $tags
      * @param array $params
+     * @return array|bool|\Doctrine\MongoDB\ArrayIterator|\Doctrine\MongoDB\Cursor|\Doctrine\MongoDB\EagerCursor|mixed|null
+     * @return mixed
      */
     public function findByDomainAndLocaleAndContentTypeNameAndTaxonomy($domain, $locale, $contentTypeName, array $category, array $tags, array $params)
     {
@@ -83,10 +85,11 @@ class NodeRepository extends DocumentRepository {
     }
 
     /**
-     * @param string $siteId
-     * @param string $contentTypeName
+     * @param $siteId
+     * @param $contentTypeName
+     * @param $state
      * @param array $params
-     * @returns collection of entities
+     * @return array|bool|\Doctrine\MongoDB\ArrayIterator|\Doctrine\MongoDB\Cursor|\Doctrine\MongoDB\EagerCursor|mixed|null
      */
     public function findBySiteIdAndContentTypeAndState($siteId, $contentTypeName, $state, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
     {
@@ -96,6 +99,10 @@ class NodeRepository extends DocumentRepository {
         if ( isset($state) )
         {
             $qb->field('state')->equals($state);
+        }
+        if ( isset($params['format']) )
+        {
+            $qb->field('format')->equals($params['format']);
         }
         if ( isset($params['startDate']) )
         {
