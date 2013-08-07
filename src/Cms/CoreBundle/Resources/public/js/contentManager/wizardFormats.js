@@ -8,10 +8,11 @@ $(".wizard-save").on('click', function(){
 
 function saveTheme(params, $button){
     var savePath = document.getElementById('save-path').value;
+    var contentTypeId = document.getElementById('input-contentType-id').value;
 //    $button.text('Saving...').attr('disabled', true).removeClass('btn-primary');
     $.post(savePath, params, function(data, textStatus, xhr) {
         if(xhr.status === 200){
-            alert('succss');
+            window.location.href = baseUrl+'/contentManager/wizard/loop/'+siteId+'/'+contentTypeId
         }else{
             alert('failed');
         }

@@ -152,5 +152,14 @@ class NodeRepository extends DocumentRepository {
     {
         return $this->findBySiteIdAndContentType($siteId, null, $params);
     }
+
+    public function findOneBySiteIdAndContentTypeNameAndFormat($siteId, $contentTypeName, $format)
+    {
+        return $this->createQueryBuilder()
+            ->field('siteId')->equals($siteId)
+            ->field('contentTypeName')->equals($contentTypeName)
+            ->field('format')->equals($format)
+            ->getQuery()->execute()->getSingleResult();
+    }
     
 }

@@ -7,6 +7,7 @@
 
 namespace Cms\CoreBundle\Controller;
 
+use Cms\CoreBundle\Document\Node;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,6 +100,71 @@ class ContentManagerController extends Controller {
                 break;
         }
         $success = $this->get('persister')->save($site);
+        return $this->get('xmlResponse')->execute($this->getRequest(), $success);
+    }
+
+    public function loopAction($siteId, $contentTypeId)
+    {
+        $site = $this->getSite($siteId);
+        $contentType = $this->getContentType($site, $contentTypeId);
+        $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findOneBySiteIdAndContentTypeNameAndFormat($siteId, $contentType->getName(), 'loop');
+        if ( ! $node )
+        {
+            $node = null;
+        }
+        return $this->render('CmsCoreBundle:ContentManager:wizardLoop.html.twig', array(
+            'site' => $site,
+            'contentType' => $contentType,
+            'node' => $node,
+        ));
+    }
+
+    public function saveLoopAction($siteId, $contentTypeId)
+    {
+        $nodeId = (string)$this->getRequest()->request->get('nodeId');
+        $domain = (string)$this->getRequest()->request->get('domain');
+        $locale = (string)$this->getRequest()->request->get('locale');
+        $slug = (string)$this->getRequest()->request->get('slug');
+        $title = (string)$this->getRequest()->request->get('title');
+        $defaultLimit = (int)$this->getRequest()->request->get('defaultLimit');
+        $description = (string)$this->getRequest()->request->get('description');
+
+        $site = $this->getSite($siteId);
+        $contentType = $this->getContentType($site, $contentTypeId);
+        $node = $nodeId ? $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($nodeId) : new Node();
+        if ( ! $node )
+        {
+            throw $this->createNotFoundException('Node with id '.$id.' not found');
+        }
+        $node->setSiteId($siteId);
+        $node->setContentTypeName($contentType->getName());
+        $node->setFormat('loop');
+        $node->setTemplateName($site->getNamespace().':Master:Loop'); // this can be set to something custom for custom loops which, perhaps, extend Master:Loop
+        if ( $domain )
+        {
+            $node->setDomain($domain);
+        }
+        if ( $locale )
+        {
+            $node->setLocale($locale);
+        }
+        if ( $slug )
+        {
+            $node->setSlug($slug);
+        }
+        if ( $title )
+        {
+            $node->setTitle($title);
+        }
+        if ( $defaultLimit )
+        {
+            $node->setDefaultLimit($defaultLimit);
+        }
+        if ( $description )
+        {
+            $node->setDescription($description);
+        }
+        $success = $this->get('persister')->save($node, false, null, true);
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 
