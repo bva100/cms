@@ -27,6 +27,50 @@ class ContentManagerController extends Controller {
         ));
     }
 
+    public function staticReadAllAction($siteId)
+    {
+        $site = $this->getSite($siteId);
+        $search = $this->getRequest()->query->get('search');
+        $sortBy = (string)$this->getRequest()->query->get('sortBy');
+        if ( ! $sortBy )
+        {
+            $sortBy = 'created';
+        }
+        $sortOrder = (string)$this->getRequest()->query->get('sortOrder');
+        if ( ! $sortOrder )
+        {
+            $sortOrder = 'desc';
+        }
+        $limit = $this->getRequest()->query->get('limit');
+        if ( ! $limit )
+        {
+            $limit = 12;
+        }
+        $page = $this->getRequest()->query->get('page');
+        if ( ! $page )
+        {
+            $page = 1;
+        }
+        $nextPage = $limit*($page-1) >= $limit ? false : true;
+        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentTypeAndState($siteId, null, null, array(
+            'limit' => $limit,
+            'offset' => $limit*($page-1),
+            'format' => 'static',
+            'search' => $search,
+            'sort' => array('by' => $sortBy, 'order' => $sortOrder),
+        ));
+        return $this->render('CmsCoreBundle:ContentManager:static.html.twig', array(
+            'site' => $site,
+            'search' => $search,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
+            'limit' => $limit,
+            'page' => $page,
+            'nextPage' => $nextPage,
+            'nodes' => $nodes,
+        ));
+    }
+
     public function wizardAction($siteId)
     {
         $contentTypeId = $this->getRequest()->query->get('contentTypeId');
@@ -171,7 +215,12 @@ class ContentManagerController extends Controller {
     public function staticAction($siteId, $contentTypeId)
     {
         $site = $this->getSite($siteId);
-        $contentType = $this->getContentType($site, $contentTypeId);
+        $contentTypeName = (string)$this->getRequest()->query->get('contentTypeName');
+        if ( $contentTypeId === 'null' AND $contentTypeName ){
+            $contentType = $this->getContentTypeByName($site, $contentTypeName);
+        }else{
+            $contentType = $this->getContentType($site, $contentTypeId);
+        }
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findOneBySiteIdAndContentTypeNameAndFormat($siteId, $contentType->getName(), 'static');
         if ( ! $node )
         {
@@ -235,12 +284,31 @@ class ContentManagerController extends Controller {
 
     public function deleteAction()
     {
+        // this methods needs some serious access control
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $contentTypeId = (string)$this->getRequest()->request->get('contentTypeId');
+        $contentTypeName = (string)$this->getRequest()->request->get('contentTypeName');
+        $nodeId = (string)$this->getRequest()->request->get('nodeId');
         $site = $this->getSite($siteId);
-        $contentType = $this->getContentType($site, $contentTypeId);
+        if ( ! $contentTypeId AND $contentTypeName ){
+            $contentType = $this->getContentTypeByName($site, $contentTypeName);
+        }else{
+            $contentType = $this->getContentType($site, $contentTypeId);
+        }
+        if ( $nodeId )
+        {
+            $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($nodeId);
+            if ( ! $node )
+            {
+                throw $this->createNotFoundException('Node id with '.$nodeId.' not found');
+            }
+        }
         $site->removeContentType($contentType);
         $success = $this->get('persister')->save($site);
+        if ( $success AND $nodeId )
+        {
+            $this->get('persister')->delete($node);
+        }
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {
@@ -264,7 +332,17 @@ class ContentManagerController extends Controller {
         $contentType = $site->getContentType($contentTypeId);
         if ( ! $contentType )
         {
-            throw $this->createNotFoundException('Content type with id'.$contentTypeId.' not found');
+            throw $this->createNotFoundException('Content type with id '.$contentTypeId.' not found');
+        }
+        return $contentType;
+    }
+
+    public function getContentTypeByName($site, $name)
+    {
+        $contentType = $site->getContentTypeByName($name);
+        if ( ! $contentType )
+        {
+            throw $this->createNotFoundException('Content type with name '.$name.' not found');
         }
         return $contentType;
     }

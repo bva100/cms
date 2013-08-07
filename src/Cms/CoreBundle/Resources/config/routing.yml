@@ -89,6 +89,11 @@ cms_core.content_manager_readAll:
   defaults: { _controller: CmsCoreBundle:ContentManager:readAll }
   methods: [GET]
 
+cms_core.content_manager_static_readAll:
+  pattern: /contentManager/static/readAll/{siteId}
+  defaults: { _controller: CmsCoreBundle:ContentManager:staticReadAll }
+  methods: [GET]
+
 cms_core.content_manager_wizard:
   pattern: /contentManager/wizard/{siteId}
   defaults: { _controller: CmsCoreBundle:ContentManager:wizard }

@@ -93,9 +93,11 @@ class NodeRepository extends DocumentRepository {
      */
     public function findBySiteIdAndContentTypeAndState($siteId, $contentTypeName, $state, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
     {
-        $qb = $this->createQueryBuilder()
-                ->field('siteId')->equals($siteId)
-                ->field('contentTypeName')->equals($contentTypeName);
+        $qb = $this->createQueryBuilder()->field('siteId')->equals($siteId);
+        if ( isset($contentTypeName) )
+        {
+            $qb->field('contentTypeName')->equals($contentTypeName);
+        }
         if ( isset($state) )
         {
             $qb->field('state')->equals($state);

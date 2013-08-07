@@ -91,6 +91,11 @@ class ContentTypeController extends Controller {
         $search = $this->getRequest()->query->get('search');
         $tags = $this->getRequest()->query->get('tags');
         $tagArray = $tags ? explode(',', $tags) : array();
+        $format = (string)$this->getRequest()->query->get('format');
+        if ( ! $format )
+        {
+            $format = 'single';
+        }
         $sortBy = (string)$this->getRequest()->query->get('sortBy');
         if ( ! $sortBy )
         {
@@ -120,12 +125,12 @@ class ContentTypeController extends Controller {
         $contentType = $site->getContentType($id);
         if ( ! $contentType )
         {
-            throw $this->createNotFoundException('ConentType with id '.$id.' not found');
+            throw $this->createNotFoundException('ContentType with id '.$id.' not found');
         }
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndContentTypeAndState($siteId, $contentType->getName(), $state, array(
             'limit' => $limit,
             'offset' => $limit*($page-1),
-            'format' => 'single',
+            'format' => $format,
             'startDate' => $startDate,
             'endDate' => $endDate,
             'tags' => $tagArray,

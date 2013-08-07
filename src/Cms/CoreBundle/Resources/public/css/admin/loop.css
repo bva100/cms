@@ -6,6 +6,9 @@ h1 {
     font-size: 18px;
     text-decoration: none;
 }
+#search-form {
+    margin-top: 4px;
+}
 #search-container {
     margin: 4px 0px 16px;
 }

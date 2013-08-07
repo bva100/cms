@@ -1,0 +1,71 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/contentManager/static.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    Static {{ site.name|title }} Pages {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span6" id="header">
+            <h1>Static Pages</h1>
+            <a href="{{ path('cms_core.content_manager_wizard', {'siteId':site.id}) }}" id="add-new"> <i class="icon-plus-sign"></i> Add New</a>
+        </div>
+        <form id="search-form" class="span6">
+            <input type="search" id="search" class="span12 pull-right" placeholder="search"/>
+        </form>
+    </div>
+    <table class="table table-hover">
+        <tr>
+            <th>Title</th>
+            <th>Created</th>
+            <th>Open</th>
+            <th>Trash</th>
+        </tr>
+        {% for node in nodes  %}
+        <tr>
+            <td>
+                <a href="{{ path('cms_core.content_manager_wizard_static', {'siteId':site.id, 'contentTypeId':'null', 'contentTypeName':node.contentTypeName}) }}">{{ node.title|title }}</a>
+                <p>{{ node.description|truncate(158) }}</p>
+            </td>
+            <td>
+                {{ node.created|date('F j, Y ') }}
+            </td>
+            <td>
+                <a href="{{ path('cms_core.content_manager_wizard_static', {'siteId':site.id, 'contentTypeId':'null', 'contentTypeName':node.contentTypeName}) }}" class="btn btn-info">Open</a>
+            </td>
+            <td>
+                <button class="btn btn-danger content-type-delete" data-content-type-name="{{ node.contentTypeName }}" data-node-id={{ node.id }}>Trash</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div style="text-align: center">
+                <button class="btn btn-inverse page-previous"><i class="icon-chevron-left"></i> Prev</button>
+                <button class="btn btn-inverse page-next">Next <i class="icon-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="site-id" value="{{ site.id }}"/>
+    <input type="hidden" id="delete-path" value="{{ path('cms_core.content_manager_delete') }}"/>
+{% endblock %}

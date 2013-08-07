@@ -54,7 +54,7 @@
                                 </form>
                                 <form id='save-template-form' class="row-fluid">
                                     <label for="input-code-content">Twig code (this is the content which will be embedded into your theme's static layout):</label>
-                                    <div id='input-code-content'>{{ node.view['html']|default() }}</div>
+                                    <div id='input-code-content'>{{ node.view('html')|default() }}</div>
                                     <button class="btn btn-info pull-right span2">Save</button>
                                 </form>
                             </div>
