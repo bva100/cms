@@ -1,0 +1,80 @@
+{% extends 'CmsCoreBundle:ContentManager:wizardComponents.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/template/menu.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/dependencies/ace-builds-master/src-min-noconflict/ace.js"></script>
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/template/aceEditor.js'
+    '@CmsCoreBundle/Resources/public/js/contentManager/wizardStatic.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                {% block todo %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+            <section class="span9">
+                <div id="#error-container"></div>
+                <div id="wizard-content">
+                    {% block wizardHeader %}
+                        {{ parent() }}
+                    {% endblock %}
+                    <div class="row-fluid">
+                        <div class="wizard-body span12">
+                            <h3>Static Page</h3>
+                            <p>A static page is a page which displays some HTML, CSS and Javascript. Set it up by completing the form below.</p>
+                            <div class="wizard-body-item theme-basic flat-form-container">
+                                <form id="contentType-format-form" class="wizard-form">
+                                    <input type="hidden" id="input-node-id" value="{{ node.id|default() }}"/>
+                                    <label for="input-slug">Slug:</label>
+                                    <input type="text" name='slug' id="input-slug" class="span12" placeholder="welcome/homepage" value="{{ node.slug|default() }}"/>
+                                    <label for="input-title">Title:</label>
+                                    <input type="text" name="title" id="input-title" class="span12" placeholder="Homepage Title" value="{{ node.title|default() }}"/>
+                                    <label for="input-locale">Locale:</label>
+                                    <input type="text" name="locale" id="input-locale" class="span12" placeholder="en-us" value="{{ node.locale|default() }}"/>
+                                    <label for="input-domain">Domain:</label>
+                                    <input type="text" name="domain" id="input-domain" class="span12" placeholder="www.domainname.com" value="{{ node.domain|default() }}"/>
+                                    <label for="input-description">Description:</label>
+                                    <textarea name="description" id="input-description" rows="4" class="span12" placeholder="Meta Description">{{ node.description|default() }}</textarea>
+                                </form>
+                                <form id='save-template-form' class="row-fluid">
+                                    <label for="input-code-content">Twig code (this is the content which will be embedded into your theme's static layout):</label>
+                                    <div id='input-code-content'>{{ node.view['html']|default() }}</div>
+                                    <button class="btn btn-info pull-right span2">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="wizard-footer">
+                            <button class="btn btn-primary wizard-save wizard-previous pull-left" data-current="theme-basic" disabled="true">Previous</button>
+                            <button class="btn btn-primary wizard-save wizard-next pull-right" id="primary-save" data-current='contentType-basic'>Save and Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+    <input type="hidden" id="site-id" value="{{ site.id }}"/>
+    <input type="hidden" id="input-contentType-id" value="{{ contentType.id|default() }}"/>
+    <input type="hidden" id="code-save-path" value="{{ path('cms_core.content_manager_wizard_static_save', {'siteId':site.id, 'contentTypeId':contentType.id}) }}"/>
+    <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
+{% endblock %}

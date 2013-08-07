@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block title %}
-    {{ contentType.name|default('New') }} Content Type {{ parent() }}
+    {{ contentType.name|default('New')|title }} Content Type {{ parent() }}
 {% endblock %}
 
 {% block todo %}
