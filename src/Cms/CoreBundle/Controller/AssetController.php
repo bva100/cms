@@ -66,7 +66,7 @@ class AssetController extends Controller  {
         $notices = $this->get('session')->getFlashBag()->get('notices');
         if ( ! $site )
         {
-            throw $this->createNotFoundException('Site with id '.$id.' not found');
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
         }
         return $this->render('CmsCoreBundle:Asset:edit.html.twig', array(
             'token' => $token,
@@ -77,7 +77,6 @@ class AssetController extends Controller  {
 
     public function saveAction()
     {
-        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
         $name = (string)$this->getRequest()->request->get('name');
@@ -114,9 +113,8 @@ class AssetController extends Controller  {
             $oldContent = $asset->getContent();
             $asset->setContent($content);
         }
-
         // persist to asset entity
-        $success = $this->get('persister')->save($asset);
+        $success = $this->get('persister')->save($asset, false, false);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse AND ! $success )
         {
@@ -136,12 +134,10 @@ class AssetController extends Controller  {
             $history = new AssetHistory();
             $history->setParentId($asset->getId());
             $history->setContent($oldContent);
-            $this->get('persister')->save($history, false, 'saved old version to history');
+            $this->get('persister')->save($history, false, false);
         }
-
         // persist to filesystem
         $this->get('asset_manager')->save($asset->getName(), $asset->getExt(), $asset->getContent());
-
         // return
         if ( $xmlResponse )
         {

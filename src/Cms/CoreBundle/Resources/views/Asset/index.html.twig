@@ -27,7 +27,7 @@
     <section class="row-fluid">
         <div class="span4" id="header">
             <h1>CSS and JS Assets</h1>
-            <a href="#addNew" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
+            <a href="{{ path('cms_core.asset_new', {'siteId':site.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
         </div>
         <form class="span4 offset2" id="search-form">
             <div class="span12 pull-right">
@@ -45,6 +45,7 @@
     </section>
     <section class="row-fluid">
         <div class="span12">
+            {% block notices %}{{ parent() }}{% endblock %}
             <table class="table table-hover">
                 <tr>
                     <th>Name</th>
@@ -70,7 +71,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <button class="btn btn-info">Edit</button>
+                        <a href="{{ path('cms_core.asset_read', {'id':asset.id}) }}" class="btn btn-info">Edit</a>
                     </td>
                     <td>
                         <form action="{{ path('cms_core.asset_delete') }}" method="POST">
@@ -84,30 +85,11 @@
             </table>
         </div>
     </section>
+    <nav class="row-fluid" style="text-align: center">
+        <button class="btn btn-inverse page-previous"><i class="icon-chevron-left"></i> Prev</button>
+        <button class="btn btn-inverse page-next">Next <i class="icon-chevron-right"></i></button>
+    </nav>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
 {% endblock %}
-
-{#{% block body %}#}
-    {#<article>#}
-        {#<h1>Assets for {{ site.name | title }}</h1>#}
-        {#{% block notices %}{{ parent() }}{% endblock %}#}
-        {#<ul>#}
-            {#{% for asset in assets  %}#}
-                {#<a href="{{ path('cms_core.asset_read', {'id':asset.id}) }}">{{ asset.name | title }}.{{ asset.ext }}</a>#}
-                {#<form action="{{ path('cms_core.asset_delete') }}" method="post">#}
-                    {#<input type="hidden" name="token" value="{{ token }}"/>#}
-                    {#<input type="hidden" name="id" value="{{ asset.id }}"/>#}
-                    {#<input type="submit" value="x"/>#}
-                {#</form>#}
-            {#{% else %}#}
-                {#<li><b>No assets found</b></li>#}
-            {#{% endfor %}#}
-        {#</ul>#}
-        {#<div>#}
-            {#<a href="{{ path('cms_core.asset_new', {'siteId':site.id}) }}">Create a New Asset</a>#}
-        {#</div>#}
-    {#</article>#}
-
-    {#<nav>#}
-        {#<a href="{{ path('cms_core.site_read', {'id':site.id}) }}">Back to {{ site.name | title }}</a>#}
-    {#</nav>#}
-{#{% endblock %}#}

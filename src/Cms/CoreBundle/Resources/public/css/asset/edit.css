@@ -1,0 +1,8 @@
+#input-code-content {
+    position: relative;
+    width: 100%;
+    min-height: 470px;
+    margin-bottom: 20px;
+    border: 2px solid #BDC3C7;
+    border-radius: 5px;
+}
