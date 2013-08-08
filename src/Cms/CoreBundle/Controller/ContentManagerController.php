@@ -151,6 +151,7 @@ class ContentManagerController extends Controller {
     {
         $site = $this->getSite($siteId);
         $contentType = $this->getContentType($site, $contentTypeId);
+        // CHANGE THIS SO THAT NODES CAN BE DYNAMICALLY ADDED
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findOneBySiteIdAndContentTypeNameAndFormat($siteId, $contentType->getName(), 'loop');
         if ( ! $node )
         {

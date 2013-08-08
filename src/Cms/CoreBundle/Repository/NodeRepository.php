@@ -72,7 +72,7 @@ class NodeRepository extends DocumentRepository {
             {
                 $qb->field('categories.parent')->equals($category['parent']);
             }
-            if ( isset($category['sub']) )
+            if ( isset($category['sub']) AND ! empty($category['sub']) )
             {
                 $qb->field('categories.sub')->equals($category['sub']);
             }

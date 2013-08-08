@@ -32,6 +32,11 @@ class ContentType extends Base {
     private $formats;
 
     /**
+     * @MongoDB\Collection
+     */
+    private $loopSlugs;
+
+    /**
      * Used to override default template. Not yet implemented.
      *
      * @MongoDB\String
@@ -61,6 +66,7 @@ class ContentType extends Base {
     public function __construct()
     {
         $this->formats = array();
+        $this->loopSlugs = array();
         $this->categories = array();
         $this->fields = array();
     }
@@ -160,6 +166,65 @@ class ContentType extends Base {
     public function getFormats()
     {
         return $this->formats;
+    }
+
+    /**
+     * Set loopSlugs. Collection of loop slugs.
+     *
+     * @param array $loopSlug
+     * @return $this
+     */
+    public function setLoops(array $loopSlug)
+    {
+        $this->loopSlugs = $loopSlug;
+        return $this;
+    }
+
+    /**
+     * Add a loop slug to the loop collection.
+     *
+     * @param $loopSlug
+     * @return $this
+     */
+    public function addLoopSlug($loopSlug)
+    {
+        if ( ! is_string($loopSlug) OR in_array($loopSlug, $this->loopSlugs) )
+        {
+            return $this;
+        }
+        $this->loopSlugs[] = $loopSlug;
+        return $this;
+    }
+
+    /**
+     * Remove a loop slug from the loopSlugs collection.
+     *
+     * @param $loopSlug
+     * @return $this
+     */
+    public function removeLoopSlug($loopSlug)
+    {
+        if ( ! is_string($loopSlug) )
+        {
+            return $this;
+        }
+        $keys = \array_keys($this->loopSlugs, $loopSlug);
+        foreach ($keys as $key)
+        {
+            unset($this->loopSlugs[$key]);
+            $this->loopSlugs = array_values($this->loopSlugs);
+        }
+        return $this;
+    }
+
+    /**
+     * Get loopSlugs. Collection of loop slugs.
+     *
+     * @return array
+     */
+    public function getLoopSlugs()
+    {
+        return $this->loopSlugs;
     }
 
     /**

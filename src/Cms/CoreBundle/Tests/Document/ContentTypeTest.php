@@ -211,4 +211,30 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
         $this->assertEmpty($this->contentType->getFields());
     }
 
+    /**
+     * @covers \Cms\CoreBundle\Document\ContentType::addLoopSlug
+     * @covers \Cms\CoreBundle\Document\ContentType::removeLoopSlug
+     */
+    public function testAddRemoveLoopSlugs()
+    {
+        $this->contentType->addLoopSlug('foo');
+        $this->contentType->addLoopSlug('bar');
+        $this->contentType->addLoopSlug('foobar');
+        $this->assertCount(3, $this->contentType->getLoopSlugs());
+        $this->assertEquals(array('foo', 'bar', 'foobar'), $this->contentType->getLoopSlugs());
+
+        $this->contentType->addLoopSlug('foo');
+        $this->assertCount(3, $this->contentType->getLoopSlugs());
+
+        $this->contentType->removeLoopSlug('foobar');
+        $this->assertCount(2, $this->contentType->getLoopSlugs());
+        $this->assertEquals(array('foo', 'bar'), $this->contentType->getLoopSlugs());
+        $this->contentType->removeLoopSlug('foobar');
+        $this->assertCount(2, $this->contentType->getLoopSlugs());
+        $this->contentType->removeLoopSlug('foo');
+        $this->assertCount(1, $this->contentType->getLoopSlugs());
+        $this->contentType->removeLoopSlug('bar');
+        $this->assertEmpty($this->contentType->getLoopSlugs());
+    }
+
 }
