@@ -162,7 +162,7 @@ class AssetController extends Controller  {
         {
             $this->get('persister')->delete($history, true, null);
         }
-        $success = $this->get('persister')->delete($asset);
+        $success = $this->get('persister')->delete($asset, false, false);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )
         {

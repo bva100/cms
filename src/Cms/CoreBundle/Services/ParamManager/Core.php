@@ -91,13 +91,40 @@ class Core {
             'domain' => $this->request->getHost(),
             'locale' => $this->getLocale(),
         );
+        $queryArray = $this->request->query->all();
         if ( count($params) > 1 )
         {
             unset($params[0]);
             $paramsArray['taxonomyParent'] = array_shift($params);
             $paramsArray['taxonomySub'] = $params;
         }
-
+        if ( ! empty($queryArray) )
+        {
+            if ( isset($queryArray['tag']) )
+            {
+                $paramsArray['tags'] = array($queryArray['tag']);
+            }
+            if ( isset($queryArray['tags']) ){
+                $paramsArray['tags'] = explode(',', $queryArray['tags']);
+            }
+            if ( isset($queryArray['category']) )
+            {
+                $category = explode(',', $queryArray['category']);
+                $paramsArray['taxonomyParent'] = $category[0];
+                if ( isset($category[1]) )
+                {
+                    $paramsArray['taxonomySub'] = $category[1];
+                }
+            }
+            if ( isset($queryArray['child']) )
+            {
+                $paramsArray['taxonomySub'] = $queryArray['child'];
+            }
+            if ( isset($queryArray['sub']) )
+            {
+                $paramsArray['taxonomySub'] = $queryArray['sub'];
+            }
+        }
         \parse_str($this->request->getQueryString());
         if ( isset($locale) AND is_string($locale) )
         {

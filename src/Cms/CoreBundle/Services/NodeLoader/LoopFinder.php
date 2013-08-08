@@ -60,14 +60,18 @@ class LoopFinder {
                     }
                 }
             }
-            else if( $loopNode->getFormat() === 'loop-category' )
+            else
             {
                 $category['parent'] = $params['taxonomyParent'];
                 if ( isset($params['taxonomySub']) )
                 {
-                    $category['sub'] = $params['taxonomySub'][0];
+                    $category['sub'] = $params['taxonomySub'];
                 }
             }
+        }
+        if ( isset($params['tags']) )
+        {
+            $tags = $params['tags'];
         }
         if ( ! isset($params['limit']) AND $defaultLimit = $loopNode->getDefaultLimit() )
         {
