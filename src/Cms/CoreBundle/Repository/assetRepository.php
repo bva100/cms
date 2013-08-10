@@ -18,5 +18,19 @@ class assetRepository extends DocumentRepository {
             ->field('siteId')->equals($siteId)
             ->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
+
+    public function findAllBySiteIdAndType($siteId, $type, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
+    {
+        $qb = $this->createQueryBuilder()->field('siteId')->equals($siteId);
+        if ( isset($type) )
+        {
+            $qb->field('ext')->equals($type);
+        }
+        if ( isset($params['search']) )
+        {
+            $qb->addOr($qb->expr()->field('name')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
+        }
+        return $qb->sort($params['sort']['by'], $params['sort']['order'])->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
+    }
     
 }

@@ -46,6 +46,11 @@ class Asset extends Base {
      */
     private $content;
 
+    public function __construct()
+    {
+        $this->created = time();
+    }
+
     /**
      * Set siteId
      *

@@ -26,6 +26,11 @@ class AssetHistory extends Base {
      */
     private $content;
 
+    public function __construct()
+    {
+        $this->created = time();
+    }
+
     /**
      * Set parentId
      *

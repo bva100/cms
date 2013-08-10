@@ -30,16 +30,16 @@
             <a href="{{ path('cms_core.asset_new', {'siteId':site.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
         </div>
         <form class="span4 offset2" id="search-form">
-            <div class="span12 pull-right">
+            <form class="span12 pull-right" id="search-form">
                 <input type="search" id="search" class="span12" value="{{ search|default() }}" placeholder="Search"/>
-            </div>
+            </form>
         </form>
         <div class="span2" style="margin-top: 4px;">
             <select name="state" class="select-block span2" id='input-ext'>
                 <option value="">View Type</option>
                 <option value="">All</option>
-                <option value="js">Javascripts</option>
-                <option value="css">Stylesheets</option>
+                <option value="js" {% if type == 'js' %}selected{% endif %}>Javascripts</option>
+                <option value="css" {% if type == 'css' %}selected{% endif %}>Stylesheets</option>
             </select>
         </div>
     </section>
@@ -86,10 +86,14 @@
         </div>
     </section>
     <nav class="row-fluid" style="text-align: center">
-        <button class="btn btn-inverse page-previous"><i class="icon-chevron-left"></i> Prev</button>
-        <button class="btn btn-inverse page-next">Next <i class="icon-chevron-right"></i></button>
+        <button class="btn btn-inverse page-previous" {% if page == 1 %}disabled{% endif %}><i class="icon-chevron-left"></i> Prev</button>
+        <button class="btn btn-inverse page-next" {% if not nextPage %}disabled{% endif %}>Next <i class="icon-chevron-right"></i></button>
     </nav>
     {% block footer %}
         {{ parent() }}
     {% endblock %}
+    <input type="hidden" id="site-id" value="{{ site.id }}"/>
+    <input type="hidden" id="input-page" value="{{ page }}"/>
+    <input type="hidden" id="input-limit" value="{{ limit }}"/>
+    <input type="hidden" id="path" value="{{ path('cms_core.asset_readAll', {siteId: site.id}) }}"/>
 {% endblock %}

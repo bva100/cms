@@ -19,17 +19,40 @@ class AssetController extends Controller  {
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $notices = $this->get('session')->getFlashBag()->get('notices');
+        $type = $this->getRequest()->query->get('type');
+        $search = $this->getRequest()->query->get('search');
+        $page = (int)$this->getRequest()->query->get('page');
+        if ( ! $page )
+        {
+            $page = 1;
+        }
+        $limit = (int)$this->getRequest()->query->get('limit');
+        if ( ! $limit )
+        {
+            $limit = 14;
+        }
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
-            throw $this->createNotFoundException('Site with id '.$id.' not found');
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
         }
-        $assets = $this->get('persister')->getRepo('CmsCoreBundle:Asset')->findAllBySiteId($siteId);
+        $assets = $this->get('persister')->getRepo('CmsCoreBundle:Asset')->findAllBySiteIdAndType($siteId, $type, array(
+            'offset' => $limit*($page-1),
+            'limit' => $limit,
+            'sort' => array('by' => 'created', 'order' => 'descending'),
+            'search' => $search,
+        ));
+        $nextPage = $limit*($page-1) >= $limit ? false : true;
         return $this->render('CmsCoreBundle:Asset:index.html.twig', array(
             'token' => $token,
             'notices' => $notices,
             'site' => $site,
             'assets' => $assets,
+            'type' => $type,
+            'page' => $page,
+            'limit' => $limit,
+            'search' => $search,
+            'nextPage' => $nextPage,
         ));
     }
 
