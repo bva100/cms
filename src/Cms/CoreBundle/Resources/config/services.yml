@@ -31,6 +31,8 @@ services:
         class: %cms.template_client.class%
     template_helper:
         class: %cms.template_helper.class%
+        calls:
+          - [setTwigEnvironment, [@twig_loader]]
     loop_finder:
         class: %cms.node_loop_finder.class%
     loop_loader:

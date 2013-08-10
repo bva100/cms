@@ -46,8 +46,16 @@ function saveCodeEditor(params, $button){
     $.post(saveCodePath, params, function(data, textStatus, xhr) {
         if(xhr.status === 200){
             $("#error-container").html('<div class="alert alert-info"><i class="icon-bullhorn"></i> Saved</div>');
+            $button.attr('disabled', false).removeClass('btn-info').addClass('btn-primary').text('Saved').delay(1100).queue(function() {
+                $button.removeClass('btn-primary').addClass('btn-info').text('Save');
+                $(this).dequeue();
+            });
         }else{
             $("#error-container").html('<div class="alert alert-danger"><i class="icon-warning-sign"></i> Failed</div>');
+            $button.attr('disabled', false).removeClass('btn-info').addClass('btn-primary').text('Saved').delay(1100).queue(function() {
+                $button.removeClass('btn-primary').addClass('btn-info').text('Save');
+                $(this).dequeue();
+            });
         }
     });
 }

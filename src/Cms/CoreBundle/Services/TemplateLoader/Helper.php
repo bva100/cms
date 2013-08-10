@@ -24,6 +24,11 @@ class Helper {
     private $nonWhiteSpaceCode;
 
     /**
+     * @var \Twig_Environment twigEnvironment;
+     */
+    private $twigEnvironment;
+
+    /**
      * Raw code is template code which typically does not contain use or extend statements
      *
      * @param $rawCode
@@ -67,6 +72,24 @@ class Helper {
             $this->setNonWhiteSpaceCode();
         }
         return $this->nonWhiteSpaceCode;
+    }
+
+    /**
+     * @param \Twig_Environment $twigEnvironment
+     * @return $this
+     */
+    public function setTwigEnvironment($twigEnvironment)
+    {
+        $this->twigEnvironment = $twigEnvironment;
+        return $this;
+    }
+
+    /**
+     * @return \Twig_Environment string
+     */
+    public function getTwigEnvironment()
+    {
+        return $this->twigEnvironment;
     }
 
     /**
@@ -118,7 +141,7 @@ class Helper {
      */
     public function validateTwigSyntax()
     {
-        $twig = new \Twig_Environment();
+        $twig = $this->getTwigEnvironment()->load();
         try{
             $twig->parse($twig->tokenize($this->rawCode));
         }catch(\Twig_Error_Syntax $e){
