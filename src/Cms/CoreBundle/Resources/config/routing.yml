@@ -129,6 +129,11 @@ cms_core.content_manager_wizard_loop_save:
   defaults: { _controller: CmsCoreBundle:ContentManager:saveLoop }
   methods: [POST]
 
+cms_core.content_manager_wizard_loop_delete:
+  pattern: /contentManager/wizard/loop/delete/{siteId}/{contentTypeId}
+  defaults: { _controller: CmsCoreBundle:ContentManager:deleteLoop }
+  methods: [POST]
+
 cms_core.content_manager_wizard_static:
   pattern: /contentManager/wizard/static/{siteId}/{contentTypeId}
   defaults: { _controller: CmsCoreBundle:ContentManager:static }

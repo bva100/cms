@@ -212,29 +212,44 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers \Cms\CoreBundle\Document\ContentType::addLoopSlug
-     * @covers \Cms\CoreBundle\Document\ContentType::removeLoopSlug
+     * @covers \Cms\CoreBundle\Document\ContentType::setLoops
+     * @covers \Cms\CoreBundle\Document\ContentType::getLoops
      */
-    public function testAddRemoveLoopSlugs()
+    public function testSetGetLoops()
     {
-        $this->contentType->addLoopSlug('foo');
-        $this->contentType->addLoopSlug('bar');
-        $this->contentType->addLoopSlug('foobar');
-        $this->assertCount(3, $this->contentType->getLoopSlugs());
-        $this->assertEquals(array('foo', 'bar', 'foobar'), $this->contentType->getLoopSlugs());
+        $loop1 = array('id' => '1', 'domain' => 'localhost', 'locale' => 'en_US', 'slug' => 'test/');
+        $loop2 = array('id' => '2', 'domain' => 'loop2.com', 'locale' => null, 'slug' => 'secondloop/');
+        $loop3 = array('id' => '3', 'domain' => 'testtesttestwithphpunit.com', 'locale' => 'us', 'slug' => 'testloop3/');
+        $loops = array($loop1, $loop2, $loop3);
+        $this->contentType->setLoops($loops);
+        $this->assertCount(3, $this->contentType->getLoops());
+        $this->assertEquals($loops, $this->contentType->getLoops());
+    }
 
-        $this->contentType->addLoopSlug('foo');
-        $this->assertCount(3, $this->contentType->getLoopSlugs());
+    /**
+     * @covers \Cms\CoreBundle\Document\ContentType::addLoop
+     * @covers \Cms\CoreBundle\Document\ContentType::removeLoop
+     */
+    public function testAddRemoveLoops()
+    {
+        $loop1 = array('id' => '1', 'domain' => 'localhost', 'locale' => 'en_US', 'slug' => 'test/');
+        $loop2 = array('id' => '2', 'domain' => 'loop2.com', 'locale' => null, 'slug' => 'secondloop/');
+        $loop3 = array('id' => '3', 'domain' => 'testtesttestwithphpunit.com', 'locale' => 'us', 'slug' => 'testloop3/');
+        $loops = array($loop1, $loop2, $loop3);
 
-        $this->contentType->removeLoopSlug('foobar');
-        $this->assertCount(2, $this->contentType->getLoopSlugs());
-        $this->assertEquals(array('foo', 'bar'), $this->contentType->getLoopSlugs());
-        $this->contentType->removeLoopSlug('foobar');
-        $this->assertCount(2, $this->contentType->getLoopSlugs());
-        $this->contentType->removeLoopSlug('foo');
-        $this->assertCount(1, $this->contentType->getLoopSlugs());
-        $this->contentType->removeLoopSlug('bar');
-        $this->assertEmpty($this->contentType->getLoopSlugs());
+        $this->contentType->addLoop($loop1['id'], $loop1['domain'] ,$loop1['locale'], $loop1['slug']);
+        $this->contentType->addLoop($loop2['id'], $loop2['domain'], $loop2['locale'], $loop2['slug']);
+        $this->contentType->addLoop($loop3['id'], $loop3['domain'], $loop3['locale'], $loop3['slug']);
+        $this->assertCount(3, $this->contentType->getLoops());
+        $this->assertEquals($loops, $this->contentType->getLoops());
+
+        $this->contentType->removeLoop('1');
+        $this->assertCount(2, $this->contentType->getLoops());
+        $this->assertEquals(array($loop2, $loop3), $this->contentType->getLoops());
+        $this->contentType->removeLoop('2');
+        $this->assertEquals(array($loop3), $this->contentType->getLoops());
+        $this->contentType->removeLoop('3');
+        $this->assertEmpty($this->contentType->getLoops());
     }
 
 }

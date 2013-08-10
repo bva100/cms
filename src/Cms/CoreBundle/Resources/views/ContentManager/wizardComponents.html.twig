@@ -57,6 +57,15 @@
                         <span>Traverse Node Collections</span>
                     </div>
                 </li>
+                {% if contentType.loops|default()|length %}
+                    {% for loopData in contentType.loops  %}
+                        <h4 class="clearfix" style="margin-left: 70px;">
+                            <a href="{{ path('cms_core.content_manager_wizard_loop', {'siteId': site.id, 'contentTypeId':contentType.id, 'domain':loopData.domain, 'locale': loopData.locale, 'slug':loopData.slug}) }}">
+                                {{ loopData.domain }} {{ loopData.locale|default() }} {{ loopData.slug }}
+                            </a>
+                        </h4>
+                    {% endfor %}
+                {% endif %}
             {% elseif 'static' in contentType.formats %}
                 <li class="{% if contentType %}todo-done{% endif %}" id="todo-static">
                     <div class="todo-icon"><i class="icon-list-alt"></i></div>

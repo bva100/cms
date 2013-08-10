@@ -34,7 +34,7 @@ class ContentType extends Base {
     /**
      * @MongoDB\Collection
      */
-    private $loopSlugs;
+    private $loops;
 
     /**
      * Used to override default template. Not yet implemented.
@@ -66,7 +66,7 @@ class ContentType extends Base {
     public function __construct()
     {
         $this->formats = array();
-        $this->loopSlugs = array();
+        $this->loop = array();
         $this->categories = array();
         $this->fields = array();
     }
@@ -169,62 +169,63 @@ class ContentType extends Base {
     }
 
     /**
-     * Set loopSlugs. Collection of loop slugs.
+     * Set loops
      *
-     * @param array $loopSlug
+     * @param array $loops
      * @return $this
      */
-    public function setLoops(array $loopSlug)
+    public function setLoops(array $loops)
     {
-        $this->loopSlugs = $loopSlug;
+        $this->loops = $loops;
         return $this;
     }
 
     /**
-     * Add a loop slug to the loop collection.
+     * Add a loop
      *
-     * @param $loopSlug
+     * @param $id
+     * @param $domain
+     * @param $locale
+     * @param $slug
      * @return $this
      */
-    public function addLoopSlug($loopSlug)
+    public function addLoop($id, $domain, $locale, $slug)
     {
-        if ( ! is_string($loopSlug) OR in_array($loopSlug, $this->loopSlugs) )
-        {
-            return $this;
-        }
-        $this->loopSlugs[] = $loopSlug;
+        $this->loops[] = $loop = array(
+            'id' => $id,
+            'domain' => $domain,
+            'locale' => $locale,
+            'slug' => $slug,
+        );
         return $this;
     }
 
     /**
-     * Remove a loop slug from the loopSlugs collection.
+     * Remove loop by loop id
      *
-     * @param $loopSlug
+     * @param $id
      * @return $this
      */
-    public function removeLoopSlug($loopSlug)
+    public function removeLoop($id)
     {
-        if ( ! is_string($loopSlug) )
-        {
-            return $this;
+        foreach ($this->loops as $loopKey => $loop) {
+            if ( $loop['id'] === $id )
+            {
+                unset($this->loops[$loopKey]);
+                $this->loops = \array_values($this->loops);
+                return $this;
+            }
         }
-        $keys = \array_keys($this->loopSlugs, $loopSlug);
-        foreach ($keys as $key)
-        {
-            unset($this->loopSlugs[$key]);
-            $this->loopSlugs = array_values($this->loopSlugs);
-        }
-        return $this;
     }
 
     /**
-     * Get loopSlugs. Collection of loop slugs.
+     * Get loops
      *
      * @return array
      */
-    public function getLoopSlugs()
+    public function getLoops()
     {
-        return $this->loopSlugs;
+        return $this->loops;
     }
 
     /**

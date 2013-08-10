@@ -150,17 +150,27 @@ class ContentManagerController extends Controller {
     public function loopAction($siteId, $contentTypeId)
     {
         $site = $this->getSite($siteId);
+        $nodeId = (string)$this->getRequest()->query->get('nodeId');
+        $domain = (string)$this->getRequest()->query->get('domain');
+        $locale = (string)$this->getRequest()->query->get('locale');
+        $slug = (string)$this->getRequest()->query->get('slug');
+        $newLoop = (bool)$this->getRequest()->query->get('newLoop');
         $contentType = $this->getContentType($site, $contentTypeId);
-        // CHANGE THIS SO THAT NODES CAN BE DYNAMICALLY ADDED
-        $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findOneBySiteIdAndContentTypeNameAndFormat($siteId, $contentType->getName(), 'loop');
-        if ( ! $node )
-        {
+        if ( $nodeId ){
+            $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($nodeId);
+        }else if($domain AND $slug){
+            $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findOneByDomainAndLocaleAndSlug($domain, $locale ? $locale : null, $slug);
+        }else{
             $node = null;
         }
+        $loops = $contentType->getLoops();
+
         return $this->render('CmsCoreBundle:ContentManager:wizardLoop.html.twig', array(
             'site' => $site,
             'contentType' => $contentType,
             'node' => $node,
+            'loops' => $loops,
+            'newLoop' => $newLoop,
         ));
     }
 
@@ -209,7 +219,33 @@ class ContentManagerController extends Controller {
         {
             $node->setDescription($description);
         }
-        $success = $this->get('persister')->save($node, false, null);
+        $success = $this->get('persister')->save($node, false, false);
+        if ( ! $success  )
+        {
+            return $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        }
+        $contentType->addLoop($node->getId(), $node->getDomain(), $node->getLocale(), $node->getSlug());
+        $success = $this->get('persister')->save($site, false, false);
+        return $this->get('xmlResponse')->execute($this->getRequest(), $success);
+    }
+
+    public function deleteLoopAction($siteId, $contentTypeId)
+    {
+        $nodeId = (string)$this->getRequest()->request->get('nodeId');
+        $site = $this->getSite($siteId);
+        $contentType = $this->getContentType($site, $contentTypeId);
+        $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($nodeId);
+        if ( ! $node )
+        {
+            throw $this->createNotFoundException('Node with id '.$nodeId.' not found');
+        }
+        $contentType->removeLoop($nodeId);
+        $success = $this->get('persister')->save($site);
+        if ( ! $success )
+        {
+            return $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        }
+        $success = $this->get('persister')->delete($node);
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 

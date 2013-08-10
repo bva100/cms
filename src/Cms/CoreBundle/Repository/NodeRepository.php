@@ -12,8 +12,9 @@ class NodeRepository extends DocumentRepository {
     /**
      * Find one node by domain and slug
      *
-     * @param string $domain
-     * @param string $slug
+     * @param $domain
+     * @param $slug
+     * @return array|mixed|null
      */
     public function findOneByDomainAndSlug($domain, $slug)
     {
@@ -24,13 +25,14 @@ class NodeRepository extends DocumentRepository {
     }
 
     /**
-     * Find one node by domain and slug and locale
+     * Find one by domain and locale and locale
      *
-     * @param string $domain
-     * @param string $slug
-     * @param string $locale
+     * @param $domain
+     * @param $locale
+     * @param $slug
+     * @return array|mixed|null
      */
-    public function fineOneByDomainAndSlugAndLocale($domain, $slug, $locale)
+    public function findOneByDomainAndLocaleAndSlug($domain, $locale, $slug)
     {
         return $this->createQueryBuilder()
             ->field('domain')->equals($domain)
@@ -143,10 +145,10 @@ class NodeRepository extends DocumentRepository {
     }
 
     /**
-     * @param string $siteId
-     * @param string $contentTypeName
+     * @param $siteId
+     * @param $contentTypeName
      * @param array $params
-     * @returns collection of entities
+     * @return array|bool|\Doctrine\MongoDB\ArrayIterator|\Doctrine\MongoDB\Cursor|\Doctrine\MongoDB\EagerCursor|mixed|null
      */
     public function findBySiteIdAndContentType($siteId, $contentTypeName, array $params = array('offset' => 0, 'limit' => 20))
     {
@@ -154,14 +156,21 @@ class NodeRepository extends DocumentRepository {
     }
 
     /**
-     * @param string $siteId
+     * @param $siteId
      * @param array $params
+     * @return array|bool|\Doctrine\MongoDB\ArrayIterator|\Doctrine\MongoDB\Cursor|\Doctrine\MongoDB\EagerCursor|mixed|null
      */
     public function findBySiteId($siteId, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
     {
         return $this->findBySiteIdAndContentType($siteId, null, $params);
     }
 
+    /**
+     * @param $siteId
+     * @param $contentTypeName
+     * @param $format
+     * @return array|mixed|null
+     */
     public function findOneBySiteIdAndContentTypeNameAndFormat($siteId, $contentTypeName, $format)
     {
         return $this->createQueryBuilder()
