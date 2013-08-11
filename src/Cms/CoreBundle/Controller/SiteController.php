@@ -15,13 +15,31 @@ use Cms\CoreBundle\Document\Site;
 
 class SiteController extends Controller {
 
+    public function newAction()
+    {
+        echo '<pre>', \var_dump('new form here'); die();
+    }
+
+    public function uniqueDomainAction($domain)
+    {
+        $response = new Response(json_encode($this->get('site_manager_unique')->domainCheck($domain)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    public function uniqueNamespaceAction($namespace)
+    {
+        $response =  new Response(json_encode($this->get('site_manager_unique')->namespaceCheck($namespace)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
     public function saveAction()
     {
-        $token = (string)$this->getRequest()->request->get('token');
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $name = (string)$this->getRequest()->request->get('name');
-        $this->get('csrfToken')->validate($token);
-
+        $domain = (string)$this->getRequest()->request->get('domain');
         $site = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id) : new Site();
         if ( ! $site )
         {
@@ -32,7 +50,10 @@ class SiteController extends Controller {
             $site->setName($name);
             $site->setNamespace($name);
         }
-        $site->addDomain('skiblogfoobar.com');
+        if ( $domain )
+        {
+            $site->addDomain($domain);
+        }
         $success = $this->get('persister')->save($site);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )

@@ -15,6 +15,7 @@ parameters:
     cms.template_client.class: Cms\CoreBundle\Services\TemplateLoader\Client
     cms.template_helper.class: Cms\CoreBundle\Services\TemplateLoader\Helper
     cms.theme_template_helper.class: Cms\CoreBundle\Services\ThemeTemplateHelper
+    cms.site_manager_unique.class: Cms\CoreBundle\Services\SiteManager\unique
 
 services:
     asset_manager:
@@ -56,3 +57,7 @@ services:
         class: %cms.slug_helper.class%
     theme_template:
         class: %cms.theme_template_helper.class%
+    site_manager_unique:
+        class: %cms.site_manager_unique.class%
+        calls:
+          - [setPersister, [@persister]]

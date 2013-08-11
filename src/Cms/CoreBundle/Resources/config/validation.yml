@@ -1,6 +1,6 @@
 Cms\CoreBundle\Document\Site:
     constraints:
-      - Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique: name
+      - Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique: namespace
     properties:
         name:
           - NotBlank: { message: 'Please add a name' }

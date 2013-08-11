@@ -117,7 +117,7 @@ class Site extends Base {
     /**
      * Add a domain
      *
-     * @param string $domain
+     * @param $domain
      * @return $this
      */
     public function addDomain($domain)
@@ -153,7 +153,7 @@ class Site extends Base {
     /**
      * Get domains
      *
-     * @return collection $domains
+     * @return array $domains
      */
     public function getDomains()
     {
@@ -163,11 +163,13 @@ class Site extends Base {
     /**
      * Add contentType
      *
-     * @param Cms\CoreBundle\Document\ContentType $contentType
+     * @param ContentType $contentType
+     * @return $this
      */
     public function addContentType(\Cms\CoreBundle\Document\ContentType $contentType)
     {
         $this->contentTypes[] = $contentType;
+        return $this;
     }
 
     /**
