@@ -53,6 +53,7 @@ class Site extends Base {
 
     public function __construct()
     {
+        $this->created = time();
         $this->setState('active');
         $this->contentType = new \Doctrine\Common\Collections\ArrayCollection();
         $this->domains = array();

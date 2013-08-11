@@ -17,26 +17,37 @@ class SiteController extends Controller {
 
     public function newAction()
     {
-        echo '<pre>', \var_dump('new form here'); die();
+        $token = $this->get('csrfToken')->createToken()->getToken();
+        $notices = $this->get('session')->getFlashBag()->get('notices');
+        return $this->render('CmsCoreBundle:Site:new.html.twig', array(
+            'token' => $token,
+            'notices' => $notices,
+        ));
     }
 
-    public function uniqueDomainAction($domain)
+    public function uniqueDomainAction()
     {
-        $response = new Response(json_encode($this->get('site_manager_unique')->domainCheck($domain)));
+        $domain = (string)$this->getRequest()->query->get('domain');
+        $response = new Response(json_encode(
+            array('unique' => $this->get('site_manager_unique')->domainCheck($domain))
+        ));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
 
-    public function uniqueNamespaceAction($namespace)
+    public function uniqueNamespaceAction()
     {
-        $response =  new Response(json_encode($this->get('site_manager_unique')->namespaceCheck($namespace)));
+        $namespace = (string)$this->getRequest()->query->get('namespace');
+        $response =  new Response(json_encode(
+            array('unique' => $this->get('site_manager_unique')->namespaceCheck($namespace))
+        ));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
 
     public function saveAction()
     {
-        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $name = (string)$this->getRequest()->request->get('name');
         $domain = (string)$this->getRequest()->request->get('domain');
@@ -48,7 +59,7 @@ class SiteController extends Controller {
         if ( $name )
         {
             $site->setName($name);
-            $site->setNamespace($name);
+            $site->setNamespace(str_replace(' ', '', $name));
         }
         if ( $domain )
         {
@@ -62,7 +73,7 @@ class SiteController extends Controller {
         }
         if ( ! $success )
         {
-            return $this->redirect($this->generateUrl('cms_core.app_index'));
+            return $this->redirect($this->generateUrl('cms_core.site_new'));
         }
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $site->getId())));
     }

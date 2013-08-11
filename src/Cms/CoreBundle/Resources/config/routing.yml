@@ -63,12 +63,12 @@ cms_core.site_delete:
   methods: [POST]
 
 cms_core.site_unique_namespace:
-  pattern: /site/unique/namespace/{namespace}
+  pattern: /site/unique/namespace
   defaults: { _controller: CmsCoreBundle:Site:uniqueNamespace }
   methods: [GET]
 
 cms_core.site_unique_domain:
-  pattern: /site/unique/domain/{domain}
+  pattern: /site/unique/domain
   defaults: { _controller: CmsCoreBundle:Site:uniqueDomain }
   methods: [GET]
 
