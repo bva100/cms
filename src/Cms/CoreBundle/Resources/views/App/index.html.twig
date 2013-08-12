@@ -1,42 +1,51 @@
-{% extends 'CmsCoreBundle:App:base.html.twig' %}
+{% extends 'CmsCoreBundle:App:components.html.twig' %}
 
 {% block title %}App Home | PipeStack Cms{% endblock %}
 
 {% block body %}
-    <section>
-        <h1>Welcome To PipeStack</h1>
-        <p>
-            Select some stuff here and do some stuff here while you're at it
-        </p>
-    </section>
+    {% block classicNavPrimary %}
+        {{ parent() }}
+    {% endblock %}
+    <div class="container" style="margin-top: 60px">
+        <div class="row">
+            <section class="span12">
+                <h1>Welcome To PipeStack</h1>
+                <p>
+                    Select some stuff here and do some stuff here while you're at it
+                </p>
+                <hr>
+            </section>
+        </div>
+        <div class="row">
+            <section class="span12">
+                <h2>Your Sites</h2>
+                {% block notices %}{% endblock %}
+                <ul>
+                    {% for site in sites  %}
+                        <li>
+                            <h2>{{ site.name }}</h2>
+                            <a class="btn btn-info" href="{{ path('cms_core.site_read', {'id':site.id}) }}"><i class="icon-eye-open"></i> View</a>
+                            <form action="{{ path('cms_core.site_delete') }}" method="POST" style="display: inline">
+                                <input type="hidden" name="token" value="{{ token }}"/>
+                                <input type="hidden" name="id" value="{{ site.id }}"/>
+                                <button class="btn btn-danger"><i class="icon-trash"></i> Trash</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </div>
+        <hr>
+        <div class="row">
+            <nav class="span12">
+                <ul>
+                    <li><a href="{{ path('cms_core.themeOrg_readAll') }}">View Theme Organizations</a></li>
+                    <li><a href="{{ path('cms_core.template_readAll') }}">View Templates</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 
-    <section>
-        <h2>Your Sites</h2>
-        {% block notices %}{% endblock %}
-        <ol>
-            {% for site in sites  %}
-                <li>
-                    <a href="{{ path('cms_core.site_read', {'id':site.id}) }}">{{ site.name }}</a>
-                    <form action="{{ path('cms_core.site_delete') }}" method="post">
-                        <input type="hidden" name="id" value="{{ site.id }}"/>
-                        <input type="submit" value="Delete"/>
-                    </form>
-                </li>
-            {% endfor %}
-        </ol>
-        <form action="{{ path('cms_core.site_save') }}" method="post">
-            <input type="hidden" name="token" value="{{ token }}" />
-            <label for="name">Add a New Site: </label>
-            <input type="text" name="name" placeholder="name" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,63}$" required/>
-            <input type="submit" value="Create"/>
-        </form>
-    </section>
-    <nav>
-        <ul>
-            <li><a href="{{ path('cms_core.themeOrg_readAll') }}">View Theme Organizations</a></li>
-            <li><a href="{{ path('cms_core.template_readAll') }}">View Templates</a></li>
-        </ul>
-    </nav>
     <footer>
         {% block footer %}
             {{ parent() }}

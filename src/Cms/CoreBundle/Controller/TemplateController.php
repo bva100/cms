@@ -162,7 +162,7 @@ class TemplateController extends Controller {
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
-            throw $this->createNotFoundException('Site with id '.$id.' not found');
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
         }
         $templateName = $site->getName().':Master:HTML';
         $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($templateName);

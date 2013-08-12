@@ -35,14 +35,22 @@
             <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target="#nav-collapse-01"></button>
             <div class="nav-collapse collapse" id="nav-collapse-01">
                 <ul class="nav">
+                    {% if site is defined %}
                     <li class="brand">
                         <a href="{{ path('cms_core.site_read', {'id': site.id}) }}"><img src="" alt="" width="120" height="12.75"/></a>
                     </li>
+                    {% endif %}
+                    {% if site is defined %}
                     <li class="active">
                         <a href="#fakelink">
                             Admin Panel
                         </a>
                     </li>
+                    {% else %}
+                    <li class="active">
+                        <a href="{{ path('cms_core.app_index') }}">Home</a>
+                    </li>
+                    {% endif %}
                     <li><a href="#fakeLink">Visit Site</a></li>
                     <li>
                         <a href="#fakelink">

@@ -47,7 +47,7 @@ class SiteController extends Controller {
 
     public function saveAction()
     {
-//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $name = (string)$this->getRequest()->request->get('name');
         $domain = (string)$this->getRequest()->request->get('domain');
@@ -66,11 +66,14 @@ class SiteController extends Controller {
             $site->addDomain($domain);
         }
         $success = $this->get('persister')->save($site);
-        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
-        if ( $xmlResponse )
+        if ( ! $success )
         {
-            return $xmlResponse;
+            throw new \Exception('Unable to save site. Please try again soon.');
         }
+        $template = new Template();
+        $template->setName($site->getNamespace().':Master:HTML');
+
+
         if ( ! $success )
         {
             return $this->redirect($this->generateUrl('cms_core.site_new'));
@@ -111,10 +114,9 @@ class SiteController extends Controller {
 
     public function deleteAction()
     {
-        $token = (string)$this->getRequest()->request->get('token');
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
-        $this->get('csrfToken')->validate($token);
         if ( ! $site )
         {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
