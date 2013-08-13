@@ -66,14 +66,22 @@ class SiteController extends Controller {
             $site->addDomain($domain);
         }
         $success = $this->get('persister')->save($site);
-        if ( ! $success )
+        if ( ! $success AND ! $id )
         {
             throw new \Exception('Unable to save site. Please try again soon.');
         }
-        $template = new Template();
-        $template->setName($site->getNamespace().':Master:HTML');
-
-
+        if ( ! $id )
+        {
+            $componentsName = $site->getNamespace().':Master:HTML';
+            $site->addTemplateName($componentsName);
+            $template = new Template();
+            $template->setName($componentsName);
+            $success = $this->get('persister')->save($template);
+            if ( ! $success )
+            {
+                throw new \Exception('Unable to save site. Please try again soon.');
+            }
+        }
         if ( ! $success )
         {
             return $this->redirect($this->generateUrl('cms_core.site_new'));

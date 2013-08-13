@@ -164,7 +164,7 @@ class TemplateController extends Controller {
         {
             throw $this->createNotFoundException('Site with id '.$siteId.' not found');
         }
-        $templateName = $site->getName().':Master:HTML';
+        $templateName = $site->getNamespace().':Master:HTML';
         $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findOneByName($templateName);
         $components = $this->get('template_client')->setCode($template->getContent())->getComponents();
         return $this->render('CmsCoreBundle:Template:menu.html.twig', array(
