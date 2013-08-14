@@ -1,81 +1,70 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/site/index.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
 {% block title %}
     {{ site.name }}{{ parent() }}
 {% endblock %}
 
-{% block body %}
-    {{ parent() }}
-{% endblock %}
-
-{% block bodyCopy %}
-    <section>
-        <h2>{{ site.name }}</h2>
-
-        {% block notices %}{{ parent() }}{% endblock %}
-
-        <form action="{{ path('cms_core.site_save') }}" method="post">
-            <input type="hidden" value="{{ token }}" name="token"/>
-            <label for="name">name:</label>
-            <input type="text" value="{{ site.name }}" name="name" placeholder="name" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,63}$" required />
-            <label for="namespace">namespace:</label>
-            <input type="text" value="{{ site.namespace }}" name="namespace" placeholder="namespace" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,63}$"/>
-            <input type="submit" value="Update"/>
-        </form>
-    </section>
-    <section>
-        <h3>Content Types</h3>
-        <ol>
-            {% for contentType in contentTypes  %}
-                <li>
-                    <a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}">{{ contentType.name }}</a>
-                    <form action="{{ path('cms_core.contentType_delete') }}" method="post">
-                        <input type="hidden" name="token" value="{{ token }}"/>
-                        <input type="hidden" name="id" value="{{ contentType.id }}"/>
-                        <input type="hidden" name="siteId" value="{{ site.id }}"/>
-                        <input type="submit" value="X"/>
-                    </form>
-                </li>
-            {% endfor %}
-        </ol>
-        <legend>Add a New Content Type</legend>
-        <form action="{{ path('cms_core.contentType_save') }}" method="post">
-            <input type="hidden" name="token" value="{{ token }}"/>
-            <input type="hidden" name="siteId" value="{{ site.id }}"/>
-            <input type="text" name="name" placeholder="name" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,127}$" title="must only include numbers and letter with a minimum of 3 characters and a maximum of 127" required/>
-            <input type="text" name="slugPrefix" placeholder="slug prefix" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,127}$" title="must only include numbers and letter with a minimum of 3 characters and a maximum of 127" />
-            <input type="radio" name="format" value="static"/> static
-            <input type="radio" name="format" value="dynamic"/> dynamic
-            <input type="submit" value="Add"/>
-        </form>
-    </section>
-    <section>
-        <h3>Nodes</h3>
-        <ul>
-            {% for node in nodes  %}
-                <li>
-                    <a href="{{ app.request.baseURL() }}/{{ node.slug }}" target="_blank">{{ node.title }}</a>
-                    <a href="{{ path('cms_core.node_read', {'id':node.id} ) }}">edit</a>
-                    <form action="{{ path('cms_core.node_delete') }}" method="post">
-                        <input type="hidden" name="token" value="{{ token }}"/>
-                        <input type="hidden" name="id" value="{{ node.id }}"/>
-                        <input type="submit" value="x"/>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
-    <section>
-        <h3>Javascripts and Stylesheets</h3>
-        <a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}">View All Assets</a>
-    </section>
-    <section>
-        <h3>Media</h3>
-        <a href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}">View All Media</a>
-    </section>
-    <nav>
-        <ul>
-            <li><a href="{{ path('cms_core.app_index') }}">Back to Admin</a></li>
-        </ul>
-    </nav>
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h1>{{ site.name|title }} Dashboard</h1>
+        </div>
+    </div>
+    <div class="row-fluid row-holder">
+        <div class="span6">
+            <div class="holder">
+                <i class="icon-sun icon-2x"></i>
+                <h3>Something Here</h3>
+                <p>You can do something great on the dashboard here. Bacon ex doner, aliqua veniam chicken ullamco tail tri-tip anim dolore est pork belly filet mignon andouille.</p>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="holder">
+                <i class="icon-cog icon-2x"></i>
+                <h3>Something Else Here</h3>
+                <p>You can do something else great on the dashboard here.  Proident laboris et adipisicing kielbasa pork chop Consectetur velit flank tri-tip officia doner pork belly</p>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid row-holder">
+        <div class="span6">
+            <div class="holder">
+                <i class="icon-dashboard icon-2x"></i>
+                <h3>Very Cool Thing</h3>
+                <p>Click on this very cool thing and something very cool will happen. Et pancetta irure, cillum ball tip esse ham hock aDolore capicola ex turducken id.</p>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="holder">
+                <i class="icon-bullseye icon-2x"></i>
+                <h3>Other Interesting Thing</h3>
+                <p>Click on this very cool thing and something very cool will happen. Chuck officia bresaola ut aliqua, meatball deserunt corned beef turducken ut mollit cow non</p>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid row-holder">
+        <div class="span6">
+            <div class="holder">
+                <i class="icon-compass icon-2x"></i>
+                <h3>Something Here</h3>
+                <p>You can do something great on the dashboard here. Bacon ex doner, aliqua veniam chicken ullamco tail tri-tip anim dolore est pork belly filet mignon andouille.</p>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="holder">
+                <i class="icon-asterisk icon-2x"></i>
+                <h3>Something Else Here</h3>
+                <p>You can do something else great on the dashboard here.  Proident laboris et adipisicing kielbasa pork chop Consectetur velit flank tri-tip officia doner pork belly</p>
+            </div>
+        </div>
+    </div>
 {% endblock %}

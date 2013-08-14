@@ -106,15 +106,11 @@ class SiteController extends Controller {
 
     public function readAction($id)
     {
-        $token = $this->get('csrfToken')->createToken()->getToken();
-        $notices = $this->get('session')->getFlashBag()->get('notices');
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
         $contentTypes = $site->getContentTypes();
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteId($id);
         return $this->render('CmsCoreBundle:Site:index.html.twig', array(
             'site' => $site,
-            'token' => $token,
-            'notices' => $notices,
             'contentTypes' => $contentTypes,
             'nodes' => $nodes,
         ));
