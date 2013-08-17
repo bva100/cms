@@ -1,5 +1,12 @@
 var baseUrl = document.getElementById('base-url').value;
 
+$(document).ready(function() {
+    $('select').selectpicker();
+    $(".select .dropdown-toggle").addClass('btn-inverse');
+    $(".dropdown-menu").addClass('dropdown-inverse');
+    $(".dropdown-arrow").addClass('dropdown-arrow-inverse');
+});
+
 $("#api-form").on('submit', function(event){
     event.preventDefault();
     $container = $('#results');

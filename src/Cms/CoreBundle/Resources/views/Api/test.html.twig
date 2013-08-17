@@ -7,6 +7,7 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
+        'flat-ui/js/bootstrap-select.js'
         '@CmsCoreBundle/Resources/public/js/api/test.js'
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -22,25 +23,25 @@
     <div class="row-fluid">
         <form id="api-form" class="span6">
             <label for="input-output">Output</label>
-            <select name="output" id="input-output" class="span">
+            <select name="output" id="input-output" class="select-block span">
                 <option value="html">HTML</option>
                 <option value="text">Plain Text</option>
                 <option value="raw">Raw Data</option>
             </select>
             <label for="input-endpoint">Endpoint:</label>
-            <select name="endpoint" id="input-endpoint" class="span">
+            <select name="endpoint" id="input-endpoint" class="select-block span">
                 <option value="node">Node</option>
                 <option value="loop">Loop</option>
             </select>
             <label for="input-domain">domain</label>
-            <select name="domain" id="input-domain" class="span">
+            <select name="domain" id="input-domain" class="select-block span">
                 {% for domain in site.domains  %}
                     <option value="{{ domain }}">{{ domain }}</option>
                 {% endfor %}
             </select>
             <label for="input-path">Path:</label>
             <input type="text" id="input-path" placeholder="path" class="span12"/>
-            <p><button class="btn btn-info pull-right">Explore</button></p>
+            <p><button class="btn btn-inverse pull-right">Explore</button></p>
         </form>
     </div>
     <div class="row">
