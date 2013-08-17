@@ -9,6 +9,15 @@
     {% endstylesheets %}
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/site/index.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block title %}
     {{ site.name }}{{ parent() }}
 {% endblock %}
@@ -59,12 +68,13 @@
                 <p>You can do something great on the dashboard here. Bacon ex doner, aliqua veniam chicken ullamco tail tri-tip anim dolore est pork belly filet mignon andouille.</p>
             </div>
         </div>
-        <div class="span6">
+        <div class="span6" id="api-explorer">
             <div class="holder">
-                <i class="icon-cog  icon-2x"></i>
-                <h3>Settings</h3>
+                <i class="icon-magic icon-2x"></i>
+                <h3>API Explorer</h3>
                 <p>You can do something else great on the dashboard here.  Proident laboris et adipisicing kielbasa pork chop Consectetur velit flank tri-tip officia doner pork belly</p>
             </div>
         </div>
     </div>
+    <input type="hidden" id="api-explorer-path" value="{{ path('cms_core.api_explore', {'siteId':site.id}) }}"/>
 {% endblock %}

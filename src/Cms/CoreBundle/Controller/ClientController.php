@@ -61,9 +61,16 @@ class ClientController extends Controller
         return $response;
     }
 
-    public function apiTestAction()
+    public function apiExploreAction($siteId)
     {
-        return $this->render('CmsCoreBundle:Api:test.html.twig');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
+        }
+        return $this->render('CmsCoreBundle:Api:test.html.twig', array(
+            'site' => $site,
+        ));
     }
     
     public function getParams($request, $locale, $path)

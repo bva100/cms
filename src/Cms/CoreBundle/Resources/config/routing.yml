@@ -397,9 +397,9 @@ cms_core.session_notices:
     _format: json
 
 #api
-cms_core.api_test:
-  pattern: /api/test
-  defaults: { _controller: CmsCoreBundle:Client:apiTest }
+cms_core.api_explore:
+  pattern: /api/explore/{siteId}
+  defaults: { _controller: CmsCoreBundle:Client:apiExplore }
   methods: [GET]
 
 cms_core.api_read_locale_nodes:

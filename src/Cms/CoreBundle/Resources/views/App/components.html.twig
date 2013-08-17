@@ -42,7 +42,7 @@
                     {% endif %}
                     {% if site is defined %}
                     <li class="active">
-                        <a href="#fakelink">
+                        <a href="{{ path('cms_core.app_index') }}">
                             Admin Panel
                         </a>
                     </li>
@@ -51,10 +51,14 @@
                         <a href="{{ path('cms_core.app_index') }}">Home</a>
                     </li>
                     {% endif %}
-                    <li><a href="#fakeLink">Visit Site</a></li>
+                    <li>
+                        {% if site is defined %}
+                            <a href="http://{{ site.domains[0] }}">Visit Site</a>
+                        {% endif %}
+                    </li>
                     <li>
                         <a href="#fakelink">
-                            New
+                            Support
                         </a>
                         <ul>
                             <li><a href="#fakelink">Element One</a></li>
@@ -71,7 +75,7 @@
                     </li>
                     <li>
                         <a href="#fakelink">
-                            About Us
+                            Notices
                         </a>
                     </li>
                 </ul>

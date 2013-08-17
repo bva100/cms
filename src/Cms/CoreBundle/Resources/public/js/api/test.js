@@ -11,12 +11,13 @@ function getParams(){
     var params = {};
     params.output = document.getElementById('input-output').value;
     params.endpoint = document.getElementById('input-endpoint').value;
+    params.domain = document.getElementById('input-domain').value;
     params.path = document.getElementById('input-path').value;
     return params;
 }
 
 function loadApiData(params, $container){
-    var url = baseUrl+'/api/v1/'+params.endpoint+'/'+params.path;
+    var url = createUrl(params);
     switch(params.endpoint){
         case 'node':
             return loadNode(url, params, $container);
@@ -26,6 +27,10 @@ function loadApiData(params, $container){
         default:
             break;
     }
+}
+
+function createUrl(params){
+    return 'http://'+params.domain+baseUrl+'/api/v1/'+params.endpoint+'/'+params.path;
 }
 
 function loadLoop(url, params, $container){
@@ -40,14 +45,14 @@ function loadLoop(url, params, $container){
                 case 'text':
                     for (var i=0; i<nodes.length; i++)
                     {
-                        $container.append('<h2>Node '+i+'</h2><div class="row" style="border-bottom: 1px solid dimgrey; margin: 10px 0px 20px 0px; padding: 30px; 0px;"><div class="span12">'+nodes[i].view.text+'</div></div>');
+                        $container.append('<h2>Node '+i+'</h2><div class="row-fluid" style="border-bottom: 1px solid dimgrey; margin: 10px 0px 20px 0px; padding: 30px; 0px;"><div class="span12">'+nodes[i].view.text+'</div></div>');
                     }
                     break;
                 case 'html':
                 default:
                     for (var i=0; i<nodes.length; i++)
                     {
-                        $container.append('<h2>Node '+i+'</h2><div class="row" style="border-bottom: 1px solid dimgrey; margin: 10px 0px 20px 0px; padding: 30px; 0px;"><div class="span12">'+nodes[i].view.html+'</div></div>');
+                        $container.append('<h2>Node '+i+'</h2><div class="row-fluid" style="border-bottom: 1px solid dimgrey; margin: 10px 0px 20px 0px; padding: 30px; 0px;"><div class="span12">'+nodes[i].view.html+'</div></div>');
                     }
                     break;
             }
@@ -90,5 +95,5 @@ function loadNode(url, params, $container){
 }
 
 function createResponseAlert(xhr){
-    return '<div class="row"><div class="alert alert-danger span2 offset4"><i class="icon-warning">'+xhr+'</i></div></div>';
+    return '<div class="row-fluid"><div class="alert alert-danger span"><i class="icon-warning">'+xhr+'</i></div></div>';
 }

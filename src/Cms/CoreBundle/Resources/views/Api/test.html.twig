@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
 
 {% block title %}
     Api Explorer {{ parent() }}
@@ -13,36 +13,40 @@
     {% endjavascripts %}
 {% endblock %}
 
-{% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="span6 offset4">
-                <h1>API Explorer</h1>
-            </div>
-        </div>
-        <div class="row">
-            <form id="api-form" class="span6 offset4">
-                <label for="input-output">Output</label>
-                <select name="output" id="input-output">
-                    <option value="html">HTML</option>
-                    <option value="text">Plain Text</option>
-                    <option value="raw">Raw Data</option>
-                </select>
-                <label for="input-endpoint">Endpoint:</label>
-                <select name="endpoint" id="input-endpoint">
-                    <option value="node">Node</option>
-                    <option value="loop">Loop</option>
-                </select>
-                <label for="input-path">Path:</label>
-                <input type="text" id="input-path" placeholder="path"/>
-                <p><button class="btn btn-info">Explore</button></p>
-            </form>
-            <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
-        </div>
-        <div class="row">
-            <div id="results" class="span12">
-                <br>
-            </div>
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h1>API Explorer</h1>
         </div>
     </div>
+    <div class="row-fluid">
+        <form id="api-form" class="span6">
+            <label for="input-output">Output</label>
+            <select name="output" id="input-output" class="span">
+                <option value="html">HTML</option>
+                <option value="text">Plain Text</option>
+                <option value="raw">Raw Data</option>
+            </select>
+            <label for="input-endpoint">Endpoint:</label>
+            <select name="endpoint" id="input-endpoint" class="span">
+                <option value="node">Node</option>
+                <option value="loop">Loop</option>
+            </select>
+            <label for="input-domain">domain</label>
+            <select name="domain" id="input-domain" class="span">
+                {% for domain in site.domains  %}
+                    <option value="{{ domain }}">{{ domain }}</option>
+                {% endfor %}
+            </select>
+            <label for="input-path">Path:</label>
+            <input type="text" id="input-path" placeholder="path" class="span12"/>
+            <p><button class="btn btn-info pull-right">Explore</button></p>
+        </form>
+    </div>
+    <div class="row">
+        <div id="results" class="span12">
+            <br>
+        </div>
+    </div>
+    <input type="hidden" style="border: 1px solid red" id="base-url" value="{{ app.request.baseUrl }}"/>
 {% endblock %}
