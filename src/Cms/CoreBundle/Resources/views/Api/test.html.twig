@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    Api Explorer {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/api/test.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="span6 offset4">
+                <h1>API Explorer</h1>
+            </div>
+        </div>
+        <div class="row">
+            <form id="api-form" class="span6 offset4">
+                <label for="input-output">Output</label>
+                <select name="output" id="input-output">
+                    <option value="html">HTML</option>
+                    <option value="text">Plain Text</option>
+                    <option value="raw">Raw Data</option>
+                </select>
+                <label for="input-endpoint">Endpoint:</label>
+                <select name="endpoint" id="input-endpoint">
+                    <option value="node">Node</option>
+                    <option value="loop">Loop</option>
+                </select>
+                <label for="input-path">Path:</label>
+                <input type="text" id="input-path" placeholder="path"/>
+                <p><button class="btn btn-info">Explore</button></p>
+            </form>
+            <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
+        </div>
+        <div class="row">
+            <div id="results" class="span12">
+                <br>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -888,7 +888,7 @@ class Node extends Base {
     }
 
     /**
-     * Get a specific view value assocaited with a format
+     * Get a specific view value associated with a format
      *
      * @param $format
      * @return array
@@ -909,6 +909,16 @@ class Node extends Base {
     public function getViews()
     {
         return $this->view;
+    }
+
+    /**
+     * Returns all properties as an array
+     *
+     * @return array
+     */
+    public function getVars()
+    {
+        return get_object_vars($this);
     }
 
 }
