@@ -2,7 +2,6 @@
 /app/bootstrap*
 /app/cache/*
 /app/logs/*
-/vendor/
 
 
 
