@@ -3,6 +3,7 @@
 /app/cache/*
 /app/logs/*
 /vendor/
+/vendor_orig/
 
 
 
