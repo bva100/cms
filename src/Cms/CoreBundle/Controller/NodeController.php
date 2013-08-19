@@ -152,7 +152,7 @@ class NodeController extends Controller {
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
         if ( ! $site )
         {
-            throw $this->createNotFoundException('Site with id '.$id.' not found');
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
         }
         $contentType = $site->getContentType($contentTypeId);
 

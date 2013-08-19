@@ -64,8 +64,8 @@
                 <input type="hidden" name="format" value="single" id="input-format"/>
                 <input type="hidden" name="templateName" value="{{ site.name }}:Master:Single" id="input-template-name"/>
                 <input type="hidden" name="slugPrefix" value="{{ contentType.slugPrefix }}" id="input-slug-prefix"/>
-                <input type="hidden" id="domain" name="domain" value="{% if node.domain is defined %}{{ node.domain }}{% else %}{{ site.domains[0] }}{% endif %}" id="input-domain" />
-                <input type="hidden" id='slug' name="slug" value="{{ node.slug|default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" id="input-slug" required/>
+                <input type="hidden" name="domain" value="{% if node.domain is defined %}{{ node.domain }}{% else %}{{ site.domains[0] }}{% endif %}" id="input-domain" />
+                <input type="hidden" name="slug" value="{{ node.slug|default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" id="input-slug" required/>
                 <div id="url-container">
                     <span id="domain-container" class="label label-info">
                         {% if node.domain is defined %}
