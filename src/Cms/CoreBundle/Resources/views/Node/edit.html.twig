@@ -23,6 +23,7 @@
         'flat-ui/js/flatui-checkbox.js'
         'flat-ui/js/flatui-calendar.js'
         'flat-ui/js/jquery.tagsinput.js'
+        '@CmsCoreBundle/Resources/public/js/media/publicMediaUrl.js'
         '@CmsCoreBundle/Resources/public/js/filepicker.js'
         '@CmsCoreBundle/Resources/public/js/media/modal.js'
         '@CmsCoreBundle/Resources/public/js/node/read.js'
@@ -64,8 +65,8 @@
                 <input type="hidden" name="format" value="single" id="input-format"/>
                 <input type="hidden" name="templateName" value="{{ site.name }}:Master:Single" id="input-template-name"/>
                 <input type="hidden" name="slugPrefix" value="{{ contentType.slugPrefix }}" id="input-slug-prefix"/>
-                <input type="hidden" name="domain" value="{% if node.domain is defined %}{{ node.domain }}{% else %}{{ site.domains[0] }}{% endif %}" id="input-domain" />
-                <input type="hidden" name="slug" value="{{ node.slug|default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" id="input-slug" required/>
+                <input type="hidden" name="domain" value="{% if node.domain is defined %}{{ node.domain }}{% else %}{{ site.domains[0] }}{% endif %}" id="domain" />
+                <input type="hidden" name="slug" value="{{ node.slug|default() }}" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,64}$" id="slug" required/>
                 <div id="url-container">
                     <span id="domain-container" class="label label-info">
                         {% if node.domain is defined %}
@@ -359,7 +360,7 @@
         {{ parent() }}
     {% endblock %}
     <input type="hidden" id="site-id" value="{{ site.id }}"/>
-    <input type="hidden" id="node-id" value="{{ node.id }}"/>
+    <input type="hidden" id="node-id" value="{{ node.id|default() }}"/>
     <input type="hidden" id="state" value="{{ node.state|default('draft') }}"/>
     <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
     <input type="hidden" id="save-path" value="{{ path('cms_core.node_save') }}" />

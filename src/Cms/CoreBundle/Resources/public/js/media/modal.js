@@ -100,6 +100,7 @@ function loadUploader(){
 function uploadInline(iframeId){
     filepicker.pickAndStore({'container':iframeId},{location: 'S3', access: 'public'},function(InkBlobs){
         var mediaParams = convertInkToMediaParams(InkBlobs[0], siteId, nodeId ? nodeId : null);
+        mediaParams.url = getPublicMediaUrl()+mediaParams.filename;
         $.post(mediaAddPath, mediaParams, function(data, textStatus, xhr) {
             if(textStatus == 'success'){
                 var title = mediaParams.title ? mediaParams.title : '';
@@ -217,5 +218,7 @@ function selectMedia($media){
 function getSelected(){
     var $selected = $('#primary-media-data-container').find('.media-selected:first');
     var json = $selected.attr('data-media-json');
+    console.log(json);
+    return 0;
     return $.parseJSON(json);
 }

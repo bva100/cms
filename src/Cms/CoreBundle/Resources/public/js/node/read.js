@@ -59,6 +59,7 @@ function upload(type){
     filepicker.pickAndStore({},{location: 'S3', access: 'public'},function(InkBlobs){
         var params = getParams();
         var mediaParams = convertInkToMediaParams(InkBlobs[0], params.siteId, params.id);
+        mediaParams.url = getPublicMediaUrl()+mediaParams.filename;
         $.post(mediaAddPath, mediaParams, function(data, textStatus, xhr) {
             if(textStatus == 'success'){
                 if(type == 'featured'){
