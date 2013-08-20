@@ -9,6 +9,7 @@ $(document).ready(function() {
 function uploader(){
     filepicker.pickAndStore({container: 'media-uploader'},{location: 'S3', access: 'public'},function(InkBlobs){
         var mediaParams = convertInkToMediaParams(InkBlobs[0], siteId);
+        mediaParams.url = getPublicMediaUrl()+mediaParams.filename;
         $.post(mediaAddPath, mediaParams, function(data, textStatus, xhr) {
             if(textStatus == 'success'){
                 var mediaUploadComplete = document.getElementById('media-upload-complete');
