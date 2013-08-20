@@ -53,7 +53,7 @@
                                     <textarea name="description" id="input-description" rows="4" class="span12" placeholder="Meta Description">{{ node.description|default() }}</textarea>
                                 </form>
                                 <form id='save-template-form' class="row-fluid">
-                                    <label for="input-code-content">Twig code (this is the content which will be embedded into your theme's static layout):</label>
+                                    <label for="input-code-content">Your HTML code goes here:</label>
                                     <div id='input-code-content'>{{ node.view('html')|default() }}</div>
                                     <button class="btn btn-info pull-right span2">Save</button>
                                 </form>

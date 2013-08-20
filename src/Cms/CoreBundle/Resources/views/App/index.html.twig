@@ -18,8 +18,8 @@
         </div>
         <div class="row">
             <section class="span12">
-                <h2>Your Sites</h2>
-                {% block notices %}{% endblock %}
+                <h2 style="display:inline">Your Sites</h2><a style="font-size:18px;margin-left:12px;" href="{{ path('cms_core.site_new') }}"><i class="icon-plus-sign"></i> Add New</a>
+                {% block notices %}{{ parent() }}{% endblock %}
                 <ul>
                     {% for site in sites  %}
                         <li>
