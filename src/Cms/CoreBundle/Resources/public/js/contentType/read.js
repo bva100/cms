@@ -6,6 +6,9 @@ $(document).ready(function() {
     $(".dropdown-menu").addClass('dropdown-inverse');
     $(".dropdown-arrow").addClass('dropdown-arrow-inverse');
     $('#tags').tagsInput();
+    if(isTouch){
+        $(".quick-action-container").css('min-height', '0px');
+    }
 });
 
 $(".label-loop").popover({

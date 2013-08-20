@@ -223,13 +223,15 @@
                                         <a href="/{{ node.slug }}">read more</a>
                                     {% endif %}
                                 {% endif %}
-                                <ul class="quick-action hide">
-                                    <li><a href="{{ path('cms_core.node_read', {'siteId':site.id, 'id':node.id}) }}">edit</a></li>
-                                    <li>|</li>
-                                    <li><a href="#trash" class="quick-delete-action" data-id="{{ node.id }}">trash</a></li>
-                                    <li>|</li>
-                                    <li><a href="/{{ node.slug }}" target="_blank">view</a></li>
-                                </ul>
+                                <div class="quick-action-container">
+                                    <ul class="quick-action hide">
+                                        <li><a href="{{ path('cms_core.node_read', {'siteId':site.id, 'id':node.id}) }}">edit</a></li>
+                                        <li>|</li>
+                                        <li><a href="#trash" class="quick-delete-action" data-id="{{ node.id }}">trash</a></li>
+                                        <li>|</li>
+                                        <li><a href="/{{ node.slug }}" target="_blank">view</a></li>
+                                    </ul>
+                                </div>
                             </p>
                         </td>
                         {% if node.author.name is defined %}

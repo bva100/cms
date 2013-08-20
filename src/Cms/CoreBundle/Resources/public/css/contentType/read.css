@@ -3,6 +3,9 @@
     font-size: 15px;
     margin-bottom: 0px;
 }
+.quick-action-container {
+    min-height: 20px;
+}
 @media (min-width: 767px) {
     .edit, .delete {
         max-width: 79px;
