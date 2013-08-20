@@ -315,7 +315,7 @@ class ContentManagerController extends Controller {
         {
             $node->addView('html', $content);
         }
-        $success = $this->get('persister')->save($node, false, null);
+        $success = $this->get('persister')->save($node, false, false);
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 
