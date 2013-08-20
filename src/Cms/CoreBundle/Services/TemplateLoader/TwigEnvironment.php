@@ -70,7 +70,7 @@ class TwigEnvironment {
             if ( $_SERVER["HTTP_HOST"] === 'localhost' ){
                 $domain =  'static-localhost';
             }else{
-                $domain =  'static-pipestack';
+                $domain =  'static-pipestack.com';
             }
             if ( preg_match('/[^a-z_\-0-9]/i', str_replace(':', '', $name)) )
             {
