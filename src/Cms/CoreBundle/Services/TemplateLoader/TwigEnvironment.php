@@ -66,9 +66,10 @@ class TwigEnvironment {
     public function load()
     {
         $twig =  new \Twig_Environment($this->loader, array('cache' => $this->cacheDir, 'auto_reload' => true));
-        $truncateFunction = new \Twig_SimpleFunction('truncate', function($str, $length){
+        $truncateFunction = new \Twig_SimpleFilter('truncate', function($str, $length){
             return substr($str, 0, $length);
-        });
+        }, array('is_safe'=> array('html')));
+        $twig->addFilter($truncateFunction);
         $assetFunction = new \Twig_SimpleFunction('asset', function ($name, $type, $cacheBustVersion = 1, $subdomain = 'one') {
             if ( $_SERVER["HTTP_HOST"] === 'localhost' ){
                 $domain =  'static-localhost';
@@ -104,7 +105,6 @@ class TwigEnvironment {
             }
         }, array('is_safe' => array('html')));
         $twig->addFunction($assetFunction);
-        $twig->addFunction($truncateFunction);
         return $twig;
     }
 
