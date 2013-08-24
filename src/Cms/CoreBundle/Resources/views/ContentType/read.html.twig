@@ -20,6 +20,7 @@
         'flat-ui/js/jquery.tagsinput.js'
         '@CmsCoreBundle/Resources/public/js/checkboxList.js'
         '@CmsCoreBundle/Resources/public/js/contentType/read.js'
+        '@CmsCoreBundle/Resources/public/js/admin/loop.js'
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -192,19 +193,19 @@
             <div class="span12">
                 <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th>
-                            <label class="checkbox master-checkbox" for="master-checkbox" id="master-checkbox-container" data-state='off'>
-                                <input type="checkbox" data-toggle="checkbox" name="master-checkbox" id="selectall"/>
-                            </label>
-                        </th>
-                        <th class="data-group-1">Title</th>
-                        <th class="data-group-2">Author</th>
-                        <th class="data-group-3">Categories</th>
-                        <th class="data-group-4">Tags</th>
-                        <th class="data-group-4">Commments</th>
-                        <th class="data-group-1">Created</th>
-                    </tr>
+                        <tr>
+                            <th>
+                                <label class="checkbox master-checkbox" for="master-checkbox" id="master-checkbox-container" data-state='off'>
+                                    <input type="checkbox" data-toggle="checkbox" name="master-checkbox" id="selectall"/>
+                                </label>
+                            </th>
+                            <th class="data-group-1">Title</th>
+                            <th class="data-group-2">Author</th>
+                            <th class="data-group-3">Categories</th>
+                            <th class="data-group-4">Tags</th>
+                            <th class="data-group-4">Commments</th>
+                            <th class="data-group-1">Created</th>
+                        </tr>
                     </thead>
                     <tbody class="checkbox-container">
                     {% for node in nodes  %}

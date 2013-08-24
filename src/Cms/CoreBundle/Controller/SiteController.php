@@ -73,7 +73,7 @@ class SiteController extends Controller {
         if ( ! $id )
         {
             $componentsName = $site->getNamespace().':Master:HTML';
-            $site->addTemplateName($componentsName);
+            $site->addTemplateName($componentsName)->addTemplateName($site->getNamespace().':Master:Loop')->addTemplateName($site->getNamespace().':Master:Single')->addTemplateName($site->getNamespace().':Master:Static');
             $template = new Template();
             $template->setName($componentsName);
             $success = $this->get('persister')->save($template);

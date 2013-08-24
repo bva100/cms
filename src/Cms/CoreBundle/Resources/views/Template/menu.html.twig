@@ -3,7 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
-        '@CmsCoreBundle/Resources/public/css/template/menu.css'
+        '@CmsCoreBundle/Resources/public/css/template/template.css'
         filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
@@ -59,6 +59,7 @@
             {{ parent() }}
         {% endblock %}
     </article>
+    <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
     <input type="hidden" id="code-save-path" value="{{ path('cms_core.template_save') }}"/>
     <input type="hidden" id="site-id" value="{{ site.id }}"/>
     <input type="hidden" id="template-id" value="{{ template.id }}"/>

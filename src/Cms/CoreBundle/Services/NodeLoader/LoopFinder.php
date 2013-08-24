@@ -39,7 +39,8 @@ class LoopFinder {
      * Get loop data for a loop node
      *
      * @param \Cms\CoreBundle\Document\Node $loopNode
-     * @param array $params (string)offset, (string)limit
+     * @param array $params
+     * @return array|bool|\Doctrine\MongoDB\ArrayIterator|\Doctrine\MongoDB\Cursor|\Doctrine\MongoDB\EagerCursor|mixed|null
      * @throws \Exception
      */
     public function find(\Cms\CoreBundle\Document\Node $loopNode, array $params = array())

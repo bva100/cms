@@ -63,27 +63,6 @@ $('.btn-checkbox-action').on('click', function(){
     }
 });
 
-$(".load-data-form").submit(function(event){
-    event.preventDefault();
-    loadData();
-});
-
-$(".load-data").click(function(){
-    loadData();
-});
-
-$(".pag-next").click(function(){
-    $page = $("#page");
-    $page.val( parseInt($page.val()) + 1 );
-    loadData();
-});
-
-$(".pag-previous").click(function(){
-    $page = $("#page");
-    $page.val( parseInt($page.val())-1 );
-    loadData();
-});
-
 function deleteNode(id, token){
     $.post('/node/delete', {id: id, token: token}, function(data, textStatus, xhr) {
         if(textStatus == 'success'){
@@ -119,11 +98,6 @@ function queryStringParams(){
     if(authorLastName){str = str+'&authorLastName='+encodeURIComponent(authorLastName)}
     if(search){str = str+'&search='+encodeURIComponent(search)}
     return str;
-}
-
-function loadData(){
-    queryStringParams = queryStringParams();
-    window.location = window.location.pathname + queryStringParams;
 }
 
 $('a[disabled=disabled]').click(function(event){

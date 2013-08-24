@@ -100,9 +100,10 @@
         <li><a href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}"><i class="icon-camera-retro"></i> Media</a></li>
         <li><a href="#"><i class="icon-comments"></i> Comments</a></li>
         <li class="divider"></li>
-        <li><a href="{{ path('cms_core.settings_theme_current', {'siteId':site.id}) }}"><i class="icon-eye-open"></i> Theme</a></li>
+        <li><a href="{{ path('cms_core.settings_theme_current', {'siteId':site.id}) }}"><i class="icon-eye-open"></i> Themes</a></li>
         <li><a href="{{ path('cms_core.content_manager_readAll', {'siteId':site.id}) }}"><i class="icon-book"></i> Content</a></li>
         <li><a href="{{ path('cms_core.template_menu', {'siteId':site.id}) }}"><i class="icon-list-ul"></i> Menus</a></li>
+        <li><a href="{{ path('cms_core.template_readAll', {'siteId':site.id}) }}"><i class="icon-pencil"></i> Templates</a></li>
         <li><a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}"><i class="icon-css3"></i> Css/Js</a></li>
         <li><a href="{{ path('cms_core.site_settings', {'id':site.id | default()}) }}"><i class="icon-cog"></i> Settings</a></li>
         <li><a href="#"><i class="icon-group"></i> Users</a></li>
@@ -189,17 +190,19 @@
         </h4>
         <b>Extends:</b>
         <ul id="primary-extends-list">
-            <li class="included-item" data-include-type="extends" data-template-name="{{ extends }}">
-                <a href="#">{{ extends }}</a>
+            <li class="included-item" data-include-type="extends" data-template-name="{{ extends|default() }}">
+                <a href="#">{{ extends|default() }}</a>
             </li>
         </ul>
         <b>Uses:</b>
         <ul id="primary-include-list">
-            {% for use in uses  %}
-                <li class="included-item" data-include-type="use" data-template-name="{{ use }}">
-                    <a href="#">{{ use }}</a>
-                </li>
-            {% endfor %}
+            {% if uses is defined %}
+                {% for use in uses  %}
+                    <li class="included-item" data-include-type="use" data-template-name="{{ use|default() }}">
+                        <a href="#">{{ use|default() }}</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
 {% endblock %}
@@ -211,7 +214,7 @@
             <h4>
                 <a href="#repo" class="template-modal-show-repo template-modal-nav template-modal-active-anchor">Repository</a> |
                 {% if site is defined %}
-                    <a href="{{ path('cms_core.template_new') }}" target="_blank" class="template-modal-nav">Create</a> |
+                    <a href="{{ path('cms_core.template_new', {'siteId':site.id}) }}" target="_blank" class="template-modal-nav">Create</a> |
                 {% endif %}
                 <a href="#depot" class="template-modal-show-depot template-modal-nav">Depot</a>
             </h4>

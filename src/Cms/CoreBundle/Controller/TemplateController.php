@@ -14,29 +14,67 @@ use Cms\CoreBundle\Document\Template;
 
 class TemplateController extends Controller {
 
-    public function readAllAction()
+    public function readAllAction($siteId)
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
-        $templates = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findAll();
+        $site = $this->getSite($siteId);
+        $search = $this->getRequest()->query->get('search');
+        $sortBy = (string)$this->getRequest()->query->get('sortBy');
+        if ( ! $sortBy )
+        {
+            $sortBy = 'created';
+        }
+        $sortOrder = (string)$this->getRequest()->query->get('sortOrder');
+        if ( ! $sortOrder )
+        {
+            $sortOrder = 'desc';
+        }
+        $limit = $this->getRequest()->query->get('limit');
+        if ( ! $limit )
+        {
+            $limit = 12;
+        }
+        $page = $this->getRequest()->query->get('page');
+        if ( ! $page )
+        {
+            $page = 1;
+        }
+        $nextPage = $limit*($page-1) >= $limit ? false : true;
+        $templates = $this->get('persister')->getRepo('CmsCoreBundle:Template')->findAllBySiteNamespace($site->getNamespace(), array(
+            'search' => $search,
+            'sort' => array('by' => $sortBy, 'order' => $sortOrder),
+            'limit' => $limit,
+            'offset' => $limit*($page-1),
+        ));
         return $this->render('CmsCoreBundle:Template:readAll.html.twig', array(
             'token' => $token,
             'templates' => $templates,
+            'site' => $site,
+            'search' => $search,
+            'nextPage' => $nextPage,
+            'page' => $page,
         ));
     }
 
-    public function readAction($id)
+    public function readAction($siteId, $templateId)
     {
-        $token = $this->get('csrfToken')->createToken()->getToken();
-        $notices = $this->get('session')->getFlashBag()->get('notices');
-        $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id);
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('site with id '.$siteId.' not found');
+        }
+        $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($templateId);
         if ( ! $template )
         {
-            throw $this->createNotFoundException('Template with id '.$id.' not found');
+            throw $this->createNotFoundException('Template with id '.$templateId.' not found');
         }
+        $components = $this->get('template_client')->setCode($template->getContent())->getComponents();
         return $this->render('CmsCoreBundle:Template:edit.html.twig', array(
-            'token' => $token,
-            'notices' => $notices,
             'template' => $template,
+            'site' => $site,
+            'code' => $components['rawCode'],
+            'extends' => $components['extends'],
+            'uses' => $components['uses'],
         ));
     }
 
@@ -70,7 +108,6 @@ class TemplateController extends Controller {
                 return $response;
             }
         }
-
         $helper = $this->get('template_helper')->setRawCode($rawCode);
         $result = $helper->createCode($extends, $uses);
         if ( $result['status'] === false )
@@ -102,8 +139,23 @@ class TemplateController extends Controller {
         {
             $template->setContent($content);
         }
-        $success = $this->get('persister')->save($template, false, null);
-        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
+        $success = $this->get('persister')->save($template, false, false);
+        if ( ! $success )
+        {
+            $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success, array('onSuccess' => $template->getId()));
+            if ( $xmlResponse )
+            {
+                return $xmlResponse;
+            }
+            else
+            {
+                return $this->redirect($this->generateUrl('cms_core.template_new'));
+            }
+            
+        }
+        $site->addTemplateName($template->getName());
+        $success = $this->get('persister')->save($site, false, false);
+        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success, array('onSuccess' => $template->getId()));
         if ( $xmlResponse )
         {
             return $xmlResponse;
@@ -117,20 +169,25 @@ class TemplateController extends Controller {
         }
         if ( ! $success )
         {
-            return $this->redirect($this->generateUrl('cms_core.template_readAll'));
+            return $this->redirect($this->generateUrl('cms_core.template_new'));
         }
         return $this->redirect($redirect);
     }
 
     public function deleteAction()
     {
-        $token = (string)$this->getRequest()->request->get('token');
-        $id = (string)$this->getRequest()->request->get('id');
-        $this->get('csrfToken')->validate($token);
-        $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($id);
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $siteId = (string)$this->getRequest()->request->get('siteId');
+        $site = $this->getSite($siteId);
+        $templateId = (string)$this->getRequest()->request->get('templateId');
+        $template = $this->get('persister')->getRepo('CmsCoreBundle:Template')->find($templateId);
         if ( ! $template )
         {
             throw $this->createNotFoundException('Template with id '.$id.' id not found');
+        }
+        if ( ! $site->hasTemplateName($template->getName()) )
+        {
+            throw new \Exception('You do not have access to detele this template');
         }
         $success = $this->get('persister')->delete($template);
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
@@ -145,13 +202,17 @@ class TemplateController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.template_readAll'));
     }
 
-    public function newAction()
+    public function newAction($siteId)
     {
-        $token = $this->get('csrfToken')->createToken()->getToken();
-        $notices = $this->get('session')->getFlashBag()->get('notices');
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('site with id '.$siteId.' not found');
+        }
         return $this->render('CmsCoreBundle:Template:edit.html.twig', array(
-            'token' => $token,
-            'notices' => $notices,
+            'site' => $site,
+            'status' => 'new',
+            'code' => null,
         ));
     }
 
@@ -179,6 +240,15 @@ class TemplateController extends Controller {
         ));
     }
 
+    public function getSite($siteId)
+    {
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
+        if ( ! $site )
+        {
+            throw $this->createNotFoundException('Site with id '.$siteId.' not found');
+        }
+        return $site;
+    }
 }
 
 

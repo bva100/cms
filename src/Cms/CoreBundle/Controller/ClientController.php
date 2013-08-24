@@ -25,7 +25,6 @@ class ClientController extends Controller
         $node = $this->getNode($nodeRepo, $params);
         $loop = $this->getLoop($node, $nodeRepo, $params);
         $twig = $this->get('twig_loader')->load();
-//        $twig->clearCacheFiles();
         $nameHelper = $this->get('namespace_helper')->setFullname($node->getTemplateName());
         return new Response($twig->render($node->getTemplateName(), array(
             'node' => $node,

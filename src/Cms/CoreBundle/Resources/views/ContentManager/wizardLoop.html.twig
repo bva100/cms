@@ -12,6 +12,7 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
+        'flat-ui/js/bootstrap-select.js'
         '@CmsCoreBundle/Resources/public/js/contentManager/wizardLoop.js'
         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -76,6 +77,20 @@
                                                     <input type="text" name="domain" id="input-domain" class="span12" placeholder="www.domainname.com" value="{{ node.domain|default() }}"/>
                                                     <label for="input-description">Description:</label>
                                                     <textarea name="description" id="input-description" rows="4" class="span12" placeholder="Meta Description">{{ node.description|default() }}</textarea>
+                                                </form>
+                                                <form>
+                                                    <hr>
+                                                    <div class="row-fluid">
+                                                        <div class="span4">
+                                                            <select name="template-name" class="select-block span2" id="input-template-name" style="display: nones;">
+                                                                <option value="">Themes Default Loop</option>
+                                                                {% for template in site.templateNames  %}
+                                                                    <option value="{{ template }}" {% if node and node.templateName == template %}selected{% endif %}>{{ template }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <a href="{{ path('cms_core.template_new', {'siteId':site.id}) }}" class="span2 btn btn-inverse">Add Custom</a>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>

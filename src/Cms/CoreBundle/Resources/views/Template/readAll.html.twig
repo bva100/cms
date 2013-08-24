@@ -1,23 +1,89 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
-{% block body %}
-    <h1>All Templates</h1>
-    <ul>
-        {% for template in templates  %}
-            <li>
-                <a href="{{ path('cms_core.template_read', {'id':template.id} ) }}">{{ template.name }}</a>
-                <form action="{{ path('cms_core.template_delete') }}" method="post">
-                    <input type="hidden" name="token" value="{{ token }}"/>
-                    <input type="hidden" name="id" value="{{ template.id }}"/>
-                    <input type="submit" value="x"/>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
 
-    <a href="{{ path('cms_core.template_new') }}">create a new template</a>
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/template/readAll.js'
+        '@CmsCoreBundle/Resources/public/js/admin/loop.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
 
-    <nav>
-        <a href="{{ path('cms_core.app_index') }}">Back to Admin Panel</a>
+{% block title %}
+    {{ site.name|title }} Templates {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <hgroup class="row-fluid">
+        <div class="span6" id='header'>
+            <h1>Templates</h1>
+            <a href="{{ path('cms_core.template_new', {'siteId':site.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
+        </div>
+        <div class="span4 pull-right" id="search-container">
+            <form class="load-data-form">
+                <input type="search" id="search" class="span2 pull-right" value="{{ search }}" placeholder="Search"/>
+            </form>
+        </div>
+    </hgroup>
+    <hr>
+    <nav class="row-fluid">
+        <div class="span12">
+            <button class="btn btn-inverse span2 pag-next pull-right" {% if nextPage == false %}disabled="disabled"{% endif %}>Next <i class="icon-chevron-right"></i></button>
+            <button class="btn btn-inverse span2 pag-previous pull-right" style="margin-right: 26px;" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
+        </div>
     </nav>
+    <section class="row-fluid">
+        <div class="span12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Preview</th>
+                        <th>Edit</th>
+                        <th>Trash</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for template in templates  %}
+                    <tr>
+                        <td>{{ template.name }}</td>
+                        <td>{{ template.content|default()|truncate(100) }}</td>
+                        <td>
+                            <a href="{{ path('cms_core.template_read', {'siteId':site.id, 'templateId':template.id}) }}" class="btn btn-info"><i class="icon-edit"></i> Edit</a>
+                        </td>
+                        <td>
+                            <form action="{{ path('cms_core.template_delete') }}" method="POST">
+                                <input type="hidden" name="token" value="{{ token }}"/>
+                                <input type="hidden" name="siteId" value="{{ site.id }}"/>
+                                <input type="hidden" name="templateId" value="{{ template.id }}"/>
+                                <button class="btn btn-danger"><i class="icon-trash"></i> Trash</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <nav class="row-fluid">
+                <div class="span12">
+                    <button class="btn btn-inverse span2 pag-next pull-right" {% if nextPage == false %}disabled="disabled"{% endif %}>Next <i class="icon-chevron-right"></i></button>
+                    <button class="btn btn-inverse span2 pag-previous pull-right" style="margin-right: 26px;" {% if page <= 1 %}disabled='disabled'{% endif %}><i class="icon-chevron-left"></i> Prev</button>
+                </div>
+            </nav>
+        </div>
+    </section>
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+    <input type="hidden" id="page" value="{{ page }}"/>
 {% endblock %}

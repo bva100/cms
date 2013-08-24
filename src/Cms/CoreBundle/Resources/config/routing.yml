@@ -188,7 +188,7 @@ cms_core.template_components_save:
   methods: [POST]
 
 cms_core.template_new:
-  pattern: /template/new
+  pattern: /template/new/{siteId}
   defaults: { _controller: CmsCoreBundle:Template:new }
   methods: [GET]
 
@@ -198,12 +198,12 @@ cms_core.template_delete:
   methods: [POST]
 
 cms_core.template_readAll:
-  pattern: /templates
+  pattern: /templates/{siteId}
   defaults: { _controller: CmsCoreBundle:Template:readAll }
   methods: [GET]
 
 cms_core.template_read:
-  pattern: /template/{id}
+  pattern: /template/{siteId}/{templateId}
   defaults: { _controller: CmsCoreBundle:Template:read }
   methods: [GET]
 

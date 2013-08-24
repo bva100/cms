@@ -1,22 +1,79 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
-{% block body %}
-    <article>
-        <h1>{{ template.name | default('New') }} Template</h1>
-        <div>
-            {{ template.content | default() }}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/template/template.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/dependencies/ace-builds-master/src-min-noconflict/ace.js"></script>
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/template/aceEditor.js'
+    '@CmsCoreBundle/Resources/public/js/template/includes.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    New Template {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% block templateModal %}
+        {{ parent() }}
+    {% endblock %}
+    <hgroup class="row-fluid">
+        <div class="span12">
+            {% if template is defined %}
+                <h1>{{ template.name }} Template</h1>
+            {% else %}
+                <h1>New {{ site.name }} Template</h1>
+            {% endif %}
         </div>
-        <div>
-            {% block notices %}{{ parent() }}{% endblock %}
+    </hgroup>
+    {% if template is not defined %}
+        <section class='row-fluid'>
+            <div class="span9">
+                <label for="input-template-name">Name:</label>
+                <input type="text" class="span12" id="input-template-name" placeholder="template name"/>
+            </div>
+        </section>
+    {% endif %}
+    <section class="row-fluid">
+        <div class="span9">
+            <div id="error-container"></div>
+            <form id="save-template-form" action="{{ path('cms_core.template_save') }}" method="POST">
+                <input type="hidden" name="type" id="input-template-type" value="template"/>
+                {% if template is not defined %}
+                    <label for="input-code-content">Code:</label>
+                {% endif %}
+                <div id='input-code-content'>{{ code|default() }}</div>
+                <div class="row-fluid">
+                    <button class="btn btn-info span2 pull-right" style="position: relative; left: 4px;">Save</button>
+                </div>
+            </form>
         </div>
-        <form action="{{ path('cms_core.template_save', {'id':template.id | default()}) }}" method="post">
-            <input type="hidden" name="token" value="{{ token }}"/>
-            <input type="hidden" name="id" value="{{ template.id | default() }}"/>
-            <p>
-                <input type="text" name="name" value="{{ template.name | default() }}" placeholder="name" pattern=".{3,63}$" required/>
-            </p>
-            <textarea name="content" id="textContent" cols="100" rows="30">{{ template.content | default() }}</textarea>
-            <p><input type="submit" value="Save"/></p>
-        </form>
-    </article>
+        <div class="span3">
+            {% block templateIncludes %}
+                {{ parent() }}
+            {% endblock %}
+        </div>
+    </section>
+    <input type="hidden" id="code-save-path" value="{{ path('cms_core.template_save') }}"/>
+    <input type="hidden" id="template-id" value="{{ template.id|default() }}"/>
+    {% if template is defined %}
+        <input type="hidden" id="input-template-name" value="{{ template.name }}"/>
+    {% endif %}
+    <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
+    <input type="hidden" id="code-save-path" value="{{ path('cms_core.template_save') }}"/>
+    <input type="hidden" id="site-id" value="{{ site.id }}"/>
+    <input type="hidden" id="template-id" value="{{ template.id|default() }}"/>
+    <input type="hidden" id="input-template-name" value="{{ template.name|default() }}"/>
+    <input type="hidden" id="input-template-state" value="active"/>
 {% endblock %}

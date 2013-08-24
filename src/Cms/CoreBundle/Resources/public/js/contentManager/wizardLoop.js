@@ -1,5 +1,9 @@
 $(document).ready(function() {
     $("#todo-loop").addClass('todo-active');
+    $('select').selectpicker();
+    $(".select .dropdown-toggle").addClass('btn-info');
+    $(".dropdown-menu").addClass('dropdown-inverse');
+    $(".dropdown-arrow").addClass('dropdown-arrow-inverse');
 });
 
 $(".wizard-save").on('click', function(){
@@ -54,5 +58,6 @@ function getWizardLoopParams(){
     params.title = document.getElementById('input-title').value;
     params.defaultLimit = document.getElementById('input-defaultLimit').value;
     params.description = document.getElementById('input-description').value;
+    params.templateName = document.getElementById('input-template-name').value;
     return params;
 }

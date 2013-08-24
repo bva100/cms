@@ -111,7 +111,7 @@ class ContentManagerController extends Controller {
         {
             $site->addContentType($contentType);
         }
-        return $this->get('xmlResponse')->execute($this->getRequest(), $this->get('persister')->save($site), array('onSuccess' => $contentType->getId()));
+        return $this->get('xmlResponse')->execute($this->getRequest(), $this->get('persister')->save($site, false, false), array('onSuccess' => $contentType->getId()));
     }
 
     public function formatsAction($siteId, $contentTypeId)
@@ -143,7 +143,7 @@ class ContentManagerController extends Controller {
             default:
                 break;
         }
-        $success = $this->get('persister')->save($site);
+        $success = $this->get('persister')->save($site, false, false);
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 
@@ -183,7 +183,16 @@ class ContentManagerController extends Controller {
         $title = (string)$this->getRequest()->request->get('title');
         $defaultLimit = (int)$this->getRequest()->request->get('defaultLimit');
         $description = (string)$this->getRequest()->request->get('description');
+        $templateName = (string)$this->getRequest()->request->get('templateName');
         $site = $this->getSite($siteId);
+        if ( ! $templateName )
+        {
+            $templateName = $site->getNamespace().':Master:Loop';
+        }
+        else if ( ! $site->hasTemplateName($templateName) )
+        {
+            throw $this->createNotFoundException('Template '.$templateName.' not found within site with id '.$siteId);
+        }
         $contentType = $this->getContentType($site, $contentTypeId);
         $node = $nodeId ? $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($nodeId) : new Node();
         if ( ! $node )
@@ -193,7 +202,7 @@ class ContentManagerController extends Controller {
         $node->setSiteId($siteId);
         $node->setContentTypeName($contentType->getName());
         $node->setFormat('loop');
-        $node->setTemplateName($site->getNamespace().':Master:Loop'); // this can be set to something custom for custom loops which, perhaps, extend Master:Loop
+        $node->setTemplateName($templateName);
         $node->setState('active');
         if ( $domain )
         {
@@ -224,8 +233,11 @@ class ContentManagerController extends Controller {
         {
             return $this->get('xmlResponse')->execute($this->getRequest(), $success);
         }
-        $contentType->addLoop($node->getId(), $node->getDomain(), $node->getLocale(), $node->getSlug());
-        $success = $this->get('persister')->save($site, false, false);
+        if ( ! $nodeId )
+        {
+            $contentType->addLoop($node->getId(), $node->getDomain(), $node->getLocale(), $node->getSlug());
+            $success = $this->get('persister')->save($site, false, false);
+        }
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 
@@ -235,17 +247,16 @@ class ContentManagerController extends Controller {
         $site = $this->getSite($siteId);
         $contentType = $this->getContentType($site, $contentTypeId);
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($nodeId);
-        if ( ! $node )
-        {
-            throw $this->createNotFoundException('Node with id '.$nodeId.' not found');
-        }
         $contentType->removeLoop($nodeId);
         $success = $this->get('persister')->save($site);
         if ( ! $success )
         {
             return $this->get('xmlResponse')->execute($this->getRequest(), $success);
         }
-        $success = $this->get('persister')->delete($node);
+        if ( $node )
+        {
+            $success = $this->get('persister')->delete($node, false, false);
+        }
         return $this->get('xmlResponse')->execute($this->getRequest(), $success);
     }
 
@@ -341,10 +352,10 @@ class ContentManagerController extends Controller {
             }
         }
         $site->removeContentType($contentType);
-        $success = $this->get('persister')->save($site);
+        $success = $this->get('persister')->save($site, false, false);
         if ( $success AND $nodeId )
         {
-            $this->get('persister')->delete($node);
+            $this->get('persister')->delete($node, false, false);
         }
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
         if ( $xmlResponse )

@@ -59,6 +59,10 @@ function saveCodeEditor(params, $button){
     $.post(getCodeSavePath(), params, function(data, textStatus, xhr) {
         if(xhr.status == 200){
             $("#error-container").html('');
+            if(! params.id){
+                var baseUrl = document.getElementById('base-url').value;
+                window.location.href = baseUrl+'/template/'+params.siteId+'/'+data;
+            }
             $button.attr('disabled', false).removeClass('btn-info').addClass('btn-primary').text('Saved').delay(1100).queue(function() {
                 $button.removeClass('btn-primary').addClass('btn-info').text('Save');
                 $(this).dequeue();

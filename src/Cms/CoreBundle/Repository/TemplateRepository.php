@@ -18,5 +18,16 @@ class TemplateRepository extends DocumentRepository{
             ->field('name')->equals($name)
             ->getQuery()->getSingleResult();
     }
+
+    public function findAllBySiteNamespace($namespace, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
+    {
+        $qb = $this->createQueryBuilder()
+            ->field('name')->equals(new \MongoRegex($namespace.'.*/i'));
+        if ( isset($params['search']) )
+        {
+            $qb->expr()->field('content')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i'));
+        }
+        return $qb->sort($params['sort']['by'], $params['sort']['order'])->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
+    }
     
 }
