@@ -1,14 +1,5 @@
 {% extends 'CmsCoreBundle:ContentManager:wizardComponents.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {% stylesheets
-    '@CmsCoreBundle/Resources/public/css/template/menu.css'
-    filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
-    {% endstylesheets %}
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
     <script src="/dependencies/ace-builds-master/src-min-noconflict/ace.js"></script>

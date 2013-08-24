@@ -94,10 +94,10 @@
     <div class="row-fluid wizard-header">
         <div class="span12 clearfix">
             <div class="progress pull-left span6">
-                <div class="bar span6" style="width: 25%"></div>
+                <div class="bar span6" style="width: {{ percentComplete }}%"></div>
             </div>
             <div class="span2 progress-label" id="primary-progress-label">
-                <span class="percent-complete">25%</span> Complete
+                <span class="percent-complete">{{ percentComplete }}%</span> Complete
             </div>
             <a href="{{ path('cms_core.content_manager_readAll', {'siteId':site.id}) }}" class="close close-wizard">&times;</a>
         </div>

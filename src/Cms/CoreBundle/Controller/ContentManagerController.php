@@ -76,9 +76,11 @@ class ContentManagerController extends Controller {
         $contentTypeId = $this->getRequest()->query->get('contentTypeId');
         $site = $this->getSite($siteId);
         $contentType = $contentTypeId ? $this->getContentType($site, $contentTypeId) : null;
+        $percentComplete = 0;
         return $this->render('CmsCoreBundle:ContentManager:wizard.html.twig', array(
             'site' => $site,
             'contentType' => $contentType,
+            'percentComplete' => $percentComplete,
         ));
     }
 
@@ -120,11 +122,13 @@ class ContentManagerController extends Controller {
         $notices = $this->get('session')->getFlashBag()->get('notices');
         $site = $this->getSite($siteId);
         $contentType = $this->getContentType($site, $contentTypeId);
+        $percentComplete = 33;
         return $this->render('CmsCoreBundle:ContentManager:wizardFormats.html.twig', array(
             'token' => $token,
             'notices' => $notices,
             'site' => $site,
             'contentType' => $contentType,
+            'percentComplete' => $percentComplete,
         ));
     }
 
@@ -164,13 +168,14 @@ class ContentManagerController extends Controller {
             $node = null;
         }
         $loops = $contentType->getLoops();
-
+        $percentComplete = 85;
         return $this->render('CmsCoreBundle:ContentManager:wizardLoop.html.twig', array(
             'site' => $site,
             'contentType' => $contentType,
             'node' => $node,
             'loops' => $loops,
             'newLoop' => $newLoop,
+            'percentComplete' => $percentComplete,
         ));
     }
 
@@ -274,10 +279,12 @@ class ContentManagerController extends Controller {
         {
             $node = null;
         }
+        $percentComplete = 94;
         return $this->render('CmsCoreBundle:ContentManager:wizardStatic.html.twig', array(
             'site' => $site,
             'contentType' => $contentType,
             'node' => $node,
+            'percentComplete' => $percentComplete,
         ));
     }
 
