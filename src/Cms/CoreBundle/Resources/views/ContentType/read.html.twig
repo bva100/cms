@@ -226,7 +226,7 @@
                                 {% endif %}
                                 <div class="quick-action-container">
                                     <ul class="quick-action hide">
-                                        <li><a href="{{ path('cms_core.node_read', {'siteId':site.id, 'id':node.id}) }}">edit</a></li>
+                                        <li><a href="http://{{ node.domain }}/{{ path('cms_core.node_read', {'siteId':site.id, 'id':node.id}) }}">edit</a></li>
                                         <li>|</li>
                                         <li><a href="#trash" class="quick-delete-action" data-id="{{ node.id }}">trash</a></li>
                                         <li>|</li>
