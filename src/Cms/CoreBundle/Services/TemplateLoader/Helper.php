@@ -41,10 +41,15 @@ class Helper {
     }
 
     /**
-     * @return string
+     * @param array $params
+     * @return mixed|string
      */
-    public function getRawCode()
+    public function getRawCode(array $params = array())
     {
+        if ( in_array('removeParents', $params) )
+        {
+            return str_replace('{{ parent() }}', '', $this->rawCode);
+        }
         return $this->rawCode;
     }
 
@@ -143,7 +148,7 @@ class Helper {
     {
         $twig = $this->getTwigEnvironment()->load();
         try{
-            $twig->parse($twig->tokenize($this->rawCode));
+            $twig->parse($twig->tokenize($this->getRawCode(array('removeParents'))));
         }catch(\Twig_Error_Syntax $e){
             return array('status' => false, 'message' => 'Twig Error: '.$e->getMessage());
         }
