@@ -104,7 +104,7 @@
         <li><a href="{{ path('cms_core.content_manager_readAll', {'siteId':site.id}) }}"><i class="icon-book"></i> Content</a></li>
         <li><a href="{{ path('cms_core.template_menu', {'siteId':site.id}) }}"><i class="icon-list-ul"></i> Menus</a></li>
         <li><a href="{{ path('cms_core.template_readAll', {'siteId':site.id}) }}"><i class="icon-pencil"></i> Templates</a></li>
-        <li><a href="#"><i class="icon-group"></i> Users</a></li>
+        <li><a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}"><i class="icon-css3"></i> Css/Js</a></li>
     </ul>
 </nav>
 {% endblock %}
