@@ -18,12 +18,6 @@ class TemplateController extends Controller {
     {
         $token = $this->get('csrfToken')->createToken()->getToken();
         $site = $this->getSite($siteId);
-
-        $site->addTemplateName('Graphcast:Master:Loop')->addTemplateName('Graphcast:Master:Single')->addTemplateName('Graphcast:Master:Static');
-        $success = $this->get('persister')->save($site);
-        echo '<pre>', \var_dump('did it work? ', $success); die();
-        
-
         $search = $this->getRequest()->query->get('search');
         $sortBy = (string)$this->getRequest()->query->get('sortBy');
         if ( ! $sortBy )
