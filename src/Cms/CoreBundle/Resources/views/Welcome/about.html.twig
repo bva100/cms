@@ -1,0 +1,125 @@
+{% extends 'CmsCoreBundle:Welcome:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/welcome/about.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@CmsCoreBundle/Resources/public/js/welcome/pipefiller.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <div id='topnav-container'>
+        <div class="container">
+            <nav class="row">
+                {% block welcomeHeader %}
+                    {{  parent() }}
+                {% endblock %}
+            </nav>
+        </div>
+    </div>
+    <div id="first-container" class="pitch-container">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <h2 id="what-is-header">What is PipeStack..?</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="second-container" class="pitch-container">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <h2 id="high-level">A Scalable, High Performace CMS</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="third-container" class="pitch-container">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <h3>Think of a CMS as a pipe with data flowing through the bottom...</h3>
+                    <div class="pipe">
+                        <div class="pipe-filler" data-fill-by="25"></div>
+                    </div>
+                    <h3>...as your content is requested, the pipe begins to fill...</h3>
+                    <div class="pipe">
+                        <div class="pipe-filler" data-fill-by="50"></div>
+                    </div>
+                    <h3>...and fill...</h3>
+                    <div class="pipe">
+                        <div class="pipe-filler" data-fill-by="75"></div>
+                    </div>
+                    <h3>...until it's full...</h3>
+                    <div class="pipe">
+                        <div class="pipe-filler" data-fill-by="100"></div>
+                    </div>
+                    <h3>...and when it's full your CMS slows to a standstill and breaks. Revenue is lost.</h3>
+                    <hr>
+                    <h3>This is solved by purchasing a bigger pipe...</h3>
+                    <div class="pipe pipe-large">
+                        <div class="pipe-filler pipe-filler-large" data-fill-by="45"></div>
+                    </div>
+                    <h3>...but a large pipe is disproportionately more expensive than a small one...</h3>
+                    <h3><i class="icon-thumbs-down-alt"></i></h3>
+                    <h3>...which means your costs skyrocket.</h3>
+                    <hr>
+                    <h3>With PipeStack, as your pipe begins to fill...</h3>
+                    <div class="pipe">
+                        <div class="pipe-filler" data-fill-by="50"></div>
+                    </div>
+                    <h3>...and fill...</h3>
+                    <div class="pipe">
+                        <div class="pipe-filler" data-fill-by="70"></div>
+                    </div>
+                    <h3>...a new small pipe is automatically added to help with the the work.</h3>
+                    <div class="pipe pipe-pipestack">
+                        <div class="pipe-filler" data-fill-by="35"></div>
+                    </div>
+                    <div class="pipe pipe-pipestack">
+                        <div class="pipe-filler" data-fill-by="35"></div>
+                    </div>
+                    <h3>As you grow, new pipes are placed ontop. Eventually, you'll have a stack.</h3>
+                    <div class="pipe pipe-pipestack">
+                        <div class="pipe-filler" data-fill-by="25"></div>
+                    </div>
+                    <div class="pipe pipe-pipestack">
+                        <div class="pipe-filler" data-fill-by="25"></div>
+                    </div>
+                    <div class="pipe pipe-pipestack">
+                        <div class="pipe-filler" data-fill-by="25"></div>
+                    </div>
+                    <div class="pipe pipe-pipestack">
+                        <div class="pipe-filler" data-fill-by="25"></div>
+                    </div>
+                    <h3>These pipes work together to offer better performance than a single large pipe...</h3>
+                    <h3><i class="icon-rocket"></i></h3>
+                    <h3>...and because a small pipe is disproportionately cheaper than a large one, you cut costs!</h3>
+                    <h3><i class="icon-usd"></i><i class="icon-thumbs-up-alt"></i><i class="icon-usd"></i></h3>
+                </div>
+            </div>
+        </div>
+        <div id="fourth-container" class="pitch-container">
+            <div class="container">
+                <div class="row">
+                    <div class="span12">
+                        <h2 id="final">PipeStack<br>A Scalable, High Performance CMS</h2>
+                        <a href="{{ path('cms_core.user_register') }}" class="btn btn-warning btn-xlarge">Try it Today for Free</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

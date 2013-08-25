@@ -15,14 +15,17 @@ class WelcomeController extends Controller {
 
     public function indexAction()
     {
-        // check for cookie to login
         return $this->render('CmsCoreBundle:Welcome:index.html.twig');
     }
 
     public function signupAction()
     {
-        // check for cookie to login
         return $this->render('CmsCoreBundle:Welcome:signup.html.twig');
+    }
+
+    public function aboutAction()
+    {
+        return $this->render('CmsCoreBundle:Welcome:about.html.twig');
     }
 
 }

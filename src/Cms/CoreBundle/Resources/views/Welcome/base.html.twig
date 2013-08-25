@@ -1,1 +1,23 @@
 {% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/welcome/index.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block welcomeHeader %}
+    <div class="span pull-left">
+        <img src="/logo.png" alt="PipeStack" width="120" height="74" />
+        <span id="logo-name" style="font-size:50px; position: relative; top: 10px; font-weight: bold;">PipeStack</span>
+    </div>
+    <div class="span pull-right">
+        <span id='topnav-button-container' class="pull-right" style="position: relative; top: 10px">
+            <a href="{{ path('login') }}" class="btn btn-large btn-inverse">Login</a>
+            <a href="{{ path('cms_core.user_register') }}" class="btn btn-large btn-inverse">Sign up</a>
+        </span>
+    </div>
+{% endblock %}
