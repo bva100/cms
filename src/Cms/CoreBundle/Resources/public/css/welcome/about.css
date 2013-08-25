@@ -24,8 +24,8 @@ h3 {
     background-color: #16A085;
 }
 .pipe {
-    border-top: 1px solid #ffffff;
-    border-bottom: 1px solid #ffffff;
+    border-top: 3px solid #ffffff;
+    border-bottom: 3px solid #ffffff;
     margin: 80px auto;
     background-color: white;
     height: 50px;
