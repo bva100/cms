@@ -22,11 +22,10 @@
     </div>
     <div class="row-fluid">
         <form id="api-form" class="span6">
-            <label for="input-output">Output</label>
-            <select name="output" id="input-output" class="select-block span">
-                <option value="html">HTML</option>
-                <option value="text">Plain Text</option>
-                <option value="raw">Raw Data</option>
+            <label for="input-method">Method:</label>
+            <select name="method" id="input-method" class="select-block span">
+                <option value="get">GET</option>
+                <option value="post">POST</option>
             </select>
             <label for="input-endpoint">Endpoint:</label>
             <select name="endpoint" id="input-endpoint" class="select-block span">
@@ -41,10 +40,10 @@
             </select>
             <label for="input-path">Path:</label>
             <input type="text" id="input-path" placeholder="path" class="span12"/>
-            <p><button class="btn btn-inverse pull-right">Explore</button></p>
+            <p><button class="btn btn-inverse pull-right">Get Endpoint Url</button></p>
         </form>
     </div>
-    <div class="row">
+    <div class="row-fluid">
         <div id="results" class="span12">
             <br>
         </div>

@@ -16,7 +16,6 @@ $("#api-form").on('submit', function(event){
 
 function getParams(){
     var params = {};
-    params.output = document.getElementById('input-output').value;
     params.endpoint = document.getElementById('input-endpoint').value;
     params.domain = document.getElementById('input-domain').value;
     params.path = document.getElementById('input-path').value;
@@ -25,15 +24,17 @@ function getParams(){
 
 function loadApiData(params, $container){
     var url = createUrl(params);
-    switch(params.endpoint){
-        case 'node':
-            return loadNode(url, params, $container);
-        case 'loop':
-            return loadLoop(url, params, $container);
-            break;
-        default:
-            break;
-    }
+    $container.html('<a href="'+url+'" style="font-size:22px;">'+url+'</a>');
+
+//    switch(params.endpoint){
+//        case 'node':
+//            return loadNode(url, params, $container);
+//        case 'loop':
+//            return loadLoop(url, params, $container);
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 function createUrl(params){
