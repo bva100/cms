@@ -212,6 +212,11 @@ cms_core.template_readAll:
   defaults: { _controller: CmsCoreBundle:Template:readAll }
   methods: [GET]
 
+cms_core.template_menu:
+  pattern: /template/menu/{siteId}
+  defaults: { _controller: CmsCoreBundle:Template:menu }
+  methods: [GET]
+
 cms_core.template_read:
   pattern: /template/{siteId}/{templateId}
   defaults: { _controller: CmsCoreBundle:Template:read }
@@ -221,11 +226,6 @@ cms_core.template_save:
   pattern: /template
   defaults: { _controller: CmsCoreBundle:Template:save }
   methods: [POST]
-
-cms_core.template_menu:
-  pattern: /template/menu/{siteId}
-  defaults: { _controller: CmsCoreBundle:Template:menu }
-  methods: [GET]
 
 #settings - theme
 cms_core.settings_theme_current:
