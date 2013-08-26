@@ -28,4 +28,9 @@ class WelcomeController extends Controller {
         return $this->render('CmsCoreBundle:Welcome:about.html.twig');
     }
 
+    public function aboutSlidesAction()
+    {
+        return $this->render('CmsCoreBundle:Welcome:aboutSlides.html.twig');
+    }
+
 }

@@ -25,6 +25,11 @@ welcome.about:
   defaults: { _controller: CmsCoreBundle:Welcome:about }
   methods: [GET]
 
+welcome.about_slides:
+  pattern : /about/slides
+  defaults: { _controller: CmsCoreBundle:Welcome:aboutSlides }
+  methods: [GET]
+
 #app
 cms_core.app_index:
   pattern: /app

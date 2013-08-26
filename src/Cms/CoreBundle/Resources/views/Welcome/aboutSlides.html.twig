@@ -1,0 +1,109 @@
+{% extends 'CmsCoreBundle:Welcome:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/welcome/about.css'
+    '@CmsCoreBundle/Resources/public/css/welcome/aboutSlides.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/welcome/aboutSlides.js'
+    '@CmsCoreBundle/Resources/public/js/welcome/pipefiller.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    About {{  parent() }}
+{% endblock %}
+
+{% block body %}
+    <div id='topnav-container'>
+        <div class="container">
+            <nav class="row">
+                {% block welcomeHeader %}
+                    {{  parent() }}
+                {% endblock %}
+            </nav>
+        </div>
+    </div>
+    <div class="pitch-container">
+        <div class="container" id="primary-container">
+            <div class="row">
+                <div class="span12">
+                    <section>
+                        <h2>Think of a CMS as a pipe with data flowing through the bottom</h2>
+                        <div class="pipe"><div class="pipe-filler" data-fill-by="25"></div></div>
+                    </section>
+                    <section>
+                        <h2>...as your content is requested, the pipe begins to fill...</h2>
+                        <div class="pipe"><div class="pipe-filler" data-fill-by="50"></div></div>
+                    </section>
+                    <section>
+                        <h2>...and fill...</h2>
+                        <div class="pipe"><div class="pipe-filler" data-fill-by="75"></div></div>
+                    </section>
+                    <section>
+                        <h2>...until it's full...</h2>
+                        <div class="pipe"><div class="pipe-filler" data-fill-by="100"></div></div>
+                    </section>
+                    <section>
+                        <h2>...and when it's full your CMS slows to a standstill and breaks. Revenue is lost.<br></h2>
+                        <h3><i class="icon-thumbs-down-alt"></i></h3>
+                    </section>
+                    <section>
+                        <h2>This is solved by purchasing a larger pipe...</h2>
+                        <div class="pipe pipe-large"><div class="pipe-filler pipe-filler-large" data-fill-by="45"></div></div>
+                    </section>
+                    <section>
+                        <h2>...but a large pipe is disproportionately more expensive than a small one...</h2>
+                        <h3><i class="icon-thumbs-down-alt"></i></h3>
+                        <h2>...which means your costs skyrocket.</h2>
+                    </section>
+                    <section>
+                        <h2>With PipeStack, as your pipe begins to fill...</h2>
+                        <div class="pipe"><div class="pipe-filler" data-fill-by='33'></div></div>
+                    </section>
+                    <section>
+                        <h2>...and fill...</h2>
+                        <div class="pipe"><div class="pipe-filler" data-fill-by='66'></div></div>
+                    </section>
+                    <section>
+                        <h2>...a new small pipe is automatically added to help with the the work.</h2>
+                        <div class="pipe" style="margin-bottom: -60px;"><div class="pipe-filler" data-fill-by='40'></div></div>
+                        <div class="pipe"><div class="pipe-filler" data-fill-by='40'></div></div>
+                    </section>
+                    <section>
+                        <h2 style="margin-bottom: -30px;">As you grow, new pipes are placed ontop. Eventually, you'll have a stack.</h2>
+                        <div class="pipe" style="margin-bottom: -60px;"><div class="pipe-filler" data-fill-by='40'></div></div>
+                        <div class="pipe" style="margin-bottom: -60px;"><div class="pipe-filler" data-fill-by='40'></div></div>
+                        <div class="pipe" style="margin-bottom: -60px;"><div class="pipe-filler" data-fill-by='40'></div></div>
+                        <div class="pipe"><div class="pipe-filler" data-fill-by='40'></div></div>
+                    </section>
+                    <section>
+                        <h2>These pipes work together to offer better performance than a single large pipe...</h2>
+                        <h3><i class="icon-rocket"></i></h3>
+                    </section>
+                    <section>
+                        <h2>...and because a small pipe is disproportionately cheaper than a large one, you cut costs!</h2>
+                        <h3><i class="icon-usd"></i><i class="icon-thumbs-up-alt"></i><i class="icon-usd"></i></h3>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <hr>
+                    <button class="btn btn-warning pull-right pag-next">next <i class="icon-chevron-right"></i></button>
+                    <button class="btn btn-warning pull-left pag-prev"><i class="icon-chevron-left"></i> prev</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
