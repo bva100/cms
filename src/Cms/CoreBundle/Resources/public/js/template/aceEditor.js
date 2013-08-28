@@ -59,7 +59,7 @@ function saveCodeEditor(params, $button){
     $.post(getCodeSavePath(), params, function(data, textStatus, xhr) {
         if(xhr.status == 200){
             $("#error-container").html('');
-            if(! params.id){
+            if(! params.id && ! params.layoutName){
                 var baseUrl = document.getElementById('base-url').value;
                 window.location.href = baseUrl+'/template/'+params.siteId+'/'+data;
             }
