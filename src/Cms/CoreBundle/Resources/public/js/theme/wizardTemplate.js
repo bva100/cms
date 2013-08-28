@@ -42,7 +42,7 @@ function getCodeEditorParams(){
     params.themeOrgId = getThemeOrgId();
     params.themeId = document.getElementById('input-theme-id').value;
     params.type = 'templateTheme';
-    params.layoutName = document.getElementById('input-layout-name').value;
+    params.layoutName = document.getElementById('input-layout-name') ? document.getElementById('input-layout-name').value : null ;
     return params;
 }
 
