@@ -53,16 +53,8 @@ class NodeRepository extends DocumentRepository {
      * @return array|bool|\Doctrine\MongoDB\ArrayIterator|\Doctrine\MongoDB\Cursor|\Doctrine\MongoDB\EagerCursor|mixed|null
      * @return mixed
      */
-    public function findByDomainAndLocaleAndContentTypeNameAndTaxonomy($domain, $locale, $contentTypeName, array $category, array $tags, array $params)
+    public function findByDomainAndLocaleAndContentTypeNameAndTaxonomy($domain, $locale, $contentTypeName, array $category, array $tags, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
     {
-        if ( ! isset($params['offset']) )
-        {
-            $params['offset'] = 0;
-        }
-        if ( ! isset($params['limit']) )
-        {
-            $params['limit'] = 20;
-        }
         $qb = $this->createQueryBuilder()
             ->field('domain')->equals($domain)
             ->field('locale')->equals($locale)
@@ -83,7 +75,12 @@ class NodeRepository extends DocumentRepository {
         {
             $qb->field('tags')->in($tags);
         }
-        return $qb->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
+        if ( isset($params['search']) )
+        {
+            $qb->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
+            $qb->addOr($qb->expr()->field('view.html')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
+        }
+        return $qb->sort($params['sort']['by'], $params['sort']['order'])->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
 
     /**

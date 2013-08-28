@@ -130,13 +130,23 @@ class Core {
         {
             $paramsArray['locale'] = $locale;
         }
-        if ( isset($offset) )
+        if ( isset($queryArray['search']) )
         {
-            $paramsArray['offset'] = (int)$offset;
+            $paramsArray['search'] = (string)$queryArray['search'];
         }
+        $paramsArray['page'] = isset($queryArray['page']) ? (int)$queryArray['page'] : 1;
         if ( isset($limit) )
         {
             $paramsArray['limit'] = (int)$limit;
+        }
+        $paramsArray['offset'] = $paramsArray['limit']*($paramsArray['page']-1);
+        if ( isset($queryArray['sortBy']) )
+        {
+            $paramsArray['sortBy'] = $queryArray['sortBy'];
+        }
+        if ( isset($queryArray['sortOrder']) )
+        {
+            $paramsArray['sortOrder'] = $queryArray['sortOrder'];
         }
         return $paramsArray;
     }

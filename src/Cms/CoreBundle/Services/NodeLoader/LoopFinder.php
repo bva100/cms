@@ -82,6 +82,9 @@ class LoopFinder {
         {
             throw new \Exception('nodeRepo must be set prior to calling LoopFinder::getLoopData');
         }
+        $params['sort'] = array();
+        $params['sort']['by'] = isset($params['sortBy']) ? $params['sortBy'] : 'created';
+        $params['sort']['order'] = isset($params['sortOrder']) ? $params['sortOrder'] : 'desc';
         return $this->nodeRepo->findByDomainAndLocaleAndContentTypeNameAndTaxonomy($loopNode->getDomain(), $loopNode->getLocale(), $loopNode->getContentTypeName(), $category, $tags, $params);
     }
     
