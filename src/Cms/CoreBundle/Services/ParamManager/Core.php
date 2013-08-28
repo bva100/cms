@@ -135,10 +135,7 @@ class Core {
             $paramsArray['search'] = (string)$queryArray['search'];
         }
         $paramsArray['page'] = isset($queryArray['page']) ? (int)$queryArray['page'] : 1;
-        if ( isset($limit) )
-        {
-            $paramsArray['limit'] = (int)$limit;
-        }
+        $paramsArray['limit'] = isset($queryArray['limit']) ? (int)$queryArray['limit']: 12;
         $paramsArray['offset'] = $paramsArray['limit']*($paramsArray['page']-1);
         if ( isset($queryArray['sortBy']) )
         {
