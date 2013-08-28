@@ -70,6 +70,43 @@ class TwigEnvironment {
             return substr($str, 0, $length);
         }, array('is_safe'=> array('html')));
         $twig->addFilter($truncateFunction);
+        $pageFunction = new \Twig_SimpleFunction('page', function($type){
+            $params = array();
+            parse_str($_SERVER['QUERY_STRING'], $params);
+            $page = isset($params['page']) ? (int)$params['page'] : 1;
+            if ( $type === 'next' )
+            {
+                $page = $page + 1;
+            }
+            if ( $type === 'prev' AND $page > 1)
+            {
+                $page = $page -1;
+            }
+            $queryStr = '?page='.$page;
+            if ( isset($params['limit']) )
+            {
+                $queryStr .= '&limit='.$params['limit'];
+            }
+            if ( isset($params['sortBy']) )
+            {
+                $queryStr .= '&sortBy='.$params['sortBy'];
+            }
+            if ( isset($params['sortOrder']) )
+            {
+                $queryStr .= '&sortOrder='.$params['sortOrder'];
+            }
+            if ( isset($params['search']) )
+            {
+                $queryStr .= '&search='.$params['search'];
+            }
+            if ($pos_get = strpos($_SERVER["REQUEST_URI"], '?')){
+                $uri = substr($_SERVER["REQUEST_URI"], 0, $pos_get);
+            }else{
+                $uri = $_SERVER["REQUEST_URI"];
+            }
+            return $uri.$queryStr;
+        });
+        $twig->addFunction($pageFunction);
         $assetFunction = new \Twig_SimpleFunction('asset', function ($name, $type, $cacheBustVersion = 1, $subdomain = 'one') {
             if ( $_SERVER["HTTP_HOST"] === 'localhost' ){
                 $domain =  'static-localhost';
