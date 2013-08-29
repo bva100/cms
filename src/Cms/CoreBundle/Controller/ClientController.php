@@ -32,6 +32,7 @@ class ClientController extends Controller
             'namespace' => $nameHelper->getNamespace(),
             'theme' => $nameHelper->getTheme(),
             'templateType' => $nameHelper->getType(),
+            'params' => $params,
         )));
     }
 
