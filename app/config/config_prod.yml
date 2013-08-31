@@ -39,6 +39,3 @@ assetic:
 
 parameters:
       domain: "pipestack.com"
-      subdomains: "www|dev"
-#      domainRegex: "www.%domain%|dev.%domain%|%domain%"
-      domainRegex: "%subdomains%.%domain%"

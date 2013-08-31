@@ -27,7 +27,6 @@ assetic:
 
 parameters:
       domain: "localhost"
-      domainRegex: "%domain%"
 
 #swiftmailer:
 #    delivery_address: me@example.com
