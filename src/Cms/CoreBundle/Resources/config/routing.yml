@@ -19,6 +19,8 @@ _welcome:
   pattern: /
   defaults: { _controller: CmsCoreBundle:Welcome:index }
   methods: [GET]
+  requirements:
+    domain: %domain%
 
 welcome.about:
   pattern: /about
@@ -438,6 +440,11 @@ cms_core.api_read_nodes_null_path:
   pattern: /api/v1/
   defaults: { _controller: CmsCoreBundle:Client:apiNodeRead }
   methods: [GET]
+
+cms_core.api_v1_save_node:
+  pattern: /api/v1/node
+  defaults: { _controller: CmsCoreBundle:Node:apiSave }
+  methods: [GET, POST]
 
 #client routes
 cms_core.read_locale_nodes:

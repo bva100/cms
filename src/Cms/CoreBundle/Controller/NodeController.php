@@ -235,4 +235,10 @@ class NodeController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $node->getSiteId())));
     }
 
+    public function apiSaveAction()
+    {
+        $tokenServer = $this->get('access_token');
+        echo '<pre>', \var_dump($tokenServer); die();
+    }
+
 }

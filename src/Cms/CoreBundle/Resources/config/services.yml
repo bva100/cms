@@ -16,6 +16,7 @@ parameters:
     cms.template_helper.class: Cms\CoreBundle\Services\TemplateLoader\Helper
     cms.theme_template_helper.class: Cms\CoreBundle\Services\ThemeTemplateHelper
     cms.site_manager_unique.class: Cms\CoreBundle\Services\SiteManager\unique
+    cms.api_access_token.class: Cms\CoreBundle\Services\Api\Token
 
 services:
     asset_manager:
@@ -61,3 +62,5 @@ services:
         class: %cms.site_manager_unique.class%
         calls:
           - [setPersister, [@persister]]
+    access_token:
+        class: %cms.api_access_token.class%
