@@ -35,3 +35,7 @@ assetic:
         uglifycss:
             bin: /usr/bin/uglifycss
             apply_to: "\.css$"
+
+
+parameters:
+      domain: pipestack.com

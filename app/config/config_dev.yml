@@ -25,7 +25,8 @@ monolog:
 assetic:
     use_controller: true
 
-    
+parameters:
+      domain: localhost
 
 #swiftmailer:
 #    delivery_address: me@example.com
