@@ -38,4 +38,4 @@ assetic:
 
 
 parameters:
-      domain: "www.pipestack.com|dev.pipestack.com"
+      domain: "pipestack.com"

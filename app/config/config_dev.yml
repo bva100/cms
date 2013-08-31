@@ -26,7 +26,7 @@ assetic:
     use_controller: true
 
 parameters:
-      domain: "localhost|dev.something"
+      domain: "localhost"
 
 #swiftmailer:
 #    delivery_address: me@example.com
