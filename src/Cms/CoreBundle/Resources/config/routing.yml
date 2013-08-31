@@ -21,7 +21,7 @@ _welcome:
   defaults: { _controller: CmsCoreBundle:Welcome:index }
   methods: [GET]
   requirements:
-    domain: %domain%
+    domain: "%domain%"
 
 welcome.about:
   pattern: /about
