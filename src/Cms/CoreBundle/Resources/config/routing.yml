@@ -17,7 +17,7 @@ cms_core.user_save:
 #landing
 _welcome:
   pattern: /
-  host: "{domain}"
+  host: "*.{domain}"
   defaults: { _controller: CmsCoreBundle:Welcome:index }
   methods: [GET]
   requirements:
