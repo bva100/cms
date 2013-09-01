@@ -1,12 +1,10 @@
 cms_user:
     resource: "@CmsUserBundle/Resources/config/routing.yml"
     prefix:   /
-    host: '%domain%'
 
 cms_core:
     resource: "@CmsCoreBundle/Resources/config/routing.yml"
     prefix:   /
-    host: '%domain%'
 
 cms_client:
     resource: "@CmsCoreBundle/Resources/config/routing_client.yml"
