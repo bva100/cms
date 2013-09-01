@@ -16,7 +16,10 @@ class WelcomeController extends Controller {
     public function indexAction()
     {
         $isClient = $this->get('check_route')->setRequest($this->getRequest())->isClient();
-        echo '<pre>', \var_dump($isClient); die();
+        if ( $isClient )
+        {
+            return $this->forward('CmsCoreBundle:Client:nodeRead');
+        }
         return $this->render('CmsCoreBundle:Welcome:index.html.twig');
     }
 

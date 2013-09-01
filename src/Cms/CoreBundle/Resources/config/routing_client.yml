@@ -9,12 +9,12 @@ cms_core.read_locale_nodes:
 
 cms_core.read_nodes:
   pattern: /{path}
-  defaults:  { _controller: CmsCoreBundle:Client:nodeRead }
+  defaults:  { _controller: CmsCoreBundle:Client:nodeRead, path: null }
   methods: [GET]
   requirements:
     path: ".+"
 
-cms_core.read_nodes_null_path:
-  pattern: /
-  defaults: { _controller: CmsCoreBundle:Client:nodeRead }
-  methods: [GET]
+#cms_core.read_nodes_null_path:
+#  pattern: /
+#  defaults: { _controller: CmsCoreBundle:Client:nodeRead }
+#  methods: [GET]
