@@ -26,6 +26,6 @@ cms_core.api_read_nodes_null_path:
   methods: [GET]
 
 cms_core.api_v1_save_node:
-  pattern: /api/v1/node
+  pattern: /node
   defaults: { _controller: CmsCoreBundle:Node:apiSave }
   methods: [GET, POST]
