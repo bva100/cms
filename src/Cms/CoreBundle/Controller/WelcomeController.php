@@ -15,7 +15,6 @@ class WelcomeController extends Controller {
 
     public function indexAction()
     {
-        echo '<pre>', \var_dump($_SERVER); die();
         return $this->render('CmsCoreBundle:Welcome:index.html.twig');
     }
 
