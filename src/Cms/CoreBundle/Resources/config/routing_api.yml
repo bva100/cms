@@ -1,5 +1,5 @@
 cms_core.api_read_locale_nodes:
-  pattern: /api/{_locale}/{path}
+  pattern: /{_locale}/{path}
   defaults: { _controller: CmsCoreBundle:Client:apiNodeRead }
   methods: [GET]
   requirements:
@@ -7,21 +7,21 @@ cms_core.api_read_locale_nodes:
     path: ".+"
 
 cms_core.api_v1_read_node:
-  pattern: /api/v1/node/{path}
+  pattern: /node/{path}
   defaults:  { _controller: CmsCoreBundle:Client:apiNodeRead }
   methods: [GET]
   requirements:
     path: ".+"
 
 cms_core.api_v1_read_loop:
-  pattern: /api/v1/loop/{path}
+  pattern: /loop/{path}
   defaults:  { _controller: CmsCoreBundle:Client:apiLoopRead }
   methods: [GET]
   requirements:
     path: ".+"
 
 cms_core.api_read_nodes_null_path:
-  pattern: /api/v1/
+  pattern: /
   defaults: { _controller: CmsCoreBundle:Client:apiNodeRead }
   methods: [GET]
 
