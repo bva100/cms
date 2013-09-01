@@ -17,6 +17,7 @@ cms_core.user_save:
 #landing
 _welcome:
   pattern: /
+  host: '%domain%'
   defaults: { _controller: CmsCoreBundle:Welcome:index }
   methods: [GET]
 
@@ -410,57 +411,4 @@ cms_core.session_notices:
 cms_core.api_explore:
   pattern: /api/explore/{siteId}
   defaults: { _controller: CmsCoreBundle:Client:apiExplore }
-  methods: [GET]
-
-cms_core.api_read_locale_nodes:
-  pattern: /api/{_locale}/{path}
-  defaults: { _controller: CmsCoreBundle:Client:apiNodeRead }
-  methods: [GET]
-  requirements:
-    _locale: "[a-z]{2}-[a-z]{2}"
-    path: ".+"
-
-cms_core.api_v1_read_node:
-  pattern: /api/v1/node/{path}
-  defaults:  { _controller: CmsCoreBundle:Client:apiNodeRead }
-  methods: [GET]
-  requirements:
-    path: ".+"
-
-cms_core.api_v1_read_loop:
-  pattern: /api/v1/loop/{path}
-  defaults:  { _controller: CmsCoreBundle:Client:apiLoopRead }
-  methods: [GET]
-  requirements:
-    path: ".+"
-
-cms_core.api_read_nodes_null_path:
-  pattern: /api/v1/
-  defaults: { _controller: CmsCoreBundle:Client:apiNodeRead }
-  methods: [GET]
-
-cms_core.api_v1_save_node:
-  pattern: /api/v1/node
-  defaults: { _controller: CmsCoreBundle:Node:apiSave }
-  methods: [GET, POST]
-
-#client routes
-cms_core.read_locale_nodes:
-  pattern: /{_locale}/{path}
-  defaults: { _controller: CmsCoreBundle:Client:nodeRead }
-  methods: [GET]
-  requirements:
-    _locale: "[a-z]{2}-[a-z]{2}"
-    path: ".+"
-
-cms_core.read_nodes:
-  pattern: /{path}
-  defaults:  { _controller: CmsCoreBundle:Client:nodeRead }
-  methods: [GET]
-  requirements:
-    path: ".+"
-
-cms_core.read_nodes_null_path:
-  pattern: /
-  defaults: { _controller: CmsCoreBundle:Client:nodeRead }
   methods: [GET]

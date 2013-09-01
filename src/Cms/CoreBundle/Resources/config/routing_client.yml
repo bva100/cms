@@ -1,0 +1,20 @@
+#client routes
+cms_core.read_locale_nodes:
+  pattern: /{_locale}/{path}
+  defaults: { _controller: CmsCoreBundle:Client:nodeRead }
+  methods: [GET]
+  requirements:
+    _locale: "[a-z]{2}-[a-z]{2}"
+    path: ".+"
+
+cms_core.read_nodes:
+  pattern: /{path}
+  defaults:  { _controller: CmsCoreBundle:Client:nodeRead }
+  methods: [GET]
+  requirements:
+    path: ".+"
+
+cms_core.read_nodes_null_path:
+  pattern: /
+  defaults: { _controller: CmsCoreBundle:Client:nodeRead }
+  methods: [GET]
