@@ -15,9 +15,15 @@ cms_core.user_save:
   methods: [POST]
 
 #landing
+_welcome_dev:
+  pattern: /
+  host: dev.{domain}
+  defaults: { _controller: CmsCoreBundle:Welcome:index }
+  methods: [GET]
+
 _welcome:
   pattern: /
-  host: '%domain%'
+  host: www.{domain}
   defaults: { _controller: CmsCoreBundle:Welcome:index }
   methods: [GET]
 
