@@ -17,6 +17,7 @@ parameters:
     cms.theme_template_helper.class: Cms\CoreBundle\Services\ThemeTemplateHelper
     cms.site_manager_unique.class: Cms\CoreBundle\Services\SiteManager\unique
     cms.api_access_token.class: Cms\CoreBundle\Services\Api\Token
+    cms.check_route.class: Cms\CoreBundle\Services\CheckRoute
 
 services:
     asset_manager:
@@ -64,3 +65,5 @@ services:
           - [setPersister, [@persister]]
     access_token:
         class: %cms.api_access_token.class%
+    check_route:
+        class: %cms.check_route.class%

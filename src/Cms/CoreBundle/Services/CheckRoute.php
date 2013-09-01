@@ -8,15 +8,14 @@ namespace Cms\CoreBundle\Services;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class Reroute {
+class CheckRoute {
 
     private $hostnames;
 
     private $request;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->request = $request;
         $this->setHostnames();
     }
 
@@ -31,7 +30,18 @@ class Reroute {
         return $this->hostnames;
     }
 
-    public function isRequestClient()
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
+        return $this;
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    public function isClient()
     {
         if ( in_array($_SERVER['HTTP_HOST'], $this->hostnames) )
         {
