@@ -7,6 +7,7 @@
 
 namespace Cms\CoreBundle\Controller;
 
+use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,7 +77,11 @@ class ApiController extends Controller {
             'offset' => $limit*($page-1),
             'siteId' => $siteId,
         ));
-        return $this->output($nodes, $this->getRequest()->query->get('format'));
+        $nodesArray = array();
+        foreach ($nodes as $node) {
+            $nodesArray[] = $node->getVars();
+        }
+        return $this->output($nodesArray, $this->getRequest()->query->get('format'));
     }
 
     public function output($data, $format)
