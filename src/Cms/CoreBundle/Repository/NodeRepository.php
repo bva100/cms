@@ -80,6 +80,10 @@ class NodeRepository extends DocumentRepository {
             $qb->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
             $qb->addOr($qb->expr()->field('view.html')->equals(new \MongoRegex('/.*'.$params['search'].'.*/i')));
         }
+        if ( isset($params['siteId']) )
+        {
+            $qb->field('siteId')->equals($params['siteId']);
+        }
         return $qb->sort($params['sort']['by'], $params['sort']['order'])->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
     }
 

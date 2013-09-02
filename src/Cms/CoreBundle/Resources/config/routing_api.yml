@@ -3,6 +3,11 @@ cms_api_v1.node_find:
   defaults: { _controller: CmsCoreBundle:Api:nodeFindV1 }
   methods: [GET]
 
+cms_api_v1.node_search:
+  pattern: /node/search
+  defaults: { _controller: CmsCoreBundle:Api:nodeSearchV1 }
+  methods: [GET]
+
 cms_api_v1.node_read:
   pattern: /node/{id}
   defaults: { _controller: CmsCoreBundle:Api:nodeReadV1 }

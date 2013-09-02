@@ -38,6 +38,47 @@ class ApiController extends Controller {
         return $this->output($node->getVars(), $this->getRequest()->query->get('format'));
     }
 
+    public function nodeSearchV1Action()
+    {
+        $siteId = $this->getSiteId($this->getRequest()->query->get('access_token'));
+        $domain = $this->getRequest()->query->get('domain');
+        $locale = $this->getRequest()->query->get('locale');
+        $contentTypeName = $this->getRequest()->query->get('content_type_name');
+        $categoryParent = $this->getRequest()->query->get('category');
+        $search = $this->getRequest()->query->get('search');
+        $categorySub = $this->getRequest()->query->get('category_child');
+        $tags = $this->getRequest()->query->get('tags');
+        $tags = $tags ? explode(',', $tags ) : array();
+        $sortBy = $this->getRequest()->query->get('sortBy');
+        if ( ! $sortBy )
+        {
+            $sortBy = 'created';
+        }
+        $sortOrder = $this->getRequest()->query->get('sortOrder');
+        if ( ! $sortOrder )
+        {
+            $sortOrder = 'desc';
+        }
+        $limit = (int)$this->getRequest()->query->get('limit');
+        if ( ! $limit )
+        {
+            $limit = 12;
+        }
+        $page = $this->getRequest()->query->get('page');
+        if ( ! $page )
+        {
+            $page = 1;
+        }
+        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findByDomainAndLocaleAndContentTypeNameAndTaxonomy($domain, $locale, $contentTypeName, array('parent' => $categoryParent, 'sub' => $categorySub), $tags, array(
+            'sort' => array('by' => $sortBy, 'order' => $sortOrder),
+            'search' => $search,
+            'limit' => $limit,
+            'offset' => $limit*($page-1),
+            'siteId' => $siteId,
+        ));
+        return $this->output($nodes, $this->getRequest()->query->get('format'));
+    }
+
     public function output($data, $format)
     {
         switch($format){
