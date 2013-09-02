@@ -16,17 +16,26 @@ class ApiController extends Controller {
 
     public function nodeReadV1Action($id)
     {
-        $siteId = (string)$this->getSiteId($this->getRequest()->query->get('access_token'));
+        $siteId = $this->getSiteId($this->getRequest()->query->get('access_token'));
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id);
         if ( ! $node )
         {
             throw $this->createNotFoundException('Node with id '.$id.' not found');
         }
-        if ( $node->getSiteId() !== $siteId )
-        {
-            throw new \Exception('invalid access token');
-        }
-        return $this->output($node->getVars(), (string)$this->getRequest()->query->get('format'));
+        $this->checkNodeAndSiteId($node, $siteId);
+        return $this->output($node->getVars(), $this->getRequest()->query->get('format'));
+    }
+
+    public function nodeFindV1Action()
+    {
+        $siteId = $this->getSiteId($this->getRequest()->query->get('access_token'));
+        $domain = $this->getRequest()->query->get('domain');
+        $slug = $this->getRequest()->query->get('slug');
+        $locale = $this->getRequest()->query->get('locale');
+        $repo = $this->get('persister')->getRepo('CmsCoreBundle:Node');
+        $node = $locale ? $repo->findOneByDomainAndSlug($domain, $slug) :  $repo->findOneByDomainAndLocaleAndSlug($domain, $locale, $slug);
+        $this->checkNodeAndSiteId($node, $siteId);
+        return $this->output($node->getVars(), $this->getRequest()->query->get('format'));
     }
 
     public function output($data, $format)
@@ -38,6 +47,14 @@ class ApiController extends Controller {
                 $response->setData(array('data' => $data, 'status' => 200, 'message' => null));
                 return $response;
                 break;
+        }
+    }
+
+    public function checkNodeAndSiteId($node, $siteId)
+    {
+        if ( $node->getSiteId() !== $siteId )
+        {
+            throw new \Exception('invalid access token');
         }
     }
     
