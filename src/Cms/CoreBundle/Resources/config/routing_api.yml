@@ -13,6 +13,11 @@ cms_api_v1.node_read:
   defaults: { _controller: CmsCoreBundle:Api:nodeReadV1 }
   methods: [GET]
 
+cms_api_v1.loop_find:
+  pattern: /loop/find
+  defaults: { _controller: CmsCoreBundle:Api:loopFindV1 }
+  methods: [GET]
+
 #cms_core.api_read_locale_nodes:
 #  pattern: /{_locale}/{path}
 #  defaults: { _controller: CmsCoreBundle:Client:apiNodeRead }

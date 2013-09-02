@@ -84,6 +84,57 @@ class ApiController extends Controller {
         return $this->output($nodesArray, $this->getRequest()->query->get('format'));
     }
 
+    public function loopFindV1Action()
+    {
+        $siteId = $this->getSiteId($this->getRequest()->query->get('access_token'));
+        $domain = $this->getRequest()->query->get('domain');
+        $locale = $this->getRequest()->query->get('locale');
+        $slug = $this->getRequest()->query->get('slug');
+        $contentTypeName = $this->getRequest()->query->get('content_type_name');
+        $categoryParent = $this->getRequest()->query->get('category');
+        $search = $this->getRequest()->query->get('search');
+        $categorySub = $this->getRequest()->query->get('category_child');
+        $tags = $this->getRequest()->query->get('tags');
+        $tags = $tags ? explode(',', $tags ) : array();
+        $sortBy = $this->getRequest()->query->get('sortBy');
+        if ( ! $sortBy )
+        {
+            $sortBy = 'created';
+        }
+        $sortOrder = $this->getRequest()->query->get('sortOrder');
+        if ( ! $sortOrder )
+        {
+            $sortOrder = 'desc';
+        }
+        $limit = (int)$this->getRequest()->query->get('limit');
+        if ( ! $limit )
+        {
+            $limit = 12;
+        }
+        $page = $this->getRequest()->query->get('page');
+        if ( ! $page )
+        {
+            $page = 1;
+        }
+        $offset = $limit*($page-1);
+        $nodeRepo = $this->get('persister')->getRepo('CmsCoreBundle:Node');
+        $node = $nodeRepo->findOneByDomainAndLocaleAndSlug($domain, $locale, $slug);
+        if ( ! $node )
+        {
+            throw $this->createNotFoundException('A loop node does not exist for the given parameters');
+        }
+        $this->checkNodeAndSiteId($node, $siteId);
+        $data = new \stdClass();
+        $data->node = $node->getVars();
+        $loopRaw = $this->get('loop_loader')->setNode($node)->setNodeRepo($nodeRepo)->setParams(\get_defined_vars())->load();
+        $loop = array();
+        foreach ($loopRaw as $loopNode) {
+            $loop[] = $loopNode->getVars();
+        }
+        $data->loop = $loop;
+        return $this->output($data, $this->getRequest()->query->get('format'));
+    }
+
     public function output($data, $format)
     {
         switch($format){
