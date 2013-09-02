@@ -52,7 +52,7 @@ class ApiTokenTest extends \PHPUnit_Framework_TestCase {
     public function testCreateTokenAndGetRawClientSecretAndGetClientId()
     {
         $secret = $this->service->createSecret();
-        $clientId = '1A2b3C4d5';
+        $clientId = '51c0033d18a5162c04000002';
         $token = $this->service->createToken($clientId, $secret);
         $tokenUrlSafe = urlencode($token);
         $this->assertEquals($token, $tokenUrlSafe);
