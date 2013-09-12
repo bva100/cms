@@ -7,24 +7,26 @@
 
 namespace Cms\CoreBundle\Controller;
 
-use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Cms\CoreBundle\Services\Api\ApiException;
 
 class ApiController extends Controller {
 
-    public function nodeReadV1Action($id)
+    public function nodeReadV1Action($id, $_format)
     {
-        $siteId = $this->getSiteId($this->getRequest()->query->get('access_token'));
+        $_format = $this->getRequest()->headers->get('Accept', 'application/json');
+        $accessToken = $this->getRequest()->headers->get('Authorization');
+        $clientId = $this->get('access_token')->setToken($accessToken)->getClientId();
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id);
-        if ( ! $node )
-        {
-            throw $this->createNotFoundException('Node with id '.$id.' not found');
+        if ( ! $node ){
+            throw new ApiException(404, $_format);
         }
-        $this->checkNodeAndSiteId($node, $siteId);
-        return $this->output($node->getVars(), $this->getRequest()->query->get('format'));
+        $this->checkNodeAndSiteId($node, $clientId);
+
+        return $this->output($_format, array('node' => $node->getVars()));
     }
 
     public function nodeFindV1Action()
@@ -45,8 +47,8 @@ class ApiController extends Controller {
         $domain = $this->getRequest()->query->get('domain');
         $locale = $this->getRequest()->query->get('locale');
         $contentTypeName = $this->getRequest()->query->get('content_type_name');
+        $search = $this->getRequest()->query->get('q');
         $categoryParent = $this->getRequest()->query->get('category');
-        $search = $this->getRequest()->query->get('search');
         $categorySub = $this->getRequest()->query->get('category_child');
         $tags = $this->getRequest()->query->get('tags');
         $tags = $tags ? explode(',', $tags ) : array();
@@ -135,13 +137,13 @@ class ApiController extends Controller {
         return $this->output($data, $this->getRequest()->query->get('format'));
     }
 
-    public function output($data, $format)
+    public function output($format, array $data, array $meta = array('code' => 200), array $notifications = array())
     {
         switch($format){
             case 'json':
             default:
                 $response = new JsonResponse();
-                $response->setData(array('data' => $data, 'status' => 200, 'message' => null));
+                $response->setData(array($data, 'meta' => $meta, 'notifications' => $notifications));
                 return $response;
                 break;
         }
@@ -149,18 +151,25 @@ class ApiController extends Controller {
 
     public function checkNodeAndSiteId($node, $siteId)
     {
+        if ( ! $node )
+        {
+            throw new ApiException(404, $this->getRequest()->query->get('format'));
+        }
         if ( $node->getSiteId() !== $siteId )
         {
-            throw new \Exception('invalid access token');
+            throw new ApiException(401, $this->getRequest()->query->get('format'));
         }
     }
-    
-    public function getSiteId($token, $site = null)
+
+    public function testAction()
     {
-        if ( $site === null )
-        {
-            return $this->get('access_token')->setToken($token)->getClientId();
-        }
+        require 'PipeStack.php';
+        $accessToken = 'NTFjMDAzM2QxOGE1MTYyYzA0MDAwMDAyOmMzMjkwYzc1N2ZkMGRhOTBkYmI2ODFkMzZiMTcxYjky';
+        $PipeStack = new \PipeStack($accessToken, 'local');
+        $results = $PipeStack->get('nodes/51d8234b18a5166d3e000000');
+//        $results = $PipeStack->get('node/find', array('slug' => 'review/cloud-front', 'domain' => 'localhost'));
+//        $results = $PipeStack->get('node/search', array('category' => 'travel', 'domain' => 'localhost'));
+        echo '<pre>', \var_dump($results); die();
     }
     
 }

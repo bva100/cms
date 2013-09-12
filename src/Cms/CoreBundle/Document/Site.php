@@ -51,6 +51,11 @@ class Site extends Base {
      */
     private $currentTheme;
 
+    /**
+     * @MongoDB\String
+     */
+    private $clientSecret;
+
     public function __construct()
     {
         $this->created = time();
@@ -395,6 +400,28 @@ class Site extends Base {
     public function getCurrentTheme()
     {
         return $this->currentTheme;
+    }
+
+    /**
+     * Set client secret. Use API access token server to generate secret.
+     *
+     * @param $clientSecret
+     * @return $this
+     */
+    public function setClientSecret($clientSecret)
+    {
+        $this->clientSecret = $clientSecret;
+        return $this;
+    }
+
+    /**
+     * Get client secret for API usage
+     *
+     * @return string
+     */
+    public function getClientSecret()
+    {
+        return $this->clientSecret;
     }
 
 }

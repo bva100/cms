@@ -21,7 +21,7 @@ class PipeStack {
     {
         if ( ! is_string($accessToken) )
         {
-            throw new \InvalidArgumentException('Access token is expected to be a string, type '.gettype($accessToken).' was passed');
+            throw new \InvalidArgumentException('Access token is expected to be a string, type '.gettype($accessToken).' was provided');
         }
         $this->accessToken = $accessToken;
         return $this;
@@ -30,8 +30,14 @@ class PipeStack {
     public function setBaseUrl($env)
     {
         switch($env){
+            case 'local':
+                $this->baseUrl = 'localhost/api/';
+                break;
             case 'dev':
                 $this->baseUrl = 'dev.pipestack.com/api/';
+                break;
+            case 'staging':
+                $this->baseUrl = 'staging.pipestack.com/api/';
                 break;
             case 'prod':
             default:
@@ -54,7 +60,7 @@ class PipeStack {
 
     public function getBearer()
     {
-        return 'Authorization: Bearer '.$this->accessToken;
+        return 'Authorization: '.$this->accessToken;
     }
 
     public function getUserAgent()
@@ -62,45 +68,49 @@ class PipeStack {
         return self::USER_AGENT.$this->version;
     }
 
-    public function formatHeader($format)
+    public function getAcceptHeader($format)
     {
         switch($format){
             default:
             case 'json':
-            case 'JSON':
-                return 'Content-Type: application/json';
+                return 'Accept: application/json';
                 break;
         }
     }
 
-    public function setDefaultParams($params)
+    public function setDefaultOptions($options)
     {
-        if ( ! isset($params['format']) )
+        if ( ! isset($options['format']) )
         {
-            $params['format'] = 'json';
+            $options['format'] = 'json';
         }
-        if ( ! isset($params['schema']) )
+        if ( ! isset($options['protocol']) )
         {
-            $params['schema'] = 'http://';
+            $options['protocol'] = 'http://';
         }
-        return $params;
+        return $options;
     }
 
-    public function createResponse($data, $status)
+    public function createResponse($data, $format, $status)
     {
-        $response = new stdClass;
-        $response->data = json_decode($data);
-        $response->status = $status;
-        return $response;
+        switch($format){
+            case 'json':
+            default:
+                if ( $status !== 200 OR $status !== 304 )
+                {
+                    return json_decode($data);
+                }
+                return json_decode($data);
+                break;
+        }
     }
     
-    public function get($endpoint, array $params = array('format' => 'json', 'schema' => 'http://'))
+    public function get($endpoint, array $params = array(), array $options = array())
     {
-        $params = $this->setDefaultParams($params);
-        $params['access_token'] = $this->accessToken;
+        $options = $this->setDefaultOptions($options);
         $queryStr = http_build_query($params);
-        $headers = array($this->formatHeader($params['format']), $this->getBearer());
-        $uri = $params['schema'].$this->getApiUrl().$endpoint.'?'.$queryStr;
+        $uri = $options['protocol'].$this->getApiUrl().$endpoint.'?'.$queryStr;
+        $headers = array($this->getBearer(), $this->getAcceptHeader($options['format']));
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_USERAGENT, $this->getUserAgent());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -108,29 +118,9 @@ class PipeStack {
         curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         curl_setopt($ch, CURLOPT_URL, $uri);
         $data = curl_exec($ch);
-        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return $this->createResponse($data, $status);
-    }
-
-    public function testinit()
-    {
-        $headers = array('Content-Type: application/json');
-        if ($app->access_token())
-        {
-            $headers[] = 'Authorization: Bearer '.$app->access_token();
-        }
-
-        // create uri
-        $uri = URL::base(TRUE).'api/users.json?user_id='.$user_id.'&access_token='.urlencode($app->access_token()).'&v=.8';
-
-        //cURL
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_USERAGENT, 'AuthMyApp PHP SDK api_version=.8');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-        curl_setopt($ch, CURLOPT_URL, $uri);
+        return json_decode($data);
     }
 
 }
