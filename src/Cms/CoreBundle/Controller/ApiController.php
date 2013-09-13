@@ -25,7 +25,8 @@ class ApiController extends Controller {
             throw new ApiException(404, $_format);
         }
         $this->checkNodeAndSiteId($node, $clientId);
-        return $this->output($_format, array('node' => $node->getVars()));
+        $convertedNode = $this->get('api_node_adopter')->setNode($node)->convert();
+        return $this->output($_format, 'node', $convertedNode);
     }
 
     public function nodeFindV1Action()
@@ -136,13 +137,13 @@ class ApiController extends Controller {
         return $this->output($data, $this->getRequest()->query->get('format'));
     }
 
-    public function output($format, array $data, array $meta = array('code' => 200), array $notifications = array())
+    public function output($format, $resourceName, $resource, array $meta = array('code' => 200), array $notifications = array())
     {
         switch($format){
             case 'json':
             default:
                 $response = new JsonResponse();
-                $response->setData(array($data, 'meta' => $meta, 'notifications' => $notifications));
+                $response->setData(array($resourceName => $resource, 'meta' => $meta, 'notifications' => $notifications));
                 return $response;
                 break;
         }

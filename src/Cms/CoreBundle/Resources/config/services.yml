@@ -18,6 +18,7 @@ parameters:
     cms.site_manager_unique.class: Cms\CoreBundle\Services\SiteManager\unique
     cms.api_access_token.class: Cms\CoreBundle\Services\Api\Token
     cms.check_route.class: Cms\CoreBundle\Services\CheckRoute
+    cms.api_node_adopter.class: Cms\CoreBundle\Services\Api\EntityAdopters\NodeAdopter
 
 services:
     asset_manager:
@@ -63,7 +64,9 @@ services:
         class: %cms.site_manager_unique.class%
         calls:
           - [setPersister, [@persister]]
-    access_token:
-        class: %cms.api_access_token.class%
     check_route:
         class: %cms.check_route.class%
+    access_token:
+        class: %cms.api_access_token.class%
+    api_node_adopter:
+        class: %cms.api_node_adopter.class%
