@@ -56,7 +56,7 @@ class ApiTokenTest extends \PHPUnit_Framework_TestCase {
     {
         $secret = $this->service->createSecret();
         $this->assertNotEmpty($secret);
-        $this->assertGreaterThan(12, strlen($secret));
+        $this->assertGreaterThan(9, strlen($secret));
     }
 
     /**

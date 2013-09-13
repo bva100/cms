@@ -15,7 +15,7 @@ class Token {
     const CURRENT_VERSION = '1';
     const CYPHER = MCRYPT_RIJNDAEL_256;
     const MODE   = MCRYPT_MODE_CBC;
-    const KEY    = 'Hs82Bsp1S9zw0e44uDn';
+    const KEY    = 'Hs82Bsp1S9zw0';
 
     private $token;
 
@@ -218,7 +218,7 @@ class Token {
         $val = $ary['int'] & 0x7FFFFFFF;   // 32-bit safe
         $fp = (float) $val / 2147483647.0; // convert to [0,1]
         $rand =  round($fp * $diff) + $min;
-        return substr(hash('sha512', $rand), -15);
+        return substr(hash('sha512', $rand), -10);
     }
 
     /**

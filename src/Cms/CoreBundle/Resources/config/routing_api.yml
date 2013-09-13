@@ -18,9 +18,16 @@ cms_api_v1.loop_find:
   defaults: { _controller: CmsCoreBundle:Api:loopFindV1, _format: 'json' }
   methods: [GET]
 
+
+
 cms_api_v1.test:
   pattern: /test
   defaults: { _controller: CmsCoreBundle:Api:test }
+  methods: [GET]
+
+cms_api_v1.token:
+  pattern: /token
+  defaults: { _controller: CmsCoreBundle:Api:token }
   methods: [GET]
 
 #cms_core.api_read_locale_nodes:

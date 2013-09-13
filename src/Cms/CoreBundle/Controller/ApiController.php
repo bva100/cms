@@ -25,7 +25,6 @@ class ApiController extends Controller {
             throw new ApiException(404, $_format);
         }
         $this->checkNodeAndSiteId($node, $clientId);
-
         return $this->output($_format, array('node' => $node->getVars()));
     }
 
@@ -161,10 +160,29 @@ class ApiController extends Controller {
         }
     }
 
+    public function tokenAction()
+    {
+        // resets secret and offers token for a client id
+        $clientId = $this->getRequest()->query->get('clientId');
+        $secret = $this->get('access_token')->createSecret();
+        
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($clientId);
+        if ( ! $site ){
+            throw $this->createNotFoundException('site with id '.$clientId.' not found');
+        }
+        $site->setClientSecret($secret);
+        $success = $this->get('persister')->save($site);
+        if ( ! $success ){
+            throw new \Exception('not able to update client secret');
+        }
+        $token = $this->get('access_token')->createToken($clientId, $secret);
+        return new Response('the new token is <br> '.$token);
+    }
+
     public function testAction()
     {
         require 'PipeStack.php';
-        $accessToken = 'NTFjMDAzM2QxOGE1MTYyYzA0MDAwMDAyOmMzMjkwYzc1N2ZkMGRhOTBkYmI2ODFkMzZiMTcxYjky';
+        $accessToken = 'PzKmOxi72jxlNd3icrQJWhbMJ62BIWhl7iHA5LIS1wPu3yLJ5Gp08hDR6oZKL_wtqsTix-FFgS-2gw2wgbw5fmaIcxjklITn1BNjYLXEXLe67cRTVeA4VcRKgHjw24z1';
         $PipeStack = new \PipeStack($accessToken, 'local');
         $results = $PipeStack->get('nodes/51d8234b18a5166d3e000000');
 //        $results = $PipeStack->get('node/find', array('slug' => 'review/cloud-front', 'domain' => 'localhost'));
