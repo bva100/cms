@@ -9,7 +9,7 @@ cms_api_v1.node_search:
   methods: [GET]
 
 cms_api_v1.node_read:
-  pattern: /nodes/{id}
+  pattern: /nodes/{ids}
   defaults: { _controller: CmsCoreBundle:Api:nodeReadV1, _format: 'json' }
   methods: [GET]
 

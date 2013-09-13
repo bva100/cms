@@ -37,7 +37,7 @@ class NodeTest extends PhpUnit {
     public function testConvert()
     {
         $adopter = new NodeAdopter();
-        $adopter->setNode($this->node);
+        $adopter->setResource($this->node);
         $obj = $adopter->convert();
         $this->assertEquals($obj->id, $this->node->getId());
         $this->assertEquals($obj->domain, $this->node->getDomain());

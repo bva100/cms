@@ -8,62 +8,54 @@
 namespace Cms\CoreBundle\Services\Api\EntityAdopters;
 
 use Cms\CoreBundle\Document\Node;
+use Cms\CoreBundle\Document\Base;
 use stdClass;
+use RuntimeException;
 
 /**
  * Class Node
  * @package Cms\CoreBundle\Services\Api\EntityAdopters
  */
-class NodeAdopter implements InterfaceAdopter {
+class NodeAdopter extends AbstractAdopter {
 
     /**
-     * @var Node;
-     */
-    private $node;
-
-    /**
-     * Set Node entity/document
+     * Inject the Node entity to be converted
      *
-     * @param Node $node
-     * @return $this
+     * @param Base $node
+     * @return NodeAdopter
+     * @throws \RuntimeException
      */
-    public function setNode(Node $node)
+    public function setResource(Base $node)
     {
-        $this->node = $node;
+        if ( ! $node instanceof Node )
+        {
+            throw new RuntimeException('Node Adopter requires that a Node entity is inject. Instance of '.get_class($node).' was injected.');
+        }
+        $this->resource = $node;
         return $this;
-    }
-
-    /**
-     * Get Node entity/document
-     *
-     * @return Node
-     */
-    public function getNode()
-    {
-        return $this->node;
     }
 
     /**
      * Converts entity/document node into API acceptable interface
      *
-     * @return stdObj
+     * @return stdClass
      */
     public function convert()
     {
         $obj = new stdClass;
-        $obj->id = $this->node->getId();
-        $obj->domain = $this->node->getDomain();
-        $obj->locale = $this->node->getLocale();
-        $obj->categories = $this->node->getCategories();
-        $obj->tags = $this->node->getTags();
-        $obj->slug = $this->node->getSlug();
-        $obj->title = $this->node->getTitle();
-        $obj->description = $this->node->getDescription();
-        $obj->metatags = $this->node->getMetatags();
-        $obj->fields = $this->node->getFields();
-        $obj->author = $this->node->getAuthor();
-        $obj->image = $this->node->getImage();
-        $obj->created = $this->node->getCreated();
+        $obj->id = $this->resource->getId();
+        $obj->domain = $this->resource->getDomain();
+        $obj->locale = $this->resource->getLocale();
+        $obj->categories = $this->resource->getCategories();
+        $obj->tags = $this->resource->getTags();
+        $obj->slug = $this->resource->getSlug();
+        $obj->title = $this->resource->getTitle();
+        $obj->description = $this->resource->getDescription();
+        $obj->metatags = $this->resource->getMetatags();
+        $obj->fields = $this->resource->getFields();
+        $obj->author = $this->resource->getAuthor();
+        $obj->image = $this->resource->getImage();
+        $obj->created = $this->resource->getCreated();
         return $obj;
     }
 

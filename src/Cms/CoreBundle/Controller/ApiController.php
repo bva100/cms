@@ -15,18 +15,40 @@ use Cms\CoreBundle\Services\Api\ApiException;
 
 class ApiController extends Controller {
 
-    public function nodeReadV1Action($id, $_format)
+    public function nodeReadV1Action($ids, $_format)
     {
+        $resources = array();
         $_format = $this->getRequest()->headers->get('Accept', 'application/json');
         $accessToken = $this->getRequest()->headers->get('Authorization');
         $clientId = $this->get('access_token')->setToken($accessToken)->getClientId();
-        $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id);
-        if ( ! $node ){
-            throw new ApiException(404, $_format);
+        $idsArray = explode(',', $ids);
+        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
+        foreach ($nodes as $node) {
+            $resources[] = $this->get('api_node_adopter')->setResource($node)->convert();
         }
-        $this->checkNodeAndSiteId($node, $clientId);
-        $convertedNode = $this->get('api_node_adopter')->setNode($node)->convert();
-        return $this->output($_format, 'node', $convertedNode);
+        return $this->output($_format, array('singular' => 'node', 'plural' => 'nodes'), $resources);
+    }
+
+    public function output($format, array $resourceNames, $resources, array $meta = array('code' => 200), array $notifications = array())
+    {
+        if ( empty($resources) ){
+            throw new ApiException(404, $format);
+        }
+        else if(count($resources) === 1){
+            $resourceName = $resourceNames['singular'];
+            $resources = $resources[0];
+        }
+        else {
+            $resourceName = $resourceNames['plural'];
+        }
+        switch($format){
+            case 'application/json':
+            default:
+                $response = new JsonResponse();
+                $response->setData(array($resourceName => $resources, 'meta' => $meta, 'notifications' => $notifications));
+                return $response;
+                break;
+        }
     }
 
     public function nodeFindV1Action()
@@ -135,18 +157,6 @@ class ApiController extends Controller {
         }
         $data->loop = $loop;
         return $this->output($data, $this->getRequest()->query->get('format'));
-    }
-
-    public function output($format, $resourceName, $resource, array $meta = array('code' => 200), array $notifications = array())
-    {
-        switch($format){
-            case 'json':
-            default:
-                $response = new JsonResponse();
-                $response->setData(array($resourceName => $resource, 'meta' => $meta, 'notifications' => $notifications));
-                return $response;
-                break;
-        }
     }
 
     public function checkNodeAndSiteId($node, $siteId)

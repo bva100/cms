@@ -25,6 +25,21 @@ class NodeRepository extends DocumentRepository {
     }
 
     /**
+     * Find nodes by ID and, in the process, verify site id
+     *
+     * @param $siteId
+     * @param $ids
+     * @return array|bool|\Doctrine\MongoDB\ArrayIterator|\Doctrine\MongoDB\Cursor|\Doctrine\MongoDB\EagerCursor|mixed|null
+     */
+    public function findBySiteIdAndIds($siteId, array $ids)
+    {
+        return $this->createQueryBuilder()
+            ->field('siteId')->equals($siteId)
+            ->field('id')->in($ids)
+            ->getQuery()->execute();
+    }
+
+    /**
      * Find one by domain and locale and locale
      *
      * @param $domain
