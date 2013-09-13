@@ -26,7 +26,11 @@ class ApiController extends Controller {
         foreach ($nodes as $node) {
             $resources[] = $this->get('api_node_adopter')->setResource($node)->convert();
         }
-        return $this->output($_format, array('singular' => 'node', 'plural' => 'nodes'), $resources);
+        return $this->get('api_output')
+            ->setFormat($_format)
+            ->setResources($resources)
+            ->setResourceNames(array('singular' => 'node', 'plural' => 'nodes'))
+            ->output();
     }
 
     public function output($format, array $resourceNames, $resources, array $meta = array('code' => 200), array $notifications = array())
@@ -195,10 +199,25 @@ class ApiController extends Controller {
         require 'PipeStack.php';
         $accessToken = 'PzKmOxi72jxlNd3icrQJWhbMJ62BIWhl7iHA5LIS1wPu3yLJ5Gp08hDR6oZKL_wtqsTix-FFgS-2gw2wgbw5fmaIcxjklITn1BNjYLXEXLe67cRTVeA4VcRKgHjw24z1';
         $PipeStack = new \PipeStack($accessToken, 'local');
-        $results = $PipeStack->get('nodes/51d8234b18a5166d3e000000');
+        $results = $PipeStack->get('nodes/51d8234b18a5166d3e000000,5213b15218a516290f000000');
 //        $results = $PipeStack->get('node/find', array('slug' => 'review/cloud-front', 'domain' => 'localhost'));
 //        $results = $PipeStack->get('node/search', array('category' => 'travel', 'domain' => 'localhost'));
-        echo '<pre>', \var_dump($results); die();
+
+//        echo '<pre>', \var_dump($results); die();
+
+
+
+        //single
+//        return new Response('<h1>'.$results->node->title.'</h1><p>'.$results->node->view->html.'</p>');
+
+        //many
+        echo 'response: '.$results->meta->code.'<br>';
+        foreach ($results->nodes as $node) {
+            echo '<h2>', $node->title, '</h1>', '<p>', $node->view->html, '</p><br />';
+        }
+        die('<br> end');
+
     }
+
     
 }

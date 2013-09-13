@@ -110,7 +110,7 @@ class OutputTest extends PhpUnit {
             'meta' => $meta,
             'notifications' => $notifications,
         ));
-        
+
         $this->outputService->setResources($resources)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setMeta($meta)->setNotifications($notifications);
         $output = $this->outputService->output();
         $this->assertContains('HTTP/1.0 200 OK', (string)$output);

@@ -50,6 +50,7 @@ class NodeAdopter extends AbstractAdopter {
         $obj->tags = $this->resource->getTags();
         $obj->slug = $this->resource->getSlug();
         $obj->title = $this->resource->getTitle();
+        $obj->view = $this->resource->getViews();
         $obj->description = $this->resource->getDescription();
         $obj->metatags = $this->resource->getMetatags();
         $obj->fields = $this->resource->getFields();

@@ -19,6 +19,7 @@ parameters:
     cms.api_access_token.class: Cms\CoreBundle\Services\Api\Token
     cms.check_route.class: Cms\CoreBundle\Services\CheckRoute
     cms.api_node_adopter.class: Cms\CoreBundle\Services\Api\EntityAdopters\NodeAdopter
+    cms.api_output.class: Cms\CoreBundle\Services\Api\Output
 
 services:
     asset_manager:
@@ -70,3 +71,5 @@ services:
         class: %cms.api_access_token.class%
     api_node_adopter:
         class: %cms.api_node_adopter.class%
+    api_output:
+        class: %cms.api_output.class%
