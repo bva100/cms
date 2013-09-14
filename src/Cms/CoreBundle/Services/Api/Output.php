@@ -37,10 +37,16 @@ class Output {
      */
     private $resources;
 
+    /**
+     * @var bool
+     */
+    private $forceCollection;
+
     public function __construct()
     {
         $this->setMeta(array('code' => 200));
         $this->setNotifications(array());
+        $this->setForceCollection(false);
     }
 
     /**
@@ -134,6 +140,24 @@ class Output {
     }
 
     /**
+     * @param bool $forceCollection
+     * @return $this
+     */
+    public function setForceCollection($forceCollection)
+    {
+        $this->forceCollection = $forceCollection;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getForceCollection()
+    {
+        return $this->forceCollection;
+    }
+
+    /**
      * Check for empty resource array
      * If a single resource is found, change array of resource objects to single resource object
      * returns either a singular or plural name
@@ -146,7 +170,7 @@ class Output {
         if ( empty($this->resources) ){
             throw new ApiException(404, $this->format);
         }
-        else if(count($this->resources) === 1){
+        else if( ! $this->getForceCollection() AND count($this->resources) === 1){
             $resourceName = $this->resourceNames['singular'];
             $this->resources = $this->resources[0];
         }

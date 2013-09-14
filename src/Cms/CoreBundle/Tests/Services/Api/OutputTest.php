@@ -42,10 +42,12 @@ class OutputTest extends PhpUnit {
     {
         $this->assertEquals($this->outputService->getMeta(), array('code' => 200));
         $this->assertEquals($this->outputService->getNotifications(), array());
+        $this->assertFalse($this->outputService->getForceCollection());
     }
 
     /**
      * @covers Cms\CoreBundle\Services\Api\Output::checkResourceAndGetName
+     * @covers Cms\CoreBundle\Services\Api\Output::setResources
      * @expectedException Cms\CoreBundle\Services\Api\ApiException
      */
     public function testResourceNotFound()
@@ -56,6 +58,9 @@ class OutputTest extends PhpUnit {
 
     /**
      * @covers Cms\CoreBundle\Services\Api\Output::checkResourceAndGetName
+     * @covers Cms\CoreBundle\Services\Api\Output::setResources
+     * @covers Cms\CoreBundle\Services\Api\Output::getResources
+     * @covers Cms\CoreBundle\Services\Api\Output::setResourceName
      */
     public function testSingleResourceName()
     {
@@ -73,6 +78,9 @@ class OutputTest extends PhpUnit {
 
     /**
      * @covers Cms\CoreBundle\Services\Api\Output::checkResourceAndGetName
+     * @covers Cms\CoreBundle\Services\Api\Output::setResources
+     * @covers Cms\CoreBundle\Services\Api\Output::getResources
+     * @covers Cms\CoreBundle\Services\Api\Output::setResourceName
      */
     public function testPluralResourceName()
     {
@@ -92,9 +100,61 @@ class OutputTest extends PhpUnit {
     }
 
     /**
-     * @covers Cms\CoreBundle\Services\Api\Output::output
+     * @covers Cms\CoreBundle\Services\Api\Output::checkResourceAndGetName
+     * @covers Cms\CoreBundle\Services\Api\Output::setResources
+     * @covers Cms\CoreBundle\Services\Api\Output::getResources
+     * @covers Cms\CoreBundle\Services\Api\Output::setResourceName
+     * @covers Cms\CoreBundle\Services\Api\Output::forceCollection
      */
-    public function testOutputJson()
+    public function testForceCollectOnSingleResource()
+    {
+        $resourceObj = new stdClass;
+        $resourceObj->id = 'foobar';
+        $resourceObj->title = 'foo and bar';
+        $resource = array($resourceObj);
+
+        $this->outputService->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'));
+        $this->outputService->setResources($resource);
+        $this->outputService->setForceCollection(true);
+        $this->assertEquals($this->outputService->checkResourcesAndGetName(), 'resources');
+        $this->assertEquals($resource, $this->outputService->getResources());
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\Output::output
+     * @covers Cms\CoreBundle\Services\Api\Output::setResources
+     * @covers Cms\CoreBundle\Services\Api\Output::setResourceName
+     * @covers Cms\CoreBundle\Services\Api\Output::setMeta
+     * @covers Cms\CoreBundle\Services\Api\Output::setNotifications
+     */
+    public function testOutputJsonSingle()
+    {
+        $resource = new stdClass;
+        $resource->id = 'foobar';
+        $resource->title = 'foo and bar';
+        $resourceArray = array($resource);
+        $meta = array('code' => 200, 'offset' => 0, 'limit' => 10);
+        $notifications = array('updates' => 'This is an update notification.');
+        $expected = json_encode(array(
+            'resource' => $resource,
+            'meta' => $meta,
+            'notifications' => $notifications,
+        ));
+
+        $this->outputService->setResources($resourceArray)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setMeta($meta)->setNotifications($notifications);
+        $output = $this->outputService->output();
+        $this->assertContains('HTTP/1.0 200 OK', (string)$output);
+        $this->assertContains($expected, (string)$output);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\Output::output
+     * @covers Cms\CoreBundle\Services\Api\Output::setResources
+     * @covers Cms\CoreBundle\Services\Api\Output::setResourceName
+     * @covers Cms\CoreBundle\Services\Api\Output::setMeta
+     * @covers Cms\CoreBundle\Services\Api\Output::setNotifications
+     */
+    public function testOutputJsonCollection()
     {
         $resourceObj1 = new stdClass;
         $resourceObj1->id = 'foobar';
@@ -104,7 +164,7 @@ class OutputTest extends PhpUnit {
         $resourceObj2->title = 'foo two and bar two';
         $resources = array($resourceObj1, $resourceObj2);
         $meta = array('code' => 200, 'offset' => 0, 'limit' => 10);
-        $notifications = array('updates' => 'breaking changes to this endpoint are coming soon!');
+        $notifications = array('updates' => 'This is an update notification.');
         $expected = json_encode(array(
             'resources' => $resources,
             'meta' => $meta,
@@ -112,6 +172,26 @@ class OutputTest extends PhpUnit {
         ));
 
         $this->outputService->setResources($resources)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setMeta($meta)->setNotifications($notifications);
+        $output = $this->outputService->output();
+        $this->assertContains('HTTP/1.0 200 OK', (string)$output);
+        $this->assertContains($expected, (string)$output);
+    }
+
+    public function testOuputForceCollectionOnSingleResults()
+    {
+        $resource = new stdClass;
+        $resource->id = 'foobar';
+        $resource->title = 'foo and bar';
+        $resourceArray = array($resource);
+        $meta = array('code' => 200, 'offset' => 0, 'limit' => 10);
+        $notifications = array('updates' => 'This is an update notification.');
+        $expected = json_encode(array(
+            'resources' => $resourceArray,
+            'meta' => $meta,
+            'notifications' => $notifications,
+        ));
+
+        $this->outputService->setResources($resourceArray)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setForceCollection(true)->setMeta($meta)->setNotifications($notifications);
         $output = $this->outputService->output();
         $this->assertContains('HTTP/1.0 200 OK', (string)$output);
         $this->assertContains($expected, (string)$output);
