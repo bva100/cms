@@ -28,6 +28,8 @@ class Output {
     private $notifications;
 
     /**
+     * Must always include a 'singular' element and a 'plural' element
+     *
      * @var array
      */
     private $resourceNames;
@@ -38,6 +40,8 @@ class Output {
     private $resources;
 
     /**
+     * Setting this property to true will force the response to return a single resource in a collection format (IE an object embedded)
+     *
      * @var bool
      */
     private $forceCollection;
