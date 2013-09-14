@@ -662,7 +662,7 @@ class Node extends Base {
     /**
      * Set author
      *
-     * @param hash $author
+     * @param array $author
      * @return self
      */
     public function setAuthor($author)

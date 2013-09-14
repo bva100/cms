@@ -38,25 +38,26 @@ class NodeAdopter extends AbstractAdopter {
     /**
      * Converts entity/document node into API acceptable interface
      *
+     * @param array $fields
      * @return stdClass
      */
-    public function convert()
+    public function convert(array $fields = array())
     {
         $obj = new stdClass;
-        $obj->id = $this->resource->getId();
-        $obj->domain = $this->resource->getDomain();
-        $obj->locale = $this->resource->getLocale();
-        $obj->categories = $this->resource->getCategories();
-        $obj->tags = $this->resource->getTags();
-        $obj->slug = $this->resource->getSlug();
-        $obj->title = $this->resource->getTitle();
-        $obj->view = $this->resource->getViews();
-        $obj->description = $this->resource->getDescription();
-        $obj->metatags = $this->resource->getMetatags();
-        $obj->fields = $this->resource->getFields();
-        $obj->author = $this->resource->getAuthor();
-        $obj->image = $this->resource->getImage();
-        $obj->created = $this->resource->getCreated();
+        $obj = $this->addObjProperty($obj, 'id', $fields);
+        $obj = $this->addObjProperty($obj, 'domain', $fields);
+        $obj = $this->addObjProperty($obj, 'locale', $fields);
+        $obj = $this->addObjProperty($obj, 'categories', $fields);
+        $obj = $this->addObjProperty($obj, 'tags', $fields);
+        $obj = $this->addObjProperty($obj, 'slug', $fields);
+        $obj = $this->addObjProperty($obj, 'title', $fields);
+        $obj = $this->addObjProperty($obj, 'views', $fields);
+        $obj = $this->addObjProperty($obj, 'description', $fields);
+        $obj = $this->addObjProperty($obj, 'metatags', $fields);
+        $obj = $this->addObjProperty($obj, 'fields', $fields);
+        $obj = $this->addObjProperty($obj, 'author', $fields);
+        $obj = $this->addObjProperty($obj, 'image', $fields);
+        $obj = $this->addObjProperty($obj, 'created', $fields);
         return $obj;
     }
 

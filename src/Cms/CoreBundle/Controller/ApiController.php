@@ -16,17 +16,29 @@ class ApiController extends Controller {
     {
         $resources = array();
         $accessToken = $this->getAccessToken($_format);
+        $fields = $this->getFields();
         $clientId = $this->get('access_token')->setToken($accessToken)->getClientId();
         $idsArray = explode(',', $ids);
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
         foreach ($nodes as $node) {
-            $resources[] = $this->get('api_node_adopter')->setResource($node)->convert();
+            $resources[] = $this->get('api_node_adopter')->setResource($node)->convert($fields);
         }
         return $this->get('api_output')
             ->setFormat($_format)
             ->setResources($resources)
             ->setResourceNames(array('singular' => 'node', 'plural' => 'nodes'))
             ->output();
+    }
+
+    public function getFields()
+    {
+        $fields = $this->getRequest()->query->get('fields');
+        if ( $fields ){
+            $fields = explode(',', $fields);
+        }else{
+            $fields = array();
+        }
+        return $fields;
     }
 
     public function getAccessToken($format)

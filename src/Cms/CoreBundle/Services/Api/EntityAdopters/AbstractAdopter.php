@@ -8,10 +8,21 @@
 namespace Cms\CoreBundle\Services\Api\EntityAdopters;
 
 use Cms\CoreBundle\Document\Base;
+use stdClass;
 
 abstract class AbstractAdopter {
 
     protected $resource;
+
+    public function addObjProperty(stdClass $obj, $property, array $fields)
+    {
+        if (empty($fields) OR in_array($property, $fields) )
+        {
+            $getterName = 'get'.ucfirst($property);
+            $obj->$property = $this->resource->$getterName();
+        }
+        return $obj;
+    }
 
     public function getResource()
     {

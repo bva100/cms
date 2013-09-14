@@ -3,6 +3,9 @@
  * User: Brian Anderson
  * Date: 9/12/13
  * Time: 10:56 PM
+ *
+ * NOTE: this test also test the abstract class' method called "addObjProperty"
+ *
  */
 
 namespace Cms\CoreBundle\Tests\EntityAdopters;
@@ -29,12 +32,25 @@ class NodeTest extends PhpUnit {
     public function setUp()
     {
         $this->node = new Node();
+        $this->node->setTitle('foobar');
+        $this->node->setDomain('foobar.com');
+        $this->node->setLocale('en');
+        $this->node->setTags(array('foo', 'bar'));
+        $this->node->setSlug('/bar/foobar');
+        $this->node->setCategories(array('programming'));
+        $this->node->setDescription('foo and bar');
+        $this->node->addMetatag(array('someMetaTagName' => 'someMetaTagValue'));
+        $this->node->setFields(array('randomFoo' => 'bigBar'));
+        $this->node->setAuthor(array('firstName' => 'Foo'));
+        $this->node->setImage('http://foobar.com/images/foobarPic.png');
     }
 
     /**
-     * @covers Cms\CoreBundle\Tests\EntityAdopters\Node::convert
+     * @covers Cms\CoreBundle\Tests\EntityAdopters\NodeAdopter::convert
+     * @covers Cms\CoreBundle\Tests\EntityAdopters\NodeAdopter::setResource
+     * @covers Cms\CoreBundle\Tests\EntityAdopters\AbstractAdopter::addObjProperty
      */
-    public function testConvert()
+    public function testConvertNoFieldsDefined()
     {
         $adopter = new NodeAdopter();
         $adopter->setResource($this->node);
@@ -52,6 +68,18 @@ class NodeTest extends PhpUnit {
         $this->assertEquals($obj->author, $this->node->getAuthor());
         $this->assertEquals($obj->image, $this->node->getImage());
         $this->assertEquals($obj->created, $this->node->getCreated());
+    }
+
+    public function testConvertWithFieldRestrictions()
+    {
+        $fields = array('title', 'locale', 'slug');
+        $adopter = new NodeAdopter();
+        $adopter->setResource($this->node);
+        $obj = $adopter->convert($fields);
+        $this->assertCount(3, get_object_vars($obj));
+        $this->assertEquals($obj->title, $this->node->getTitle());
+        $this->assertEquals($obj->locale, $this->node->getLocale());
+        $this->assertEquals($obj->slug, $this->node->getSlug());
     }
 
 }
