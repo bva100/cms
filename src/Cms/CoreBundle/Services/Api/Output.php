@@ -9,6 +9,7 @@ namespace Cms\CoreBundle\Services\Api;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Cms\CoreBundle\Services\Api\ApiException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Output {
 
@@ -188,14 +189,29 @@ class Output {
     {
         $resourceName = $this->checkResourcesAndGetName();
         switch($this->format){
-            case 'application/json':
+//            case 'xml':
+//                $xml = new \SimpleXMLElement('<root/>');
+//                if ( is_array($this->resources) ){
+//                    foreach ($this->resources as $resource) {
+//                        $resourceArray = array_flip(get_object_vars($resource));
+//                        array_walk_recursive(array_flip($resource), array($xml, 'addChild'));
+//                    }
+//                }else{
+//                    $resource = array_flip(get_object_vars($this->resources));
+//                    array_walk_recursive($resource, array($xml, 'addChild'));
+//                }
+//                $output = $xml->asXML();
+//                $response = new Response($output);
+//                $response->setStatusCode($this->meta['code']);
+//                break;
+            case 'json':
             default:
                 $response = new JsonResponse();
                 $response->setData(array($resourceName => $this->resources, 'meta' => $this->meta, 'notifications' => $this->notifications));
                 $response->setStatusCode($this->meta['code']);
-                return $response;
                 break;
         }
+        return $response;
     }
 
 }

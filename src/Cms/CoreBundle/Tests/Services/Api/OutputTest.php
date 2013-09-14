@@ -141,7 +141,7 @@ class OutputTest extends PhpUnit {
             'notifications' => $notifications,
         ));
 
-        $this->outputService->setResources($resourceArray)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setMeta($meta)->setNotifications($notifications);
+        $this->outputService->setResources($resourceArray)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setFormat('json')->setMeta($meta)->setNotifications($notifications);
         $output = $this->outputService->output();
         $this->assertContains('HTTP/1.0 200 OK', (string)$output);
         $this->assertContains($expected, (string)$output);
@@ -171,13 +171,13 @@ class OutputTest extends PhpUnit {
             'notifications' => $notifications,
         ));
 
-        $this->outputService->setResources($resources)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setMeta($meta)->setNotifications($notifications);
+        $this->outputService->setResources($resources)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setFormat('json')->setMeta($meta)->setNotifications($notifications);
         $output = $this->outputService->output();
         $this->assertContains('HTTP/1.0 200 OK', (string)$output);
         $this->assertContains($expected, (string)$output);
     }
 
-    public function testOuputForceCollectionOnSingleResults()
+    public function testOuputJsonForceCollectionOnSingleResults()
     {
         $resource = new stdClass;
         $resource->id = 'foobar';
@@ -191,10 +191,37 @@ class OutputTest extends PhpUnit {
             'notifications' => $notifications,
         ));
 
-        $this->outputService->setResources($resourceArray)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setForceCollection(true)->setMeta($meta)->setNotifications($notifications);
+        $this->outputService->setResources($resourceArray)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setFormat('json')->setForceCollection(true)->setMeta($meta)->setNotifications($notifications);
         $output = $this->outputService->output();
         $this->assertContains('HTTP/1.0 200 OK', (string)$output);
         $this->assertContains($expected, (string)$output);
     }
+
+//    /**
+//     * @covers Cms\CoreBundle\Services\Api\Output::output
+//     * @covers Cms\CoreBundle\Services\Api\Output::setResources
+//     * @covers Cms\CoreBundle\Services\Api\Output::setResourceName
+//     * @covers Cms\CoreBundle\Services\Api\Output::setMeta
+//     * @covers Cms\CoreBundle\Services\Api\Output::setNotifications
+//     */
+//    public function testOutputXmlSingle()
+//    {
+//        $resource = new stdClass;
+//        $resource->id = 'foobar';
+//        $resource->title = 'foo and bar';
+//        $resourceArray = array($resource);
+//        $meta = array('code' => 200, 'offset' => 0, 'limit' => 10);
+//        $notifications = array('updates' => 'This is an update notification.');
+//        $expected = json_encode(array(
+//            'resource' => $resource,
+//            'meta' => $meta,
+//            'notifications' => $notifications,
+//        ));
+//
+//        $this->outputService->setResources($resourceArray)->setResourceNames(array('singular' => 'resource', 'plural' => 'resources'))->setFormat('xml')->setMeta($meta)->setNotifications($notifications);
+//        $output = $this->outputService->output();
+//        $this->assertContains('HTTP/1.0 200 OK', (string)$output);
+//        $this->assertContains($expected, (string)$output);
+//    }
 
 }

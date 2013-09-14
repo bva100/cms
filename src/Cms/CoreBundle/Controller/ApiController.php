@@ -17,8 +17,9 @@ class ApiController extends Controller {
 
     public function nodeReadV1Action($ids, $_format)
     {
+        $serializer = $this->get('jms_serializer');
+
         $resources = array();
-        $_format = $this->getRequest()->headers->get('Accept', 'application/json');
         $accessToken = $this->getRequest()->headers->get('Authorization');
         $clientId = $this->get('access_token')->setToken($accessToken)->getClientId();
         $idsArray = explode(',', $ids);

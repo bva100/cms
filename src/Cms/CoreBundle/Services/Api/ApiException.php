@@ -62,16 +62,16 @@ class ApiException extends HttpException {
     public function createMessage($data, $format)
     {
         switch ($format) {
-            case 'text/html':
+            case 'html':
                 return '<h1>'.$data['code'].' '.$data['type'].'</h1><p>'.$data['message'].'</p><p><a href="'.$data['moreInfo'].'" target="_blank"/>'.$data['moreInfo'].'</a></p>';
                 break;
-            case 'application/xml':
+            case 'xml':
                 $data = array_flip($data);
                 $xml = new \SimpleXMLElement('<root/>');
                 array_walk_recursive($data, array ($xml, 'addChild'));
                 return $xml->asXML();
                 break;
-            case 'application/json':
+            case 'json':
             default:
                 return json_encode(array('meta' => $data));
                 break;
