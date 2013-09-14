@@ -156,15 +156,15 @@ class Token {
      * @throws \RuntimeException
      * @throws ApiException
      */
-    public function validateAuth($format = 'text/html')
+    public function validateAuth($format = 'html')
     {
         if ( $this->site->getId() !== $this->clientId )
         {
-            throw new RuntimeException('Site id and client id do not match');
+            throw new RuntimeException('Site id and client id do not match. This error occurred while validating Auth and usually means the wrong site was injected into the api token service');
         }
         if ( $this->site->getClientSecret() !== $this->rawClientSecret )
         {
-            throw new ApiException(403, $format);
+            throw new ApiException(10001, $format);
         }
         return true;
     }

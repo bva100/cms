@@ -8,19 +8,14 @@
 namespace Cms\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Cms\CoreBundle\Services\Api\ApiException;
 
 class ApiController extends Controller {
 
     public function nodeReadV1Action($ids, $_format)
     {
-        $serializer = $this->get('jms_serializer');
-
         $resources = array();
-        $accessToken = $this->getRequest()->headers->get('Authorization');
+        $accessToken = $this->getAccessToken($_format);
         $clientId = $this->get('access_token')->setToken($accessToken)->getClientId();
         $idsArray = explode(',', $ids);
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
@@ -34,26 +29,14 @@ class ApiController extends Controller {
             ->output();
     }
 
-    public function output($format, array $resourceNames, $resources, array $meta = array('code' => 200), array $notifications = array())
+    public function getAccessToken($format)
     {
-        if ( empty($resources) ){
-            throw new ApiException(404, $format);
+        $accessToken = $this->getRequest()->headers->get('Authorization');
+        if ( ! $accessToken )
+        {
+            throw new ApiException(10002, $format);
         }
-        else if(count($resources) === 1){
-            $resourceName = $resourceNames['singular'];
-            $resources = $resources[0];
-        }
-        else {
-            $resourceName = $resourceNames['plural'];
-        }
-        switch($format){
-            case 'application/json':
-            default:
-                $response = new JsonResponse();
-                $response->setData(array($resourceName => $resources, 'meta' => $meta, 'notifications' => $notifications));
-                return $response;
-                break;
-        }
+        return $accessToken;
     }
 
     public function nodeFindV1Action()
