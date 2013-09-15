@@ -20,6 +20,7 @@ parameters:
     cms.check_route.class: Cms\CoreBundle\Services\CheckRoute
     cms.api_node_adopter.class: Cms\CoreBundle\Services\Api\EntityAdopters\NodeAdopter
     cms.api_output.class: Cms\CoreBundle\Services\Api\Output
+    cms.api_base.class: Cms\CoreBundle\Services\Api\Base
 
 services:
     asset_manager:
@@ -73,3 +74,5 @@ services:
         class: %cms.api_node_adopter.class%
     api_output:
         class: %cms.api_output.class%
+    api_base:
+        class: %cms.api_base.class%

@@ -24,11 +24,15 @@ class NodeRepository extends DocumentRepository {
             ->getQuery()->execute();
     }
 
-    public function findBySiteId($siteId, array $params = array(), array $options = array())
+    public function findBySiteId($siteId, array $params = array(), array $options = array(), $count = false)
     {
         extract($this->getDefaultOptions($options));
         $qb = $this->createQueryBuilder()
             ->field('siteId')->equals($siteId);
+        $qb = $this->addParametersToQuery($qb, $params);
+        if ( $count ){
+            return $qb->getQuery()->execute()->count();
+        }
         return $qb->sort($sortBy, $sortOrder)->skip($offset)->limit($limit)->getQuery()->execute();
     }
 
@@ -46,8 +50,53 @@ class NodeRepository extends DocumentRepository {
         if ( ! isset($options['sortOrder']) ){
             $options['sortOrder'] = 'desc';
         }
-        
         return $options;
+    }
+
+    public function addParametersToQuery($qb, array $params)
+    {
+        extract($params);
+        if ( isset($domain) ){
+            $qb->field('domain')->equals($domain);
+        }
+        if ( isset($locale) ){
+            $qb->field('locale')->equals($locale);
+        }
+        if ( isset($category) ){
+            $qb->field('categories.parent')->equals((string)$category);
+        }
+        if ( isset($categorySub) ){
+            $qb->field('categories.sub')->equals($categorySub);
+        }
+        if ( isset($tags) ){
+            $qb->field('tags')->in($tags);
+        }
+        if ( isset($slug) ){
+            $qb->field('slug')->equals($slug);
+        }
+        if ( isset($createdAfter) ){
+            $qb->field('created')->gte((int)$createdAfter);
+        }
+        if ( isset($createdBefore) ){
+            $qb->field('created')->lte((int)$createdBefore);
+        }
+        if ( isset($contentTypeName) ){
+            $qb->field('contentTypeName')->equals($contentTypeName);
+        }
+        if ( isset($authorFirstName) ){
+            $qb->field('author.name.first')->equals(ucfirst($authorFirstName));
+        }
+        if ( isset($authorLastName) ){
+            $qb->field('author.name.last')->equals(ucfirst($authorLastName));
+        }
+        if ( isset($title) ){
+            $qb->field('title')->equals($title);
+        }
+        if ( isset($search) ){
+            $qb->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*'.$search.'.*/i')));
+            $qb->addOr($qb->expr()->field('view.html')->equals(new \MongoRegex('/.*'.$search.'.*/i')));
+        }
+        return $qb;
     }
     
     

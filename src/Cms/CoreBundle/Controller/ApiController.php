@@ -18,7 +18,7 @@ class ApiController extends Controller {
         $idsArray = explode(',', $ids);
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
         foreach ($nodes as $node) {
-            $resources[] = $this->get('api_node_adopter')->setResource($node)->convert($fields);
+            $resources[] = $this->get('api_node_adopter')->setResource($node)->setFormat($_format)->convert($fields);
         }
         return $this->get('api_output')
             ->setFormat($_format)
@@ -30,12 +30,20 @@ class ApiController extends Controller {
     public function NodeReadAllV1Action($_format)
     {
         extract($this->getDefaultVars($_format));
-        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteId($clientId, $params);
+        $repo = $this->get('persister')->getRepo('CmsCoreBundle:Node');
+        $nodeAdopter = $this->get('api_node_adopter');
+        $nodes = $repo->findBySiteId($clientId, $params, $options);
         foreach ($nodes as $node) {
-            $resources[] = $this->get('api_node_adopter')->setResource($node)->convert($fields);
+            $resources[] = $nodeAdopter->setResource($node)->setFormat($_format)->convert($fields);
         }
-        $meta = array('status' => 200);
-
+        $count = $repo->findBySiteId($clientId, $params, $options, true);
+        $meta = array(
+            'status' => 200,
+            'limit' => $options['limit'],
+            'offset' => $options['offset'],
+            'count' => $count,
+            '_links' => $this->get('api_base')->setFormat($_format)->getCollectionLinks($options, $count),
+        );
         return $this->get('api_output')
             ->setFormat($_format)
             ->setResources($resources)
@@ -48,11 +56,31 @@ class ApiController extends Controller {
     public function getDefaultVars($_format)
     {
         $vars = array();
-        $vars['params'] = array();
         $vars['resources'] = array();
         $vars['accessToken'] = $this->getAccessToken($_format);
         $vars['fields'] = $this->getFields();
         $vars['clientId'] = $this->get('access_token')->setToken($vars['accessToken'])->getClientId();
+        $vars['options'] = array(
+            'limit' => (int)$this->getRequest()->query->get('limit', 10),
+            'offset' => (int)$this->getRequest()->query->get('offset', 0),
+            'sortBy' => $this->getRequest()->query->get('sortBy', 'created'),
+            'sortOrder' => $this->getRequest()->query->get('sortOrder', 'desc'),
+        );
+        $vars['params'] = array(
+            'search' => $this->getRequest()->query->get('search'),
+            'title' => $this->getRequest()->query->get('title'),
+            'domain' => $this->getRequest()->query->get('domain'),
+            'locale' => $this->getRequest()->query->get('locale'),
+            'category' => $this->getRequest()->query->get('category'),
+            'categorySub' => $this->getRequest()->query->get('category_sub'),
+            'tags' => $this->getRequest()->query->get('tags') ? explode(',', $this->getRequest()->query->get('tags')) : null,
+            'slug' => $this->getRequest()->query->get('slug'),
+            'createdAfter' => $this->getRequest()->query->get('created_after'),
+            'createdBefore' => $this->getRequest()->query->get('created_before'),
+            'contentTypeName' => $this->getRequest()->query->get('content_type_name'),
+            'authorFirstName' => $this->getRequest()->query->get('author_first_name'),
+            'authorLastName' => $this->getRequest()->query->get('author_last_name'),
+        );
         return $vars;
     }
     

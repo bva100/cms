@@ -59,7 +59,7 @@ class NodeAdopter extends AbstractAdopter {
         $obj = $this->addObjProperty($obj, 'image', $fields);
         $obj = $this->addObjProperty($obj, 'created', $fields);
         if ( isset($obj->id) ){
-            $obj->_links = array('self' => array('href' => $this->baseUrl.'/nodes/'.$obj->id));
+            $obj->_links = array('self' => array('href' => $this->getBaseApiUrl().'/nodes/'.$obj->id.'.'.$this->getFormat()));
         }
         return $obj;
     }

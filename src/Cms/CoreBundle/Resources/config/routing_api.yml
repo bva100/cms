@@ -2,14 +2,15 @@ cms_api_v1.nodes_read:
   pattern: /nodes/{ids}.{_format}
   defaults: { _controller: CmsCoreBundle:Api:nodeReadV1, _format: 'json' }
   methods: [GET]
+  requirements:
+    _format: '(json|xml)'
 
 cms_api_v1.nodes_readAll:
   pattern: /nodes.{_format}
   defaults: { _controller: CmsCoreBundle:Api:NodeReadAllV1, _format: 'json' }
   methods: [GET]
-
-
-
+  requirements:
+    _format: '(json|xml)'
 
 
 
