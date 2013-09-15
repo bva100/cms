@@ -14,7 +14,7 @@ class ApiException extends HttpException {
 
     public function __construct($code, $format)
     {
-        $baseUrl = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'api.pipestack.com';
+        $baseUrl = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'http://api.pipestack.com';
         $data = array();
         $data['errorCode'] = $code;
         $data['moreInfo'] = $baseUrl.'/docs/errors/'.$code;

@@ -49,7 +49,7 @@ class Output {
 
     public function __construct()
     {
-        $this->setMeta(array('code' => 200));
+        $this->setMeta(array('status' => 200));
         $this->setNotifications(array());
         $this->setForceCollection(false);
     }
@@ -207,8 +207,8 @@ class Output {
             case 'json':
             default:
                 $response = new JsonResponse();
-                $response->setData(array($resourceName => $this->resources, 'meta' => $this->meta, 'notifications' => $this->notifications));
-                $response->setStatusCode($this->meta['code']);
+                $response->setData(array($resourceName => $this->getResources(), 'meta' => $this->getMeta(), 'notifications' => $this->getNotifications()));
+                $response->setStatusCode($this->meta['status']);
                 break;
         }
         return $response;

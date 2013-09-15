@@ -1,24 +1,23 @@
-cms_api_v1.node_find:
-  pattern: /nodes/find
-  defaults: { _controller: CmsCoreBundle:Api:nodeFindV1, _format: 'json' }
-  methods: [GET]
-
-cms_api_v1.node_search:
-  pattern: /nodes/search
-  defaults: { _controller: CmsCoreBundle:Api:nodeSearchV1, _format: 'json' }
-  methods: [GET]
-
-cms_api_v1.node_read:
+cms_api_v1.nodes_read:
   pattern: /nodes/{ids}.{_format}
   defaults: { _controller: CmsCoreBundle:Api:nodeReadV1, _format: 'json' }
   methods: [GET]
+
+cms_api_v1.nodes_readAll:
+  pattern: /nodes.{_format}
+  defaults: { _controller: CmsCoreBundle:Api:NodeReadAllV1, _format: 'json' }
+  methods: [GET]
+
+
+
+
+
+
 
 cms_api_v1.loop_find:
   pattern: /loops/find
   defaults: { _controller: CmsCoreBundle:Api:loopFindV1, _format: 'json' }
   methods: [GET]
-
-
 
 cms_api_v1.test:
   pattern: /test

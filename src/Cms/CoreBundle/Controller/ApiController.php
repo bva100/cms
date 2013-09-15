@@ -14,10 +14,7 @@ class ApiController extends Controller {
 
     public function nodeReadV1Action($ids, $_format)
     {
-        $resources = array();
-        $accessToken = $this->getAccessToken($_format);
-        $fields = $this->getFields();
-        $clientId = $this->get('access_token')->setToken($accessToken)->getClientId();
+        extract($this->getDefaultVars($_format));
         $idsArray = explode(',', $ids);
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
         foreach ($nodes as $node) {
@@ -30,6 +27,35 @@ class ApiController extends Controller {
             ->output();
     }
 
+    public function NodeReadAllV1Action($_format)
+    {
+        extract($this->getDefaultVars($_format));
+        $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteId($clientId, $params);
+        foreach ($nodes as $node) {
+            $resources[] = $this->get('api_node_adopter')->setResource($node)->convert($fields);
+        }
+        $meta = array('status' => 200);
+
+        return $this->get('api_output')
+            ->setFormat($_format)
+            ->setResources($resources)
+            ->setResourceNames(array('plural' => 'nodes'))
+            ->setForceCollection(true)
+            ->setMeta($meta)
+            ->output();
+    }
+
+    public function getDefaultVars($_format)
+    {
+        $vars = array();
+        $vars['params'] = array();
+        $vars['resources'] = array();
+        $vars['accessToken'] = $this->getAccessToken($_format);
+        $vars['fields'] = $this->getFields();
+        $vars['clientId'] = $this->get('access_token')->setToken($vars['accessToken'])->getClientId();
+        return $vars;
+    }
+    
     public function getFields()
     {
         $fields = $this->getRequest()->query->get('fields');
@@ -50,6 +76,12 @@ class ApiController extends Controller {
         }
         return $accessToken;
     }
+
+
+
+
+
+
 
     public function nodeFindV1Action()
     {

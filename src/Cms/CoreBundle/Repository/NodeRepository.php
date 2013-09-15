@@ -10,21 +10,6 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 class NodeRepository extends DocumentRepository {
 
     /**
-     * Find one node by domain and slug
-     *
-     * @param $domain
-     * @param $slug
-     * @return array|mixed|null
-     */
-    public function findOneByDomainAndSlug($domain, $slug)
-    {
-        return $this->createQueryBuilder()
-            ->field('domain')->equals($domain)
-            ->field('slug')->equals($slug)
-            ->getQuery()->execute()->getSingleResult();
-    }
-
-    /**
      * Find nodes by ID and, in the process, verify site id
      *
      * @param $siteId
@@ -37,6 +22,49 @@ class NodeRepository extends DocumentRepository {
             ->field('siteId')->equals($siteId)
             ->field('id')->in($ids)
             ->getQuery()->execute();
+    }
+
+    public function findBySiteId($siteId, array $params = array(), array $options = array())
+    {
+        extract($this->getDefaultOptions($options));
+        $qb = $this->createQueryBuilder()
+            ->field('siteId')->equals($siteId);
+        return $qb->sort($sortBy, $sortOrder)->skip($offset)->limit($limit)->getQuery()->execute();
+    }
+
+    public function getDefaultOptions(array $options)
+    {
+        if ( ! isset($options['limit']) ){
+            $options['limit'] = 10;
+        }
+        if ( ! isset($options['offset']) ){
+            $options['offset'] = 0;
+        }
+        if ( ! isset($options['sortBy']) ){
+            $options['sortBy'] = 'created';
+        }
+        if ( ! isset($options['sortOrder']) ){
+            $options['sortOrder'] = 'desc';
+        }
+        
+        return $options;
+    }
+    
+    
+
+    /**
+     * Find one node by domain and slug
+     *
+     * @param $domain
+     * @param $slug
+     * @return array|mixed|null
+     */
+    public function findOneByDomainAndSlug($domain, $slug)
+    {
+        return $this->createQueryBuilder()
+            ->field('domain')->equals($domain)
+            ->field('slug')->equals($slug)
+            ->getQuery()->execute()->getSingleResult();
     }
 
     /**
@@ -169,16 +197,6 @@ class NodeRepository extends DocumentRepository {
     public function findBySiteIdAndContentType($siteId, $contentTypeName, array $params = array('offset' => 0, 'limit' => 20))
     {
         return $this->findBySiteIdAndContentTypeAndState($siteId, $contentTypeName, 'active', $params);
-    }
-
-    /**
-     * @param $siteId
-     * @param array $params
-     * @return array|bool|\Doctrine\MongoDB\ArrayIterator|\Doctrine\MongoDB\Cursor|\Doctrine\MongoDB\EagerCursor|mixed|null
-     */
-    public function findBySiteId($siteId, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))
-    {
-        return $this->findBySiteIdAndContentType($siteId, null, $params);
     }
 
     /**

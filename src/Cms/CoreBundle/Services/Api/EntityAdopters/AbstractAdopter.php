@@ -14,6 +14,34 @@ abstract class AbstractAdopter {
 
     protected $resource;
 
+    protected $baseUrl;
+
+    public function __construct()
+    {
+        $this->baseUrl = $this->getBaseApiUrl();
+    }
+
+    public function getBaseApiUrl()
+    {
+        if ( ! isset($_SERVER['HTTPS']) OR ! isset($_SERVER['HTTP_HOST']) OR ! isset($_SERVER['REQUEST_URI']) )
+        {
+            return '';
+        }
+        $baseUrl = '';
+        $protocol = $_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://' ;
+        $host = $_SERVER['HTTP_HOST'];
+        if ( ! $host )
+        {
+            $host = 'http://localhost';
+        }
+        $uri = $_SERVER['REQUEST_URI'];
+        $vPos = strpos($uri, '/v');
+        if ( $vPos ){
+            $baseUrl = substr($uri, 0, $vPos+3);
+        }
+        return $protocol.$host.$baseUrl;
+    }
+
     public function addObjProperty(stdClass $obj, $property, array $fields)
     {
         if (empty($fields) OR in_array($property, $fields) )

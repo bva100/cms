@@ -40,7 +40,7 @@ class OutputTest extends PhpUnit {
      */
     public function testConstructGetMetaAndGetNotifications()
     {
-        $this->assertEquals($this->outputService->getMeta(), array('code' => 200));
+        $this->assertEquals($this->outputService->getMeta(), array('status' => 200));
         $this->assertEquals($this->outputService->getNotifications(), array());
         $this->assertFalse($this->outputService->getForceCollection());
     }
@@ -133,7 +133,7 @@ class OutputTest extends PhpUnit {
         $resource->id = 'foobar';
         $resource->title = 'foo and bar';
         $resourceArray = array($resource);
-        $meta = array('code' => 200, 'offset' => 0, 'limit' => 10);
+        $meta = array('status' => 200, 'offset' => 0, 'limit' => 10);
         $notifications = array('updates' => 'This is an update notification.');
         $expected = json_encode(array(
             'resource' => $resource,
@@ -163,7 +163,7 @@ class OutputTest extends PhpUnit {
         $resourceObj2->id = 'foobar two';
         $resourceObj2->title = 'foo two and bar two';
         $resources = array($resourceObj1, $resourceObj2);
-        $meta = array('code' => 200, 'offset' => 0, 'limit' => 10);
+        $meta = array('status' => 200, 'offset' => 0, 'limit' => 10);
         $notifications = array('updates' => 'This is an update notification.');
         $expected = json_encode(array(
             'resources' => $resources,
@@ -183,7 +183,7 @@ class OutputTest extends PhpUnit {
         $resource->id = 'foobar';
         $resource->title = 'foo and bar';
         $resourceArray = array($resource);
-        $meta = array('code' => 200, 'offset' => 0, 'limit' => 10);
+        $meta = array('status' => 200, 'offset' => 0, 'limit' => 10);
         $notifications = array('updates' => 'This is an update notification.');
         $expected = json_encode(array(
             'resources' => $resourceArray,
