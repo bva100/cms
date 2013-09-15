@@ -16,25 +16,22 @@ class ApiController extends Controller {
     public function nodeReadV1Action($ids, $_format)
     {
         extract($this->getDefaultVars($_format));
-        $stopwatch->start('loadTime');
         $idsArray = explode(',', $ids);
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
         foreach ($nodes as $node) {
             $resources[] = $this->get('api_node_adopter')->setResource($node)->setFormat($_format)->convert($fields);
         }
-        $event = $stopwatch->stop('loadTime');
         return $this->get('api_output')
             ->setFormat($_format)
             ->setResources($resources)
             ->setResourceNames(array('singular' => 'node', 'plural' => 'nodes'))
-            ->setMeta(array('status' => 200, 'loadTime' => $event->getDuration().' ms'))
+            ->setMeta(array('status' => 200, 'loadTime' => $stopwatch->stop('loadTime')->getDuration().' ms'))
             ->output();
     }
 
     public function NodeReadAllV1Action($_format)
     {
         extract($this->getDefaultVars($_format));
-        $stopwatch->start('loadTime');
         $repo = $this->get('persister')->getRepo('CmsCoreBundle:Node');
         $nodeAdopter = $this->get('api_node_adopter');
         $nodes = $repo->findBySiteId($clientId, $params, $options);
@@ -42,8 +39,7 @@ class ApiController extends Controller {
             $resources[] = $nodeAdopter->setResource($node)->setFormat($_format)->convert($fields);
         }
         $count = $repo->findBySiteId($clientId, $params, $options, true);
-        $event = $stopwatch->stop('loadTime');
-        $meta = $this->createCollectionMeta($options, $count, $_format, $event);
+        $meta = $this->createCollectionMeta($options, $count, $_format, $stopwatch->stop('loadTime'));
         return $this->get('api_output')
             ->setFormat($_format)
             ->setResources($resources)
@@ -82,6 +78,7 @@ class ApiController extends Controller {
             'authorLastName' => $this->getRequest()->query->get('author_last_name'),
         );
         $vars['stopwatch'] = new Stopwatch();
+        $vars['stopwatch']->start('loadTime');
         return $vars;
     }
     
