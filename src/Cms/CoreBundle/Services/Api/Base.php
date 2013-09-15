@@ -193,8 +193,6 @@ class Base {
         {
             $links['last'] = array('href' => $this->getLastUrl($options, $count));
         }
-        
-
         return $links;
     }
 

@@ -21,7 +21,8 @@
 	    "doctrine/mongodb-odm": "1.0.*@dev",
         "doctrine/mongodb-odm-bundle": "3.0.*@dev",
         "aws/aws-sdk-php": "2.*",
-        "jms/serializer-bundle": "dev-master"
+        "jms/serializer-bundle": "dev-master",
+        "symfony/stopwatch": "v2.2.6"
     },
     "scripts": {
         "post-install-cmd": [

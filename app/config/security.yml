@@ -28,7 +28,7 @@ security:
               domain:   ~ # Defaults to the current domain from $_SERVER
 
         admin_area:
-            pattern:    ^/admin$
+            pattern:    ~
             form_login:
             logout: ~
 

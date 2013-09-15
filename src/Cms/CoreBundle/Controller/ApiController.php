@@ -9,27 +9,32 @@ namespace Cms\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Cms\CoreBundle\Services\Api\ApiException;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 class ApiController extends Controller {
 
     public function nodeReadV1Action($ids, $_format)
     {
         extract($this->getDefaultVars($_format));
+        $stopwatch->start('loadTime');
         $idsArray = explode(',', $ids);
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
         foreach ($nodes as $node) {
             $resources[] = $this->get('api_node_adopter')->setResource($node)->setFormat($_format)->convert($fields);
         }
+        $event = $stopwatch->stop('loadTime');
         return $this->get('api_output')
             ->setFormat($_format)
             ->setResources($resources)
             ->setResourceNames(array('singular' => 'node', 'plural' => 'nodes'))
+            ->setMeta(array('status' => 200, 'loadTime' => $event->getDuration().' ms'))
             ->output();
     }
 
     public function NodeReadAllV1Action($_format)
     {
         extract($this->getDefaultVars($_format));
+        $stopwatch->start('loadTime');
         $repo = $this->get('persister')->getRepo('CmsCoreBundle:Node');
         $nodeAdopter = $this->get('api_node_adopter');
         $nodes = $repo->findBySiteId($clientId, $params, $options);
@@ -37,13 +42,8 @@ class ApiController extends Controller {
             $resources[] = $nodeAdopter->setResource($node)->setFormat($_format)->convert($fields);
         }
         $count = $repo->findBySiteId($clientId, $params, $options, true);
-        $meta = array(
-            'status' => 200,
-            'limit' => $options['limit'],
-            'offset' => $options['offset'],
-            'count' => $count,
-            '_links' => $this->get('api_base')->setFormat($_format)->getCollectionLinks($options, $count),
-        );
+        $event = $stopwatch->stop('loadTime');
+        $meta = $this->createCollectionMeta($options, $count, $_format, $event);
         return $this->get('api_output')
             ->setFormat($_format)
             ->setResources($resources)
@@ -81,6 +81,7 @@ class ApiController extends Controller {
             'authorFirstName' => $this->getRequest()->query->get('author_first_name'),
             'authorLastName' => $this->getRequest()->query->get('author_last_name'),
         );
+        $vars['stopwatch'] = new Stopwatch();
         return $vars;
     }
     
@@ -105,6 +106,17 @@ class ApiController extends Controller {
         return $accessToken;
     }
 
+    public function createCollectionMeta($options, $count, $format, $loadTimeEvent)
+    {
+        return array(
+            'loadTime' => $loadTimeEvent->getDuration().' ms',
+            'status' => 200,
+            'limit' => $options['limit'],
+            'offset' => $options['offset'],
+            'count' => $count,
+            '_links' => $this->get('api_base')->setFormat($format)->getCollectionLinks($options, $count),
+        );
+    }
 
 
 
