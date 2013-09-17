@@ -15,7 +15,6 @@ class ApiController extends Controller {
 
     public function nodeReadV1Action($ids, $_format)
     {
-        extract($this->getDefaultVars($_format));
         $idsArray = explode(',', $ids);
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
         foreach ($nodes as $node) {
