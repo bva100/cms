@@ -84,10 +84,6 @@ class Base {
      */
     public function getBaseApiUrl()
     {
-        if ( ! isset($_SERVER['HTTPS']) OR ! isset($_SERVER['HTTP_HOST']) OR ! isset($_SERVER['REQUEST_URI']) )
-        {
-            return '';
-        }
         $baseUrl = '';
         $vPos = strpos($this->uri, '/v');
         if ( $vPos ){
