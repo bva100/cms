@@ -188,6 +188,7 @@ class Output {
     public function output()
     {
         $resourceName = $this->checkResourcesAndGetName();
+        $response = new JsonResponse();
         switch($this->format){
 //            case 'xml':
 //                $xml = new \SimpleXMLElement('<root/>');
@@ -206,11 +207,12 @@ class Output {
 //                break;
             case 'json':
             default:
-                $response = new JsonResponse();
                 $response->setData(array($resourceName => $this->getResources(), 'meta' => $this->getMeta(), 'notifications' => $this->getNotifications()));
-                $response->setStatusCode($this->meta['status']);
                 break;
         }
+        $response->setStatusCode($this->meta['status']);
+        $response->setPrivate();
+        $response->setMaxAge(3600);
         return $response;
     }
 
