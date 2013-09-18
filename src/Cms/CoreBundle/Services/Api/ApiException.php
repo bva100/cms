@@ -41,33 +41,33 @@ class ApiException extends HttpException {
             case 400:
                 $data['description'] = 'Parameter error. A required parameter is missing or is malformed.';
                 ksort($data);
-                parent::__construct(400, $this->createMessage($data, $format));
+                parent::__construct(400, $this->createMessage($data, $format), null, $this->createHeaders($format));
                 break;
             case 401:
                 $data['description'] = 'Invalid auth. Please ensure you have passed a valid access token parameter.';
                 ksort($data);
-                parent::__construct(401, $this->createMessage($data, $format));
+                parent::__construct(401, $this->createMessage($data, $format), null, $this->createHeaders($format));
                 break;
             case 403:
                 $data['description'] = 'Forbidden. Authentication was successful, however the client does not have access to the information requested. Although this error can occur for many reasons, it often occurs when the client has exceeded his or her rate limit for this hour or if the client\'s last payment was invalid';
                 ksort($data);
-                parent::__construct(403, $this->createMessage($data, $format));
+                parent::__construct(403, $this->createMessage($data, $format), null, $this->createHeaders($format));
                 break;
             case 404:
                 $data['description'] = 'Resource not found.';
                 ksort($data);
-                parent::__construct(404, $this->createMessage($data, $format));
+                parent::__construct(404, $this->createMessage($data, $format), null, $this->createHeaders($data, $format));
                 break;
             case 405:
                 $data['description'] = 'Method not allowed. Attempting to use the POST method when resource only accepts the GET method, or vice versa. Can also be applied to PUT, PATCH and DELETE. Be sure to use an appropriate method for this resource.';
                 ksort($data);
-                parent::__construct(405, $this->createMessage($data, $format));
+                parent::__construct(405, $this->createMessage($data, $format), null, $this->createHeaders($format));
                 break;
             case 500:
             default:
                 $data['description'] = 'Internal server error. A server error has occurred. Please try again soon.';
                 ksort($data);
-                parent::__construct(500, $this->createMessage($data, $format));
+                parent::__construct(500, $this->createMessage($data, $format), null, $this->createHeaders($format));
                 break;
         }
     }
@@ -87,6 +87,22 @@ class ApiException extends HttpException {
             case 'json':
             default:
                 return json_encode(array('meta' => $data));
+            break;
+        }
+    }
+
+    public function createHeaders($format)
+    {
+        switch($format){
+            case 'html':
+                return array('Content-Type' => 'text/html');
+                break;
+            case 'xml':
+                return array('Content-Type' => 'application/xml');
+                break;
+            case 'json':
+            default:
+                return array('Content-Type' => 'application/json');
                 break;
         }
     }

@@ -12,6 +12,20 @@ use Cms\CoreBundle\Services\Api\ApiException;
 class ApiExceptionTest extends \PHPUnit_Framework_TestCase {
 
     /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::createHeaders
+     */
+    public function testCreateHeader()
+    {
+        $except = new ApiException(10001, 'json');
+        $html = $except->createHeaders('html');
+        $json = $except->createHeaders('json');
+        $xml = $except->createHeaders('xml');
+        $this->assertEquals(array('Content-Type' => 'text/html'), $html);
+        $this->assertEquals(array('Content-Type' => 'application/json'), $json);
+        $this->assertEquals(array('Content-Type' => 'application/xml'), $xml);
+    }
+
+    /**
      * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
      * @covers Cms\CoreBundle\Services\Api\ApiException::output
      */

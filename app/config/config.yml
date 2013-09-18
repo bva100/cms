@@ -79,3 +79,7 @@ services:
      class: Twig_Extensions_Extension_Text
      tags:
          - { name: twig.extension }
+ kernel.listener.your_listener_name:
+     class: Cms\CoreBundle\Services\Api\ApiExceptionListener
+     tags:
+         - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

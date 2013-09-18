@@ -10,11 +10,14 @@ namespace Cms\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Cms\CoreBundle\Services\Api\ApiException;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApiController extends Controller {
 
     public function nodeReadV1Action($ids, $_format)
     {
+        $this->getRequest()->setRequestFormat($_format);
+        extract($this->getDefaultVars($_format));
         $idsArray = explode(',', $ids);
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteIdAndIds($clientId, $idsArray);
         foreach ($nodes as $node) {
