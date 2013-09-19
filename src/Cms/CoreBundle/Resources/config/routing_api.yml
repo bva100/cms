@@ -7,7 +7,7 @@ cms_api_v1.nodes_read:
 
 cms_api_v1.nodes_readAll:
   pattern: /nodes.{_format}
-  defaults: { _controller: CmsCoreBundle:Api:NodeReadAllV1, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:Api:nodeReadAllV1, _format: 'json' }
   methods: [GET]
   requirements:
     _format: '(json|xml)'
@@ -18,6 +18,20 @@ cms_api_v1.nodes_create:
   methods: [POST]
   requirements:
     _format: '(json|xml)'
+
+cms_api_v1.nodes_delete:
+  pattern: /nodes/{ids}.{_format}
+  defaults: { _controller: CmsCoreBundle:Api:nodeDelete, _format: 'json' }
+  methods: [DELETE]
+  requirements:
+    _format: '(json|xml)'
+
+cms_api_v1.nodes_update:
+  pattern: /nodes/{id}.{_format}
+  defaults: {_controller: CmsCoreBundle:Api:nodeUpdate, _format: 'json' }
+  methods: [PATCH, PUT]
+  requirements:
+    _formats: '(json|xml)'
 
 
 cms_api_v1.test:

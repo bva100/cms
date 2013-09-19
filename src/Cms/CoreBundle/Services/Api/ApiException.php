@@ -28,13 +28,25 @@ class ApiException extends HttpException {
                 $data['message'] = 'An access token was not passed in the header, yet this resource requires an access token.';
                 $data['status'] = 401;
                 break;
+            case 10003:
+                $data['message'] = 'There was a problem deleting at least one resource, though some resources may have been deleted.';
+                $data['status'] = 404;
+                break;
             case 20001:
                 $data['message'] = 'A node with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if just one of the many were not found.';
                 $data['status'] = 404;
                 break;
+            case 20002:
+                $data['message'] = 'A node with the given ID (or IDs) does not exist. Please ensure the passed ID is correct';
+                $data['status'] = 404;
+                break;
             case 20003:
-                $data['message'] = 'Node failed to validate upon creation. Please check all required parameters';
+                $data['message'] = 'Node failed to validate when attempting to save. Please check all required parameters';
                 $data['status'] = 400;
+                break;
+            case 20004:
+                $data['message'] = 'The server encountered an error when deleting a node resource. If the problem persists, please follow the link under "moreInfo" and report the issue.';
+                $data['status'] = 500;
                 break;
             default:
                 throw new RuntimeException('Code '.$code.' not found in code registry');

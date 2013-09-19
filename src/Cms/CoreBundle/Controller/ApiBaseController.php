@@ -10,14 +10,15 @@ namespace Cms\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Cms\CoreBundle\Services\Api\ApiException;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Cms\CoreBundle\Services\Api\EntityAdopters;
 
 class ApiBaseController extends Controller {
 
-    public function getResourcesArray(  $resources, $format, array $fields = array())
+    public function getResourcesArray($adopter, $resources, $format, array $fields = array())
     {
         $resourcesArray = array();
         foreach ($resources as $resource) {
-            $resourcesArray[] = $this->get('api_node_adopter')->setResource($resource)->setFormat($format)->convert($fields);
+            $resourcesArray[] = $adopter->setResource($resource)->setFormat($format)->convert($fields);
         }
         return $resourcesArray;
     }

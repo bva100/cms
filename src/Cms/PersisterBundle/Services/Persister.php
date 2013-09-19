@@ -219,21 +219,7 @@ class Persister {
      */
     public function delete($object, $lazy = false, $onSuccess = 'deleted', $verboseErrors = false)
     {
-        $errors = $this->em->remove($object);
-        if ( \count($errors) > 0 )
-        {
-            if ( $verboseErrors )
-            {
-                return $errors[0];
-            }
-            if ( isset($this->flashBag) )
-            {
-                foreach ($errors as $error) {
-                    $this->flashBag->add('notices', $error->getMessage());
-                }
-            }
-            return false;
-        }
+        $this->em->remove($object);
         if ( ! $lazy )
         {
             $this->flush();

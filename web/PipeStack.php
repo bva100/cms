@@ -101,7 +101,7 @@ class PipeStack {
         }
     }
 
-    public function getEndpointUri($endpoint,$params, $options)
+    public function getEndpointUri($endpoint, array $params = array(), array $options)
     {
         $queryStr = '';
         if ( ! empty($params) ){
@@ -150,10 +150,52 @@ class PipeStack {
         return json_decode($data);
     }
 
-    public function delete($endpoint)
+    public function delete($endpoint, array $options = array())
     {
-        $options = $this->setDefaultOptions(array());
-        $uri = $this->getEndpointUri($endpoint, $params, $options);
+        $options = $this->setDefaultOptions($options);
+        $uri = $options['protocol'].$this->getApiUrl().$endpoint;
+        $headers = array($this->getBearer(), $this->getAcceptHeader($options['format']));
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->getUserAgent());
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_URL, $uri);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        $data = curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ( $statusCode === 204 ){
+            return true;
+        }else{
+            return json_decode($data);
+        }
+    }
+
+    public function update($endpoint, array $objectParams = array(), array $options = array())
+    {
+        $options = $this->setDefaultOptions($options);
+        $uri = $options['protocol'].$this->getApiUrl().$endpoint;
+        $headers = array($this->getBearer(), $this->getAcceptHeader($options['format']));
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->getUserAgent());
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_URL, $uri);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('objectParams' => json_encode($objectParams))));
+        $data = curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ( $statusCode === 204 ){
+            return true;
+        }else{
+            return json_decode($data);
+        }
+
     }
 
 
