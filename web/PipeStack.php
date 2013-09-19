@@ -127,7 +127,6 @@ class PipeStack {
         curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         curl_setopt($ch, CURLOPT_URL, $uri);
         $data = curl_exec($ch);
-//        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         return json_decode($data);
     }
@@ -149,6 +148,12 @@ class PipeStack {
         $data = curl_exec($ch);
         curl_close($ch);
         return json_decode($data);
+    }
+
+    public function delete($endpoint)
+    {
+        $options = $this->setDefaultOptions(array());
+        $uri = $this->getEndpointUri($endpoint, $params, $options);
     }
 
 

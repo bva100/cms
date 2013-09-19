@@ -49,6 +49,7 @@ class ApiController extends ApiBaseController {
             throw new ApiException(20003, $_format, 'Creating a node requires the "objectParams" parameter');
         }
         $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $objectArray['siteId'] = $this->get('access_token')->setToken($this->getAccessToken($_format))->getClientId();
         $node = $this->get('api_node_adopter')->setResource(new Node())->getFromArray($objectArray);
         $result = $this->get('persister')->setFlashBag(null)->save($node, false, 'node created', true);
         if ( $result !== true ){
@@ -93,11 +94,10 @@ class ApiController extends ApiBaseController {
         $results = $PipeStack->create('nodes', array(
             'title' => 'dog test from API WITH SDK!!',
             'contentTypeName' => 'reviews',
-            'siteId' => '51c0033d18a5162c04000002',
             'domain' => 'localhost',
             'slug' => 'sdk-api',
             'views' => array(
-                'html' => '<h1>woof woof woof</h1><p>I\'m a doggie</p>',
+                'html' => '<h1>ID make with access token decode</h1><p>I\'m a doggie</p>',
             ),
         ));
         echo '<pre>', \var_dump($results); die();
