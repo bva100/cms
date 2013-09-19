@@ -48,9 +48,17 @@ abstract class AbstractAdopter extends Base {
     abstract public function setResource(Document $resource);
 
     /**
-     * Return a converted entity object
+     * Return a converted entity object. Original Document to stdClass object.
      *
      * @return stdClass
      */
     abstract public function convert();
+
+    /**
+     * Return a set resource (base document) from an array of parameters.
+     *
+     * @param array $params
+     * @return mixed
+     */
+    abstract public function getFromArray(array $params);
 }

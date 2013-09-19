@@ -13,7 +13,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class ApiBaseController extends Controller {
 
-    public function getResourcesArray($resources, $format, $fields)
+    public function getResourcesArray(  $resources, $format, array $fields = array())
     {
         $resourcesArray = array();
         foreach ($resources as $resource) {
@@ -24,30 +24,32 @@ class ApiBaseController extends Controller {
 
     public function getDefaultVars($_format)
     {
+        $request = $this->getRequest();
+        $query = $request->query;
         $vars = array();
         $vars['accessToken'] = $this->getAccessToken($_format);
         $vars['fields'] = $this->getFields();
         $vars['clientId'] = $this->get('access_token')->setToken($vars['accessToken'])->getClientId();
         $vars['options'] = array(
-            'limit' => (int)$this->getRequest()->query->get('limit', 10),
-            'offset' => (int)$this->getRequest()->query->get('offset', 0),
-            'sortBy' => $this->getRequest()->query->get('sortBy', 'created'),
-            'sortOrder' => $this->getRequest()->query->get('sortOrder', 'desc'),
+            'limit' => (int)$query->get('limit', 10),
+            'offset' => (int)$query->get('offset', 0),
+            'sortBy' => $query->get('sortBy', 'created'),
+            'sortOrder' => $query->get('sortOrder', 'desc'),
         );
         $vars['params'] = array(
-            'search' => $this->getRequest()->query->get('search'),
-            'title' => $this->getRequest()->query->get('title'),
-            'domain' => $this->getRequest()->query->get('domain'),
-            'locale' => $this->getRequest()->query->get('locale'),
-            'category' => $this->getRequest()->query->get('category'),
-            'categorySub' => $this->getRequest()->query->get('category_sub'),
-            'tags' => $this->getRequest()->query->get('tags') ? explode(',', $this->getRequest()->query->get('tags')) : null,
-            'slug' => $this->getRequest()->query->get('slug'),
-            'createdAfter' => $this->getRequest()->query->get('created_after'),
-            'createdBefore' => $this->getRequest()->query->get('created_before'),
-            'contentTypeName' => $this->getRequest()->query->get('content_type_name'),
-            'authorFirstName' => $this->getRequest()->query->get('author_first_name'),
-            'authorLastName' => $this->getRequest()->query->get('author_last_name'),
+            'search' => $query->get('search'),
+            'title' => $query->get('title'),
+            'domain' => $query->get('domain'),
+            'locale' => $query->get('locale'),
+            'category' => $query->get('category'),
+            'categorySub' => $query->get('category_sub'),
+            'tags' => $query->get('tags') ? explode(',', $query->get('tags')) : null,
+            'slug' => $query->get('slug'),
+            'createdAfter' => $query->get('created_after'),
+            'createdBefore' => $query->get('created_before'),
+            'contentTypeName' => $query->get('content_type_name'),
+            'authorFirstName' => $query->get('author_first_name'),
+            'authorLastName' => $query->get('author_last_name'),
         );
         $vars['stopwatch'] = new Stopwatch();
         $vars['stopwatch']->start('loadTime');
@@ -73,6 +75,16 @@ class ApiBaseController extends Controller {
             throw new ApiException(10002, $format);
         }
         return $accessToken;
+    }
+
+    public function decodeObjectParams($objectParams, $format)
+    {
+        switch($format){
+            case 'json':
+            default:
+                return json_decode($objectParams, TRUE);
+                break;
+        }
     }
 
     public function createCollectionMeta($options, $count, $format, $loadTimeEvent)

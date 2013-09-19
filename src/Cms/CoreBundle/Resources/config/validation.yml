@@ -53,12 +53,12 @@ Cms\CoreBundle\Document\Node:
 #            - Choice:
 #                choices: [active, deleted]
           siteId:
-            - NotBlank: { message: 'Please add a siteId' }
+            - NotBlank: { message: 'Please add a siteId parameter' }
             - Type:
                 type: string
                 message: The value {{ value }} is not a valid {{ type }}.
           domain:
-            - NotBlank: { message: 'Please add a domain' }
+            - NotBlank: { message: 'Please add a domain parameter' }
             - Length:
                 min: 5
                 max: 127
@@ -67,7 +67,7 @@ Cms\CoreBundle\Document\Node:
                 min: 4
                 max: 127
           format:
-            - NotBlank: { message: 'Please add at least one format' }
+            - NotBlank: { message: 'Please add at least one format parameter' }
             - Length:
                 min: 4
                 max: 63
@@ -86,17 +86,16 @@ Cms\CoreBundle\Document\Node:
                 type: integer
                 message: The value {{ value }} is not a valid {{ type }}.
           title:
-            - NotBlank: { message: 'Please add a title name' }
+            - NotBlank: { message: 'Please add a title parameter' }
             - Length:
                 min: 1
                 max: 127
           slug:
-            - NotBlank: { message: 'Please add a slug' }
+            - NotBlank: { message: 'Please add a slug parameter' }
             - Length:
                 min: 4
                 max: 511
           templateName:
-            - NotBlank: { message: 'Please add a template name' }
             - Length:
                 min: 4
                 max: 127

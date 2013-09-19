@@ -34,7 +34,7 @@ class ApiExceptionTest extends \PHPUnit_Framework_TestCase {
         $excep = new ApiException(10001, 'json');
         $data = json_decode($excep->getMessage());
         $this->assertEquals($data->meta->errorCode, 10001);
-        $this->assertEquals($data->meta->status, 401);
+        $this->assertEquals($data->meta->status, 403);
         $this->assertNotNull($data->meta->description);
         $this->assertNotNull($data->meta->message);
         $this->assertNotNull($data->meta->moreInfo);
@@ -50,7 +50,7 @@ class ApiExceptionTest extends \PHPUnit_Framework_TestCase {
         $data = $excep->getMessage();
         $this->assertNotNull($data);
         $this->assertContains('<errorCode>10001</errorCode>', $data);
-        $this->assertContains('<status>401</status>', $data);
+        $this->assertContains('<status>403</status>', $data);
         $this->assertContains('<description>', $data);
         $this->assertContains('<message>', $data);
         $this->assertContains('<moreInfo>', $data);
@@ -65,7 +65,7 @@ class ApiExceptionTest extends \PHPUnit_Framework_TestCase {
         $excep = new ApiException(10002, 'json');
         $data = json_decode($excep->getMessage());
         $this->assertEquals($data->meta->errorCode, 10002);
-        $this->assertEquals($data->meta->status, 400);
+        $this->assertEquals($data->meta->status, 401);
         $this->assertNotNull($data->meta->description);
         $this->assertNotNull($data->meta->message);
         $this->assertNotNull($data->meta->moreInfo);
@@ -81,7 +81,7 @@ class ApiExceptionTest extends \PHPUnit_Framework_TestCase {
         $data = $excep->getMessage();
         $this->assertNotNull($data);
         $this->assertContains('<errorCode>10002</errorCode>', $data);
-        $this->assertContains('<status>400</status>', $data);
+        $this->assertContains('<status>401</status>', $data);
         $this->assertContains('<description>', $data);
         $this->assertContains('<message>', $data);
         $this->assertContains('<moreInfo>', $data);

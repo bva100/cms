@@ -12,13 +12,13 @@ cms_api_v1.nodes_readAll:
   requirements:
     _format: '(json|xml)'
 
+cms_api_v1.nodes_create:
+  pattern: /nodes.{_format}
+  defaults: { _controller: CmsCoreBundle:Api:nodeCreate, _format: 'json' }
+  methods: [POST]
+  requirements:
+    _format: '(json|xml)'
 
-
-
-cms_api_v1.loop_find:
-  pattern: /loops/find
-  defaults: { _controller: CmsCoreBundle:Api:loopFindV1, _format: 'json' }
-  methods: [GET]
 
 cms_api_v1.test:
   pattern: /test
@@ -29,35 +29,3 @@ cms_api_v1.token:
   pattern: /token
   defaults: { _controller: CmsCoreBundle:Api:token }
   methods: [GET]
-
-#cms_core.api_read_locale_nodes:
-#  pattern: /{_locale}/{path}
-#  defaults: { _controller: CmsCoreBundle:Client:apiNodeRead }
-#  methods: [GET]
-#  requirements:
-#    _locale: "[a-z]{2}-[a-z]{2}"
-#    path: ".+"
-#
-#cms_core.api_v1_read_node:
-#  pattern: /node/{path}
-#  defaults:  { _controller: CmsCoreBundle:Client:apiNodeRead }
-#  methods: [GET]
-#  requirements:
-#    path: ".+"
-#
-#cms_core.api_v1_read_loop:
-#  pattern: /loop/{path}
-#  defaults:  { _controller: CmsCoreBundle:Client:apiLoopRead }
-#  methods: [GET]
-#  requirements:
-#    path: ".+"
-#
-#cms_core.api_read_nodes_null_path:
-#  pattern: /
-#  defaults: { _controller: CmsCoreBundle:Client:apiNodeRead }
-#  methods: [GET]
-#
-#cms_core.api_v1_save_node:
-#  pattern: /node
-#  defaults: { _controller: CmsCoreBundle:Node:apiSave }
-#  methods: [GET, POST]

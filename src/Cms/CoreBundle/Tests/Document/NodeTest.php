@@ -243,6 +243,36 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers \Cms\CoreBundle\Document\Node::setViews
+     * @covers \Cms\CoreBundle\Document\Node::getViews
+     */
+    public function testSetViewsWithoutText()
+    {
+        $views = array(
+            'html' => '<h1>here dog</h1><p>woof woof</p>',
+        );
+        $this->node->setViews($views);
+        $this->assertCount(2, $this->node->getViews());
+        $views['text'] = strip_tags($views['html']);
+        $this->assertEquals($views, $this->node->getViews());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::setViews
+     * @covers \Cms\CoreBundle\Document\Node::getViews
+     */
+    public function testSetViewsWithText()
+    {
+        $views = array(
+            'html' => '<h1>here dog</h1><p>woof woof</p>',
+            'text' => '<p>foo paragraph</p>',
+        );
+        $this->node->setViews($views);
+        $this->assertCount(2, $this->node->getViews());
+        $this->assertEquals($views, $this->node->getViews());
+    }
+
+    /**
      * @covers \Cms\CoreBundle\Document\Node::addView
      * @covers \Cms\CoreBundle\Document\Node::getView
      * @covers \Cms\CoreBundle\Document\Node::getViews
@@ -357,6 +387,20 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         $this->assertCount(1, $this->node->getStylesheets());
         $this->node->removeStylesheet('foobar.css');
         $this->assertEmpty($this->node->getStylesheets());
+    }
+
+    /**
+     * @covers \Cms\CoreBundle\Document\Node::setMetatags
+     * @covers \Cms\CoreBundle\Document\Node::getMetatags
+     */
+    public function testSetMetatags()
+    {
+        $metatags = array(
+            array('dog' => 'woof'), array('johnny' => 'appleseed'), array('foo', 'bar'),
+        );
+        $this->node->setMetatags($metatags);
+        $this->assertCount(3, $this->node->getMetatags());
+        $this->assertEquals($metatags, $this->node->getMetatags());
     }
 
     /**

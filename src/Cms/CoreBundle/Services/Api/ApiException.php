@@ -12,7 +12,7 @@ use RuntimeException;
 
 class ApiException extends HttpException {
 
-    public function __construct($code, $format)
+    public function __construct($code, $format, $customMessage = null)
     {
         $baseUrl = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'http://api.pipestack.com';
         $data = array();
@@ -22,19 +22,27 @@ class ApiException extends HttpException {
         switch($code){
             case 10001:
                 $data['message'] = 'The access token passed does not have access to the site\'s resources. This often occurs when the site\'s client secret is altered, but an old access token is used. Please update the access token and try again.';
-                $data['status'] = 401;
+                $data['status'] = 403;
                 break;
             case 10002:
                 $data['message'] = 'An access token was not passed in the header, yet this resource requires an access token.';
-                $data['status'] = 400;
+                $data['status'] = 401;
                 break;
             case 20001:
                 $data['message'] = 'A node with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if just one of the many were not found.';
                 $data['status'] = 404;
                 break;
+            case 20003:
+                $data['message'] = 'Node failed to validate upon creation. Please check all required parameters';
+                $data['status'] = 400;
+                break;
             default:
                 throw new RuntimeException('Code '.$code.' not found in code registry');
                 break;
+        }
+        if ( isset($customMessage) )
+        {
+            $data['message'] = $customMessage;
         }
         
         switch ($data['status']) {

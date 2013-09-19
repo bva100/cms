@@ -64,4 +64,63 @@ class NodeAdopter extends AbstractAdopter {
         return $obj;
     }
 
+    public function getFromArray(array $params)
+    {
+        extract($params);
+        if ( isset($siteId) )
+        {
+            $this->resource->setSiteId($siteId);
+        }
+        if ( isset($domain) )
+        {
+            $this->resource->setDomain($domain);
+        }
+        if ( isset($locale) )
+        {
+            $this->resource->setLocale($locale);
+        }
+        if ( isset($categories) )
+        {
+            $this->resource->setCategories($categories);
+        }
+        if ( isset($tags) )
+        {
+            $this->resource->setTags($tags);
+        }
+        if ( isset($slug) )
+        {
+            $this->resource->setSlug($slug);
+        }
+        if ( isset($title) )
+        {
+            $this->resource->setTitle($title);
+        }
+        if ( isset($views) )
+        {
+            $this->resource->setViews($views);
+        }
+        if ( isset($description) )
+        {
+            $this->resource->setDescription($description);
+        }
+        if ( isset($metatags) )
+        {
+            $this->resource->setMetatags($metatags);
+        }
+        if ( isset($fields) )
+        {
+            $this->resource->setFields($fields);
+        }
+        if ( isset($author) )
+        {
+            $this->resource->setAuthor($author);
+        }
+        if ( isset($image) )
+        {
+            $this->resource->setImage($image);
+        }
+        $this->resource->setFormat( isset($format) ? $format : 'single' );
+        return $this->resource;
+    }
+
 }

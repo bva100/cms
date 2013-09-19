@@ -70,6 +70,11 @@ class NodeTest extends PhpUnit {
         $this->assertEquals($obj->created, $this->node->getCreated());
     }
 
+    /**
+     * @covers Cms\CoreBundle\Tests\EntityAdopters\NodeAdopter::convert
+     * @covers Cms\CoreBundle\Tests\EntityAdopters\NodeAdopter::setResource
+     * @covers Cms\CoreBundle\Tests\EntityAdopters\AbstractAdopter::addObjProperty
+     */
     public function testConvertWithFieldRestrictions()
     {
         $fields = array('title', 'locale', 'slug');
@@ -82,4 +87,57 @@ class NodeTest extends PhpUnit {
         $this->assertEquals($obj->slug, $this->node->getSlug());
     }
 
+    /**
+     * @covers Cms\CoreBundle\Tests\EntityAdopters\NodeAdopter::getFromArray
+     * @covers Cms\CoreBundle\Tests\EntityAdopters\NodeAdopter::setResource
+     */
+    public function testGetFromArrayAllParams()
+    {
+        $adopter = new NodeAdopter();
+        $adopter->setResource($this->node);
+
+        $domain = 'foobar.com';
+        $locale = 'EN';
+        $categories = array(array('parent' => 'foo', 'sub' => 'bar'));
+        $tags = array('foo', 'bar', 'foobar');
+        $slug = 'foo-bar-slug';
+        $title = 'foo bar title';
+        $views = array('html' => '<p>foo bar paragraph</p>');
+        $description = 'foo bar foo bar foo bar';
+        $metatags = array('foo' => 'bar');
+        $fields = array('customFoo' => 'customBar');
+        $author = array('firstName' => 'foo', 'lastName' => 'bar');
+        $image = 'http://foobar.com/image.png';
+        $objectParams = array(
+            'domain' => $domain,
+            'locale' => $locale,
+            'categories' => $categories,
+            'tags' => $tags,
+            'slug' => $slug,
+            'title' => $title,
+            'views' => $views,
+            'description' => $description,
+            'metatags' => $metatags,
+            'fields' => $fields,
+            'author' => $author,
+            'image' => $image,
+        );
+        $node = $adopter->getFromArray($objectParams);
+        $views['text'] = 'foo bar paragraph';
+
+        $this->assertEquals($node->getDomain(), $domain);
+        $this->assertEquals($node->getLocale(), $locale);
+        $this->assertEquals($node->getCategories(), $categories);
+        $this->assertEquals($node->getTags(), $tags);
+        $this->assertEquals($node->getSlug(), $slug);
+        $this->assertEquals($node->getTitle(), $title);
+        $this->assertEquals($node->getViews(), $views);
+        $this->assertEquals($node->getDescription(), $description);
+        $this->assertEquals($node->getMetatags(), $metatags);
+        $this->assertEquals($node->getFields(), $fields);
+        $this->assertEquals($node->getAuthor(), $author);
+        $this->assertEquals($node->getImage(), $image);
+        $this->assertEquals($node->getFormat(), 'single');
+    }
+    
 }

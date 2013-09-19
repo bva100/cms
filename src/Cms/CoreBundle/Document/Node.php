@@ -460,6 +460,8 @@ class Node extends Base {
     {
         $slug = ltrim($slug, '/');
         $slug = strtolower($slug);
+        $slug = str_replace(' ', '', $slug);
+        $slug = urlencode($slug);
         $this->slug = $slug;
         return $this;
     }
@@ -782,13 +784,15 @@ class Node extends Base {
     }
 
     /**
-     * Not used
+     * Set metatags
      *
-     * @throws \Exception
+     * @param array $metatags
+     * @return $this
      */
-    public function setMetatags()
+    public function setMetatags(array $metatags)
     {
-        throw new \Exception('setMetatags not used. Please use addMetatag');
+        $this->metatags = $metatags;
+        return $this;
     }
 
     /**
@@ -862,13 +866,26 @@ class Node extends Base {
     }
 
     /**
-     * Not used
+     * Set views
      *
-     * @throws \Exception
+     * @param array $views
+     * @return $this
      */
-    public function setView()
+    public function setViews(array $views)
     {
-        throw new \Exception('setView method is not used. Please use the addView method instead.');
+        $viewsArray = array();
+        foreach ($views as $k => $v) {
+            if ( is_string($k) AND is_string($v) )
+            {
+                $viewsArray[$k] = $v;
+            }
+        }
+        if ( isset($viewsArray['html']) AND ! isset($viewsArray['text']) )
+        {
+            $viewsArray['text'] = strip_tags($viewsArray['html']);
+        }
+        $this->view = $viewsArray;
+        return $this;
     }
 
     /**

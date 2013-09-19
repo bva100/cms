@@ -31,7 +31,7 @@ class PipeStack {
     {
         switch($env){
             case 'local':
-                $this->baseUrl = 'localhost/api/';
+                $this->baseUrl = 'localhost/app_dev.php/api/';
                 break;
             case 'dev':
                 $this->baseUrl = 'dev.pipestack.com/api/';
@@ -96,21 +96,30 @@ class PipeStack {
         switch($format){
             case 'json':
             default:
-                if ( $status !== 200 OR $status !== 304 )
-                {
-                    return json_decode($data);
-                }
                 return json_decode($data);
                 break;
         }
+    }
+
+    public function getEndpointUri($endpoint,$params, $options)
+    {
+        $queryStr = '';
+        if ( ! empty($params) ){
+            $queryStr = http_build_query($params);
+        }
+        $uri = $options['protocol'].$this->getApiUrl().$endpoint;
+        if ( $queryStr ){
+            $uri .= '?'.$queryStr;
+        }
+        return $uri;
     }
     
     public function get($endpoint, array $params = array(), array $options = array())
     {
         $options = $this->setDefaultOptions($options);
-        $queryStr = http_build_query($params);
-        $uri = $options['protocol'].$this->getApiUrl().$endpoint.'?'.$queryStr;
+        $uri = $this->getEndpointUri($endpoint, $params, $options);
         $headers = array($this->getBearer(), $this->getAcceptHeader($options['format']));
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_USERAGENT, $this->getUserAgent());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -122,5 +131,25 @@ class PipeStack {
         curl_close($ch);
         return json_decode($data);
     }
+
+    public function create($endpoint, array $objectParams = array(), array $options = array())
+    {
+        $options = $this->setDefaultOptions($options);
+        $uri = $this->getEndpointUri($endpoint, $objectParams, $options);
+        $headers = array($this->getBearer(), $this->getAcceptHeader($options['format']));
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->getUserAgent());
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_URL, $uri);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('objectParams' => json_encode($objectParams))));
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($data);
+    }
+
 
 }
