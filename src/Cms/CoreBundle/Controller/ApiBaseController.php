@@ -14,6 +14,11 @@ use Cms\CoreBundle\Services\Api\EntityAdopters;
 
 class ApiBaseController extends Controller {
 
+    public function notFoundAction($_format)
+    {
+        throw new ApiException(10004, $_format);
+    }
+
     public function getResourcesArray($adopter, $resources, $format, array $fields = array())
     {
         $resourcesArray = array();

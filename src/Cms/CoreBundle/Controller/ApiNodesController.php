@@ -12,7 +12,7 @@ use Cms\CoreBundle\Services\Api\ApiException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiController extends ApiBaseController {
+class ApiNodesController extends ApiBaseController {
 
     public function nodeReadV1Action($ids, $_format)
     {
@@ -99,11 +99,6 @@ class ApiController extends ApiBaseController {
             throw new ApiException(20002, $_format);
         }
         $objectParams = $this->getRequest()->request->get('objectParams');
-//        $objectParams = json_encode(array(
-//            'views' => array(
-//                'html' => '<h1>This cool little node was updated!</h1><p>I\'m a doggie</p>',
-//            )
-//        ));
         if ( ! $objectParams ){
             throw new ApiException(20003, $_format, 'Updating a node requires the "objectParams" parameter. This is a json encoded array which sets new property values to the Node resource.');
         }

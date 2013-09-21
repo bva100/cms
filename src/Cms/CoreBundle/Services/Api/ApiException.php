@@ -32,8 +32,12 @@ class ApiException extends HttpException {
                 $data['message'] = 'There was a problem deleting at least one resource, though some resources may have been deleted.';
                 $data['status'] = 404;
                 break;
+            case 10004:
+                $data['message'] = 'The endpoint requested was not found. Please be ensure you have passed the correct URL.';
+                $data['status'] = 404;
+                break;
             case 20001:
-                $data['message'] = 'A node with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if just one of the many were not found.';
+                $data['message'] = 'A node with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if one was not found. This error can occur if an incorrect access token was passed.';
                 $data['status'] = 404;
                 break;
             case 20002:

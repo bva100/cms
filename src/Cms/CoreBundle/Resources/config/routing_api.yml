@@ -1,43 +1,46 @@
+#sites
+cms_api_v1.sites_read:
+  pattern: /sites.{_format}
+  defaults: { _controller: CmsCoreBundle:Api:siteRead }
+  methods: [GET]
+  requirements:
+    _format: '(json|xml)'
+
+#nodes
 cms_api_v1.nodes_read:
   pattern: /nodes/{ids}.{_format}
-  defaults: { _controller: CmsCoreBundle:Api:nodeReadV1, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:ApiNodes:nodeReadV1, _format: 'json' }
   methods: [GET]
   requirements:
     _format: '(json|xml)'
 
 cms_api_v1.nodes_readAll:
   pattern: /nodes.{_format}
-  defaults: { _controller: CmsCoreBundle:Api:nodeReadAllV1, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:ApiNodes:nodeReadAllV1, _format: 'json' }
   methods: [GET]
   requirements:
     _format: '(json|xml)'
 
 cms_api_v1.nodes_create:
   pattern: /nodes.{_format}
-  defaults: { _controller: CmsCoreBundle:Api:nodeCreate, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:ApiNodes:nodeCreate, _format: 'json' }
   methods: [POST]
   requirements:
     _format: '(json|xml)'
 
 cms_api_v1.nodes_delete:
   pattern: /nodes/{ids}.{_format}
-  defaults: { _controller: CmsCoreBundle:Api:nodeDelete, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:ApiNodes:nodeDelete, _format: 'json' }
   methods: [DELETE]
   requirements:
     _format: '(json|xml)'
 
 cms_api_v1.nodes_update:
   pattern: /nodes/{id}.{_format}
-  defaults: {_controller: CmsCoreBundle:Api:nodeUpdate, _format: 'json' }
+  defaults: {_controller: CmsCoreBundle:ApiNodes:nodeUpdate, _format: 'json' }
   methods: [PATCH, PUT]
   requirements:
     _formats: '(json|xml)'
-
-
-cms_api_v1.test:
-  pattern: /test
-  defaults: { _controller: CmsCoreBundle:Api:test }
-  methods: [GET]
 
 cms_api_v1.token:
   pattern: /token
