@@ -26,7 +26,7 @@ Abstract class Base {
     /**
      * @MongoDB\String
      */
-    private $state;
+    protected $state;
 
     /**
      * @MongoDB\Int

@@ -28,6 +28,26 @@ cms_api_v1.types_readAll:
   requirements:
     _format: '(json|xml)'
 
+cms_api_v1.types_create:
+  pattern: /types.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiTypes:createV1, _format: 'json' }
+  methods: [POST]
+  requirements:
+    _format: '(json|xml)'
+
+cms_api_v1.types_delete:
+  pattern: /types/{id}.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiTypes:deleteV1, _format: 'json' }
+  methods: [DELETE]
+  requirements:
+    _format: '(json|xml)'
+
+cms_api_v1.types_update:
+  pattern: /types/{id}.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiTypes:updateV1, _format: 'json' }
+  methods: [PATCH]
+  requirements:
+    _formats: '(json|xml)'
 
 
 #nodes

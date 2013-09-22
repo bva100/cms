@@ -36,8 +36,12 @@ class ApiException extends HttpException {
                 $data['message'] = 'The endpoint requested was not found. Please be ensure you have passed the correct URL.';
                 $data['status'] = 404;
                 break;
+            case 10005:
+                $data['message'] = 'A resource with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if one was not found. This error can also occur if an incorrect access token was passed.';
+                $data['status'] = 404;
+                break;
             case 20001:
-                $data['message'] = 'A node with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if one was not found. This error can occur if an incorrect access token was passed.';
+                $data['message'] = 'A node with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if one was not found. This error can also occur if an incorrect access token was passed.';
                 $data['status'] = 404;
                 break;
             case 20002:
@@ -54,6 +58,14 @@ class ApiException extends HttpException {
                 break;
             case 30003:
                 $data['message'] = 'Site failed to validate when attempting to save. Please check all required parameters.';
+                $data['status'] = 400;
+                break;
+            case 40002:
+                $data['message'] = 'A Type with the given ID does not exist. Please ensure the passed ID is correct.';
+                $data['status'] = 404;
+                break;
+            case 40003:
+                $data['message'] = 'Type failed to validate when attempting to save. Please ensure you have passed all required parameters.';
                 $data['status'] = 400;
                 break;
             default:

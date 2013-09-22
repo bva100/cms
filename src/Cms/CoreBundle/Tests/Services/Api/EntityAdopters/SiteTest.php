@@ -43,17 +43,20 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
         $name = 'foo';
         $namespace = 'foobar';
         $domains = array('somefoo.com', 'somebar.com');
+        $created = time();
 
         $site = new Site();
         $site->setName($name);
         $site->setNamespace($namespace);
         $site->setDomains($domains);
+        $site->setCreated($created);
 
         $this->adopter->setResource($site);
         $obj = $this->adopter->convert();
         $this->assertEquals($name, $obj->name);
         $this->assertEquals($namespace, $obj->namespace);
         $this->assertEquals($domains, $obj->domains);
+        $this->assertEquals($created, $obj->created);
     }
 
     /**

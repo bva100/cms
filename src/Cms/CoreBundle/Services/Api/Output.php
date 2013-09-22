@@ -173,7 +173,7 @@ class Output {
     public function checkResourcesAndGetName()
     {
         if ( empty($this->resources) ){
-            throw new ApiException(20001, $this->format);
+            throw new ApiException(10005, $this->format);
         }
         else if( ! $this->getForceCollection() AND count($this->resources) === 1){
             $resourceName = $this->resourceNames['singular'];

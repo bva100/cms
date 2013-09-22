@@ -59,7 +59,7 @@ class ContentType extends Base {
     private $tags;
 
     /**
-     * @MongoDB\Collection
+     * @MongoDB\Hash
      */
     private $fields;
 
@@ -69,6 +69,7 @@ class ContentType extends Base {
         $this->loop = array();
         $this->categories = array();
         $this->fields = array();
+        $this->created = time();
     }
 
     /**
@@ -181,7 +182,7 @@ class ContentType extends Base {
     }
 
     /**
-     * Add a loop
+     * Add loop
      *
      * @param $id
      * @param $domain

@@ -17,7 +17,7 @@ class ApiSitesController extends ApiBaseController {
         $resource = $this->get('api_site_adopter')->setResource($site)->setFormat($_format)->convert($fields);
         return $this->get('api_output')->setFormat($_format)
             ->setResources(array($resource))
-            ->setResourceNames(array('singular' => 'node'))
+            ->setResourceNames(array('singular' => 'sites'))
             ->setMeta(array('status' => 200, 'loadTime' => $stopwatch->stop('loadTime')->getDuration().' ms'))
             ->output();
     }

@@ -21,7 +21,6 @@ Cms\CoreBundle\Document\Site:
 Cms\CoreBundle\Document\ContentType:
     properties:
         state:
-          - NotBlank: { message: 'Please add a state' }
           - Choice:
               choices: [active, deleted, dev]
         name:
@@ -30,7 +29,6 @@ Cms\CoreBundle\Document\ContentType:
               min: 3
               max: 127
         formats:
-          - NotBlank: { message: 'Please add at least one format' }
           - Type:
               type: array
               message: The value {{ value }} is not a valid {{ type }}.
