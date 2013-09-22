@@ -1,46 +1,72 @@
 #sites
 cms_api_v1.sites_read:
   pattern: /sites.{_format}
-  defaults: { _controller: CmsCoreBundle:Api:siteRead }
+  defaults: { _controller: CmsCoreBundle:ApiSites:readV1, _format: 'json' }
   methods: [GET]
   requirements:
     _format: '(json|xml)'
 
+cms_api_v1.sites_update:
+  pattern: /sites.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiSites:updateV1, _format: 'json' }
+  methods: [PATCH, PUT]
+  requirements:
+    _format: '(json|xml)'
+
+#contentTypes
+cms_api_v1.types_read:
+  pattern: /types/{ids}.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiTypes:readV1, _format: 'json' }
+  methods: [GET]
+  requirements:
+    _format: '(json|xml)'
+
+cms_api_v1.types_readAll:
+  pattern: /types.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiTypes:readAllV1, _format: 'json' }
+  methods: [GET]
+  requirements:
+    _format: '(json|xml)'
+
+
+
 #nodes
 cms_api_v1.nodes_read:
   pattern: /nodes/{ids}.{_format}
-  defaults: { _controller: CmsCoreBundle:ApiNodes:nodeReadV1, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:ApiNodes:readV1, _format: 'json' }
   methods: [GET]
   requirements:
     _format: '(json|xml)'
 
 cms_api_v1.nodes_readAll:
   pattern: /nodes.{_format}
-  defaults: { _controller: CmsCoreBundle:ApiNodes:nodeReadAllV1, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:ApiNodes:readAllV1, _format: 'json' }
   methods: [GET]
   requirements:
     _format: '(json|xml)'
 
 cms_api_v1.nodes_create:
   pattern: /nodes.{_format}
-  defaults: { _controller: CmsCoreBundle:ApiNodes:nodeCreate, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:ApiNodes:createV1, _format: 'json' }
   methods: [POST]
   requirements:
     _format: '(json|xml)'
 
 cms_api_v1.nodes_delete:
   pattern: /nodes/{ids}.{_format}
-  defaults: { _controller: CmsCoreBundle:ApiNodes:nodeDelete, _format: 'json' }
+  defaults: { _controller: CmsCoreBundle:ApiNodes:deleteV1, _format: 'json' }
   methods: [DELETE]
   requirements:
     _format: '(json|xml)'
 
 cms_api_v1.nodes_update:
   pattern: /nodes/{id}.{_format}
-  defaults: {_controller: CmsCoreBundle:ApiNodes:nodeUpdate, _format: 'json' }
+  defaults: {_controller: CmsCoreBundle:ApiNodes:updateV1, _format: 'json' }
   methods: [PATCH, PUT]
   requirements:
     _formats: '(json|xml)'
+
+
 
 cms_api_v1.token:
   pattern: /token

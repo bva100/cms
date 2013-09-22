@@ -360,13 +360,13 @@ class ContentType extends Base {
     }
 
     /**
-     * Not used
-     *
-     * @throws \Exception
+     * @param array $fields
+     * @return $this
      */
-    public function setFields()
+    public function setFields(array $fields)
     {
-        throw new \Exception('setFields not used. Please use addField');
+        $this->fields = $fields;
+        return $this;
     }
 
     /**

@@ -41,16 +41,20 @@ class ApiException extends HttpException {
                 $data['status'] = 404;
                 break;
             case 20002:
-                $data['message'] = 'A node with the given ID (or IDs) does not exist. Please ensure the passed ID is correct';
+                $data['message'] = 'A node with the given ID (or IDs) does not exist. Please ensure the passed ID is correct.';
                 $data['status'] = 404;
                 break;
             case 20003:
-                $data['message'] = 'Node failed to validate when attempting to save. Please check all required parameters';
+                $data['message'] = 'Node failed to validate when attempting to save. Please check all required parameters.';
                 $data['status'] = 400;
                 break;
             case 20004:
                 $data['message'] = 'The server encountered an error when deleting a node resource. If the problem persists, please follow the link under "moreInfo" and report the issue.';
                 $data['status'] = 500;
+                break;
+            case 30003:
+                $data['message'] = 'Site failed to validate when attempting to save. Please check all required parameters.';
+                $data['status'] = 400;
                 break;
             default:
                 throw new RuntimeException('Code '.$code.' not found in code registry');

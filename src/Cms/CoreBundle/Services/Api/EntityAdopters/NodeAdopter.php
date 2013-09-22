@@ -29,7 +29,7 @@ class NodeAdopter extends AbstractAdopter {
     {
         if ( ! $node instanceof Node )
         {
-            throw new RuntimeException('Node Adopter requires that a Node entity is inject. Instance of '.get_class($node).' was injected.');
+            throw new RuntimeException('Node Adopter requires that a Node entity is injected. Instance of '.get_class($node).' was injected.');
         }
         $this->resource = $node;
         return $this;

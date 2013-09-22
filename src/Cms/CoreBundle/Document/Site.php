@@ -111,13 +111,15 @@ class Site extends Base {
     }
 
     /**
-     * Not used
+     * Set an array of domains
      *
-     * @throws \Exception
+     * @param array $domains
+     * @return $this
      */
-    public function setDomains()
+    public function setDomains(array $domains)
     {
-        throw new \Exception('setDomains not used. Please use addDomain instead');
+        $this->domains = $domains;
+        return $this;
     }
 
     /**

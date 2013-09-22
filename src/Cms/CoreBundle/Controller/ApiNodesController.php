@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiNodesController extends ApiBaseController {
 
-    public function nodeReadV1Action($ids, $_format)
+    public function readV1Action($ids, $_format)
     {
         extract($this->getDefaultVars($_format));
         $idsArray = explode(',', $ids);
@@ -27,7 +27,7 @@ class ApiNodesController extends ApiBaseController {
             ->output();
     }
 
-    public function nodeReadAllV1Action($_format)
+    public function readAllV1Action($_format)
     {
         extract($this->getDefaultVars($_format));
         $repo = $this->get('persister')->getRepo('CmsCoreBundle:Node');
@@ -43,7 +43,7 @@ class ApiNodesController extends ApiBaseController {
             ->output();
     }
 
-    public function nodeCreateAction($_format)
+    public function createV1Action($_format)
     {
         $objectParams = $this->getRequest()->request->get('objectParams');
         if ( ! $objectParams ){
@@ -64,7 +64,7 @@ class ApiNodesController extends ApiBaseController {
             ->output();
     }
 
-    public function nodeDeleteAction($ids, $_format)
+    public function deleteV1Action($ids, $_format)
     {
         extract($this->getDefaultVars($_format));
         $deletedIds = array();
@@ -91,7 +91,7 @@ class ApiNodesController extends ApiBaseController {
         return $response;
     }
 
-    public function nodeUpdateAction($id, $_format)
+    public function updateV1Action($id, $_format)
     {
         extract($this->getDefaultVars($_format));
         $node = $this->get('persister')->getRepo('CmsCoreBundle:Node')->find($id);
@@ -112,11 +112,6 @@ class ApiNodesController extends ApiBaseController {
         $response->setStatusCode(204);
         return $response;
     }
-    
-
-
-
-
 
 
     public function tokenAction()
@@ -137,52 +132,5 @@ class ApiNodesController extends ApiBaseController {
         $token = $this->get('access_token')->createToken($clientId, $secret);
         return new Response('the new token is <br> '.$token);
     }
-
-    public function testAction()
-    {
-        require 'PipeStack.php';
-        $accessToken = 'PzKmOxi72jxlNd3icrQJWhbMJ62BIWhl7iHA5LIS1wPu3yLJ5Gp08hDR6oZKL_wtqsTix-FFgS-2gw2wgbw5fmaIcxjklITn1BNjYLXEXLe67cRTVeA4VcRKgHjw24z1';
-        $PipeStack = new \PipeStack($accessToken, 'local');
-
-        // update
-        $params = array('slug' => 'cool-sdk');
-        $results = $PipeStack->update('nodes/523b5dbe18a516d67d8b4573', $params);
-        echo '<pre>', \var_dump($results); die();
-
-//        // delete
-//        $results = $PipeStack->delete('nodes/523b53ce18a516d77d8b4571');
-//        echo '<pre>', \var_dump($results); die();
-
-//        //create
-//        $results = $PipeStack->create('nodes', array(
-//            'title' => 'third!!',
-//            'contentTypeName' => 'reviews',
-//            'domain' => 'localhost',
-//            'slug' => 'sdk-api',
-//            'views' => array(
-//                'html' => '<h1>ID make with access token decode</h1><p>I\'m a doggie</p>',
-//            ),
-//        ));
-//        echo '<pre>', \var_dump($results); die();
-
-//        //get
-//        $results = $PipeStack->get('nodes/51d8234b18a5166d3e000000');
-//        echo 'response: '.$results->meta->status.'<br>';
-//        if ( $results->meta->status !== 200 )
-//        {
-//            echo 'something wrong! '.$results->meta->message.' '.$results->meta->moreInfo; die();
-//        }
-        if ( is_array($results) )
-        {
-            foreach ($results->nodes as $node) {
-                echo '<h2>', $node->title, '</h1>', '<p>', $node->view->html, '</p><br />';
-            }
-        }else{
-            echo '<h1>', $results->node->title, '</h1>','<p>'.$results->node->views->html.'</p>';
-        }
-
-        die('<br> end');
-    }
-
     
 }
