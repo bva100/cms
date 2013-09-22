@@ -101,6 +101,27 @@ cms_api_v1.media_readAll:
   requirements:
     _format: '(json|xml)'
 
+cms_api_v1.media_create:
+  pattern: /media.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiMedia:createV1, _format: 'json' }
+  methods: [POST]
+  requirements:
+    _format: '(json|xml)'
+
+cms_api_v1.media_delete:
+  pattern: /media/{id}.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiMedia:deleteV1, _format: 'json' }
+  methods: [DELETE]
+  requirements:
+    _format: '(json|xml)'
+
+cms_api_v1.media_update:
+  pattern: /media/{id}.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiMedia:updateV1, _format: 'json' }
+  methods: [PATCH]
+  requirements:
+    _format: '(json|xml)'
+
 
 
 cms_api_v1.token:

@@ -4,6 +4,10 @@
 namespace Cms\CoreBundle\Controller;
 
 
+use Cms\CoreBundle\Document\Media;
+use Cms\CoreBundle\Services\Api\ApiException;
+use Symfony\Component\HttpFoundation\Response;
+
 class ApiMediaController extends ApiBaseController {
 
     public function readV1Action($ids, $_format)
@@ -32,6 +36,65 @@ class ApiMediaController extends ApiBaseController {
             ->setForceCollection(true)
             ->setMeta($meta)
             ->output();
+    }
+
+    public function createV1Action($_format)
+    {
+        $objectParams = $this->getRequest()->request->get('objectParams');
+        if ( ! $objectParams ){
+            throw new ApiException(20003, $_format, 'Creating a Media resource requires the "objectParams" parameter. This is a json encoded array which sets property values to the new Media resource.');
+        }
+        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $media = $this->get('api_media_adopter')->setResource(new Media())->getFromArray($objectArray);
+        $media->setSiteId($this->get('access_token')->setToken($this->getAccessToken($_format))->getClientId());
+        $result = $this->get('persister')->setFlashBag(null)->save($media, false, 'media created', true);
+        if ( $result !== true ){
+            throw new ApiException(20003, $_format, $result->getMessage());
+        }
+        $resources = $this->getResourcesArray($this->get('api_media_adopter'), array($media), $_format);
+        return $this->get('api_output')->setFormat($_format)
+            ->setResources($resources)
+            ->setResourceNames(array('singular' => 'media'))
+            ->setMeta(array('status' => 201))
+            ->output();
+    }
+
+    public function updateV1Action($id, $_format)
+    {
+        extract($this->getDefaultVars($_format));
+        $media = $this->getMediaRepo()->find($id);
+        if ( ! $media ){
+            throw new ApiException(50002, $_format);
+        }
+        $objectParams = $this->getRequest()->request->get('objectParams');
+        if ( ! $objectParams ){
+            throw new ApiException(50003, $_format, 'Updating a Media resource requires the "objectParams" parameter. This is a json encoded array which updates the property values of the Media resource.');
+        }
+        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $updatedMedia = $this->get('api_media_adopter')->setResource($media)->getFromArray($objectArray);
+        $result = $this->get('persister')->setFlashBag(null)->save($updatedMedia, false, 'media updated', true);
+        if ( $result !== true ){
+            throw new ApiException(50003, $_format, $result->getMessage());
+        }
+        $response = new Response();
+        $response->setStatusCode(204);
+        return $response;
+    }
+
+    public function deleteV1Action($id, $_format)
+    {
+        extract($this->getDefaultVars($_format));
+        $media = $this->getMediaRepo()->find($id);
+        if ( ! $media ){
+            throw new ApiException(50002, $_format);
+        }
+        $results = $this->get('persister')->setFlashBag(null)->delete($media, false);
+        if ( ! $results){
+            throw new ApiException(50003, $_format);
+        }
+        $response = new Response();
+        $response->setStatusCode(204);
+        return $response;
     }
 
     public function getMediaRepo()

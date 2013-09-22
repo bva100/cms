@@ -88,6 +88,10 @@ class ApiBaseController extends Controller {
         switch($format){
             case 'json':
             default:
+                if ( ! is_string($objectParams) ){
+                    throw new ApiException(10006, $format, 'the "objectParams" expects a json_encode string. '.ucfirst(gettype($objectParams)).' was passed.');
+                }
+                
                 return json_decode($objectParams, TRUE);
                 break;
         }

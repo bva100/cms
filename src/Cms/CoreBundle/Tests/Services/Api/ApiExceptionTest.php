@@ -153,6 +153,69 @@ class ApiExceptionTest extends \PHPUnit_Framework_TestCase {
      * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
      * @covers Cms\CoreBundle\Services\Api\ApiException::output
      */
+    public function test10005Json()
+    {
+        $excep = new ApiException(10005, 'json');
+        $data = json_decode($excep->getMessage());
+        $this->assertEquals($data->meta->errorCode, 10005);
+        $this->assertEquals($data->meta->status, 404);
+        $this->assertNotNull($data->meta->description);
+        $this->assertNotNull($data->meta->message);
+        $this->assertNotNull($data->meta->moreInfo);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
+     * @covers Cms\CoreBundle\Services\Api\ApiException::output
+     */
+    public function test10005Xml()
+    {
+        $excep = new ApiException(10005, 'xml');
+        $data = $excep->getMessage();
+        $this->assertNotNull($data);
+        $this->assertContains('<errorCode>10005</errorCode>', $data);
+        $this->assertContains('<status>404</status>', $data);
+        $this->assertContains('<description>', $data);
+        $this->assertContains('<message>', $data);
+        $this->assertContains('<moreInfo>', $data);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
+     * @covers Cms\CoreBundle\Services\Api\ApiException::output
+     */
+    public function test10006Json()
+    {
+        $excep = new ApiException(10006, 'json');
+        $data = json_decode($excep->getMessage());
+        $this->assertEquals($data->meta->errorCode, 10006);
+        $this->assertEquals($data->meta->status, 400);
+        $this->assertNotNull($data->meta->description);
+        $this->assertNotNull($data->meta->message);
+        $this->assertNotNull($data->meta->moreInfo);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
+     * @covers Cms\CoreBundle\Services\Api\ApiException::output
+     */
+    public function test10006Xml()
+    {
+        $excep = new ApiException(10006, 'xml');
+        $data = $excep->getMessage();
+        $this->assertNotNull($data);
+        $this->assertContains('<errorCode>10006</errorCode>', $data);
+        $this->assertContains('<status>400</status>', $data);
+        $this->assertContains('<description>', $data);
+        $this->assertContains('<message>', $data);
+        $this->assertContains('<moreInfo>', $data);
+    }
+
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
+     * @covers Cms\CoreBundle\Services\Api\ApiException::output
+     */
     public function test20001Json()
     {
         $excep = new ApiException(20001, 'json');
@@ -209,6 +272,68 @@ class ApiExceptionTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains('<description>', $data);
         $this->assertContains('<message>', $data);
         $this->assertContains('<moreInfo>', $data);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
+     * @covers Cms\CoreBundle\Services\Api\ApiException::output
+     */
+    public function test50002Xml()
+    {
+        $excep = new ApiException(50002, 'xml');
+        $data = $excep->getMessage();
+        $this->assertNotNull($data);
+        $this->assertContains('<errorCode>50002</errorCode>', $data);
+        $this->assertContains('<status>404</status>', $data);
+        $this->assertContains('<description>', $data);
+        $this->assertContains('<message>', $data);
+        $this->assertContains('<moreInfo>', $data);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
+     * @covers Cms\CoreBundle\Services\Api\ApiException::output
+     */
+    public function test50002Json()
+    {
+        $excep = new ApiException(50002, 'json');
+        $data = json_decode($excep->getMessage());
+        $this->assertEquals($data->meta->errorCode, 50002);
+        $this->assertEquals($data->meta->status, 404);
+        $this->assertNotNull($data->meta->description);
+        $this->assertNotNull($data->meta->message);
+        $this->assertNotNull($data->meta->moreInfo);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
+     * @covers Cms\CoreBundle\Services\Api\ApiException::output
+     */
+    public function test50003Xml()
+    {
+        $excep = new ApiException(50003, 'xml');
+        $data = $excep->getMessage();
+        $this->assertNotNull($data);
+        $this->assertContains('<errorCode>50003</errorCode>', $data);
+        $this->assertContains('<status>400</status>', $data);
+        $this->assertContains('<description>', $data);
+        $this->assertContains('<message>', $data);
+        $this->assertContains('<moreInfo>', $data);
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Api\ApiException::__construct
+     * @covers Cms\CoreBundle\Services\Api\ApiException::output
+     */
+    public function test50003Json()
+    {
+        $excep = new ApiException(50003, 'json');
+        $data = json_decode($excep->getMessage());
+        $this->assertEquals($data->meta->errorCode, 50003);
+        $this->assertEquals($data->meta->status, 400);
+        $this->assertNotNull($data->meta->description);
+        $this->assertNotNull($data->meta->message);
+        $this->assertNotNull($data->meta->moreInfo);
     }
 
 }

@@ -40,6 +40,10 @@ class ApiException extends HttpException {
                 $data['message'] = 'A resource with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if one was not found. This error can also occur if an incorrect access token was passed.';
                 $data['status'] = 404;
                 break;
+            case 10006:
+                $data['message'] = 'Incorrect parameter type. Please be sure all passed parameters are proper data types.';
+                $data['status'] = 400;
+                break;
             case 20001:
                 $data['message'] = 'A node with the given parameters does not exist. Please ensure the parameters are correct. If you have passed many IDs this error could be thrown if one was not found. This error can also occur if an incorrect access token was passed.';
                 $data['status'] = 404;
@@ -66,6 +70,14 @@ class ApiException extends HttpException {
                 break;
             case 40003:
                 $data['message'] = 'Type failed to validate when attempting to save. Please ensure you have passed all required parameters.';
+                $data['status'] = 400;
+                break;
+            case 50002:
+                $data['message'] = 'A Media resource with the given ID (or IDs) does not exist. Please ensure the passed ID is correct.';
+                $data['status'] = 404;
+                break;
+            case 50003:
+                $data['message'] = 'Media resource failed to validate when attempting to save. Please check all required parameters.';
                 $data['status'] = 400;
                 break;
             default:
