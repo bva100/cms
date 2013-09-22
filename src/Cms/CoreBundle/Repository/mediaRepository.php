@@ -12,11 +12,68 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class mediaRepository extends DocumentRepository {
 
-    public function findAllBySiteId($siteId, array $params = array('offset' => 0, 'limit' => 20))
+    public function findBySiteIdAndIds($siteId, $ids)
     {
         return $this->createQueryBuilder()
             ->field('siteId')->equals($siteId)
-            ->skip($params['offset'])->limit($params['limit'])->getQuery()->execute();
+            ->field('id')->in($ids)
+            ->getQuery()->execute();
+    }
+
+    public function findAllBySiteId($siteId, array $params = array(), array $options = array(), $count = false)
+    {
+        extract($this->getDefaultOptions($options));
+        $qb = $this->createQueryBuilder()
+            ->field('siteId')->equals($siteId);
+        $qb = $this->addParametersToQuery($qb, $params);
+        if ( $count ){
+            return $qb->getQuery()->execute()->count();
+        }
+        return $qb->sort($sortBy, $sortOrder)->skip($offset)->limit($limit)->getQuery()->execute();
+    }
+
+    public function getDefaultOptions(array $options)
+    {
+        if ( ! isset($options['limit']) ){
+            $options['limit'] = 10;
+        }
+        if ( ! isset($options['offset']) ){
+            $options['offset'] = 0;
+        }
+        if ( ! isset($options['sortBy']) ){
+            $options['sortBy'] = 'created';
+        }
+        if ( ! isset($options['sortOrder']) ){
+            $options['sortOrder'] = 'desc';
+        }
+        return $options;
+    }
+
+    public function addParametersToQuery($qb, array $params)
+    {
+        extract($params);
+        if ( isset($type) ){
+            $qb->field('mime')->equals(new \MongoRegex($type.'.*/'));
+        }
+        if ( isset($createdAfter) ){
+            $qb->field('created')->gte((int)$createdAfter);
+        }
+        if ( isset($createdBefore) ){
+            $qb->field('created')->lte((int)$createdBefore);
+        }
+        if ( isset($association) )
+        {
+            if ( $association === 'unattached' )
+            {
+                $qb->addOr($qb->expr()->field('nodeIds')->equals(null));
+                $qb->addOr($qb->expr()->field('nodeIds')->size(0));
+            }
+        }
+        if ( isset($search) )
+        {
+            $qb->field('metadata.title')->equals(new \MongoRegex('/.*'.$search.'.*/i'));
+        }
+        return $qb;
     }
 
     public function findAllBySiteIdAndType($siteId, $type, array $params = array('offset' => 0, 'limit' => 20, 'sort' => array('by' => 'created', 'order' => 'desc')))

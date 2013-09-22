@@ -20,6 +20,7 @@ parameters:
     cms.check_route.class: Cms\CoreBundle\Services\CheckRoute
     cms.api_node_adopter.class: Cms\CoreBundle\Services\Api\EntityAdopters\NodeAdopter
     cms.api_site_adopter.class: Cms\CoreBundle\Services\Api\EntityAdopters\SiteAdopter
+    cms.api_media_adopter.class: Cms\CoreBundle\Services\Api\EntityAdopters\MediaAdopter
     cms.api_contentType_adopter.class: Cms\CoreBundle\Services\Api\EntityAdopters\ContentTypeAdopter
     cms.api_output.class: Cms\CoreBundle\Services\Api\Output
     cms.api_base.class: Cms\CoreBundle\Services\Api\Base
@@ -78,6 +79,8 @@ services:
         class: %cms.api_site_adopter.class%
     api_contentType_adopter:
         class: %cms.api_contentType_adopter.class%
+    api_media_adopter:
+        class: %cms.api_media_adopter.class%
     api_output:
         class: %cms.api_output.class%
     api_base:

@@ -55,4 +55,15 @@ class MediaTest extends \PHPUnit_Framework_TestCase {
         $this->assertEmpty($this->media->getNodeIds());
     }
 
+    public function testSetFieldsAndGetFields()
+    {
+        $fields = array(
+            'foo' => 'bar',
+            'practice santeria?' => false,
+            'sublime' => array('songs' => array('what i got', 'badfish')),
+        );
+        $this->media->setFields($fields);
+        $this->assertEquals($fields, $this->media->getFields());
+    }
+
 }

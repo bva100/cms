@@ -71,11 +71,17 @@ class Media extends Base {
      */
     private $nodeIds;
 
+    /**
+     * @MongoDB\Hash
+     */
+    private $fields;
+
     public function __construct()
     {
         $this->created = time();
         $this->metadata = array();
         $this->contentTypeIds = array();
+        $this->fields = array();
     }
 
     /**
@@ -342,6 +348,18 @@ class Media extends Base {
     }
 
     /**
+     * Set an array of node ids
+     *
+     * @param array $nodeIds
+     * @return $this
+     */
+    public function setNodeIds(array $nodeIds)
+    {
+        $this->nodeIds = $nodeIds;
+        return $this;
+    }
+
+    /**
      * Add a node id
      *
      * @param $nodeId
@@ -380,6 +398,26 @@ class Media extends Base {
     public function getNodeIds()
     {
         return $this->nodeIds;
+    }
+
+    /**
+     * Set fields
+     *
+     * @param array $fields
+     * @return $this
+     */
+    public function setFields(array $fields)
+    {
+        $this->fields = $fields;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
     }
 
 }

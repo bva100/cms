@@ -86,6 +86,21 @@ cms_api_v1.nodes_update:
   requirements:
     _formats: '(json|xml)'
 
+#media
+cms_api_v1.media_read:
+  pattern: /media/{ids}.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiMedia:readV1, _format: 'json' }
+  methods: [GET]
+  requirements:
+    _format: '(json|xml)'
+
+cms_api_v1.media_readAll:
+  pattern: /media.{_format}
+  defaults: { _controller: CmsCoreBundle:ApiMedia:readAllV1, _format: 'json' }
+  methods: [GET]
+  requirements:
+    _format: '(json|xml)'
+
 
 
 cms_api_v1.token:
