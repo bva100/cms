@@ -82,7 +82,34 @@ cms_core.site_unique_domain:
   defaults: { _controller: CmsCoreBundle:Site:uniqueDomain }
   methods: [GET]
 
-#contentType
+#types (simplified version of contentTypes. Used for API work.)
+cms_core.types_readAll:
+  pattern: /types/{siteId}
+  defaults: { _controller: CmsCoreBundle:Types:readAll }
+  methods: [GET]
+
+cms_core.types_new:
+  pattern: /types/edit/{siteId}
+  defaults: { _controller: CmsCoreBundle:Types:new }
+  methods: [GET]
+
+cms_core.types_read:
+  pattern: /types/edit/{siteId}/{id}
+  defaults: { _controller: CmsCoreBundle:Types:read }
+  methods: [GET]
+
+cms_core.types_delete:
+  pattern: /types/delete
+  defaults: { _controller: CmsCoreBundle:Types:delete }
+  methods: [POST]
+
+cms_core.types_save:
+  pattern: /types
+  defaults: { _controller: CmsCoreBundle:Types:save }
+  methods: [POST]
+
+
+#contentType (advanced version of types. used for client work)
 cms_core.contentType_save:
   pattern: /contentType
   defaults: { _controller: CmsCoreBundle:ContentType:save }

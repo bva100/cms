@@ -1,0 +1,44 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+    '@CmsCoreBundle/Resources/public/css/types/edit.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block title %}
+    {{ type.name|default('New') }} Type {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {{  parent() }}
+    <article>
+        <section class="row-fluid">
+            <div class="span12" id='header'>
+                <h1>{{ type.name|default('New')|title }} Type</h1>
+            </div>
+        </section>
+        {% block notices %}
+            {{ parent() }}
+        {% endblock %}
+        <section class="row-fluid">
+            <div class="span12">
+                <form action="{{ path('cms_core.types_save') }}" method="POST">
+                    <input type="hidden" name="siteId" value="{{ site.id }}"/>
+                    <input type="hidden" name="id" value="{{ type.id|default() }}"/>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" value="{{ type.name|default() }}" required placeholder="enter name here"/>
+                    <label for="slugPrefix">Slug Prefix:</label>
+                    <input type="text" name="slugPrefix" value="{{ type.slugPrefix|default() }}" placeholder="ie: example/"/>
+                    <label for="description">Description:</label>
+                    <textarea name="description" id="description" cols="30" rows="10" placeholder="Write the description of your content type here">{{ type.description|default() }}</textarea>
+                    <button class="btn btn-info"><i class="icon-save"></i> Save</button>
+                </form>
+            </div>
+        </section>
+    </article>
+{% endblock %}

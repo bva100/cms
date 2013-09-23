@@ -1,0 +1,64 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block title %}
+    {{ site.name|title }} Types {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {{  parent() }}
+    <article>
+        <section class="row-fluid">
+            <div class="span6" id='header'>
+                <h1>Content Types</h1>
+                <a href="{{ path('cms_core.types_new', {'siteId':site.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
+            </div>
+        </section>
+        <section class="row-fluid">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="data-group-1">Name</th>
+                    <th class="data-group-3">Description</th>
+                    <th class="data-group-2">Slug Prefix</th>
+                    <td class="data-group-1">Created</td>
+                    <td>Edit</td>
+                    <td>Trash</td>
+                </tr>
+                </thead>
+                <tbody class="checkbox-container">
+                {% for type in types  %}
+                <tr id="tr-{{ type.id }}">
+                    <td class="data-group-1">
+                        <h4><a href="{{ path('cms_core.types_read', {'siteId': site.id, 'id':type.id}) }}">{{ type.name|title }}</a></h4>
+                    </td>
+                    {% if type.description is defined %}
+                        <td class="data-group-3">{{ type.description }}</td>
+                    {% else %}
+                        <td class="data-group-3"></td>
+                    {% endif %}
+                    <td class='data-group2'>{{ type.slugPrefix|default() }}</td>
+                    <td class="data-group-1">{{  type.created|date('F j, Y ') }}</td>
+                        <td><a class="btn btn-info" href="{{ path('cms_core.types_read', {'siteId':site.id, 'id':type.id}) }}"><i class="icon-edit"></i></a></td>
+                    <td>
+                        <form action="{{ path('cms_core.types_delete') }}" method="POST">
+                            <input type="hidden" name="siteId" value="{{ site.id }}"/>
+                            <input type="hidden" name="id" value="{{ type.id }}" />
+                            <button class="btn btn-danger"><i class="icon-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </article
+{% endblock %}
