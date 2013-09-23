@@ -15,6 +15,15 @@ class XmlResponder {
 
     public function execute(Request $request, $success, array $options = array('onSuccess' => 'success', 'onFail' => 'failed', 'format' => 'text'))
     {
+        if ( ! isset($options['onSuccess']) ){
+            $options['onSuccess'] = 'success';
+        }
+        if ( ! isset($options['onFail']) ){
+            $options['onFail'] = 'failed';
+        }
+        if ( ! isset($options['format']) ){
+            $options['format'] = 'text';
+        }
         if ( ! $request->isXmlHttpRequest() )
         {
             return false;

@@ -461,7 +461,6 @@ class Node extends Base {
         $slug = ltrim($slug, '/');
         $slug = strtolower($slug);
         $slug = str_replace(' ', '', $slug);
-        $slug = urlencode($slug);
         $this->slug = $slug;
         return $this;
     }

@@ -128,7 +128,6 @@
                     <div class="span12">
                         <textarea name="viewHtml" id="view-html" class="span12" placeholder="Add your content here" required>{% if node is defined %}{{ node.views['html'] | default() }}{% else %}{{ viewHtml|default()}}{% endif %}</textarea>
                     </div>
-                    <a href="#preview" class="preview-node hidden-phone pull-right"><i class="icon-eye-open"></i> Preview</a>
                 </div>
                 <div class="row-fluid visible-phone" id='mobile-quick-publish-container'>
                     <button class="btn btn-info save-node span6 pull-right" {% if node and node.state == 'active' %}disabled{% endif %}><i class="icon-save"></i> Save</button>
@@ -224,8 +223,11 @@
                             </div>
                         </div>
                         <div class="row-fluid">
+                            {#<div class="span6">#}
+                                {#<button class="btn span12 preview-node"><i class="icon-eye-open"></i> Preview</button>#}
+                            {#</div>#}
                             <div class="span6">
-                                <button class="btn span12 preview-node"><i class="icon-eye-open"></i> Preview</button>
+                                <button class="btn btn span12 delete-node"><i class="icon-trash"></i> Trash</button>
                             </div>
                             <div class="span6">
                                 <button class="btn span12" id="state-container-opener""><i class="icon-flag-checkered"></i> Status</button>
@@ -243,14 +245,12 @@
                                 <button class="btn btn-primary btn-block hide" id="submit-input-state">ok</button>
                             </div>
                         </div>
-                        <div class="row-fluid">
-                            <div class="span6">
-                                <button class="btn btn span12 delete-node"><i class="icon-trash"></i> Trash</button>
-                            </div>
-                            <div class="span6">
-                                <button class="btn span12" id="publish-date-container-opener"><i class="icon-calendar"></i> Schedule</button>
-                            </div>
-                        </div>
+                        {#<div class="row-fluid">#}
+
+                            {#<div class="span6">#}
+                                {#<button class="btn span12" id="publish-date-container-opener"><i class="icon-calendar"></i> Schedule</button>#}
+                            {#</div>#}
+                        {#</div>#}
                         <div class="row-fluid hide" id="publish-date-container">
                             <div class="span12">
                                 {#<label for="publish-date">Scheduled for:</label>#}
@@ -258,7 +258,7 @@
                                 <b>scheduling is coming soon</b>
                             </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
             <div class="row-fluid">
@@ -364,6 +364,7 @@
     <input type="hidden" id="state" value="{{ node.state|default('draft') }}"/>
     <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
     <input type="hidden" id="save-path" value="{{ path('cms_core.node_save') }}" />
+    <input type="hidden" id="edit-path" value="{{ app.request.baseUrl }}/node">
     <input type="hidden" id="delete-path" value="{{ path('cms_core.node_delete') }}"/>
     <input type="hidden" id="read-content-type-path" value="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"/>
     <input type="hidden" id="add-category-path" value="{{ path('cms_core.contentType_addCategory') }}"/>

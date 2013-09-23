@@ -27,6 +27,18 @@
 {% endblock %}
 
 {% block classicNavPrimary %}
+<div class="modal fade hide" id="support-modal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>
+            Contact Us
+        </h4>
+    </div>
+    <div class="modal-body">
+        <p>Please direct all customer support inquires to:</p>
+        <p><b>333-333-3333</b></p>
+    </div>
+</div>
 <nav class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="container">
@@ -40,7 +52,7 @@
                     {% endif %}
                     {% if site is defined %}
                     <li class="active">
-                        <a href="{{ path('cms_core.app_index') }}">
+                        <a href="{{ path('cms_core.site_read', {'id': site.id}) }}">
                             Admin Panel
                         </a>
                     </li>
@@ -50,31 +62,18 @@
                     </li>
                     {% endif %}
                     <li>
-                        {% if site is defined %}
-                            <a href="http://{{ site.domains[0] }}">Visit Site</a>
-                        {% endif %}
+                        <a href="{{ path('cms_core.app_index') }}">Switch Sites</a>
                     </li>
                     <li>
-                        <a href="#fakelink">
+                        <a href="#support">
                             Support
                         </a>
                         <ul>
-                            <li><a href="#fakelink">Element One</a></li>
-                            <li>
-                                <a href="#fakelink">Sub menu</a>
-                                <ul>
-                                    <li><a href="#fakelink">Element One</a></li>
-                                    <li><a href="#fakelink">Element Two</a></li>
-                                    <li><a href="#fakelink">Element Three</a></li>
-                                </ul> <!-- /Sub menu -->
-                            </li>
-                            <li><a href="#fakelink">Element Three</a></li>
-                        </ul> <!-- /Sub menu -->
-                    </li>
-                    <li>
-                        <a href="#fakelink">
-                            Notices
-                        </a>
+                            <li><a href="#developerDocs">API Documentation</a></li>
+                            <li><a href="#contentHelp">Content Help</a></li>
+                            <li><a href="mailto:support@pipestack.com">Email Us</a></li>
+                            <li><a href="#support-modal" data-toggle="modal">Call Us</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div><!--/.nav -->
@@ -93,16 +92,21 @@
                 <li><a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"><i class="icon-pushpin"></i> {{ contentType.name | title }}</a></li>
             {% endif %}
         {% endfor %}
-        <li><a href="{{ path('cms_core.content_manager_static_readAll', {'siteId':site.id}) }}"><i class="icon-file-text"></i> Pages</a></li>
-        <li class="divider"></li>
+        {#<li><a href="{{ path('cms_core.content_manager_static_readAll', {'siteId':site.id}) }}"><i class="icon-file-text"></i> Pages</a></li>#}
+        {% if site.contentTypes|length > 0 %}
+            <li class="divider"></li>
+        {% endif %}
         <li><a href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}"><i class="icon-camera-retro"></i> Media</a></li>
-        <li><a href="#"><i class="icon-comments"></i> Comments</a></li>
+        {#<li><a href="#"><i class="icon-comments"></i> Comments</a></li>#}
         <li class="divider"></li>
-        <li><a href="{{ path('cms_core.settings_theme_current', {'siteId':site.id}) }}"><i class="icon-eye-open"></i> Themes</a></li>
-        <li><a href="{{ path('cms_core.content_manager_readAll', {'siteId':site.id}) }}"><i class="icon-book"></i> Content</a></li>
-        <li><a href="{{ path('cms_core.template_menu', {'siteId':site.id}) }}"><i class="icon-list-ul"></i> Menus</a></li>
-        <li><a href="{{ path('cms_core.template_readAll', {'siteId':site.id}) }}"><i class="icon-pencil"></i> Templates</a></li>
-        <li><a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}"><i class="icon-css3"></i> Css/Js</a></li>
+        <li><a href="#"><i class="icon-book"></i> Types</a></li>
+        <li><a href="#users"><i class="icon-group"></i> Users</a></li>
+        {#<li><a href="#siteSettings"><i class="icon-cog"></i> Settings</a></li>#}
+        {#<li><a href="{{ path('cms_core.settings_theme_current', {'siteId':site.id}) }}"><i class="icon-eye-open"></i> Themes</a></li>#}
+        {#<li><a href="{{ path('cms_core.content_manager_readAll', {'siteId':site.id}) }}"><i class="icon-book"></i> Content</a></li>#}
+        {#<li><a href="{{ path('cms_core.template_menu', {'siteId':site.id}) }}"><i class="icon-list-ul"></i> Menus</a></li>#}
+        {#<li><a href="{{ path('cms_core.template_readAll', {'siteId':site.id}) }}"><i class="icon-pencil"></i> Templates</a></li>#}
+        {#<li><a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}"><i class="icon-css3"></i> Css/Js</a></li>#}
     </ul>
 </nav>
 {% endblock %}

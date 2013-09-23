@@ -1,4 +1,5 @@
 var savePath = document.getElementById('save-path').value;
+var editPath = document.getElementById('edit-path').value;
 var deletePath = document.getElementById('delete-path').value;
 var readContentTypePath = document.getElementById('read-content-type-path').value;
 var baseUrl = document.getElementById('base-url').value;
@@ -186,7 +187,7 @@ $(".save-node").on('click', function(){
 
 $(".preview-node").on('click', function(){
     var params = getParams();
-    saveAndPreview(params);
+    save(params);
 });
 
 $(".delete-node").on('click', function(){
@@ -206,7 +207,7 @@ $(".delete-node").on('click', function(){
 $(".publish-node").on('click', function(){
     params = getParams();
     params.state = 'active';
-    saveAndPreview(params);
+    save(params);
 });
 
 $(".category-toggle-icon").on('click', function(){
@@ -277,6 +278,7 @@ function getParams(){
     objParams['categoriesJSON'] = JSON.stringify(getCategories());
     objParams['tagsJSON'] = JSON.stringify(getTags());
     objParams['fieldsJSON'] = JSON.stringify(getFields());
+    console.log(objParams['fieldsJSON']);
     return objParams;
 }
 
@@ -349,6 +351,9 @@ function toggleAddField(){
 function saveAJAX(params){
     $.post(savePath, params, function(data, textStatus, xhr) {
         if(textStatus === 'success'){
+            if(!params.id){
+                window.location.href =  editPath + '/' + data + '?siteId=' + siteId;
+            }
             $("#notice-container").html('<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert" style="color: white">&times;</button><i class="icon-bullhorn" style="margin-right: 5px;"></i> Save Complete</div>');
         }else{
             alert('Unable to save. Please be sure you are logged in and try again. If problem persists please contact customer services.');

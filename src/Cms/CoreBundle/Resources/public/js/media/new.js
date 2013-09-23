@@ -18,7 +18,7 @@ function uploader(){
                 mediaList.className = '';
                 var li = document.createElement('li');
                 li.setAttribute('class', 'media-item row-fluid');
-                li.innerHTML = "<img src='"+mediaParams.url+"' class='span3' /><div class='span7'><h4>"+mediaParams.url+"</h4><p>"+mediaParams.mime+"</p></div><div class='span2'><a href='#edit' class='btn btn-info btn-block'>edit</a></div>";
+                li.innerHTML = "<img src='"+mediaParams.url+"' class='span3' /><div class='span7'><h4>"+mediaParams.url+"</h4><p>"+mediaParams.mime+"</p></div>";
                 mediaList.appendChild(li);
                 uploader();
             }else{

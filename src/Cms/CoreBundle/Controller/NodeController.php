@@ -82,7 +82,7 @@ class NodeController extends Controller {
         {
             $node->setParentNodeId($parentNodeId);
         }
-        if ( $slug AND $slug !== $node->getSlug() )
+        if ( $slug )
         {
             if ( $slugPrefix )
             {
@@ -129,8 +129,10 @@ class NodeController extends Controller {
         if ( is_array($fields) AND ! empty($fields) )
         {
             $node->setFields($fields);
+        }elseif ( $fields === null ){
+            $node->setFields(array());
         }
-        $success = $this->get('persister')->save($node, false, false);
+        $success = $this->get('persister')->save($node, false, 'Saved');
         $nodeId = $success ? $node->getId() : '';
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success, array('onSuccess' => $nodeId));
         if ( $xmlResponse )
