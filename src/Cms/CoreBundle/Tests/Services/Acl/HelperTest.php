@@ -133,6 +133,9 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->service->hasPermission($this->user, 'x', $this->object, $this->site));
     }
 
+    /**
+     * @covers Cms\CoreBundle\Services\Acl\Helper::hasPermission
+     */
     public function testGroupHasPermission()
     {
         $group = new Group();
@@ -158,6 +161,9 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->service->hasPermission($this->user, 'x', $this->object, $this->site));
     }
 
+    /**
+     * @covers Cms\CoreBundle\Services\Acl\Helper::hasPermission
+     */
     public function testGroupDeniedUserNotInGroupHasPermission()
     {
         $group = new Group();
@@ -208,6 +214,9 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->service->hasPermission($this->user, 'x', $this->object, $this->site));
     }
 
+    /**
+     * @covers Cms\CoreBundle\Services\Acl\Helper::hasPermission
+     */
     public function testGroupIsEmptyHasPermission()
     {
         $this->object->setAcl(array(
@@ -223,6 +232,9 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->service->hasPermission($this->user, 'x', $this->object, $this->site));
     }
 
+    /**
+     * @covers Cms\CoreBundle\Services\Acl\Helper::hasPermission
+     */
     public function testGroupDeniedHasPermissions()
     {
         $this->user->setId('1234');
@@ -266,6 +278,38 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
             ),
         ));
         $this->assertTrue($this->service->hasPermission($this->user, 'x', $this->object, $this->site));
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Acl\Helper::isSuper
+     */
+    public function TestIsSuper()
+    {
+        $group = new Group();
+        $group->setId('super88dd');
+        $group->setName('super');
+        $group->setUserIds(array('1234'));
+
+        $this->user->setId('1234');
+
+        $this->site->addGroup($group);
+        $this->assertTrue($this->service->isSuper($this->user, $this->site));
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Services\Acl\Helper::isNotSuper
+     */
+    public function TestIsNotSuper()
+    {
+        $group = new Group();
+        $group->setId('super88dd');
+        $group->setName('super');
+        $group->setUserIds(array('891'));
+
+        $this->user->setId('1234');
+
+        $this->site->addGroup($group);
+        $this->assertFalse($this->service->isSuper($this->user, $this->site));
     }
 
 }

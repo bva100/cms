@@ -9,6 +9,15 @@ use Cms\CoreBundle\Document\Site;
 
 class Helper {
 
+    /**
+     * Check if user has access to a specific method (r, w, x) for a given site's object
+     *
+     * @param User $user
+     * @param string $method
+     * @param Base $object
+     * @param Site $site
+     * @return bool
+     */
     public function hasPermission(User $user, $method, Base $object, Site $site)
     {
         $other = $object->getAclOther();
@@ -19,8 +28,7 @@ class Helper {
         if ( ! empty($owner) AND in_array($method, $owner['permissions']) AND $user->getId() === $owner['id'] ){
             return true;
         }
-        $superGroup = $site->getGroupByName('super');
-        if ( $superGroup AND $superGroup->hasUserId($user->getId()) ){
+        if ( $this->isSuper($user, $site) ){
             return true;
         }
         $groupAcl = $object->getAclGroup();
@@ -34,6 +42,16 @@ class Helper {
             }
         }
         return false;
+    }
+
+    public function isSuper(User $user, Site $site)
+    {
+        $superGroup = $site->getGroupByName('super');
+        if ( $superGroup AND $superGroup->hasUserId($user->getId()) ){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
