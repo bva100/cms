@@ -172,7 +172,7 @@ Abstract class Base {
     }
 
     /**
-     * Clear Acl object
+     * Clear Acl objects
      *
      * @return $this
      */
@@ -270,7 +270,7 @@ Abstract class Base {
      */
     public function getAclOther()
     {
-        return $this->acl->other;
+        return $this->acl['other'];
     }
 
     /**
@@ -278,7 +278,7 @@ Abstract class Base {
      */
     public function getAclOtherPermissions()
     {
-        return $this->acl->other['permissions'];
+        return $this->acl['other']['permissions'];
     }
 
     /**

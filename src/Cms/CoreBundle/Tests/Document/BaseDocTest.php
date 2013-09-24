@@ -3,21 +3,21 @@
 
 namespace Cms\CoreBundle\Tests;
 
-use Cms\CoreBundle\Document\Acl;
+use Cms\CoreBundle\Document\Base;
 
-class AclTest extends \PHPUnit_Framework_TestCase {
+class BaseDocTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @var Acl
+     * @var Base
      */
-    private $acl;
+    private $concrete;
 
     /**
      * @coversNothing
      */
     public function setUp()
     {
-        $this->acl = new Acl();
+        $this->concrete = new Concrete();
     }
 
     /**
@@ -29,7 +29,7 @@ class AclTest extends \PHPUnit_Framework_TestCase {
             'id' => 'foo',
             'permissions' => array('r', 'w', 'x'),
         );
-        $this->assertTrue( $this->acl->validateValueObject($array, 'testObject') );
+        $this->assertTrue( $this->concrete->validateAclObject($array, 'testObject') );
     }
 
     /**
@@ -40,7 +40,7 @@ class AclTest extends \PHPUnit_Framework_TestCase {
         $array = array(
             'permissions' => array('r'),
         );
-        $this->acl->validateValueObject($array, 'testObject');
+        $this->concrete->validateAclObject($array, 'testObject');
     }
 
     /**
@@ -51,7 +51,7 @@ class AclTest extends \PHPUnit_Framework_TestCase {
         $array = array(
             'id' => 'foobar12',
         );
-        $this->acl->validateValueObject($array, 'testObject');
+        $this->concrete->validateAclObject($array, 'testObject');
     }
 
     /**
@@ -66,11 +66,11 @@ class AclTest extends \PHPUnit_Framework_TestCase {
             'id' => '1234',
             'permissions' => array('r', 'w', 'x'),
         );
-        $acl = $this->acl->setOwner($owner);
-        $this->assertEquals($owner, $this->acl->getOwner());
-        $this->assertEquals($acl, $this->acl);
-        $this->assertEquals($owner['id'], $this->acl->getOwnerId());
-        $this->assertEquals($owner['permissions'], $this->acl->getOwnerPermissions());
+        $base = $this->concrete->setAclOwner($owner);
+        $this->assertEquals($owner, $this->concrete->getAclOwner());
+        $this->assertEquals($base, $this->concrete);
+        $this->assertEquals($owner['id'], $this->concrete->getAclOwnerId());
+        $this->assertEquals($owner['permissions'], $this->concrete->getAclOwnerPermissions());
     }
 
     /**
@@ -85,11 +85,11 @@ class AclTest extends \PHPUnit_Framework_TestCase {
             'id' => '456b',
             'permissions' => array('r', 'w'),
         );
-        $acl = $this->acl->setGroup($group);
-        $this->assertEquals($group, $this->acl->getGroup());
-        $this->assertEquals($acl, $this->acl);
-        $this->assertEquals($group['id'], $this->acl->getGroupId());
-        $this->assertEquals($group['permissions'], $this->acl->getGroupPermissions());
+        $base = $this->concrete->setAclGroup($group);
+        $this->assertEquals($group, $this->concrete->getAclGroup());
+        $this->assertEquals($base, $this->concrete);
+        $this->assertEquals($group['id'], $this->concrete->getAclGroupId());
+        $this->assertEquals($group['permissions'], $this->concrete->getAclGroupPermissions());
     }
 
     /**
@@ -102,10 +102,12 @@ class AclTest extends \PHPUnit_Framework_TestCase {
         $other = array(
             'permissions' => array('r'),
         );
-        $acl = $this->acl->setOther($other);
-        $this->assertEquals($other, $this->acl->getOther());
-        $this->assertEquals($acl, $this->acl);
-        $this->assertEquals($other['permissions'], $this->acl->getOtherPermsisions());
+        $base = $this->concrete->setAclOther($other);
+        $this->assertEquals($other, $this->concrete->getAclOther());
+        $this->assertEquals($base, $this->concrete);
+        $this->assertEquals($other['permissions'], $this->concrete->getAclOtherPermissions());
     }
 
 }
+
+class Concrete extends Base {}
