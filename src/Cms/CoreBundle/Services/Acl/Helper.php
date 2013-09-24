@@ -19,6 +19,10 @@ class Helper {
         if ( ! empty($owner) AND in_array($method, $owner['permissions']) AND $user->getId() === $owner['id'] ){
             return true;
         }
+        $superGroup = $site->getGroupByName('super');
+        if ( $superGroup AND $superGroup->hasUserId($user->getId()) ){
+            return true;
+        }
         $groupAcl = $object->getAclGroup();
         if ( ! empty($groupAcl) AND in_array($method, $groupAcl['permissions']) ){
             $group = $site->getGroup($groupAcl['id']);
@@ -29,7 +33,6 @@ class Helper {
                 return true;
             }
         }
-
         return false;
     }
 

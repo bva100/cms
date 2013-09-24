@@ -71,6 +71,7 @@ class Site extends Base {
         $this->domains = array();
         $this->templateNames = array('Core:Base:HTML');
         $this->themes = array();
+        $this->groups = array();
     }
 
     /**

@@ -242,6 +242,32 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->service->hasPermission($this->user, 'x', $this->object, $this->site));
     }
 
+    public function testSuperGroupHasPermission()
+    {
+        $group = new Group();
+        $group->setId('super88dd');
+        $group->setName('super');
+        $group->setUserIds(array('1234'));
+        $this->site->addGroup($group);
+
+        $this->user->setId('1234');
+
+        $this->object->setAcl(array(
+            'other' => array(
+                'permissions' => array('r'),
+            ),
+            'owner' => array(
+                'id' => 'bbd4',
+                'permissions' => array('w'),
+            ),
+            'group' => array(
+                'id' => '789',
+                'permissions' => array('r', 'w', 'x'),
+            ),
+        ));
+        $this->assertTrue($this->service->hasPermission($this->user, 'x', $this->object, $this->site));
+    }
+
 }
 
 class Concrete extends Base {}
