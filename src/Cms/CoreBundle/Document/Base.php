@@ -55,6 +55,18 @@ Abstract class Base {
     }
 
     /**
+     * Set Id
+     *
+     * @param string $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return string $id
