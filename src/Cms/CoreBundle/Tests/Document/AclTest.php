@@ -57,8 +57,10 @@ class AclTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers Cms\CoreBundle\Document\Acl::setOwner
      * @covers Cms\CoreBundle\Document\Acl::getOwner
+     * @covers Cms\CoreBundle\Document\Acl::getOwnerId
+     * @covers Cms\CoreBundle\Document\Acl::getOwnerPermissions
      */
-    public function testSetOwnerAndGetOwner()
+    public function testSetOwnerAndGetOwnerAndGetOwnerIdAndGetOwnerPermissions()
     {
         $owner = array(
             'id' => '1234',
@@ -67,11 +69,15 @@ class AclTest extends \PHPUnit_Framework_TestCase {
         $acl = $this->acl->setOwner($owner);
         $this->assertEquals($owner, $this->acl->getOwner());
         $this->assertEquals($acl, $this->acl);
+        $this->assertEquals($owner['id'], $this->acl->getOwnerId());
+        $this->assertEquals($owner['permissions'], $this->acl->getOwnerPermissions());
     }
 
     /**
      * @covers Cms\CoreBundle\Document\Acl::setGroup
      * @covers Cms\CoreBundle\Document\Acl::getGroup
+     * @covers Cms\CoreBundle\Document\Acl::getGroupId
+     * @covers Cms\CoreBundle\Document\Acl::getGroupPermissions
      */
     public function testSetGroupAndGetGroup()
     {
@@ -82,11 +88,14 @@ class AclTest extends \PHPUnit_Framework_TestCase {
         $acl = $this->acl->setGroup($group);
         $this->assertEquals($group, $this->acl->getGroup());
         $this->assertEquals($acl, $this->acl);
+        $this->assertEquals($group['id'], $this->acl->getGroupId());
+        $this->assertEquals($group['permissions'], $this->acl->getGroupPermissions());
     }
 
     /**
      * @covers Cms\CoreBundle\Document\Acl::setOther
      * @covers Cms\CoreBundle\Document\Acl::getOther
+     * @covers Cms\CoreBundle\Document\Acl::getGroupPermissions
      */
     public function testSetOtherAndGetOther()
     {
@@ -96,6 +105,7 @@ class AclTest extends \PHPUnit_Framework_TestCase {
         $acl = $this->acl->setOther($other);
         $this->assertEquals($other, $this->acl->getOther());
         $this->assertEquals($acl, $this->acl);
+        $this->assertEquals($other['permissions'], $this->acl->getOtherPermsisions());
     }
 
 }

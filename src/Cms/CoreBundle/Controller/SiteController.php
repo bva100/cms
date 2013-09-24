@@ -7,6 +7,7 @@
 
 namespace Cms\CoreBundle\Controller;
 
+use Cms\CoreBundle\Document\Acl;
 use Cms\CoreBundle\Document\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

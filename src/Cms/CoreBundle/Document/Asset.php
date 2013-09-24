@@ -32,11 +32,6 @@ class Asset extends Base {
     private $name;
 
     /**
-     * @MongoDB\Hash
-     */
-    private $acl;
-
-    /**
      * @MongoDB\String
      */
     private $url;
@@ -120,28 +115,6 @@ class Asset extends Base {
     public function getExt()
     {
         return $this->ext;
-    }
-
-    /**
-     * Set acl
-     *
-     * @param array $acl
-     * @return self
-     */
-    public function setAcl($acl)
-    {
-        $this->acl = $acl;
-        return $this;
-    }
-
-    /**
-     * Get acl
-     *
-     * @return array $acl
-     */
-    public function getAcl()
-    {
-        return $this->acl;
     }
 
     /**
