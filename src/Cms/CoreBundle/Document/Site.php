@@ -289,6 +289,23 @@ class Site extends Base {
     }
 
     /**
+     *
+     *
+     * @param $groupName
+     * @return Group|void
+     */
+    public function getGroupByName($groupName)
+    {
+        foreach ($this->getGroups() as $group)
+        {
+            if ( $group->getName() === $groupName )
+            {
+                return $group;
+            }
+        }
+    }
+
+    /**
      * Set template names
      *
      * @param array $templateNames

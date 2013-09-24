@@ -29,6 +29,7 @@ class Helper {
                 return true;
             }
         }
+
         return false;
     }
 

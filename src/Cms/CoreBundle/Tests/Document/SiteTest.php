@@ -168,7 +168,7 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
      * @covers Cms\CoreBundle\Tests::addGroup
      * @covers Cms\CoreBundle\Tests::getGroups
      */
-    public function testAddGroup()
+    public function testAddGroupAndRemoveGroup()
     {
         $group = new Group();
         $this->site->addGroup($group);
@@ -177,6 +177,46 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
         $group2 = new Group();
         $this->site->addGroup($group2);
         $this->assertCount(2, $this->site->getGroups());
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Tests::addGroup
+     * @covers Cms\CoreBundle\Tests::getGroups
+     * @covers Cms\CoreBundle\Tests::getGroupById
+     */
+    public function testGetGroupById()
+    {
+        $group = new Group();
+        $group->setId('1234');
+        $this->site->addGroup($group);
+        $this->assertCount(1, $this->site->getGroups());
+        $this->assertEquals($group, $this->site->getGroup($group->getId()));
+
+        $group2 = new Group();
+        $group->setid('876');
+        $this->site->addGroup($group2);
+        $this->assertCount(2, $this->site->getGroups());
+        $this->assertEquals($group2, $this->site->getGroup($group2->getId()));
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Tests::addGroup
+     * @covers Cms\CoreBundle\Tests::getGroups
+     * @covers Cms\CoreBundle\Tests::getGroupByName
+     */
+    public function testGetGroupByName()
+    {
+        $group = new Group();
+        $group->setName('foobar');
+        $this->site->addGroup($group);
+        $this->assertCount(1, $this->site->getGroups());
+        $this->assertEquals($group, $this->site->getGroupByName($group->getName()));
+
+        $group2 = new Group();
+        $group->setName('bar');
+        $this->site->addGroup($group2);
+        $this->assertCount(2, $this->site->getGroups());
+        $this->assertEquals($group2, $this->site->getGroupByName($group2->getName()));
     }
 
 }
