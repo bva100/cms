@@ -8,6 +8,8 @@
 namespace Cms\CoreBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Cms\CoreBundle\Document\Group;
+use Cms\CoreBundle\Document\ContentType;
 
 /**
  * Class Site
@@ -35,6 +37,11 @@ class Site extends Base {
      * @MongoDB\EmbedMany(targetDocument="ContentType")
      */
     private $contentTypes;
+
+    /**
+     * @MongoDB\EmbedMany(targetDocument="Group")
+     */
+    private $groups;
 
     /**
      * @MongoDB\Collection
@@ -174,18 +181,18 @@ class Site extends Base {
      * @param ContentType $contentType
      * @return $this
      */
-    public function addContentType(\Cms\CoreBundle\Document\ContentType $contentType)
+    public function addContentType(ContentType $contentType)
     {
         $this->contentTypes[] = $contentType;
         return $this;
     }
 
     /**
-    * Remove contentType
-    *
-    * @param <variableType$contentType
-    */
-    public function removeContentType(\Cms\CoreBundle\Document\ContentType $contentType)
+     * Remove contentType
+     *
+     * @param ContentType $contentType
+     */
+    public function removeContentType(ContentType $contentType)
     {
         $this->contentTypes->removeElement($contentType);
     }
@@ -195,7 +202,7 @@ class Site extends Base {
      * Returns a contentType entity on success and void on failure
      *
      * @param $id
-     * @return mixed
+     * @return ContentType|void
      */
     public function getContentType($id)
     {
@@ -213,7 +220,7 @@ class Site extends Base {
      * Returns a contentType entity on success and void on failure
      *
      * @param $name
-     * @return mixed
+     * @return ContentType|void
      */
     public function getContentTypeByName($name)
     {
@@ -229,11 +236,56 @@ class Site extends Base {
     /**
      * Get contentType
      *
-     * @return Doctrine\Common\Collections\Collection $contentType
+     * @return ContentType $contentType
      */
     public function getContentTypes()
     {
         return $this->contentTypes;
+    }
+
+    /**
+     * Add group
+     *
+     * @param Group $group
+     * @return $this
+     */
+    public function addGroup(Group $group)
+    {
+        $this->groups[] = $group;
+        return $this;
+    }
+
+    /**
+     * Remove group
+     *
+     * @param Group $group
+     */
+    public function removeGroup(Group $group)
+    {
+        $this->groups->removeElement($group);
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param string $groupId
+     * @return Group|void
+     */
+    public function getGroup($groupId)
+    {
+        foreach ($this->getGroups() as $group)
+        {
+            if ( $group->getId() === $groupId )
+            {
+                return $group;
+            }
+        }
     }
 
     /**

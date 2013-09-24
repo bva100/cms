@@ -7,6 +7,7 @@
 
 namespace Cms\CoreBundle\Tests;
 
+use Cms\CoreBundle\Document\Group;
 use Cms\CoreBundle\Document\Site;
 
 /**
@@ -162,4 +163,20 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
         $this->site->removeThemeById('3');
         $this->assertEmpty($this->site->getThemes());
     }
+
+    /**
+     * @covers Cms\CoreBundle\Tests::addGroup
+     * @covers Cms\CoreBundle\Tests::getGroups
+     */
+    public function testAddGroup()
+    {
+        $group = new Group();
+        $this->site->addGroup($group);
+        $this->assertCount(1, $this->site->getGroups());
+
+        $group2 = new Group();
+        $this->site->addGroup($group2);
+        $this->assertCount(2, $this->site->getGroups());
+    }
+
 }
