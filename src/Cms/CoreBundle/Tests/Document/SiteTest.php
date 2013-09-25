@@ -165,8 +165,8 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Cms\CoreBundle\Tests::addGroup
-     * @covers Cms\CoreBundle\Tests::getGroups
+     * @covers Cms\CoreBundle\Document\Site::addGroup
+     * @covers Cms\CoreBundle\Document\Site::getGroups
      */
     public function testAddGroupAndRemoveGroup()
     {
@@ -180,9 +180,9 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Cms\CoreBundle\Tests::addGroup
-     * @covers Cms\CoreBundle\Tests::getGroups
-     * @covers Cms\CoreBundle\Tests::getGroupById
+     * @covers Cms\CoreBundle\Document\Site::addGroup
+     * @covers Cms\CoreBundle\Document\Site::getGroups
+     * @covers Cms\CoreBundle\Document\Site::getGroupById
      */
     public function testGetGroupById()
     {
@@ -200,9 +200,9 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Cms\CoreBundle\Tests::addGroup
-     * @covers Cms\CoreBundle\Tests::getGroups
-     * @covers Cms\CoreBundle\Tests::getGroupByName
+     * @covers Cms\CoreBundle\Document\Site::addGroup
+     * @covers Cms\CoreBundle\Document\Site::getGroups
+     * @covers Cms\CoreBundle\Document\Site::getGroupByName
      */
     public function testGetGroupByName()
     {
@@ -217,6 +217,145 @@ class SiteTest extends \PHPUnit_Framework_TestCase {
         $this->site->addGroup($group2);
         $this->assertCount(2, $this->site->getGroups());
         $this->assertEquals($group2, $this->site->getGroupByName($group2->getName()));
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Document\Site::setDefaultAcl
+     * @covers Cms\CoreBundle\Document\Site::getDefaultAcl
+     */
+    public function testSetDefaultAclAndGetDefaultAcl()
+    {
+        $acl = array(
+            'owner' => array(
+                'id' => null,
+                'permissions' => array('r', 'w', 'x'),
+            ),
+            'group' => array(
+                'id' => '1234',
+                'permissions' => array('r', 'w'),
+            ),
+            'other' => array(
+                'permissions' => array('r'),
+            ),
+        );
+        $site = $this->site->addDefaultAcl('_ALL', $acl);
+        $this->assertEquals($site, $this->site);
+        $this->assertEquals($acl, $this->site->getDefaultAcl('_ALL'));
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Document\Site::setDefaultAcl
+     * @covers Cms\CoreBundle\Document\Site::getDefaultAclProperty
+     */
+    public function testGetDefaultAclProperty()
+    {
+        $acl = array(
+            'owner' => array(
+                'id' => null,
+                'permissions' => array('r', 'w', 'x'),
+            ),
+            'group' => array(
+                'id' => '1234',
+                'permissions' => array('r', 'w'),
+            ),
+            'other' => array(
+                'permissions' => array('r'),
+            ),
+        );
+        $this->site->addDefaultAcl('_ALL', $acl);
+        $groupId = $acl['group']['id'];
+        $this->assertEquals($groupId, $this->site->getDefaultAclProperty('_ALL', 'group', 'id'));
+        $otherPermissions = $acl['other']['permissions'];
+        $this->assertEquals($otherPermissions, $this->site->getDefaultAclProperty('_ALL', 'other', 'permissions'));
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Document\Site::setDefaultAcl
+     * @covers Cms\CoreBundle\Document\Site::getDefaultAcls
+     * @covers Cms\CoreBundle\Document\Site::removeDefaultAcl
+     */
+    public function testGetDefaultAclsAndRemoveAcl()
+    {
+        $acl1 = array(
+            'owner' => array(
+                'id' => null,
+                'permissions' => array('r', 'w', 'x'),
+            ),
+            'group' => array(
+                'id' => '12345',
+                'permissions' => array('r', 'w'),
+            ),
+            'other' => array(
+                'permissions' => array('r'),
+            ),
+        );
+        $acl2 = array(
+            'owner' => array(
+                'id' => null,
+                'permissions' => array('r',),
+            ),
+            'group' => array(
+                'id' => '123',
+                'permissions' => array('r'),
+            ),
+            'other' => array(
+                'permissions' => array('r'),
+            ),
+        );
+        $acl3 = array(
+            'owner' => array(
+                'id' => null,
+                'permissions' => array('r', 'w', 'x'),
+            ),
+            'group' => array(
+                'id' => '1234b',
+                'permissions' => array(),
+            ),
+            'other' => array(
+                'permissions' => array(),
+            ),
+        );
+        $this->site->addDefaultAcl('_ALL', $acl1);
+        $this->site->addDefaultAcl('Node', $acl2);
+        $this->site->addDefaultAcl('Media', $acl3);
+        $acls = $this->site->getDefaultAcls();
+        $this->assertCount(3, $acls);
+        $this->assertEquals($acls['_ALL'], $acl1);
+        $this->assertEquals($acls['Node'], $acl2);
+        $this->assertEquals($acls['Media'], $acl3);
+
+        $this->site->removeDefaultAcl('Media');
+        $this->assertCount(2, $this->site->getDefaultAcls());
+        $this->assertEquals('123', $this->site->getDefaultAclProperty('Node', 'group', 'id'));
+
+        $this->site->removeDefaultAcl('Node');
+        $this->assertCount(1, $this->site->getDefaultAcls());
+        $this->assertEquals(array('r', 'w', 'x'), $this->site->getDefaultAclProperty('_ALL', 'owner', 'permissions'));
+    }
+
+    /**
+     * @covers Cms\CoreBundle\Document\Site::setDefaultAcl
+     * @covers Cms\CoreBundle\Document\Site::removeDefaultAcl
+     *
+     * @expectedException \RuntimeException
+     */
+    public function testRemoveDefaultAclALL()
+    {
+        $acl = array(
+            'owner' => array(
+                'id' => null,
+                'permissions' => array('r', 'w', 'x'),
+            ),
+            'group' => array(
+                'id' => '1234',
+                'permissions' => array('r', 'w'),
+            ),
+            'other' => array(
+                'permissions' => array('r'),
+            ),
+        );
+        $this->site->addDefaultAcl('_ALL', $acl);
+        $this->site->removeDefaultAcl('_ALL');
     }
 
 }

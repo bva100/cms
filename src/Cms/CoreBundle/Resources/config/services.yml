@@ -24,6 +24,8 @@ parameters:
     cms.api_contentType_adopter.class: Cms\CoreBundle\Services\Api\EntityAdopters\ContentTypeAdopter
     cms.api_output.class: Cms\CoreBundle\Services\Api\Output
     cms.api_base.class: Cms\CoreBundle\Services\Api\Base
+    cms.acl_help.class: Cms\CoreBundle\Services\Acl\Creator
+
 
 services:
     asset_manager:
@@ -85,3 +87,5 @@ services:
         class: %cms.api_output.class%
     api_base:
         class: %cms.api_base.class%
+    acl_helper:
+        class: %cms.acl_help.class%

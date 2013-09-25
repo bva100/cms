@@ -1,15 +1,6 @@
 {#{% extends '::base.html.twig' %}#}
 {% extends 'CmsCoreBundle:App:components.html.twig' %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {% javascripts
-        '@CmsCoreBundle/Resources/public/js/site/new.js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
@@ -34,31 +25,26 @@
                     <h1>Create a New Site</h1>
                 </div>
             </div>
-            {% block notices %}
-            <div class="row-fluid {% if notices|length < 1 %}hide{% endif %}">
-                <div class="span4 offset4">
-                    {% for notice in notices  %}
-                        {{ notice }}
-                    {% endfor %}
+            {% if notices|length > 1 %}
+                <div class="row-fluid">
+                    <div class="span4 offset4">
+                        {% block notices %}
+                            {{  parent() }}
+                        {% endblock %}
+                    </div>
                 </div>
-            </div>
-            {% endblock %}
+            {% endif %}
             <div class="row-fluid">
                 <form action="{{ path('cms_core.site_save') }}" method="POST" class="span4 offset4">
                     <input type="hidden" name="token" id="input-token" value="{{ token }}"/>
-                    <div id="new-domain" class="row-fluid">
-                        <label for="input-domain-new">New Domain Name:</label>
-                        <input type="text" id="input-domain-new" name="domain" class="span12 check-domain" placeholder="Enter your desired domain name here"/>
-                        <span class="pull-right">Already have a domain? <a href="#"class="switch-domain-type">click here</a></span>
-                    </div>
-                    <div id="old-domain" class="hide row-fluid">
+                    <div id="old-domain" class="row-fluid">
                         <label for="input-domain">Your Domain Name:</label>
-                        <input type="text" name="domain-new" id="input-domain" class="span12 check-domian" placeholder="Enter your domain name here"/>
-                        <span class="pull-right"><a href="#" class="switch-domain-type">Get a new domain</a></span>
+                        <input type="text" name="domain" id="input-domain" class="span12 check-domian" placeholder="Enter your domain name here" value="{{ domain|default() }}" required=""/>
+                        <span class="pull-right"><a href="http://www.godaddy.com" target="_blank" class="switch-domain-type">Get a new domain</a></span>
                     </div>
                     <div class="row-fluid">
                         <label for="name">Site Name:</label>
-                        <input type="text" name="name" id="input-name" class="check-namespace span12" placeholder="Enter name here"/>
+                        <input type="text" name="name" id="input-name" class="check-namespace span12" placeholder="Enter name here" value="{{ name|default() }}" required/>
                     </div>
                     <button class="btn btn-info pull-right">Create New Site</button>
                 </form>

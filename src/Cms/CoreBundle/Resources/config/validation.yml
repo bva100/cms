@@ -4,9 +4,8 @@ Cms\CoreBundle\Document\Site:
     properties:
         name:
           - NotBlank: { message: 'Please add a name.' }
-          - Length:
-              min: 2
-              max: 63
+          - MinLength: { limit: 2, message: "The name must have at least {{ limit }} characters." }
+          - MaxLength: { limit: 63, message: "The name must have at least {{ limit }} characters." }
         namespace:
           - NotBlank: { message: 'Please add a unique namespace.' }
           - Length:

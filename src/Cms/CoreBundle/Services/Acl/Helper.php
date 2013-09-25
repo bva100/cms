@@ -44,14 +44,51 @@ class Helper {
         return false;
     }
 
+    /**
+     * Is user a super user?
+     *
+     * @param User $user
+     * @param Site $site
+     * @return bool
+     */
     public function isSuper(User $user, Site $site)
     {
-        $superGroup = $site->getGroupByName('super');
+        $superGroup = $site->getGroupByName('supers');
         if ( $superGroup AND $superGroup->hasUserId($user->getId()) ){
             return true;
         }else{
             return false;
         }
+    }
+
+    /**
+     * A shortcut helper for creating
+     *
+     * @param array $ownerPermissions
+     * @param array $groupPermissions
+     * @param array $otherPermissions
+     * @param $groupId
+     * @return array
+     * @throws RuntimeException
+     */
+    public function createAcl(array $ownerPermissions, array $groupPermissions, array $otherPermissions, $groupId)
+    {
+        if ( ! is_string($groupId) ){
+            throw new RuntimeException('The second parameter of CreateAcl is expected to be a string representation of the group ID. '.gettype($groupId).' was passed.');
+        }
+        return array(
+            'owner' => array(
+                'id' => null,
+                'permissions' => $ownerPermissions,
+            ),
+            'group' => array(
+                'id' => $groupId,
+                'permissions' => $groupPermissions,
+            ),
+            'other' => array(
+                'permissions' => $otherPermissions,
+            ),
+        );
     }
 
 }

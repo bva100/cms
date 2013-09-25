@@ -47,6 +47,9 @@ class unique {
      */
     public function domainCheck($domain)
     {
+//        if ( $domain === 'localhost' ){
+//            return true;
+//        }
         $results = $this->persister->getRepo('CmsCoreBundle:Site')->findOneByDomain($domain);
         return $results ? false : true;
     }

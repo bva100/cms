@@ -44,6 +44,11 @@ class Site extends Base {
     private $groups;
 
     /**
+     * @var array
+     */
+    private $defaultAcl;
+
+    /**
      * @MongoDB\Collection
      */
     private $templateNames;
@@ -72,6 +77,7 @@ class Site extends Base {
         $this->templateNames = array('Core:Base:HTML');
         $this->themes = array();
         $this->groups = array();
+        $this->defaultAcl = array();
     }
 
     /**
@@ -496,4 +502,78 @@ class Site extends Base {
         return $this->clientSecret;
     }
 
+    /**
+     * Adds a default ACl. NOTE: will override previous value if overlapping key is passed
+     *
+     * @param string $key
+     * @param array $acl
+     * @return $this
+     */
+    public function addDefaultAcl($key, array $acl)
+    {
+        $this->defaultAcl[$key] = $acl;
+        return $this;
+    }
+
+    /**
+     * Remove a default ACL
+     *
+     * @param string $key
+     * @return $this
+     * @throws \RuntimeException
+     */
+    public function removeDefaultAcl($key)
+    {
+        if ( $key === '_ALL' ){
+            throw new \RuntimeException('The default _ALL Acl cannot be removed');
+        }
+        unset($this->defaultAcl[$key]);
+        return $this;
+    }
+
+    /**
+     * Get Default ACLs
+     *
+     * @return array
+     */
+    public function getDefaultAcls()
+    {
+        return $this->defaultAcl;
+    }
+
+    /**
+     * Attempts to get a default ACL
+     *
+     * @param $key
+     * @return array|void
+     */
+    public function getDefaultAcl($key)
+    {
+        if ( isset($this->defaultAcl[$key]) ){
+            return $this->defaultAcl[$key];
+        }
+    }
+
+    /**
+     * Retrieve an acl property from a default Acl
+     * Key param is the name used to identify a particular default ACL examples: "Node", "Media", "_ALL"
+     * userType param selects which user type to pull, IE: "owner", "group", "other"
+     * property param can be either "id" or "permissions"
+     *
+     * @param string $key
+     * @param string $userType
+     * @param string $property
+     * @return string|void
+     */
+    public function getDefaultAclProperty($key, $userType, $property)
+    {
+        if ( isset($this->defaultAcl[$key]) ){
+            if ( isset($this->defaultAcl[$key][$userType]) ){
+                if ( isset($this->defaultAcl[$key][$userType][$property]) ){
+                    return $this->defaultAcl[$key][$userType][$property];
+                }
+            }
+        }
+    }
+    
 }

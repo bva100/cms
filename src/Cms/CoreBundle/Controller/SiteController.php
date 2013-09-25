@@ -24,65 +24,46 @@ class SiteController extends Controller {
         return $this->render('CmsCoreBundle:Site:new.html.twig', array(
             'token' => $token,
             'notices' => $notices,
+            'domain' => (string)$this->getRequest()->query->get('domain'),
+            'name' => (string)$this->getRequest()->query->get('name'),
         ));
-    }
-
-    public function uniqueDomainAction()
-    {
-        $domain = (string)$this->getRequest()->query->get('domain');
-        $response = new Response(json_encode(
-            array('unique' => $this->get('site_manager_unique')->domainCheck($domain))
-        ));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
-
-    public function uniqueNamespaceAction()
-    {
-        $namespace = (string)$this->getRequest()->query->get('namespace');
-        $response =  new Response(json_encode(
-            array('unique' => $this->get('site_manager_unique')->namespaceCheck($namespace))
-        ));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
     }
 
     public function saveAction()
     {
-        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $name = (string)$this->getRequest()->request->get('name');
         $domain = (string)$this->getRequest()->request->get('domain');
         $site = $id ? $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id) : new Site();
-        if ( ! $site )
-        {
+        if ( ! $site ){
             return $this->createNotFoundException('Site not found');
         }
-        if ( $name )
-        {
+        if ( ! $id ){
+            $user = $this->get('security.context')->getToken()->getUser();
+            $usersGroup = new Group();
+            $usersGroup->setName('users')->addUserId($user->getId());
+            $site->addGroup($usersGroup);
+            $supersGroup= new Group();
+            $supersGroup->setName('supers')->addUserId($user->getId());
+            $site->addGroup($supersGroup);
+        }
+        if ( $name ){
             $site->setName($name);
             $site->setNamespace(str_replace(' ', '', $name));
         }
-        if ( $domain )
-        {
+        if ( $domain ){
+            $unique = $this->get('site_manager_unique')->domainCheck($domain);
+            if ( ! $unique ){
+                $this->get('session')->getFlashBag()->add('notices', 'A site with the domain name '.$domain.' already exists in the system. If this is an issues please notify us support@pipestack.com');
+                return $this->redirect($this->generateUrl('cms_core.site_new', array('domain' => $domain, 'name' => $name)));
+            }
             $site->addDomain($domain);
         }
         $success = $this->get('persister')->save($site);
         if ( ! $success AND ! $id )
         {
-            throw new \Exception('Unable to save site. Please try again soon.');
-        }
-        if ( ! $id )
-        {
-            $componentsName = $site->getNamespace().':Master:HTML';
-            $site->addTemplateName($componentsName)->addTemplateName($site->getNamespace().':Master:Loop')->addTemplateName($site->getNamespace().':Master:Single')->addTemplateName($site->getNamespace().':Master:Static');
-            $template = new Template();
-            $template->setName($componentsName);
-            $success = $this->get('persister')->save($template);
-            if ( ! $success )
-            {
-                throw new \Exception('Unable to save site. Please try again soon.');
-            }
+            return $this->redirect($this->generateUrl('cms_core.site_new', array('domain' => $domain, 'name' => $name)));
         }
         if ( ! $success )
         {
@@ -109,6 +90,8 @@ class SiteController extends Controller {
     public function readAction($id)
     {
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
+
+
         $contentTypes = $site->getContentTypes();
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteId($id);
         return $this->render('CmsCoreBundle:Site:index.html.twig', array(
