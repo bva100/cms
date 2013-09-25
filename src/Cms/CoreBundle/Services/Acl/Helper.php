@@ -20,12 +20,9 @@ class Helper {
      */
     public function hasPermission(User $user, $method, Base $object, Site $site)
     {
-        $other = $object->getAclOther();
-        if ( empty($other) OR in_array($method, $other['permissions']) ){
-            return true;
-        }
+        $userId = $user->getId();
         $owner = $object->getAclOwner();
-        if ( ! empty($owner) AND in_array($method, $owner['permissions']) AND $user->getId() === $owner['id'] ){
+        if ( ! empty($owner) AND in_array($method, $owner['permissions']) AND $userId === $owner['id'] ){
             return true;
         }
         if ( $this->isSuper($user, $site) ){
@@ -37,8 +34,16 @@ class Helper {
             if ( ! $group ){
                 return false;
             }
-            if ( $group->hasUserId($user->getId()) ){
+            if ( $group->hasUserId($userId ) ){
                 return true;
+            }
+        }
+        $other = $object->getAclOther();
+        if ( empty($other) OR in_array($method, $other['permissions']) ){
+            foreach ($site->getGroups() as $group) {
+                if ( $group->hasUserId($userId ) ){
+                    return true;
+                }
             }
         }
         return false;

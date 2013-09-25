@@ -16,12 +16,12 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
     private $service;
 
     /**
-     * @var Concrete
+     * @var User
      */
     private $user;
 
     /**
-     * @var Base
+     * @var Concrete
      */
     private $object;
 
@@ -46,7 +46,11 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
      */
     public function testOtherIsEmptyHasPermission()
     {
-        $this->assertTrue( $this->service->hasPermission( $this->user, 'r', $this->object, $this->site) );
+        $this->user->setId('1234');
+        $group = new Group();
+        $group->setName('foo')->setUserIds(array('1234'));
+        $this->site->addGroup($group);
+        $this->assertTrue( $this->service->hasPermission($this->user, 'r', $this->object, $this->site) );
     }
 
     /**
@@ -54,6 +58,10 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
      */
     public function testOtherHasPermission()
     {
+        $this->user->setId('1234');
+        $group = new Group();
+        $group->setName('foo')->setUserIds(array('1234'));
+        $this->site->addGroup($group);
         $this->object->setAclOther(array(
             'permissions' => array('r', 'w')
         ));
