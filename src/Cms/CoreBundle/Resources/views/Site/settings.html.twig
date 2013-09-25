@@ -79,7 +79,12 @@
     <div class="row-fluid">
         <div class="span12">
             <h3>Account</h3>
-            <button class="btn btn-danger">Delete Site Data</button>
+
+            <form action="{{ path('cms_core.site_delete') }}" method="POST">
+                <input type="hidden" name="token" value="{{ token }}"/>
+                <input type="hidden" name="id" value="{{ site.id }}" />
+                <button class="btn btn-danger">Delete Site Data</button>
+            </form>
         </div>
     </div>
 {% endblock %}

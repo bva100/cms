@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Cms\CoreBundle\Document\Site;
 use Cms\CoreBundle\Document\Group;
+use Cms\CoreBundle\Exceptions\AccessDeniedException;
 
 class SiteController extends Controller {
 
@@ -278,17 +279,15 @@ class SiteController extends Controller {
         $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
-        if ( ! $site )
-        {
+        if ( ! $site ){
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
-        // ensure use has proper permission to delete this site
-        $success = $this->get('persister')->delete($site);
-        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
-        if ( $xmlResponse )
-        {
-            return $xmlResponse;
+        $user = $this->get('security.context')->getToken()->getUser();
+        $access = $this->get('acl_helper')->isSuper($user, $site);
+        if ( ! $access ){
+            throw new AccessDeniedException('You do not have permission to delete this site.');
         }
+        $this->get('persister')->delete($site, false, 'Site Removed');
         return $this->redirect($this->generateUrl('cms_core.app_index'));
     }
 
