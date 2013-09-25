@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class User
  * @package Cms\UserBundle\Document
- * @MongoDB\Document(collection="users")
+ * @MongoDB\Document(collection="users", repositoryClass="Cms\UserBundle\Repository\UserRepository")
  */
 class User implements UserInterface, \Serializable{
 

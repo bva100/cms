@@ -31,7 +31,7 @@ class SiteController extends Controller {
 
     public function saveAction()
     {
-//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $id = (string)$this->getRequest()->request->get('id');
         $name = (string)$this->getRequest()->request->get('name');
         $domain = (string)$this->getRequest()->request->get('domain');
@@ -55,8 +55,7 @@ class SiteController extends Controller {
         if ( $domain ){
             $unique = $this->get('site_manager_unique')->domainCheck($domain);
             if ( ! $unique ){
-                $this->get('session')->getFlashBag()->add('notices', 'A site with the domain name '.$domain.' already exists in the system. If this is an issues please notify us support@pipestack.com');
-                return $this->redirect($this->generateUrl('cms_core.site_new', array('domain' => $domain, 'name' => $name)));
+                throw new \InvalidArgumentException('The domain name '.$domain.' has already been registered with PipeStack. If this is a mistake please contact customer support by emailing support@pipestack.com.');
             }
             $site->addDomain($domain);
         }
@@ -74,18 +73,74 @@ class SiteController extends Controller {
 
     public function settingsAction($id)
     {
-        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
-        if ( ! $site )
-        {
-            throw $this->createNotFoundException('Site with id '.$id.' not found');
-        }
-        // ensure user has access to sites settings
+        $site = $this->getSite($id);
         $contentTypes = $site->getContentTypes();
         return $this->render('CmsCoreBundle:Site:settings.html.twig', array(
             'site' => $site,
             'contentTypes' => $contentTypes,
         ));
     }
+
+    public function userGroupsReadAllAction($siteId)
+    {
+        $site = $this->getSite($siteId);
+        $groups = $site->getGroups();
+        return $this->render('CmsCoreBundle:Site:userGroups.html.twig', array(
+            'site' => $site,
+            'groups' => $groups,
+        ));
+    }
+
+    public function userGroupsReadAction($siteId, $groupId)
+    {
+        $site = $this->getSite($siteId);
+        $group = $site->getGroup($groupId);
+        if ( ! $group ){
+            throw $this->createNotFoundException('Group with id '.$groupId.' for site with id '.$siteId.' not found');
+        }
+        $users = $this->get('persister')->getRepo('CmsUserBundle:User')->findByIds($group->getUserIds());
+        return $this->render('CmsCoreBundle:Site:userGroup.html.twig', array(
+            'site' => $site,
+            'group' => $group,
+            'users' => $users,
+        ));
+    }
+
+    public function userGroupsAddUserAction($siteId, $groupId)
+    {
+        $site = $this->getSite($siteId);
+        $group = $site->getGroup($groupId);
+        if ( ! $group ){
+            throw $this->createNotFoundException('Group with id '.$groupId.' for site with id '.$siteId.' not found');
+        }
+        return $this->render('CmsCoreBundle:Site:userGroupsAddUser.html.twig', array(
+            'site' => $site,
+            'group' => $group,
+//            'notices' => array((string)$this->getRequest()->query->get('notices')),
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'email' => (string)$this->getRequest()->query->get('email'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
+        ));
+    }
+
+    public function userGroupsAddUserProcessAction($siteId, $groupId)
+    {
+        $email = $this->getRequest()->request->get('email');
+        $site = $this->getSite($siteId);
+        $group = $site->getGroup($groupId);
+        if ( ! $group ){
+            throw $this->createNotFoundException('Group with id '.$groupId.' for site with id '.$siteId.' not found');
+        }
+        $user = $this->get('persister')->getRepo('CmsUserBundle:User')->findByEmail($email);
+        if ( count($user) < 1 ){
+            $this->get('session')->getFlashBag()->set('notices', 'User with email '.$email.' not found');
+            return $this->redirect($this->generateUrl('cms_core.site_userGroup_addUser', array('siteId' => $siteId, 'groupId' => $groupId, 'email' => $email, 'notices' => 'User with email '.$email.' not found')));
+        }
+        echo '<pre>', \var_dump('here'); die();
+        
+    }
+    
+    
 
     public function readAction($id)
     {
@@ -191,4 +246,12 @@ class SiteController extends Controller {
         return $this->get('xmlResponse')->execute($this->getRequest(), $this->get('persister')->save($site));
     }
 
+    public function getSite($id)
+    {
+        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
+        if ( ! $site ){
+            throw $this->createNotFoundException('Site with id '.$id.' not found');
+        }
+        return $site;
+    }
 }

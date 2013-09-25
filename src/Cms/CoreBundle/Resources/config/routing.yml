@@ -47,6 +47,30 @@ cms_core.site_settings:
   defaults: { _controller: CmsCoreBundle:Site:settings }
   methods: [GET]
 
+cms_core.site_userGroupsReadAll:
+  pattern: /site/{siteId}/user-groups
+  defaults: { _controller: CmsCoreBundle:Site:userGroupsReadAll }
+  methods: [GET]
+
+cms_core.site_userGroupsRead:
+  pattern: /site/{siteId}/user-groups/{groupId}
+  defaults: { _controller: CmsCoreBundle:Site:userGroupsRead }
+  methods: [GET]
+
+cms_core.site_userGroup_addUser:
+  pattern: /sites/{siteId}/user-groups/{groupId}/new
+  defaults: { _controller: CmsCoreBundle:Site:userGroupsAddUser }
+  methods: [GET]
+
+cms_core.site_userGroup_addUser_process:
+  pattern: /sites/{siteId}/user-groups/{groupId}/new
+  defaults: { _controller: CmsCoreBundle:Site:userGroupsAddUserProcess }
+  methods: [POST]
+
+
+
+
+
 cms_core.site_add_theme:
   pattern: site/add-theme
   defaults: { _controller: CmsCoreBundle:Site:addTheme }
