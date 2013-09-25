@@ -55,7 +55,7 @@
                         <td>{{ user.name.last }}</td>
                         <td>{{ user.email }}</h4></td>
                         <td>
-                            <form action="{{ path('cms_core.site_userGroup_deleteUser_process', {'siteId': site.id, 'groupId':group.id}) }}" method="POST">
+                            <form action="{{ path('cms_core.site_userGroup_deleteUser_process', {'siteId': site.id, 'groupId':group.id}) }}" method="POST" onsubmit="return confirmDelete('{{ user.name.first}} {{ user.name.last }}');">
                                 <input type="hidden" name="token" value="{{ token }}"/>
                                 <input type="hidden" name="userId" value="{{ user.id }}"/>
                                 <button class="btn btn-danger"><i class="icon-trash"></i></button>

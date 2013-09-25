@@ -27,9 +27,16 @@
     <div class="row-fluid">
         <div class="span12" id="header">
             <h1>User Groups</h1>
-            <a href="#new" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
+            <a href="{{ path('cms_core.site_userGroupsNew', {'siteId':site.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
         </div>
     </div>
+    {% if notices|length > 0 %}
+        <div style="position: relative; top: 20px;">
+            {% block notices %}
+                {{  parent() }}
+            {% endblock %}
+        </div>
+    {% endif %}
     <div class="row-fluid">
         <div class="span12">
             <table class="table table-hover">
@@ -38,7 +45,7 @@
                     <th>Group Name</th>
                     <th>ID</th>
                     <th>User Count</th>
-                    <th>View</th>
+                    <th>Edit</th>
                     <th>Trash</th>
                 </tr>
                 </thead>
@@ -46,12 +53,17 @@
                 {% for group in groups  %}
                 <tr id="tr-{{ group.id }}">
                     <td>
-                        <h4>{{ group.name|title }}</h4>
+                        <h4><a href="{{ path('cms_core.site_userGroupsRead', {'siteId':site.id, 'groupId': group.id}) }}"">{{ group.name|title }}</a></h4>
                     </td>
                     <td>{{ group.id }}</td>
                     <td>{{ group.userIds|length }}</td>
-                    <td><a href="{{ path('cms_core.site_userGroupsRead', {'siteId':site.id, 'groupId': group.id}) }}" class="btn btn-info"><i class="icon-eye-open"></i></a></td>
-                    <td><a href="#" class="btn btn-danger"><i class="icon-trash"></i></a></td>
+                    <td><a href="{{ path('cms_core.site_userGroupsRead', {'siteId':site.id, 'groupId': group.id}) }}" class="btn btn-info"><i class="icon-pencil"></i></a></td>
+                    <td>
+                        <form action="{{ path('cms_core.site_userGroupsDelete', {'siteId':site.id, 'groupId':group.id}) }}" method="POST" onsubmit="return confirmDelete('the {{ group.name }} group');">
+                            <input type="hidden" name="token" value="{{ token }}"/>
+                            <button class="btn btn-danger"><i class="icon-trash"></i></button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>

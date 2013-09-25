@@ -89,6 +89,8 @@ class SiteController extends Controller {
         return $this->render('CmsCoreBundle:Site:userGroups.html.twig', array(
             'site' => $site,
             'groups' => $groups,
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
         ));
     }
 
@@ -107,6 +109,52 @@ class SiteController extends Controller {
             'notices' => $this->get('session')->getFlashBag()->get('notices'),
             'token' => $this->get('csrfToken')->createToken()->getToken(),
         ));
+    }
+
+    public function userGroupsNewAction($siteId)
+    {
+        $site = $this->getSite($siteId);
+        $groups = $site->getGroups();
+        return $this->render('CmsCoreBundle:Site:userGroupsNew.html.twig', array(
+            'site' => $site,
+            'groups' => $groups,
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
+        ));
+    }
+
+    public function userGroupsAddAction($siteId)
+    {
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $site = $this->getSite($siteId);
+        $name = (string)$this->getRequest()->request->get('name');
+        if ( $site->getGroupByName($name) ){
+            $this->get('session')->getFlashBag()->set('notices', 'A group with the name '.$name.' already exists.');
+            return $this->redirect($this->generateUrl('cms_core.site_userGroupsReadAll', array('siteId' => $siteId)));
+        }
+        
+        $group = new Group();
+        $group->setName($name);
+        $site->addGroup($group);
+        $this->get('persister')->save($site);
+        return $this->redirect($this->generateUrl('cms_core.site_userGroupsReadAll', array('siteId' => $siteId)));
+    }
+
+    public function userGroupDeleteAction($siteId, $groupId)
+    {
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $site = $this->getSite($siteId);
+        $group = $site->getGroup($groupId);
+        if ( ! $group ){
+            throw $this->createNotFoundException('Group with id '.$groupId.' for site with id '.$siteId.' not found');
+        }
+        if ( $group->getName() === 'supers' ){
+            $this->get('session')->getFlashBag()->set('notices', 'the Supers group cannot be removed.');
+            return $this->redirect($this->generateUrl('cms_core.site_userGroupsReadAll', array('siteId' => $siteId)));
+        }
+        $site->removeGroup($group);
+        $this->get('persister')->save($site, false, 'Group '.$group->getName().' removed.');
+        return $this->redirect($this->generateUrl('cms_core.site_userGroupsReadAll', array('siteId' => $siteId)));
     }
 
     public function userGroupsAddUserAction($siteId, $groupId)
@@ -151,7 +199,7 @@ class SiteController extends Controller {
 
     public function userGroupsDeleteUserProcessAction($siteId, $groupId)
     {
-//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $userId = $this->getRequest()->request->get('userId');
         $site = $this->getSite($siteId);
         $group = $site->getGroup($groupId);

@@ -1,0 +1,47 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/site/index.css'
+    '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block title %}
+    Add User Group {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12" id="header">
+            <h1>Add A Group</h1>
+        </div>
+    </div>
+    {% if notices|length > 0 %}
+        <aside style="position: relative; top: 20px;">
+            {% block notices %}
+                {{  parent() }}
+            {% endblock %}
+        </aside>
+    {% endif %}
+    <div class="row-fluid">
+        <div class="span12">
+            <form action="{{ path('cms_core.site_userGroupsNew_process', {'siteId':site.id}) }}" method="POST">
+                <input type="hidden" name="token" value="{{ token }}"/>
+                <div class="row-fluid">
+                    <div class="span10">
+                        <input type="text" name="name" value="{{ name|default() }}" required style="height: 22px; margin-top: 24px;" placeholder="Group Name"/>
+                    </div>
+                    <button class="btn btn-info span2" style="margin-top: 24px;">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <nav class="row-fluid">
+        <a href="{{ path('cms_core.site_userGroupsReadAll', {'siteId':site.id}) }}" class="btn"><i class="icon-chevron-left"></i> back</a>
+    </nav>
+{% endblock %}

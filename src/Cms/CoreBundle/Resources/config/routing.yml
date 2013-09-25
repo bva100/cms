@@ -57,6 +57,21 @@ cms_core.site_userGroupsRead:
   defaults: { _controller: CmsCoreBundle:Site:userGroupsRead }
   methods: [GET]
 
+cms_core.site_userGroupsNew:
+  pattern:   pattern: /site/{siteId}/user-groups/new
+  defaults: { _controller: CmsCoreBundle:Site:userGroupsNew }
+  methods: [GET]
+
+cms_core.site_userGroupsNew_process:
+  pattern: /site/{siteId}/user-groups/add
+  defaults: { _controller: CmsCoreBundle:Site:userGroupsAdd }
+  methods: [POST]
+
+cms_core.site_userGroupsDelete:
+  pattern: /site/{siteId}/user-groups/{groupId}/delete
+  defaults: { _controller: CmsCoreBundle:Site:userGroupDelete }
+  methods: [DELETE, POST]
+
 cms_core.site_userGroup_addUser:
   pattern: /sites/{siteId}/user-groups/{groupId}/new
   defaults: { _controller: CmsCoreBundle:Site:userGroupsAddUser }
