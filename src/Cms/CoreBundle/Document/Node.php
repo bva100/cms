@@ -384,7 +384,7 @@ class Node extends Base {
     /**
      * Add a tag
      *
-     * @param $tag
+     * @param string $tag
      * @return $this
      */
     public function addTag($tag)
@@ -398,6 +398,12 @@ class Node extends Base {
         return $this;
     }
 
+    /**
+     * Remove a tag from the tags collection
+     *
+     * @param string $tag
+     * @return $this
+     */
     public function removeTag($tag)
     {
         if ( ! \is_string($tag) )
@@ -415,9 +421,8 @@ class Node extends Base {
     }
 
     /**
-     * Get tags
-     *
-     * @return collection $tags
+     * @param string|null $format
+     * @return array|string
      */
     public function getTags($format = null)
     {

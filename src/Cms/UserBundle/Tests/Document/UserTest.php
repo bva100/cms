@@ -141,4 +141,42 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         $loginArray = $this->user->getLogin();
         $this->assertEquals(2, $loginArray['count']);
     }
+
+    /**
+     * @covers Cms\UserBundle\Document\User::addIp
+     * @covers Cms\UserBundle\Document\User::removeIp
+     * @covers Cms\UserBundle\Document\User::getIps
+     */
+    public function testAddIpAndRemoveIp()
+    {
+        $this->user->addIp('1234');
+        $this->user->addIp('1234');
+        $this->user->addIp('456');
+        $this->user->addIp('456');
+        $user = $this->user->addIp('bcsf');
+        $this->assertEquals($user, $this->user);
+        $this->assertCount(3, $this->user->getIps());
+        $this->assertEquals(array('1234', '456', 'bcsf'), $this->user->getIps());
+
+        $user = $this->user->removeIp('bcsf');
+        $this->assertEquals($user, $this->user);
+        $this->assertCount(2, $this->user->getIps());
+        $this->assertEquals(array('1234', '456'), $this->user->getIps());
+        $this->user->removeIp('456');
+        $this->assertCount(1, $this->user->getIps());
+        $this->user->removeIp('1234');
+        $this->assertEmpty($this->user->getIps());
+    }
+
+    public function testHasIp()
+    {
+        $this->user->addIp('123');
+        $this->user->addIp('456');
+        $this->user->addIp('abc');
+        $this->assertTrue($this->user->hasIp('123'));
+        $this->assertTrue($this->user->hasIp('456'));
+        $this->assertTrue($this->user->hasIp('abc'));
+
+        $this->assertFalse($this->user->hasIp('lkjsdf'));
+    }
 }

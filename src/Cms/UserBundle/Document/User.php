@@ -58,9 +58,9 @@ class User implements UserInterface, \Serializable{
     private $name;
 
     /**
-     * @MongoDB\String
+     * @MongoDB\Collection
      */
-    private $ip;
+    private $ips;
 
     /**
      * @MongoDB\Int
@@ -92,6 +92,7 @@ class User implements UserInterface, \Serializable{
         $this->name = array();
         $this->login = array('count' => 0);
         $this->state = 'active';
+        $this->ips = array();
     }
 
     /**
@@ -412,25 +413,68 @@ class User implements UserInterface, \Serializable{
     }
 
     /**
-     * Set ip
+     * Set ips
      *
-     * @param string $ip
+     * @param array $ips
      * @return self
      */
-    public function setIp($ip)
+    public function setIps(array $ips)
     {
-        $this->ip = $ip;
+        $this->ips = $ips;
+        return $this;
+    }
+
+    /**
+     * Add an IP to the IP collection
+     *
+     * @param string $ip
+     * @return $this
+     */
+    public function addIp($ip)
+    {
+        if ( ! is_string($ip) OR in_array($ip, $this->ips) ){
+            return $this;
+        }
+        $this->ips[] = $ip;
+        return $this;
+    }
+
+    /**
+     * Remove an IP from the IP collection
+     *
+     * @param string $ip
+     * @return $this
+     */
+    public function removeIp($ip)
+    {
+        $keys = array_keys($this->ips, $ip);
+        foreach ($keys as $key)
+        {
+            unset($this->ips[$key]);
+            $this->ips = array_values($this->ips);
+        }
         return $this;
     }
 
     /**
      * Get ip
      *
-     * @return string $ip
+     * @return array $ip
      */
-    public function getIp()
+    public function getIps()
     {
-        return $this->ip;
+        return $this->ips;
+    }
+
+    /**
+     * Does user have IP?
+     *
+     * @param string $ip
+     * @return bool
+     */
+    public function hasIp($ip)
+    {
+        return in_array($ip, $this->ips);
     }
 
     /**
