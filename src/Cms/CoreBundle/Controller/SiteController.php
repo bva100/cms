@@ -8,6 +8,7 @@
 namespace Cms\CoreBundle\Controller;
 
 use Cms\CoreBundle\Document\Acl;
+use Cms\CoreBundle\Document\ContentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,29 @@ class SiteController extends Controller {
         ));
     }
 
+    public function addDefaults(Site $site)
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $userId = $user->getId();
+        $usersGroup = new Group();
+        $usersGroup->setName('users')->addUserId($userId);
+        $site->addGroup($usersGroup);
+        $supersGroup= new Group();
+        $supersGroup->setName('supers')->addUserId($userId);
+        $site->addGroup($supersGroup);
+
+        $post = new ContentType();
+        $post->setName('posts')->setDescription('Blog posts.')->setSlugPrefix('posts/');
+        $site->addContentType($post);
+
+        $site->setAclOwner(array('id' => $userId, 'permissions' => array('r', 'w', 'x')));
+        $site->setAclGroup(array('id' => $userId, 'permissions' => array('r')));
+        $site->setAclOther(array('permissions' => array('r')));
+
+        $clientSecret = $this->get('access_token')->createSecret();
+        $site->setClientSecret($clientSecret);
+    }
+
     public function saveAction()
     {
         $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
@@ -40,13 +64,7 @@ class SiteController extends Controller {
             return $this->createNotFoundException('Site not found');
         }
         if ( ! $id ){
-            $user = $this->get('security.context')->getToken()->getUser();
-            $usersGroup = new Group();
-            $usersGroup->setName('users')->addUserId($user->getId());
-            $site->addGroup($usersGroup);
-            $supersGroup= new Group();
-            $supersGroup->setName('supers')->addUserId($user->getId());
-            $site->addGroup($supersGroup);
+            $this->addDefaults($site);
         }
         if ( $name ){
             $site->setName($name);
@@ -69,6 +87,7 @@ class SiteController extends Controller {
         {
             return $this->redirect($this->generateUrl('cms_core.site_new'));
         }
+        $this->get('session')->getFlashBag()->clear();
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $site->getId())));
     }
 

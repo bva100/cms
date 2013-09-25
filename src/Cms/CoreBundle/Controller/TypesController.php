@@ -19,6 +19,8 @@ class TypesController extends Controller{
         return $this->render('CmsCoreBundle:Types:readAll.html.twig', array(
             'site' => $site,
             'types' => $types,
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
         ));
     }
 
@@ -27,7 +29,11 @@ class TypesController extends Controller{
         $site = $this->getSite($siteId);
         return $this->render('CmsCoreBundle:Types:edit.html.twig', array(
             'site' => $site,
-            'notices' => null,
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
+            'name' => (string)$this->getRequest()->query->get('names'),
+            'slugPrefix' => (string)$this->getRequest()->query->get('slugPrefix'),
+            'description' => (string)$this->getRequest()->query->get('description'),
         ));
     }
 
@@ -43,11 +49,13 @@ class TypesController extends Controller{
             'site' => $site,
             'type' => $type,
             'notices' => $notices,
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
         ));
     }
 
     public function saveAction()
     {
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $siteId = $this->getRequest()->request->get('siteId');
         $id = $this->getRequest()->request->get('id');
         $name = $this->getRequest()->request->get('name');
@@ -74,16 +82,17 @@ class TypesController extends Controller{
         if ( ! $id ){
             $site->addContentType($type);
         }
-        $success = $this->get('persister')->save($type);
+        $success = $this->get('persister')->save($type, false, 'Type '.$type->getName().' saved');
         $id = $type->getId();
         if ( ! $success ){
-            throw new RuntimeExcpetion('Unable to save Type resource at this time. Please try again.');
+            return $this->redirect($this->generateUrl('cms_core.types_read', array('siteId' => $siteId, 'id' => $id, 'name' => $name, 'slugPrefix' => $slugPrefix, 'description' => $description)));
         }
-        return $this->redirect($this->generateUrl('cms_core.types_read', array('siteId' => $siteId, 'id' => $id)));
+        return $this->redirect($this->generateUrl('cms_core.types_readAll', array('siteId' => $siteId)));
     }
 
     public function deleteAction()
     {
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $siteId = $this->getRequest()->request->get('siteId');
         $site = $this->getSite($siteId);
         $id = $this->getRequest()->request->get('id');
@@ -92,9 +101,9 @@ class TypesController extends Controller{
             throw $this->createNotFoundException('Unable to find content Type with id '.$id);
         }
         $site->removeContentType($type);
-        $success = $this->get('persister')->save($site);
+        $success = $this->get('persister')->save($site, false, 'Removed '.$type->getName());
         if ( ! $success ){
-            throw new Exception('Unable to delete this Type at this time. Please try again.');
+            return $this->redirect($this->generateUrl('cms_core.types_readAll', array('siteId' => $siteId)));
         }
         return $this->redirect($this->generateUrl('cms_core.types_readAll', array('siteId' => $siteId)));
     }

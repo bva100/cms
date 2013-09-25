@@ -88,9 +88,7 @@
         <li><a href="{{ path('cms_core.site_read', {'id':site.id}) }}"><i class="icon-home"></i> Dashboard</a></li>
         <li class="divider"></li>
         {% for contentType in site.contentTypes   %}
-            {% if 'single' in contentType.formats %}
-                <li><a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"><i class="icon-pushpin"></i> {{ contentType.name | title }}</a></li>
-            {% endif %}
+            <li><a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"><i class="icon-pushpin"></i> {{ contentType.name | title }}</a></li>
         {% endfor %}
         {#<li><a href="{{ path('cms_core.content_manager_static_readAll', {'siteId':site.id}) }}"><i class="icon-file-text"></i> Pages</a></li>#}
         {% if site.contentTypes|length > 0 %}

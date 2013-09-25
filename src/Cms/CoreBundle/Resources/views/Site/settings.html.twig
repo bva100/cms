@@ -24,6 +24,11 @@
 {% endblock %}
 
 {% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h1>{{ site.name|title }} Settings</h1>
+        </div>
+    </div>
     {% if notices|length > 0 %}
         <div class="row-fluid">
             <aside style="position: relative; top: 20px;" class="span6">
