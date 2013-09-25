@@ -55,7 +55,8 @@ class SiteController extends Controller {
         if ( $domain ){
             $unique = $this->get('site_manager_unique')->domainCheck($domain);
             if ( ! $unique ){
-                throw new \InvalidArgumentException('The domain name '.$domain.' has already been registered with PipeStack. If this is a mistake please contact customer support by emailing support@pipestack.com.');
+                $this->get('session')->getFlashBag()->set('notices', 'The domain name '.$domain.' has already been registered with PipeStack. If this is a mistake please contact customer support by emailing support@pipestack.com.');
+                return $this->redirect($this->generateUrl('cms_core.site_new', array('domain' => $domain, 'name' => $name)));
             }
             $site->addDomain($domain);
         }
@@ -103,6 +104,8 @@ class SiteController extends Controller {
             'site' => $site,
             'group' => $group,
             'users' => $users,
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
         ));
     }
 
@@ -113,11 +116,11 @@ class SiteController extends Controller {
         if ( ! $group ){
             throw $this->createNotFoundException('Group with id '.$groupId.' for site with id '.$siteId.' not found');
         }
+        $notices = $this->get('session')->getFlashBag()->get('notices');
         return $this->render('CmsCoreBundle:Site:userGroupsAddUser.html.twig', array(
             'site' => $site,
             'group' => $group,
-//            'notices' => array((string)$this->getRequest()->query->get('notices')),
-            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'notices' => $notices,
             'email' => (string)$this->getRequest()->query->get('email'),
             'token' => $this->get('csrfToken')->createToken()->getToken(),
         ));
@@ -125,19 +128,39 @@ class SiteController extends Controller {
 
     public function userGroupsAddUserProcessAction($siteId, $groupId)
     {
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $email = $this->getRequest()->request->get('email');
         $site = $this->getSite($siteId);
         $group = $site->getGroup($groupId);
         if ( ! $group ){
             throw $this->createNotFoundException('Group with id '.$groupId.' for site with id '.$siteId.' not found');
         }
-        $user = $this->get('persister')->getRepo('CmsUserBundle:User')->findByEmail($email);
-        if ( count($user) < 1 ){
+        $user = $this->get('persister')->getRepo('CmsUserBundle:User')->findOneBy(array('email' => $email));
+        if ( ! $user){
             $this->get('session')->getFlashBag()->set('notices', 'User with email '.$email.' not found');
-            return $this->redirect($this->generateUrl('cms_core.site_userGroup_addUser', array('siteId' => $siteId, 'groupId' => $groupId, 'email' => $email, 'notices' => 'User with email '.$email.' not found')));
+            return $this->redirect($this->generateUrl('cms_core.site_userGroup_addUser', array('siteId' => $siteId, 'groupId' => $groupId, 'email' => $email)));
         }
-        echo '<pre>', \var_dump('here'); die();
-        
+        $group->addUserId($user->getId());
+        $success = $this->get('persister')->save($site, false, 'Successfully added user with Email '.$email.' to group');
+        if ( ! $success )
+        {
+            return $this->redirect($this->generateUrl('cms_core.site_userGroup_addUser', array('siteId' => $siteId, 'groupId' => $groupId, 'email' => $email)));
+        }
+        return $this->redirect($this->generateUrl('cms_core.site_userGroupsRead', array('siteId' => $siteId, 'groupId' => $groupId)));
+    }
+
+    public function userGroupsDeleteUserProcessAction($siteId, $groupId)
+    {
+//        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $userId = $this->getRequest()->request->get('userId');
+        $site = $this->getSite($siteId);
+        $group = $site->getGroup($groupId);
+        if ( ! $group ){
+            throw $this->createNotFoundException('Group with id '.$groupId.' for site with id '.$siteId.' not found');
+        }
+        $group->removeUserId($userId);
+        $this->get('persister')->save($site, false, 'User removed');
+        return $this->redirect($this->generateUrl('cms_core.site_userGroupsRead', array('siteId' => $siteId, 'groupId' => $groupId)));
     }
     
     

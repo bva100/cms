@@ -1,0 +1,58 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/site/index.css'
+    '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/site/index.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ site.name|title }} Users {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12" id="header">
+            <h1>Add A User To {{ group.name|title }} Group</h1>
+        </div>
+    </div>
+    {% if notices|length > 0 %}
+        <aside style="position: relative; top: 20px;">
+            {% block notices %}
+                {{  parent() }}
+            {% endblock %}
+        </aside>
+    {% endif %}
+    <div class="row-fluid">
+        <div class="span12">
+            <form action="#" method="POST">
+                <input type="hidden" name="token" value="{{ token }}"/>
+                <input type="hidden" name="siteId" value="{{ site.id }}"/>
+                <input type="hidden" name="groupId" value="{{ group.id }}"/>
+                <div class="row-fluid">
+                    <div class="span10">
+                        <input type="email" name="email" value="{{ email|default() }}" required style="height: 22px; margin-top: 26px" placeholder="user email"/>
+                    </div>
+                    <button class="btn btn-info span2" style="position: relative; top: 26px;">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <nav class="row-fluid">
+        <a href="{{ path('cms_core.site_userGroupsRead', {'siteId':site.id, 'groupId': group.id}) }}" class="btn"><i class="icon-chevron-left"></i> back</a>
+    </nav>
+{% endblock %}

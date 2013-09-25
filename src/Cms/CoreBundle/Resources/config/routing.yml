@@ -67,7 +67,10 @@ cms_core.site_userGroup_addUser_process:
   defaults: { _controller: CmsCoreBundle:Site:userGroupsAddUserProcess }
   methods: [POST]
 
-
+cms_core.site_userGroup_deleteUser_process:
+  pattern: /sites/{siteId}/user-groups/{groupId}/delete
+  defaults: { _controller: CmsCoreBundle:Site:userGroupsDeleteUserProcess }
+  methods: [DELETE, POST]
 
 
 

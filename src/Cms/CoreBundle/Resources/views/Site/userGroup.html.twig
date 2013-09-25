@@ -1,0 +1,74 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/site/index.css'
+    '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/site/index.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ site.name|title }} Users {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12" id="header">
+            <h1>{{ group.name|title }} Group</h1>
+            <a href="{{ path('cms_core.site_userGroup_addUser', {'siteId': site.id, 'groupId': group.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add User</a>
+        </div>
+    </div>
+    {% if notices|length > 0 %}
+        <aside style="position: relative; top: 20px;">
+            {% block notices %}
+                {{  parent() }}
+            {% endblock %}
+        </aside>
+    {% endif %}
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <th>Email</th>
+                    <th>Trash</th>
+                </tr>
+                </thead>
+                <tbody class="checkbox-container">
+                {% for user in users  %}
+                    <tr id="tr-{{ user.id }}">
+                        <td>{{ user.name.first }}</td>
+                        <td>{{ user.name.last }}</td>
+                        <td>{{ user.email }}</h4></td>
+                        <td>
+                            <form action="{{ path('cms_core.site_userGroup_deleteUser_process', {'siteId': site.id, 'groupId':group.id}) }}" method="POST">
+                                <input type="hidden" name="token" value="{{ token }}"/>
+                                <input type="hidden" name="userId" value="{{ user.id }}"/>
+                                <button class="btn btn-danger"><i class="icon-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+    <nav class="row-fluid">
+        <a href="{{ path('cms_core.site_userGroupsReadAll', {'siteId':site.id}) }}" class="btn"><i class="icon-chevron-left"></i> back</a>
+    </nav>
+{% endblock %}
