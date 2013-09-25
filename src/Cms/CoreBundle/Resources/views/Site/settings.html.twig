@@ -1,15 +1,85 @@
 {% extends 'CmsCoreBundle:App:base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/site/index.css'
+    '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/site/index.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block title %}
-    {{ site.name | title }} Settings {{ parent() }}
+    {{ site.name|title }} Settings {{ parent() }}
 {% endblock %}
 
 {% block content %}
-    <h1>{{ site.name | title }} Settings</h1>
-    <legend>Manage Content Types</legend>
-    <ul>
-        {% for contentType in contentTypes  %}
-            <li><a href="{{ path('cms_core.contentType_settings', {'siteId':site.id, 'id':contentType.id}) }}">{{ contentType.name }}</a></li>
-        {% endfor %}
-    </ul>
+    {% if notices|length > 0 %}
+        <div class="row-fluid">
+            <aside style="position: relative; top: 20px;" class="span6">
+                {% block notices %}
+                    {{  parent() }}
+                {% endblock %}
+            </aside>
+        </div>
+    {% endif %}
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <h3>API</h3>
+            <p>
+                client id: {{ site.id }}
+            </p>
+            <p>
+                client secret: {{ site.clientSecret }}
+            </p>
+            <p>
+                <a href="#token" class="btn btn-info" id="show-token">Create App Token</a>
+                <div class="hide" id="app-token">
+                    <h4>Token:</h4>
+                    <p>
+                        {{ accessToken }}
+                    </p>
+                    <br>
+                    <p>
+                        <b>
+                            Be sure to keep this app token a secret
+                        </b>
+                    </p>
+                </div>
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <h3>Domains</h3>
+            <p>
+                Domains:
+                <ul>
+                    {% for domain in site.domains  %}
+                        <li>{{ domain }}</li>
+                    {% endfor %}
+                </ul>
+            <a href="{{ path('cms_core.site_domains', {'siteId':site.id}) }}" class="btn btn-info">Manage Domains</a>
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <h3>Account</h3>
+            <button class="btn btn-danger">Delete Site Data</button>
+        </div>
+    </div>
 {% endblock %}

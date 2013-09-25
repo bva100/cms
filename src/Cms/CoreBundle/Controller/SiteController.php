@@ -8,7 +8,6 @@
 namespace Cms\CoreBundle\Controller;
 
 use Cms\CoreBundle\Document\Acl;
-use Cms\CoreBundle\Document\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,13 +71,17 @@ class SiteController extends Controller {
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $site->getId())));
     }
 
-    public function settingsAction($id)
+    public function settingsAction($siteId)
     {
-        $site = $this->getSite($id);
+        $site = $this->getSite($siteId);
         $contentTypes = $site->getContentTypes();
+        $accessToken = $this->get('access_token')->createToken($site->getId(), $site->getClientSecret());
         return $this->render('CmsCoreBundle:Site:settings.html.twig', array(
             'site' => $site,
             'contentTypes' => $contentTypes,
+            'accessToken' => $accessToken,
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
         ));
     }
 
@@ -210,8 +213,51 @@ class SiteController extends Controller {
         $this->get('persister')->save($site, false, 'User removed');
         return $this->redirect($this->generateUrl('cms_core.site_userGroupsRead', array('siteId' => $siteId, 'groupId' => $groupId)));
     }
-    
-    
+
+    public function domainsReadAllAction($siteId)
+    {
+        $site = $this->getSite($siteId);
+        $domains = $site->getDomains();
+        return $this->render('CmsCoreBundle:Site:domains.html.twig', array(
+            'site' => $site,
+            'domains' => $domains,
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
+        ));
+    }
+
+    public function domainNewAction($siteId)
+    {
+        $site = $this->getSite($siteId);
+        return $this->render('CmsCoreBundle:Site:domainNew.html.twig', array(
+            'site' => $site,
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
+        ));
+    }
+
+    public function domainNewProcessAction($siteId)
+    {
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $domain = (string)$this->getRequest()->request->get('domain');
+        $site = $this->getSite($siteId);
+        $site->addDomain($domain);
+        $success = $this->get('persister')->save($site, false, 'Domain '.$domain.' added');
+        if ( ! $success ){
+            return $this->redirect($this->generateUrl('cms_core.site_domainNew', array('siteId' => $siteId)));
+        }
+        return $this->redirect($this->generateUrl('cms_core.site_domains', array('siteId' => $siteId)));
+    }
+
+    public function domainDeleteProcessAction($siteId)
+    {
+        $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
+        $domain = $this->getRequest()->request->get('domain');
+        $site = $this->getSite($siteId);
+        $site->removeDomain($domain);
+        $success = $this->get('persister')->save($site, false, 'Domain '.$domain.' removed');
+        return $this->redirect($this->generateUrl('cms_core.site_domains', array('siteId' => $siteId)));
+    }
 
     public function readAction($id)
     {

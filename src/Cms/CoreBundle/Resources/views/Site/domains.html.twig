@@ -1,0 +1,68 @@
+{% extends 'CmsCoreBundle:App:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/site/index.css'
+    '@CmsCoreBundle/Resources/public/css/admin/loop.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/site/index.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}
+    {{ site.name|title }} Domains {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12" id="header">
+            <h1>{{ site.name|title }} Domains</h1>
+            <a href="{{ path('cms_core.site_domainNew', {'siteId': site.id}) }}" id="add-new"><i class="icon-plus-sign"></i> Add New</a>
+        </div>
+    </div>
+    {% if notices|length > 0 %}
+        <div style="position: relative; top: 20px;">
+            {% block notices %}
+                {{  parent() }}
+            {% endblock %}
+        </div>
+    {% endif %}
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Domain</th>
+                    <th>Trash</th>
+                </tr>
+                </thead>
+                <tbody class="checkbox-container">
+                {% for domain in domains  %}
+                    <tr id="tr-{{ domain }}">
+                        <td>
+                            <h4>{{ domain|title }}</h4>
+                        </td>
+                        <td>
+                            <form action="{{ path('cms_core.site_domainDelete', {'siteId': site.id}) }}" method="POST" onsubmit="return confirmDelete('{{ domain|title }}');">
+                                <input type="hidden" name="token" value="{{ token }}"/>
+                                <input type="hidden" name="domain" value="{{ domain }}"/>
+                                <button class="btn btn-danger"><i class="icon-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

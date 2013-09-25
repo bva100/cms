@@ -43,7 +43,7 @@ cms_core.site_save:
   methods: [POST]
 
 cms_core.site_settings:
-  pattern: /site/settings/{id}
+  pattern: /site/{siteId}/settings
   defaults: { _controller: CmsCoreBundle:Site:settings }
   methods: [GET]
 
@@ -87,6 +87,25 @@ cms_core.site_userGroup_deleteUser_process:
   defaults: { _controller: CmsCoreBundle:Site:userGroupsDeleteUserProcess }
   methods: [DELETE, POST]
 
+cms_core.site_domains:
+  pattern: /site/{siteId}/domains
+  defaults: { _controller: CmsCoreBundle:Site:domainsReadAll }
+  methods: [GET]
+
+cms_core.site_domainsNew:
+  pattern: /site/{siteId}/domainsNew
+  defaults: { _controller: CmsCoreBundle:Site:domainNew }
+  methods: [GET]
+
+cms_core.site_domainNew:
+  pattern: /site/{siteId}/domainsNew
+  defaults: { _controller: CmsCoreBundle:Site:domainNewProcess }
+  methods: [POST]
+
+cms_core.site_domainDelete:
+  pattern: /sites/{siteId}/domainDelete
+  defaults: { _controller: CmsCoreBundle:Site:domainDeleteProcess }
+  methods: [DELETE, POST]
 
 
 cms_core.site_add_theme:

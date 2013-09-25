@@ -144,7 +144,7 @@ class Site extends Base {
      */
     public function addDomain($domain)
     {
-        if ( is_string($domain) AND ! in_array($domain, $this->domains) )
+        if ( $domain AND is_string($domain) AND ! in_array($domain, $this->domains) )
         {
             $this->domains[] = $domain;
         }
@@ -481,7 +481,7 @@ class Site extends Base {
     }
 
     /**
-     * Set client secret. Use API access token server to generate secret.
+     * Set client secret. Use API access token service to generate secret.
      *
      * @param $clientSecret
      * @return $this

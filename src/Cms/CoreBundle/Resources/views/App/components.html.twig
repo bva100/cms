@@ -101,7 +101,7 @@
         <li class="divider"></li>
         <li><a href="{{ path('cms_core.types_readAll', {'siteId': site.id}) }}"><i class="icon-book"></i> Types</a></li>
         <li><a href="{{  path('cms_core.site_userGroupsReadAll', {'siteId': site.id}) }}"><i class="icon-group"></i> Users</a></li>
-        <li><a href="#siteSettings"><i class="icon-cog"></i> Settings</a></li>
+        <li><a href="{{ path('cms_core.site_settings', {'siteId':site.id}) }}"><i class="icon-cog"></i> Settings</a></li>
         {#<li><a href="{{ path('cms_core.settings_theme_current', {'siteId':site.id}) }}"><i class="icon-eye-open"></i> Themes</a></li>#}
         {#<li><a href="{{ path('cms_core.content_manager_readAll', {'siteId':site.id}) }}"><i class="icon-book"></i> Content</a></li>#}
         {#<li><a href="{{ path('cms_core.template_menu', {'siteId':site.id}) }}"><i class="icon-list-ul"></i> Menus</a></li>#}
