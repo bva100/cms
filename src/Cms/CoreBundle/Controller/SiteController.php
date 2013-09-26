@@ -360,11 +360,6 @@ class SiteController extends Controller {
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
             throw new AccessDeniedException('Only super users can access settings. Please contact your PipeStack Administrator.');
         }
-        $user = $this->get('security.context')->getToken()->getUser();
-        $access = $this->get('acl_helper')->isSuper($user, $site);
-        if ( ! $access ){
-            throw new AccessDeniedException('You do not have permission to delete this site.');
-        }
         $this->get('persister')->delete($site, false, 'Site Removed');
         return $this->redirect($this->generateUrl('cms_core.app_index'));
     }
