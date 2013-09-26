@@ -83,16 +83,22 @@ class User implements UserInterface, \Serializable{
     private $state;
 
     /**
+     * @MongoDB\Collection
+     */
+    private $siteIds;
+
+    /**
      * Set default salt group index and default state
      */
     public function __construct($saltGroupIndex = 1, $state = 'active')
     {
         $this->setSaltGroupIndex(1);
-        $this->roles = array();
+        $this->roles = array('ROLE_USER');
         $this->name = array();
         $this->login = array('count' => 0);
         $this->state = 'active';
         $this->ips = array();
+        $this->siteIds = array();
     }
 
     /**
@@ -561,4 +567,49 @@ class User implements UserInterface, \Serializable{
             return $this->login['last'];
         }
     }
+
+    /**
+     * @param string $siteId
+     * @return $this
+     */
+    public function addSiteId($siteId)
+    {
+        if ( ! is_string($siteId) OR in_array($siteId, $this->siteIds) ){
+            return $this;
+        }
+        $this->siteIds[] = $siteId;
+        return $this;
+    }
+
+    /**
+     * @param string $siteId
+     * @return $this
+     */
+    public function removeSiteId($siteId)
+    {
+        $keys = array_keys($this->siteIds, $siteId);
+        foreach ($keys as $key) {
+            unset($this->siteIds[$key]);
+            $this->siteIds = array_values($this->siteIds);
+        }
+        return $this;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getSiteIds()
+    {
+        return $this->siteIds;
+    }
+
+    /**
+     * @param string $siteId
+     * @return bool
+     */
+    public function hasSiteId($siteId)
+    {
+        return in_array($siteId, $this->siteIds);
+    }
+    
 }

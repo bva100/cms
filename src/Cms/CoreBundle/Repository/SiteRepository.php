@@ -26,4 +26,12 @@ class SiteRepository extends DocumentRepository {
             ->getQuery()->execute()->getSingleResult();
     }
 
+    public function findBySiteIdsAndState(array $siteIds, $state)
+    {
+        return $this->createQueryBuilder()
+            ->field('id')->in($siteIds)
+            ->field('state')->equals($state)
+            ->getQuery()->execute();
+    }
+
 }

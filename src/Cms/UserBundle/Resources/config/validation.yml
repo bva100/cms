@@ -15,27 +15,29 @@ Cms\UserBundle\Document\User:
         saltGroupIndex:
            - Type:
               type: integer
-              message: The value {{ value }} is not a valid {{ type }}.
+              message: Salt Group Index expcets an {{ type }}. The value {{ value }} is not a valid {{ type }}.
         roles:
            - Type:
               type: array
-              message: The value {{ value }} is not a valid {{ type }}.
+              message: Roles expcets an {{ type }}. The value {{ value }} is not a valid {{ type }}.
         name:
            - Type:
               type: array
-              message: The value {{ value }} is not a valid {{ type }}.
-        ip:
-           - Ip: ~
+              message: Name expcets an {{ type }}. The value {{ value }} is not a valid {{ type }}.
+        ips:
+           - Type:
+              type: array
+              message: Ips expcets an {{ type }}. The value {{ value }} is not a valid {{ type }}.
         utcOffset:
            - Type:
               type: integer
-              message: The value {{ value }} is not a valid {{ type }}.
+              message: utcOffset expcets an {{ type }}. The value {{ value }} is not a valid {{ type }}.
         locale:
            - Locale: ~
         login:
            - Type:
               type: array
-              message: The value {{ value }} is not a valid {{ type }}.
+              message: Login expcets an {{ type }}. The value {{ value }} is not a valid {{ type }}.
         state:
            - Choice:
               choices:  [active, pending, inActive, deleted]

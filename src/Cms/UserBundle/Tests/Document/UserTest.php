@@ -168,6 +168,10 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         $this->assertEmpty($this->user->getIps());
     }
 
+    /**
+     * @covers Cms\UserBundle\Document\User::hasIP
+     * @covers Cms\UserBundle\Document\User::addIp
+     */
     public function testHasIp()
     {
         $this->user->addIp('123');
@@ -178,5 +182,51 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($this->user->hasIp('abc'));
 
         $this->assertFalse($this->user->hasIp('lkjsdf'));
+        $this->assertFalse($this->user->hasIp('foobar'));
     }
+
+    /**
+     * @covers Cms\UserBundle\Document\User::addSiteId
+     * @covers Cms\UserBundle\Document\User::getSiteIds
+     * @covers Cms\UserBundle\Document\User::removeSiteId
+     */
+    public function testAddSiteIdAndRemoveSiteId()
+    {
+        $this->user->addSiteId('123');
+        $this->user->addSiteId('123');
+        $this->user->addSiteId('456');
+        $this->user->addSiteId('456');
+        $user = $this->user->addSiteid('789');
+        $this->assertEquals($user, $this->user);
+        $this->assertCount(3, $this->user->getSiteIds());
+        $this->assertEquals(array('123', '456', '789'), $this->user->getSiteIds());
+
+        $user = $this->user->removeSiteId('123');
+        $this->assertEquals($user, $this->user);
+        $this->assertCount(2, $this->user->getSiteIds());
+        $this->assertEquals(array('456', '789'), $this->user->getSiteIds());
+        $this->user->removeSiteId('456');
+        $this->assertCount(1, $this->user->getSiteIds());
+        $this->assertEquals(array('789'), $this->user->getSiteIds());
+        $this->user->removeSiteId('789');
+        $this->assertEmpty($this->user->getSiteIds());
+    }
+
+    /**
+     * @covers Cms\UserBundle\Document\User::addSiteId
+     * @covers Cms\UserBundle\Document\User::hasSiteId
+     */
+    public function testHasSiteId()
+    {
+        $this->user->addSiteId('123');
+        $this->user->addSiteId('456');
+        $this->user->addSiteid('789');
+        $this->assertTrue($this->user->hasSiteid('123'));
+        $this->assertTrue($this->user->hasSiteid('456'));
+        $this->assertTrue($this->user->hasSiteid('789'));
+        $this->assertFalse($this->user->hasSiteId('12345'));
+        $this->assertFalse($this->user->hasSiteId('2134234'));
+    }
+
+
 }

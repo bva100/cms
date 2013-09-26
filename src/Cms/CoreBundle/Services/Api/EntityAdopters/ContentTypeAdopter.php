@@ -40,6 +40,7 @@ class ContentTypeAdopter extends AbstractAdopter {
         $this->addObjProperty($obj, 'slugPrefix', $fields);
         $this->addObjProperty($obj, 'fields', $fields);
         $this->addObjProperty($obj, 'created', $fields);
+        $this->addObjProperty($obj, 'updated', $fields);
         if ( isset($obj->id) ){
             $obj->_links = array('self' => array('href' => $this->getBaseApiUrl().'/types/'.$obj->id.'.'.$this->getFormat()));
         }

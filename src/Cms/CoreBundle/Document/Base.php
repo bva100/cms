@@ -52,6 +52,7 @@ Abstract class Base {
     {
         $this->created = time();
         $this->setAcl();
+        $this->state = 'active';
     }
 
     /**

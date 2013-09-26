@@ -44,6 +44,7 @@ class ApiBaseController extends Controller {
         );
         $vars['params'] = array(
             'search' => $query->get('search'),
+            'state' => $query->get('state', 'active'),
             'title' => $query->get('title'),
             'domain' => $query->get('domain'),
             'locale' => $query->get('locale'),

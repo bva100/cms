@@ -32,7 +32,7 @@ class SiteController extends Controller {
 
     public function addDefaults(Site $site)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $userId = $user->getId();
         $usersGroup = new Group();
         $usersGroup->setName('users')->addUserId($userId);
@@ -86,6 +86,11 @@ class SiteController extends Controller {
         if ( ! $success )
         {
             return $this->redirect($this->generateUrl('cms_core.site_new'));
+        }
+        if ( ! $id ){
+            $user = $this->getUser();
+            $user->addSiteId($site->getId());
+            $this->get('persister')->save($user);
         }
         $this->get('session')->getFlashBag()->clear();
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $site->getId())));
@@ -212,6 +217,13 @@ class SiteController extends Controller {
             return $this->redirect($this->generateUrl('cms_core.site_userGroup_addUser', array('siteId' => $siteId, 'groupId' => $groupId, 'email' => $email)));
         }
         $group->addUserId($user->getId());
+        $user->addSiteId($siteId);
+        $success = $this->get('persister')->setFlashBag(null)->save($user);
+        if ( ! $success )
+        {
+            $this->get('session')->getFlashBag()->set('notices', 'Could not add user to group. Please try again. If the problem persists please contact customer support.');
+            return $this->redirect($this->generateUrl('cms_core.site_userGroup_addUser', array('siteId' => $siteId, 'groupId' => $groupId, 'email' => $email)));
+        }
         $success = $this->get('persister')->save($site, false, 'Successfully added user with Email '.$email.' to group');
         if ( ! $success )
         {
@@ -282,8 +294,6 @@ class SiteController extends Controller {
     public function readAction($id)
     {
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
-
-
         $contentTypes = $site->getContentTypes();
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteId($id);
         return $this->render('CmsCoreBundle:Site:index.html.twig', array(

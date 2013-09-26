@@ -24,6 +24,7 @@ class SiteAdopter extends AbstractAdopter {
         $obj = $this->addObjProperty($obj, 'namespace', $fields);
         $obj = $this->addObjProperty($obj, 'domains', $fields);
         $obj = $this->addObjProperty($obj, 'created', $fields);
+        $obj = $this->addObjProperty($obj, 'updated', $fields);
         if ( isset($obj->id) ){
             $obj->_links = array('self' => array('href' => $this->getBaseApiUrl().'/sites.'.$this->getFormat()));
         }

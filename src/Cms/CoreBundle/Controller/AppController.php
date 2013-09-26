@@ -15,21 +15,14 @@ class AppController extends Controller {
 
     public function indexAction()
     {
-        $token = $this->get('csrfToken')->createToken()->getToken();
-        $notices = $this->get('session')->getFlashBag()->get('notices');
-        $user = $this->get('security.context')->getToken()->getUser();
-        $sites = $this->get('persister')->getRepo('CmsCoreBundle:Site')->findAll();
+        $user = $this->getUser();
+        $sites = $this->get('persister')->getRepo('CmsCoreBundle:Site')->findBySiteIdsAndState($user->getSiteIds(), 'active');
         return $this->render('CmsCoreBundle:App:index.html.twig', array(
-            'token' => $token,
-            'notices' => $notices,
+            'token' => $this->get('csrfToken')->createToken()->getToken(),
+            'notices' => $this->get('session')->getFlashBag()->get('notices'),
             'user' => $user,
             'sites' => $sites,
         ));
     }
-
-    public function settingsAction(){
-        
-    }
-
 
 }

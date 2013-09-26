@@ -61,8 +61,7 @@ class UserController extends Controller {
         $lastName = (string)$this->getRequest()->query->get('lastName');
         $email = (string)$this->getRequest()->query->get('email');
         $accountType = (string)$this->getRequest()->query->get('account_type');
-        if ( ! $accountType )
-        {
+        if ( ! $accountType ){
             $accountType = 'free';
         }
         return $this->render('CmsCoreBundle:User:register.html.twig', array(

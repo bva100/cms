@@ -92,6 +92,10 @@ class NodeRepository extends DocumentRepository {
         if ( isset($title) ){
             $qb->field('title')->equals($title);
         }
+        if ( isset($state) ){
+            $qb->field('state')->equals($state);
+        }
+        
         if ( isset($search) ){
             $qb->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*'.$search.'.*/i')));
             $qb->addOr($qb->expr()->field('view.html')->equals(new \MongoRegex('/.*'.$search.'.*/i')));

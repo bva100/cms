@@ -75,6 +75,9 @@
                             <li><a href="#support-modal" data-toggle="modal">Call Us</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="{{ path('logout') }}">Log Out</a>
+                    </li>
                 </ul>
             </div><!--/.nav -->
         </div>
@@ -84,27 +87,20 @@
 
 {% block classicNavAdmin %}
 <nav class="sidebar-nav hidden-phone">
-    <ul class="nav nav-list">
-        <li><a href="{{ path('cms_core.site_read', {'id':site.id}) }}"><i class="icon-home"></i> Dashboard</a></li>
+    <ul class="nav nav-list" style="width: 98px">
+        <li><a href="{{ path('cms_core.site_read', {'id':site.id}) }}"><i class="icon-home"></i>Dashboard</a></li>
         <li class="divider"></li>
         {% for contentType in site.contentTypes   %}
-            <li><a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"><i class="icon-pushpin"></i> {{ contentType.name | title }}</a></li>
+            <li><a href="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"><i class="icon-pushpin"></i> {{ contentType.name|title|truncate(8) }}</a></li>
         {% endfor %}
-        {#<li><a href="{{ path('cms_core.content_manager_static_readAll', {'siteId':site.id}) }}"><i class="icon-file-text"></i> Pages</a></li>#}
         {% if site.contentTypes|length > 0 %}
             <li class="divider"></li>
         {% endif %}
         <li><a href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}"><i class="icon-camera-retro"></i> Media</a></li>
-        {#<li><a href="#"><i class="icon-comments"></i> Comments</a></li>#}
         <li class="divider"></li>
         <li><a href="{{ path('cms_core.types_readAll', {'siteId': site.id}) }}"><i class="icon-book"></i> Types</a></li>
         <li><a href="{{  path('cms_core.site_userGroupsReadAll', {'siteId': site.id}) }}"><i class="icon-group"></i> Users</a></li>
         <li><a href="{{ path('cms_core.site_settings', {'siteId':site.id}) }}"><i class="icon-cog"></i> Settings</a></li>
-        {#<li><a href="{{ path('cms_core.settings_theme_current', {'siteId':site.id}) }}"><i class="icon-eye-open"></i> Themes</a></li>#}
-        {#<li><a href="{{ path('cms_core.content_manager_readAll', {'siteId':site.id}) }}"><i class="icon-book"></i> Content</a></li>#}
-        {#<li><a href="{{ path('cms_core.template_menu', {'siteId':site.id}) }}"><i class="icon-list-ul"></i> Menus</a></li>#}
-        {#<li><a href="{{ path('cms_core.template_readAll', {'siteId':site.id}) }}"><i class="icon-pencil"></i> Templates</a></li>#}
-        {#<li><a href="{{ path('cms_core.asset_readAll', {'siteId':site.id}) }}"><i class="icon-css3"></i> Css/Js</a></li>#}
     </ul>
 </nav>
 {% endblock %}

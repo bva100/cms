@@ -7,6 +7,7 @@
 
 namespace Cms\PersisterBundle\Services;
 
+use Cms\CoreBundle\Document\Base;
 use Doctrine\Common\Persistence\ObjectManager;
 
 
@@ -168,7 +169,7 @@ class Persister {
     }
 
     /**
-     * Persists an ODM object. onSuccess defines flashBagMessage on success. Set the verboseErrors param to true to get explicit error messages returned as a string.
+     * Persists an ODM object. onSuccess defines flashBagMess                  ge on success. Set the verboseErrors param to true to get explicit error messages returned as a string.
      *
      * @param $object
      * @param bool $lazy
@@ -193,8 +194,14 @@ class Persister {
             }
             return false;
         }
+        if ( $object instanceof Base AND $object->getId()){
+            $object->setUpdated(time());
+        }
         if ( ! $object->getId() )
         {
+            if ( $object instanceof Base ){
+                $object->setCreated(time());
+            }
             $this->em->persist($object);
         }
         if ( ! $lazy )

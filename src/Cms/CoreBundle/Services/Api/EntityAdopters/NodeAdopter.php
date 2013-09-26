@@ -49,7 +49,7 @@ class NodeAdopter extends AbstractAdopter {
         $obj = $this->addObjProperty($obj, 'locale', $fields);
         $obj = $this->addObjProperty($obj, 'categories', $fields);
         $obj = $this->addObjProperty($obj, 'tags', $fields);
-        $obj = $this->addObjProperty($obj, 'slug', $fields);
+        $obj = $this->addObjProperty($obj, 'contentTypeName', $fields);
         $obj = $this->addObjProperty($obj, 'title', $fields);
         $obj = $this->addObjProperty($obj, 'views', $fields);
         $obj = $this->addObjProperty($obj, 'description', $fields);
@@ -58,6 +58,7 @@ class NodeAdopter extends AbstractAdopter {
         $obj = $this->addObjProperty($obj, 'author', $fields);
         $obj = $this->addObjProperty($obj, 'image', $fields);
         $obj = $this->addObjProperty($obj, 'created', $fields);
+        $obj = $this->addObjProperty($obj, 'updated', $fields);
         if ( isset($obj->id) ){
             $obj->_links = array('self' => array('href' => $this->getBaseApiUrl().'/nodes/'.$obj->id.'.'.$this->getFormat()));
         }
