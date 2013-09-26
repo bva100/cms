@@ -1,0 +1,85 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        body {
+            background-color: #2C3E50;
+            color: white;
+        }
+        h1 {
+            font-size: 60px;
+            line-height: 50px;
+            text-align: center;
+        }
+        h2 {
+            margin-top: 70px;
+            font-size: 30px;
+            text-align: center;
+        }
+        p {
+            font-size: 22px;
+        }
+        #primary-container {
+            margin-top: 10%;
+        }
+        #message-container {
+            text-align: center;
+        }
+        ul{
+            list-style: none;
+        }
+        li {
+            font-size: 22px;
+            line-height: 30px;
+        }
+        #message-container, #nav-block {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block metatags %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}
+    {{ status_code }} {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <article>
+        <section class="row-fluid">
+            <div class="span6 offset3" id="primary-container">
+                <h1>{{ status_code }} {{ status_text }}</h1>
+            </div>
+        </section>
+        <section class="row-fluid">
+            <div class="span6 offset3" id="message-container">
+                <p>{{ exception.message|default() }}</p>
+                <p>Here are some options:</p>
+            </div>
+        </section>
+        <section class="row-fluid">
+            <nav class="span6 offset3" id="nav-block">
+                <div class="row-fluid">
+                    <ul class="span4 offset2" style="padding-left: 30px;">
+                        <li><a href="{{ path('cms_core.app_index') }}">Home Page</a></li>
+                        <li><a href="{{ path('_welcome') }}">Welcome Page</a></li>
+                        <li><a href="{{ path('login') }}">Login Page</a></li>
+                    </ul>
+                    <ul class="span4" style="padding-left: 12px;">
+                        <li><a href="{{ path('cms_core.help') }}">Help and Tutorials</a></li>
+                        <li><a href="http://developers.pipestack.com">Developer's Portal</a></li>
+                        <li><a href="mailto:support@pipestack.com">Email Support</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </section>
+        <footer class="row-fluid">
+            <div class="span12">
+                <h2>PipeStack</h2>
+            </div>
+        </footer>
+    </article>
+{% endblock %}

@@ -67,7 +67,7 @@ class SiteController extends Controller {
             $this->addDefaults($site);
         }else{
             if ( ! $this->get('acl_helper')->hasPermission($this->getUser(), 'w', $site, $site) ){
-                throw new AccessDeniedException('You do not have access to this site. If you believe this to be an error, please contact your PipeStack Administrator.');
+                throw new AccessDeniedException(403, 'You do not have access to this site. If you believe this to be an error, please contact your PipeStack Administrator.');
             }
         }
         if ( $name ){
@@ -104,7 +104,7 @@ class SiteController extends Controller {
     {
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access settings. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access settings. Please contact your PipeStack Administrator.');
         }
         $contentTypes = $site->getContentTypes();
         $accessToken = $this->get('access_token')->createToken($site->getId(), $site->getClientSecret());
@@ -121,7 +121,7 @@ class SiteController extends Controller {
     {
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access user groups. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access user groups. Please contact your PipeStack Administrator.');
         }
         $groups = $site->getGroups();
         return $this->render('CmsCoreBundle:Site:userGroups.html.twig', array(
@@ -136,7 +136,7 @@ class SiteController extends Controller {
     {
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access user groups. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access user groups. Please contact your PipeStack Administrator.');
         }
         $group = $site->getGroup($groupId);
         if ( ! $group ){
@@ -156,7 +156,7 @@ class SiteController extends Controller {
     {
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access user groups. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access user groups. Please contact your PipeStack Administrator.');
         }
         $groups = $site->getGroups();
         return $this->render('CmsCoreBundle:Site:userGroupsNew.html.twig', array(
@@ -172,7 +172,7 @@ class SiteController extends Controller {
         $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access user groups. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access user groups. Please contact your PipeStack Administrator.');
         }
         $name = (string)$this->getRequest()->request->get('name');
         if ( $site->getGroupByName($name) ){
@@ -192,7 +192,7 @@ class SiteController extends Controller {
         $this->get('csrfToken')->validate((string)$this->getRequest()->request->get('token'));
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access user groups. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access user groups. Please contact your PipeStack Administrator.');
         }
         $group = $site->getGroup($groupId);
         if ( ! $group ){
@@ -211,7 +211,7 @@ class SiteController extends Controller {
     {
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access user groups. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access user groups. Please contact your PipeStack Administrator.');
         }
         $group = $site->getGroup($groupId);
         if ( ! $group ){
@@ -233,7 +233,7 @@ class SiteController extends Controller {
         $email = $this->getRequest()->request->get('email');
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access user groups. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access user groups. Please contact your PipeStack Administrator.');
         }
         $group = $site->getGroup($groupId);
         if ( ! $group ){
@@ -266,7 +266,7 @@ class SiteController extends Controller {
         $userId = $this->getRequest()->request->get('userId');
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access user groups. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access user groups. Please contact your PipeStack Administrator.');
         }
         $group = $site->getGroup($groupId);
         if ( ! $group ){
@@ -281,7 +281,7 @@ class SiteController extends Controller {
     {
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access settings. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access settings. Please contact your PipeStack Administrator.');
         }
         $domains = $site->getDomains();
         return $this->render('CmsCoreBundle:Site:domains.html.twig', array(
@@ -296,7 +296,7 @@ class SiteController extends Controller {
     {
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access settings. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access settings. Please contact your PipeStack Administrator.');
         }
         return $this->render('CmsCoreBundle:Site:domainNew.html.twig', array(
             'site' => $site,
@@ -311,7 +311,7 @@ class SiteController extends Controller {
         $domain = (string)$this->getRequest()->request->get('domain');
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access settings. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access settings. Please contact your PipeStack Administrator.');
         }
         $site->addDomain($domain);
         $success = $this->get('persister')->save($site, false, 'Domain '.$domain.' added');
@@ -327,7 +327,7 @@ class SiteController extends Controller {
         $domain = $this->getRequest()->request->get('domain');
         $site = $this->getSite($siteId);
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access settings. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access settings. Please contact your PipeStack Administrator.');
         }
         $site->removeDomain($domain);
         $success = $this->get('persister')->save($site, false, 'Domain '.$domain.' removed');
@@ -336,9 +336,9 @@ class SiteController extends Controller {
 
     public function readAction($id)
     {
-        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($id);
+        $site = $this->getSite($id);
         if ( ! $this->get('acl_helper')->hasPermission($this->getUser(), 'r', $site, $site) ){
-            throw new AccessDeniedException('You do not have access to this site. If you beleive this to be an error, please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'You do not have access to this site. If you beleive this to be an error, please contact your PipeStack Administrator.');
         }
         $contentTypes = $site->getContentTypes();
         $nodes = $this->get('persister')->getRepo('CmsCoreBundle:Node')->findBySiteId($id);
@@ -358,7 +358,7 @@ class SiteController extends Controller {
             throw $this->createNotFoundException('Site with id '.$id.' not found');
         }
         if ( ! $this->get('acl_helper')->isSuper($this->getUser(), $site) ){
-            throw new AccessDeniedException('Only super users can access settings. Please contact your PipeStack Administrator.');
+            throw new AccessDeniedException(403, 'Only super users can access settings. Please contact your PipeStack Administrator.');
         }
         $this->get('persister')->delete($site, false, 'Site Removed');
         return $this->redirect($this->generateUrl('cms_core.app_index'));

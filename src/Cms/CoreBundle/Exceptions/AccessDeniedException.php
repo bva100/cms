@@ -3,4 +3,6 @@
 
 namespace Cms\CoreBundle\Exceptions;
 
-class AccessDeniedException extends \Exception {}
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+class AccessDeniedException extends HttpException {}
