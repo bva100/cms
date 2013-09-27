@@ -38,7 +38,6 @@ h2.tile-title {
     background-color: #BDC3C7;
 }
 #features .tile:hover {
-    cursor: pointer;
     background-color: white;
 }
 .icon-bolt-hover {
