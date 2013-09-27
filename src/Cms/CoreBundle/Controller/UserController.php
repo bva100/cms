@@ -21,13 +21,11 @@ class UserController extends Controller {
         $email = (string)$this->getRequest()->request->get('email');
         $password = (string)$this->getRequest()->request->get('password');
         $this->get('csrfToken')->validate($token);
-
         $user = $id ? $this->get('persister')->getRepo('CmsCoreBundle:User')->find($id) : new User();
         if ( ! $user )
         {
             return $this->createNotFoundException('User not found');
         }
-        
         if ( $email )
         {
             $user->setEmail($email);
@@ -37,7 +35,6 @@ class UserController extends Controller {
             $encoder = $this->get('security.encoder_factory')->getEncoder($user);
             $user->setPassword($encoder->encodePassword($password,$user->getSalt()));
         }
-        $user->addRole('ROLE_USER');
         $success = $this->get('persister')->save($user);
 
         $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);

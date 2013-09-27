@@ -64,7 +64,7 @@ $('.btn-checkbox-action').on('click', function(){
 });
 
 function deleteNode(id, token){
-    $.post('/node/delete', {id: id, token: token}, function(data, textStatus, xhr) {
+    $.post('/app/node/delete', {id: id, token: token}, function(data, textStatus, xhr) {
         if(textStatus == 'success'){
             $('#tr-' + id).remove();
             $("#notices").html('<div id="content-type-alert" class="alert alert-info">Deleted</div>');

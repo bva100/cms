@@ -6,6 +6,10 @@ cms_core:
     resource: "@CmsCoreBundle/Resources/config/routing.yml"
     prefix:   /
 
+cms_app:
+    resource: "@CmsCoreBundle/Resources/config/routing_app.yml"
+    prefix:   /app
+
 cms_api_v1:
     resource: "@CmsCoreBundle/Resources/config/routing_api.yml"
     prefix:   /api/v1/

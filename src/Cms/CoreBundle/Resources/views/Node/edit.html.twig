@@ -364,7 +364,7 @@
     <input type="hidden" id="state" value="{{ node.state|default('draft') }}"/>
     <input type="hidden" id="base-url" value="{{ app.request.baseUrl }}"/>
     <input type="hidden" id="save-path" value="{{ path('cms_core.node_save') }}" />
-    <input type="hidden" id="edit-path" value="{{ app.request.baseUrl }}/node">
+    <input type="hidden" id="edit-path" value="{{ app.request.baseUrl }}/app/node">
     <input type="hidden" id="delete-path" value="{{ path('cms_core.node_delete') }}"/>
     <input type="hidden" id="read-content-type-path" value="{{ path('cms_core.contentType_read', {'siteId':site.id, 'id':contentType.id}) }}"/>
     <input type="hidden" id="add-category-path" value="{{ path('cms_core.contentType_addCategory') }}"/>
