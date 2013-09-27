@@ -27,18 +27,6 @@
 {% endblock %}
 
 {% block classicNavPrimary %}
-<div class="modal fade hide" id="support-modal">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4>
-            Contact Us
-        </h4>
-    </div>
-    <div class="modal-body">
-        <p>Please direct all customer support inquires to:</p>
-        <p><b>333-333-3333</b></p>
-    </div>
-</div>
 <nav class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="container">
@@ -46,7 +34,7 @@
             <div class="nav-collapse collapse" id="nav-collapse-01">
                 <ul class="nav">
                     {% if site is defined %}
-                    <li class="brand">
+                    <li class="brand" style="width:135px;">
                         <a href="{{ path('cms_core.site_read', {'id': site.id}) }}"><img src="" alt="" width="120" height="12.75"/></a>
                     </li>
                     {% endif %}
@@ -69,10 +57,9 @@
                             Support
                         </a>
                         <ul>
-                            <li><a href="#developerDocs">API Documentation</a></li>
-                            <li><a href="#contentHelp">Content Help</a></li>
-                            <li><a href="mailto:support@pipestack.com">Email Us</a></li>
-                            <li><a href="#support-modal" data-toggle="modal">Call Us</a></li>
+                            <li><a href="#contentHelp">Help</a></li>
+                            <li><a href="#developerDocs">API Docs</a></li>
+                            <li><a href="mailto:support@pipestack.com">Email Support</a></li>
                         </ul>
                     </li>
                     <li>

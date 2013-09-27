@@ -36,6 +36,11 @@ cms_core.help:
   defaults: { _controller: CmsCoreBundle:Help:index }
   methods: [GET]
 
+#developers
+cms_core.developers:
+  pattern: /developers
+  defaults: { _controller: CmsCoreBundle:Developers:index }
+  methods: [GET]
 
 #app
 cms_core.app_index:

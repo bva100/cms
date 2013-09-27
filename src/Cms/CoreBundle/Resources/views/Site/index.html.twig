@@ -29,50 +29,50 @@
         </div>
     </div>
     <div class="row-fluid row-holder">
-        <div class="span6">
+        <div class="span6 holder-container" data-href="{{ path('cms_core.types_readAll', {'siteId':site.id}) }}">
             <div class="holder">
-                <i class="icon-book icon-2x"></i>
-                <h3>Content</h3>
-                <p>You can do something great on the dashboard here. Bacon ex doner, aliqua veniam chicken ullamco tail tri-tip anim dolore est pork belly filet mignon andouille.</p>
+                <i class="icon-pushpin icon-2x"></i>
+                <h3>Content Types</h3>
+                <p>Create and manage your custom content types here. After creating a new content type it will automatically appear in the left navigation bar underneath the Dashboard link.</p>
             </div>
         </div>
-        <div class="span6">
+        <div class="span6 holder-container" data-href="{{ path('cms_core.media_readAll', {'siteId':site.id}) }}">
             <div class="holder">
                 <i class="icon-camera-retro icon-2x"></i>
                 <h3>Media</h3>
-                <p>You can do something else great on the dashboard here.  Proident laboris et adipisicing kielbasa pork chop Consectetur velit flank tri-tip officia doner pork belly</p>
+                <p>Manage all of your media here. Media uploaded through PipeStack gets automatically distributed through a powerful CDN which keeps things moving at a blazing fast pace.</p>
             </div>
         </div>
     </div>
     <div class="row-fluid row-holder">
-        <div class="span6">
+        <div class="span6 holder-container" data-href={{ path('cms_core.help') }}>
             <div class="holder">
-                <i class="icon-eye-open icon-2x"></i>
-                <h3>Themes</h3>
-                <p>Click on this very cool thing and something very cool will happen. Et pancetta irure, cillum ball tip esse ham hock aDolore capicola ex turducken id.</p>
+                <i class="icon-question-sign icon-2x"></i>
+                <h3>Get Help</h3>
+                <p>Find answers to your questions related to creating and managing content. Administrators can learn how to setup access control lists and manage user groups.</p>
             </div>
         </div>
-        <div class="span6">
+        <div class="span6 holder-container" data-href="{{ path('cms_core.developers') }}">
             <div class="holder">
-                <i class="icon-list icon-2x"></i>
-                <h3>Menus</h3>
-                <p>Click on this very cool thing and something very cool will happen. Chuck officia bresaola ut aliqua, meatball deserunt corned beef turducken ut mollit cow non</p>
+                <i class="icon-book icon-2x"></i>
+                <h3>Api Docs</h3>
+                <p>View the developer documentation for the web API. Learn how to turn the content you've saved in PipeStack into a compelling web app or jQuery Mobile app.</p>
             </div>
         </div>
     </div>
     <div class="row-fluid row-holder">
-        <div class="span6">
+        <div class="span6 holder-container" data-href="{{ path('cms_core.site_userGroupsReadAll', {'siteId': site.id}) }}">
             <div class="holder">
                 <i class="icon-group icon-2x"></i>
-                <h3>Users</h3>
-                <p>You can do something great on the dashboard here. Bacon ex doner, aliqua veniam chicken ullamco tail tri-tip anim dolore est pork belly filet mignon andouille.</p>
+                <h3>User Groups</h3>
+                <p>Grant access to new {{ site.name|title }} content writers and managers. Update the admins and ensure that your security is top notch through access control lists. </p>
             </div>
         </div>
-        <div class="span6" id="api-explorer">
+        <div class="span6 holder-container" data-href="{{ path('cms_core.site_settings', {'siteId': site.id}) }}">
             <div class="holder">
-                <i class="icon-magic icon-2x"></i>
-                <h3>API Explorer</h3>
-                <p>You can do something else great on the dashboard here.  Proident laboris et adipisicing kielbasa pork chop Consectetur velit flank tri-tip officia doner pork belly</p>
+                <i class="icon-cog icon-2x"></i>
+                <h3>Settings</h3>
+                <p>Get your Client Id, Client Secret and App Access Tokens here. Add and remove new domain names associated with {{ site.name|title }}. Settings also allows you to close your account and purge your data.</p>
             </div>
         </div>
     </div>
