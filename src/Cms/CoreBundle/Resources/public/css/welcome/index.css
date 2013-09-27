@@ -14,6 +14,7 @@ body {
     position: relative;
     top: 3px;
     margin-left: 20px;
+    font-weight: 600;
 }
 #primary-content {
     padding-top: 30px;
