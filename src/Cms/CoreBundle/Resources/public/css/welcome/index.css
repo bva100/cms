@@ -8,6 +8,13 @@ body {
 #topnav-container {
     background-color: #ECF0F1;
 }
+.topnav-anchor{
+    color: #2C3E50;
+    text-decoration: none;
+    position: relative;
+    top: 3px;
+    margin-left: 20px;
+}
 #primary-content {
     padding-top: 30px;
     background-color: #2C3E50;
