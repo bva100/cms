@@ -9,7 +9,11 @@
     {% endjavascripts %}
 {% endblock %}
 
-{% block title %}PipeStack CMS | Welcome{% endblock %}
+{% block title %}PipeStack CMS Backend Service | Welcome{% endblock %}
+
+{% block metatags %}
+    <meta name="description" content="PipeStack is a backend content management service used to create astonishing Web and jQuery Mobile Apps in no time. PipeStack is fast, scalable, easy to use.">
+{% endblock %}
 
 {% block body %}
 <div id='topnav-container'>
@@ -52,7 +56,7 @@
             </section>
             <section class="span4">
                 <div class="tile" id="mobile-tile">
-                    <h2>Mobile Ready</h2>
+                    <h2>jQuery Mobile</h2>
                     <i class="icon-tablet icon-4x"></i>
                     <p>PipeStack is well suited to power your jQuery Mobile app's backend. We help you deliver the best user experience through fast load times and low overhead.</p>
                 </div>
@@ -183,8 +187,8 @@
         <footer class="row">
             <ul>
                 <li><a href="#about">about</a></li>
-                <li><a href="#jobs">jobs</a></li>
-                <li><a href="#contact">contact</a></li>
+                <li><a href="{{ path('cms_core.developers') }}">docs</a></li>
+                <li><a href="mailto:support@pipestack.com">contact</a></li>
                 <li><a href="#features">testimonial</a></li>
                 <li><a href="#blog">blog</a></li>
             </ul>
