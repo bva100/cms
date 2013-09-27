@@ -44,29 +44,29 @@ h2.tile-title {
 .icon-bolt-hover {
     color: #F1C40F;
 }
-.icon-cloud-hover {
+.icon-globe-hover {
     color: #3498DB;
 }
-.icon-globe-hover {
+.icon-cloud-hover {
     color: #16A085;
 }
 .icon-magic-hover {
     color: #8E44AD;
 }
 .icon-cog-hover {
-    color: #2ECC71;
+    color: #C0392B;
 }
 .icon-heart-hover {
-    color: #C0392B;
+    color: #2ECC71;
 }
 .icon-tablet-hover {
     color: #E67E22;
 }
 .icon-sitemap-hover {
-    color: #16A085;
+    color: #2980B9;
 }
 .icon-thumbs-up-hover {
-    color: #2980B9;
+    color: #16A085;
 }
 #testimonials {
     padding-top: 20px;
