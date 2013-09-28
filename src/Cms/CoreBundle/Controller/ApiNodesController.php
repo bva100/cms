@@ -112,26 +112,5 @@ class ApiNodesController extends ApiBaseController {
         $response->setStatusCode(204);
         return $response;
     }
-
-
-
-    public function tokenAction()
-    {
-        // resets secret and offers token for a client id
-        $clientId = $this->getRequest()->query->get('clientId');
-        $secret = $this->get('access_token')->createSecret();
-        
-        $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($clientId);
-        if ( ! $site ){
-            throw $this->createNotFoundException('site with id '.$clientId.' not found');
-        }
-        $site->setClientSecret($secret);
-        $success = $this->get('persister')->save($site);
-        if ( ! $success ){
-            throw new \Exception('not able to update client secret');
-        }
-        $token = $this->get('access_token')->createToken($clientId, $secret);
-        return new Response('the new token is <br> '.$token);
-    }
     
 }
