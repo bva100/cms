@@ -65,9 +65,9 @@ doctrine:
 doctrine_mongodb:
     connections:
         default:
-            server: mongodb://brian:bubbaloo3658@lafleur.mongohq.com:10034/prod
+            server: mongodb://brian:bubbaloo3658@candidate.5.mongolayer.com:10152/production
             options: {}
-    default_database: prod
+    default_database: production
     document_managers:
         default:
             auto_mapping: true

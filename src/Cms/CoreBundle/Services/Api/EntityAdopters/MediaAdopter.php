@@ -34,7 +34,6 @@ class MediaAdopter extends AbstractAdopter {
     {
         $obj = new stdClass;
         $this->addObjProperty($obj, 'id', $fields);
-        $this->addObjProperty($obj, 'filename', $fields);
         $this->addObjProperty($obj, 'storage', $fields);
         $this->addObjProperty($obj, 'url', $fields);
         $this->addObjProperty($obj, 'mime', $fields);
