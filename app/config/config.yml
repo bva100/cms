@@ -52,12 +52,22 @@ doctrine:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
 
+#doctrine_mongodb:
+#    connections:
+#        default:
+#            server: mongodb://localhost:27017
+#            options: {}
+#    default_database: cms
+#    document_managers:
+#        default:
+#            auto_mapping: true
+
 doctrine_mongodb:
     connections:
         default:
-            server: mongodb://localhost:27017
+            server: mongodb://brian:bubbaloo3658@lafleur.mongohq.com:10034/prod
             options: {}
-    default_database: cms
+    default_database: prod
     document_managers:
         default:
             auto_mapping: true

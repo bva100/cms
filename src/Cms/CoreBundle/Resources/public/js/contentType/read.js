@@ -55,7 +55,7 @@ $('.btn-checkbox-action').on('click', function(){
             break;
         case 'edit':
             var id = ids.length == 1 ? ids[0] : ids[1] ;
-            window.location.href = baseUrl + '/node/'+id;
+            window.location.href = baseUrl + '/app/node/'+id;
             break;
         default:
             alert('action not found');

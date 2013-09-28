@@ -221,7 +221,7 @@
                                 {% if node.views['html'] is defined %}
                                     {{ node.views['html']|striptags|truncate(158) }}
                                     {% if node.views['html']|striptags|length > 158 %}
-                                        <a href="/{{ node.slug }}">read more</a>
+                                        <a href="{{ path('cms_core.node_read', {'siteId': site.id, 'id':node.id}) }}">read more</a>
                                     {% endif %}
                                 {% endif %}
                                 {#<div class="quick-action-container">#}
