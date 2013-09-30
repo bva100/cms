@@ -45,11 +45,7 @@ class ApiNodesController extends ApiBaseController {
 
     public function createV1Action($_format)
     {
-        $objectParams = $this->getRequest()->request->get('objectParams');
-        if ( ! $objectParams ){
-            throw new ApiException(20003, $_format, 'Creating a node requires the "objectParams" parameter. This is a json encoded array which sets property values to the new Node resource.');
-        }
-        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $objectArray = $this->decodeObjectParams($this->getRequest(), $_format);
         $objectArray['siteId'] = $this->get('access_token')->setToken($this->getAccessToken($_format))->getClientId();
         $node = $this->get('api_node_adopter')->setResource(new Node())->getFromArray($objectArray);
         $result = $this->get('persister')->setFlashBag(null)->save($node, false, 'node created', true);
@@ -98,11 +94,7 @@ class ApiNodesController extends ApiBaseController {
         if ( ! $node ){
             throw new ApiException(20002, $_format);
         }
-        $objectParams = $this->getRequest()->request->get('objectParams');
-        if ( ! $objectParams ){
-            throw new ApiException(20003, $_format, 'Updating a node requires the "objectParams" parameter. This is a json encoded array which sets new property values to the Node resource.');
-        }
-        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $objectArray = $this->decodeObjectParams($this->getRequest(), $_format);
         $updatedNode = $this->get('api_node_adopter')->setResource($node)->getFromArray($objectArray);
         $result = $this->get('persister')->setFlashBag(null)->save($updatedNode, false, 'node updated', true);
         if ( $result !== true ){

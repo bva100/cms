@@ -84,7 +84,7 @@ class NodeController extends Controller {
         }
         if ( $slug )
         {
-            if ( $slugPrefix )
+            if ( $slugPrefix AND ! $node->getSlug() )
             {
                 $slug = $slugPrefix.$slug;
             }

@@ -1,6 +1,14 @@
 body {
     font-size: 18px;
 }
+#logo-name {
+    font-size:50px;
+    position: relative;
+    top: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #2C3E50;
+}
 .row {
     margin-bottom: 20px;
     padding-bottom: 10px;

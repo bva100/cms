@@ -47,11 +47,7 @@ class ApiTypesController extends ApiBaseController {
 
     public function createV1Action($_format)
     {
-        $objectParams = $this->getRequest()->request->get('objectParams');
-        if ( ! $objectParams ){
-            throw new ApiException(40003, $_format, 'Creating a type requires the "objectParams" parameter. This is a json encoded array which sets property values to the new Type resource.');
-        }
-        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $objectArray = $this->decodeObjectParams($this->getRequest(), $_format);
         $objectArray['siteId'] = $this->get('access_token')->setToken($this->getAccessToken($_format))->getClientId();
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($objectArray['siteId']);
         $type = $this->get('api_contentType_adopter')->setResource(new ContentType())->getFromArray($objectArray);
@@ -94,11 +90,7 @@ class ApiTypesController extends ApiBaseController {
         if ( ! $type ){
             throw new ApiException(40002, $_format);
         }
-        $objectParams = $this->getRequest()->request->get('objectParams');
-        if ( ! $objectParams ){
-            throw new ApiException(40003, $_format, 'Updating a type requires the "objectParams" parameter. This is a json encoded array which sets property values to the new Type resource.');
-        }
-        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $objectArray = $this->decodeObjectParams($this->getRequest(), $_format);
         $updatedType = $this->get('api_contentType_adopter')->setResource($type)->getFromArray($objectArray);
         $result = $this->get('persister')->setFlashBag(null)->save($updatedType, false, 'type updated', true);
         if ( $result !== true ){

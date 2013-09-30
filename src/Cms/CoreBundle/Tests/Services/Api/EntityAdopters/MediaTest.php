@@ -50,7 +50,6 @@ class MediaTest extends \PHPUnit_Framework_TestCase {
         $adopter = new MediaAdopter();
         $adopter->setResource($this->media);
         $obj = $adopter->convert();
-        $this->assertEquals($obj->filename, $this->media->getFilename());
         $this->assertEquals($obj->storage, $this->media->getStorage());
         $this->assertEquals($obj->url, $this->media->getUrl());
         $this->assertEquals($obj->mime, $this->media->getMime());

@@ -40,11 +40,8 @@ class ApiMediaController extends ApiBaseController {
 
     public function createV1Action($_format)
     {
-        $objectParams = $this->getRequest()->request->get('objectParams');
-        if ( ! $objectParams ){
-            throw new ApiException(20003, $_format, 'Creating a Media resource requires the "objectParams" parameter. This is a json encoded array which sets property values to the new Media resource.');
-        }
-        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $objectArray = $this->decodeObjectParams($this->getRequest(), $_format);
+        $objectArray['siteId'] = $this->get('access_token')->setToken($this->getAccessToken($_format))->getClientId();
         $media = $this->get('api_media_adopter')->setResource(new Media())->getFromArray($objectArray);
         $media->setSiteId($this->get('access_token')->setToken($this->getAccessToken($_format))->getClientId());
         $result = $this->get('persister')->setFlashBag(null)->save($media, false, 'media created', true);
@@ -66,11 +63,7 @@ class ApiMediaController extends ApiBaseController {
         if ( ! $media ){
             throw new ApiException(50002, $_format);
         }
-        $objectParams = $this->getRequest()->request->get('objectParams');
-        if ( ! $objectParams ){
-            throw new ApiException(50003, $_format, 'Updating a Media resource requires the "objectParams" parameter. This is a json encoded array which updates the property values of the Media resource.');
-        }
-        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $objectArray = $this->decodeObjectParams($this->getRequest(), $_format);
         $updatedMedia = $this->get('api_media_adopter')->setResource($media)->getFromArray($objectArray);
         $result = $this->get('persister')->setFlashBag(null)->save($updatedMedia, false, 'media updated', true);
         if ( $result !== true ){

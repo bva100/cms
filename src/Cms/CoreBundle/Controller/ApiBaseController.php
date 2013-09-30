@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Cms\CoreBundle\Services\Api\ApiException;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Cms\CoreBundle\Services\Api\EntityAdopters;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApiBaseController extends Controller {
 
@@ -84,16 +85,22 @@ class ApiBaseController extends Controller {
         return $accessToken;
     }
 
-    public function decodeObjectParams($objectParams, $format)
+    public function decodeObjectParams(Request $request, $format)
     {
-        switch($format){
+        $content = $request->getContent();
+
+        switch($request->getContentType()){
             case 'json':
-            default:
-                if ( ! is_string($objectParams) ){
-                    throw new ApiException(10006, $format, 'the "objectParams" expects a json_encode string. '.ucfirst(gettype($objectParams)).' was passed.');
+            case 'application/json':
+                if ( ! is_string($content) ){
+                    throw new ApiException(10006, $format, 'the execute this request with content-type set to application/json, the content body must be a json encoded string. '.ucfirst(gettype($content)).' was passed.');
                 }
-                
-                return json_decode($objectParams, TRUE);
+                return json_decode($content, TRUE);
+                break;
+            default:
+
+                // THROW AN API EXCEPTION HERE: INVALID PARAMS
+
                 break;
         }
     }

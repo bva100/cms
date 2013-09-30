@@ -1,0 +1,55 @@
+{% extends "@CmsCore/Welcome/base.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@CmsCoreBundle/Resources/public/css/docs/base.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block title %}
+    PipeStack Help
+{% endblock %}
+
+{% block body %}
+    <div id='topnav-container'>
+        <div class="container">
+            <nav class="row">
+                {% block welcomeHeader %}
+                    {{  parent() }}
+                {% endblock %}
+            </nav>
+        </div>
+    </div>
+    <div class="container" id="primary-container">
+        <div class="row">
+            {#<div class="span3">#}
+                {#{% block nav %}#}
+                    {#<ul class="nav nav-list">#}
+                        {#<li class="nav-header">API Docs</li>#}
+                        {#<li class="{% if doc == 'intro' %}active{% endif %}"><a href="{{ path('cms_core.developers') }}">Introduction</a></li>#}
+                        {#<li class="{% if doc == 'basics' %}active{% endif %}"><a href="{{  path('cms_core.developers_basics') }}">Basics</a></li>#}
+                        {#<li class="{% if doc == 'responses' %}active{% endif %}"><a href="{{ path('cms_core.developers_responses') }}">Responses</a></li>#}
+                        {#<li class="{% if doc == 'exceptions' %}active{% endif %}"><a href="{{ path('cms_core.developers_exceptions') }}">Exceptions</a></li>#}
+                        {#<li class="nav-header">Endpoints</li>#}
+                        {#<li class="{% if doc == 'nodes' %}active{% endif %}"><a href="{{ path('cms_core.developers_endpoint_nodes') }}">Nodes</a></li>#}
+                        {#<li class="{% if doc == 'media' %}active{% endif %}"><a href="{{ path('cms_core.developers_endpoint_media') }}">Media</a></li>#}
+                        {#<li><br /></li>#}
+                    {#</ul>#}
+                {#{% endblock %}#}
+            {#</div>#}
+            {#<div class="span9" id="content-container">#}
+                {#{% block content %}#}
+                    {#<h1>{{ node.title }}</h1>#}
+                    {#{{ node.views.html|raw }}#}
+                {#{% endblock %}#}
+            {#</div>#}
+            <div class="span12">
+                <h1 style="text-align: center">Coming soon...</h1>
+                <p style="text-align: center">High quality help, tutorials and manuals are on their way. In the meantime please <a href="mailto:support@pipestack.com">email us</a> with any questions you might have.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

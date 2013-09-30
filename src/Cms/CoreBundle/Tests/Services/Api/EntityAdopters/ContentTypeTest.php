@@ -43,6 +43,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
         $obj->slugPrefix = 'woof/';
         $obj->fields = array('foo' => 'bar');
         $obj->created = time();
+        $obj->updated = null;
         $pretype = $this->contentType;
         $pretype->setName($obj->name)->setDescription($obj->description)->setSlugPrefix($obj->slugPrefix)->setFields($obj->fields)->setCreated($obj->created);
         $adopter = new ContentTypeAdopter();

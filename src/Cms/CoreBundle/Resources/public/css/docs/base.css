@@ -1,0 +1,45 @@
+#primary-container{
+    margin-top: 30px;
+}
+.nav-list {
+    margin-right: 45px;
+    border-radius: 3px;
+    border: 1px solid #BDC3C7;
+}
+.nav-list a{
+    text-decoration: none;
+}
+.nav-list > li.active > a,
+.nav-list > li.active > a:hover,
+.nav-list > li.active > a:focus{
+    background-color: #34495E;
+}
+h1 {
+    padding-bottom: 30px;
+    border-bottom: 1px solid #BDC3C7;
+}
+h2 {
+    margin: 30px 0px;
+    border-bottom: 1px solid #BDC3C7;
+}
+.doc-block, pre {
+    background-color: #ECF0F1;
+    padding: 20px;
+    margin: 20px 0px;
+    border-radius: 3px;
+    border: none;
+}
+#content-container li {
+    margin: 15px 0px;
+}
+#content-container li img {
+    margin: 15px 0px 0px;
+}
+#content-container table {
+    margin: 20px 0px;
+}
+.doc-json{
+    font-size: 15px;
+    font-family: 'Lato';
+    line-height: 22px;
+}

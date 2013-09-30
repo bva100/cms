@@ -120,6 +120,9 @@ class NodeAdopter extends AbstractAdopter {
         {
             $this->resource->setImage($image);
         }
+        if ( isset($state) ){
+            $this->resource->setState($state);
+        }
         $this->resource->setFormat( isset($format) ? $format : 'single' );
         return $this->resource;
     }

@@ -26,11 +26,7 @@ class ApiSitesController extends ApiBaseController {
     {
         extract($this->getDefaultVars($_format));
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($clientId);
-        $objectParams = $this->getRequest()->request->get('objectParams');
-        if ( ! $objectParams ){
-            throw new ApiException(30003, $_format, 'Updating a site requires the "objectParams" parameter. This is a json encoded array which sets new property values to the Site resource.');
-        }
-        $objectArray = $this->decodeObjectParams($objectParams, $_format);
+        $objectArray = $this->decodeObjectParams($this->getRequest(), $_format);
         $updatedSite = $this->get('api_site_adopter')->setResource($site)->getFromArray($objectArray);
         $result = $this->get('persister')->setFlashBag(null)->save($updatedSite, false, 'site updated', true);
         if ( $result !== true ){

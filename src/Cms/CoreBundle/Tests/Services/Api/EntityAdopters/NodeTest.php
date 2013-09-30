@@ -60,7 +60,6 @@ class NodeTest extends PhpUnit {
         $this->assertEquals($obj->locale, $this->node->getLocale());
         $this->assertEquals($obj->categories, $this->node->getCategories());
         $this->assertEquals($obj->tags, $this->node->getTags());
-        $this->assertEquals($obj->slug, $this->node->getSlug());
         $this->assertEquals($obj->title, $this->node->getTitle());
         $this->assertEquals($obj->description, $this->node->getDescription());
         $this->assertEquals($obj->metatags, $this->node->getMetatags());
@@ -77,14 +76,13 @@ class NodeTest extends PhpUnit {
      */
     public function testConvertWithFieldRestrictions()
     {
-        $fields = array('title', 'locale', 'slug');
+        $fields = array('title', 'locale', 'domain');
         $adopter = new NodeAdopter();
         $adopter->setResource($this->node);
         $obj = $adopter->convert($fields);
         $this->assertCount(3, get_object_vars($obj));
         $this->assertEquals($obj->title, $this->node->getTitle());
         $this->assertEquals($obj->locale, $this->node->getLocale());
-        $this->assertEquals($obj->slug, $this->node->getSlug());
     }
 
     /**
@@ -108,6 +106,7 @@ class NodeTest extends PhpUnit {
         $fields = array('customFoo' => 'customBar');
         $author = array('firstName' => 'foo', 'lastName' => 'bar');
         $image = 'http://foobar.com/image.png';
+        $state = 'active';
         $objectParams = array(
             'domain' => $domain,
             'locale' => $locale,
@@ -121,6 +120,7 @@ class NodeTest extends PhpUnit {
             'fields' => $fields,
             'author' => $author,
             'image' => $image,
+            'state' => $state,
         );
         $node = $adopter->getFromArray($objectParams);
         $views['text'] = 'foo bar paragraph';
@@ -138,6 +138,7 @@ class NodeTest extends PhpUnit {
         $this->assertEquals($node->getAuthor(), $author);
         $this->assertEquals($node->getImage(), $image);
         $this->assertEquals($node->getFormat(), 'single');
+        $this->assertEquals($node->getState(), $state);
     }
     
 }

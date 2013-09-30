@@ -218,7 +218,9 @@ class User implements UserInterface, \Serializable{
      */
     public function addRole($role)
     {
-        $this->roles[] = $role;
+        if ( is_string($role) AND ! in_array($role, $this->roles) ){
+            $this->roles[] = $role;
+        }
         return $this;
     }
 

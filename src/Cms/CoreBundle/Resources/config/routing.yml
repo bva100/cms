@@ -41,3 +41,28 @@ cms_core.developers:
   pattern: /developers
   defaults: { _controller: CmsCoreBundle:Developers:index }
   methods: [GET]
+
+cms_core.developers_basics:
+  pattern: /developers/basics
+  defaults: { _controller: CmsCoreBundle:Developers:basics }
+  methods: [GET]
+
+cms_core.developers_responses:
+  pattern: /developers/responses
+  defaults: { _controller: CmsCoreBundle:Developers:responses }
+  methods: [GET]
+
+cms_core.developers_exceptions:
+  pattern: /developers/exceptions
+  defaults: { _controller: CmsCoreBundle:Developers:exceptions }
+  methods: [GET]
+
+cms_core.developers_endpoint_nodes:
+  pattern: /developers/endpoint/nodes
+  defaults: { _controller: CmsCoreBundle:Developers:endpointNodes }
+  methods: [GET]
+
+cms_core.developers_endpoint_media:
+  pattern: /developers/endpoint/media:
+  defaults: { _controller: CmsCoreBundle:Developers:endpointMedia }
+  methods: [GET]
