@@ -71,3 +71,8 @@ cms_core.developers_endpoint_types:
   pattern: /developers/endpoint/types
   defaults: { _controller: CmsCoreBundle:Developers:endpointTypes }
   methods: [GET]
+
+cms_core.developers_endpoint_sites:
+  pattern: /developers/endpoint/sites
+  defaults: { _controller: CmsCoreBundle:Developers:endpointSites }
+  methods: [GET]

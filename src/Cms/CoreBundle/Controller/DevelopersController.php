@@ -43,6 +43,11 @@ class DevelopersController extends Controller {
         return $this->renderNode('types');
     }
 
+    public function endpointSitesAction()
+    {
+        return $this->renderNode('sites');
+    }
+
     public function renderNode($docName)
     {
         $pipestack = \PipeStackFactory::build('Prod');
