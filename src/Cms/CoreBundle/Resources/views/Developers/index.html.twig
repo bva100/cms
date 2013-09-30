@@ -47,6 +47,10 @@
                         <li class="{% if doc == 'media' %}active{% endif %}"><a href="{{ path('cms_core.developers_endpoint_media') }}">Media</a></li>
                         <li class="{% if doc == 'types' %}active{% endif %}"><a href="{{ path('cms_core.developers_endpoint_types') }}">Types</a></li>
                         <li class="{% if doc == 'site' %}active{% endif %}"><a href="{{ path('cms_core.developers_endpoint_sites') }}">Sites</a></li>
+                        <li class="nav-header">SDKs</li>
+                        <li class="{% if doc == 'sdk/php' %}active{% endif %}"><a href="{{ path('cms_core.developers_sdk_php') }}">PHP</a></li>
+                        <li class="nav-header">Demo</li>
+                        <li class="{% if doc == 'demos' %}active{% endif %}"><a href="{{ path('cms_core.developers_demos') }}">Demos</a></li>
                         <li><br /></li>
                     </ul>
                 {% endblock %}

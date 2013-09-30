@@ -76,3 +76,13 @@ cms_core.developers_endpoint_sites:
   pattern: /developers/endpoint/sites
   defaults: { _controller: CmsCoreBundle:Developers:endpointSites }
   methods: [GET]
+
+cms_core.developers_sdk_php:
+  pattern: /developers/sdk/php
+  defaults: { _controller: CmsCoreBundle:Developers:sdkPhp }
+  methods: [GET]
+
+cms_core.developers_demos:
+  pattern: /developers/demos
+  defaults: { _controller: CmsCoreBundle:Developers:demos }
+  methods: [GET]

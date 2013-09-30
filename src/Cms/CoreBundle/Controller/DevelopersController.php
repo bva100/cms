@@ -48,6 +48,16 @@ class DevelopersController extends Controller {
         return $this->renderNode('sites');
     }
 
+    public function sdkPhpAction()
+    {
+        return $this->renderNode('sdk/php');
+    }
+
+    public function demosAction()
+    {
+        return $this->renderNode('demos');
+    }
+
     public function renderNode($docName)
     {
         $pipestack = \PipeStackFactory::build('Prod');
