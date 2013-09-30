@@ -11,8 +11,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {#<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>#}
-    <script src="/dependencies/jqueryui-1.10.3.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    {#<script src="/dependencies/jqueryui-1.10.3.min.js"></script>#}
 {% endblock %}
 
 {% block notices %}
@@ -53,12 +53,12 @@
                         <a href="{{ path('cms_core.app_index') }}">Switch Sites</a>
                     </li>
                     <li>
-                        <a href="#support">
+                        <a href="{{ path('cms_core.developers') }}">
                             Support
                         </a>
                         <ul>
-                            <li><a href="#contentHelp">Help</a></li>
-                            <li><a href="#developerDocs">API Docs</a></li>
+                            <li><a href="{{ path('cms_core.help') }}">Help</a></li>
+                            <li><a href="{{ path('cms_core.developers') }}">API Docs</a></li>
                             <li><a href="mailto:support@pipestack.com">Email Support</a></li>
                         </ul>
                     </li>
