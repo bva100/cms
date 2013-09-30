@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block title %}
-    PipeStack API Intro
+    PipeStack API {{ doc|title }}
 {% endblock %}
 
 {% block body %}
@@ -45,6 +45,7 @@
                         <li class="nav-header">Endpoints</li>
                         <li class="{% if doc == 'nodes' %}active{% endif %}"><a href="{{ path('cms_core.developers_endpoint_nodes') }}">Nodes</a></li>
                         <li class="{% if doc == 'media' %}active{% endif %}"><a href="{{ path('cms_core.developers_endpoint_media') }}">Media</a></li>
+                        <li class="{% if doc == 'types' %}active{% endif %}"><a href="{{ path('cms_core.developers_endpoint_types') }}">Types</a></li>
                         <li><br /></li>
                     </ul>
                 {% endblock %}

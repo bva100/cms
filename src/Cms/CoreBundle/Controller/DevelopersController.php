@@ -38,6 +38,11 @@ class DevelopersController extends Controller {
         return $this->renderNode('media');
     }
 
+    public function endpointTypesAction()
+    {
+        return $this->renderNode('types');
+    }
+
     public function renderNode($docName)
     {
         $pipestack = \PipeStackFactory::build('Prod');
@@ -48,7 +53,6 @@ class DevelopersController extends Controller {
         }
         $nodes = $response->nodes;
         return $this->render('CmsCoreBundle:Developers:index.html.twig', array('node' => $nodes[0], 'doc' => $docName));
-
     }
 
 }

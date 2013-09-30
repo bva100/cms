@@ -63,6 +63,11 @@ cms_core.developers_endpoint_nodes:
   methods: [GET]
 
 cms_core.developers_endpoint_media:
-  pattern: /developers/endpoint/media:
+  pattern: /developers/endpoint/media
   defaults: { _controller: CmsCoreBundle:Developers:endpointMedia }
+  methods: [GET]
+
+cms_core.developers_endpoint_types:
+  pattern: /developers/endpoint/types
+  defaults: { _controller: CmsCoreBundle:Developers:endpointTypes }
   methods: [GET]
