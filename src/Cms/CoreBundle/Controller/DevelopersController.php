@@ -41,7 +41,11 @@ class DevelopersController extends Controller {
     public function renderNode($docName)
     {
         $pipestack = \PipeStackFactory::build('Prod');
-        $response = $pipestack->get('nodes?slug=docs/'.$docName);
+        try{
+            $response = $pipestack->get('nodes?slug=docs/'.$docName);
+        }catch(\PipeStackException $e){
+            throw new \Exception($e->getMessage());
+        }
         $nodes = $response->nodes;
         return $this->render('CmsCoreBundle:Developers:index.html.twig', array('node' => $nodes[0], 'doc' => $docName));
 
