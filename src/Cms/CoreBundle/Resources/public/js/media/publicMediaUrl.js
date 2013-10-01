@@ -3,10 +3,8 @@ function getPublicMediaUrl(){
     switch(abbrHostname){
         case 'dev':
         case 'localhost':
-            return 'http://d10nuh33ml191h.cloudfront.net/';
-            break;
         default:
-            return '';
+            return 'http://d10nuh33ml191h.cloudfront.net/';
             break;
     }
 }
