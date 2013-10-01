@@ -10,11 +10,6 @@ cms_app:
     resource: "@CmsCoreBundle/Resources/config/routing_app.yml"
     prefix:   /app
 
-cms_api_v1_subdomain:
-    host: "api.pipestack.com"
-    resource: "@CmsCoreBundle/Resources/config/routing_api.yml"
-    prefix:   /v1/
-
 cms_api_v1:
     resource: "@CmsCoreBundle/Resources/config/routing_api.yml"
     prefix:   /api/v1/
