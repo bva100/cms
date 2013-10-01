@@ -14,7 +14,7 @@ class ProdPipeStackConfig extends AbstractPipeStackConfig {
 
     protected $format = 'json';
 
-    protected $hostname = 'pipestack.com/api';
+    protected $hostname = 'api.pipestack.com';
 
     protected $timeout = 20;
 
