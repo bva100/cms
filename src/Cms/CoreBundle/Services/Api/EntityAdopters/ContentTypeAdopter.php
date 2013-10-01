@@ -39,6 +39,8 @@ class ContentTypeAdopter extends AbstractAdopter {
         $this->addObjProperty($obj, 'description', $fields);
         $this->addObjProperty($obj, 'slugPrefix', $fields);
         $this->addObjProperty($obj, 'fields', $fields);
+        $this->addObjProperty($obj, 'categories', $fields);
+        $this->addObjProperty($obj, 'tags', $fields);
         $this->addObjProperty($obj, 'created', $fields);
         $this->addObjProperty($obj, 'updated', $fields);
         if ( isset($obj->id) ){
