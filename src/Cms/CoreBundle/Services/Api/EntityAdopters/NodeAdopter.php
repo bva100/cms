@@ -56,6 +56,7 @@ class NodeAdopter extends AbstractAdopter {
         $obj = $this->addObjProperty($obj, 'metatags', $fields);
         $obj = $this->addObjProperty($obj, 'fields', $fields);
         $obj = $this->addObjProperty($obj, 'author', $fields);
+        $obj = $this->addObjProperty($obj, 'slug', $fields);
         $obj = $this->addObjProperty($obj, 'image', $fields);
         $obj = $this->addObjProperty($obj, 'created', $fields);
         $obj = $this->addObjProperty($obj, 'updated', $fields);
