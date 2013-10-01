@@ -17,7 +17,7 @@ cms_app:
 cms_api_v1:
     resource: "@CmsCoreBundle/Resources/config/routing_api.yml"
     host:     api.{domain}
-    prefix:   /v1/
+    prefix:   v1/
     requirements:
         domain: %domain%
 
