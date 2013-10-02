@@ -86,3 +86,8 @@ cms_core.developers_demos:
   pattern: /developers/demos
   defaults: { _controller: CmsCoreBundle:Developers:demos }
   methods: [GET]
+
+cms_core.developers_tutorial_jqm:
+  pattern: /developers/tutorial/jquery-mobile
+  defaults: { _controller: CmsCoreBundle:Developers:tutorialJqm }
+  methods: [GET]

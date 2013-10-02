@@ -58,6 +58,11 @@ class DevelopersController extends Controller {
         return $this->renderNode('demos');
     }
 
+    public function tutorialJqmAction()
+    {
+        return $this->renderNode('jquery-mobile');
+    }
+
     public function renderNode($docName)
     {
         $pipestack = \PipeStackFactory::build('Prod');

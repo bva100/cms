@@ -3,18 +3,18 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
-        '@CmsCoreBundle/Resources/public/css/docs/base.css'
-        filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}"/>
+    '@CmsCoreBundle/Resources/public/css/docs/base.css'
+    filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
-        '@CmsCoreBundle/Resources/public/js/docs/base.js'
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+    '@CmsCoreBundle/Resources/public/js/docs/base.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
@@ -51,6 +51,8 @@
                         <li class="{% if doc == 'sdk/php' %}active{% endif %}"><a href="{{ path('cms_core.developers_sdk_php') }}">PHP</a></li>
                         <li class="nav-header">Demo</li>
                         <li class="{% if doc == 'demos' %}active{% endif %}"><a href="{{ path('cms_core.developers_demos') }}">Demos</a></li>
+                        <li class="nav-header">Tutorials</li>
+                        <li class="{% if doc == 'jquery-mobile' %}active{% endif %}"><a href="{{ path('cms_core.developers_tutorial_jqm') }}">jQuery Mobile</a></li>
                         <li><br /></li>
                     </ul>
                 {% endblock %}
