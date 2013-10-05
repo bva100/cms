@@ -19,14 +19,9 @@ _welcome:
   defaults: { _controller: CmsCoreBundle:Welcome:index }
   methods: [GET]
 
-welcome.about:
-  pattern: /about
-  defaults: { _controller: CmsCoreBundle:Welcome:about }
-  methods: [GET]
-
-welcome.about_slides:
-  pattern: /about/slides
-  defaults: { _controller: CmsCoreBundle:Welcome:aboutSlides }
+welcome.cloud_baas:
+  pattern: /cloud-baas
+  defaults: { _controller: CmsCoreBundle:Welcome:cloudBaas }
   methods: [GET]
 
 #app help

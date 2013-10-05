@@ -23,19 +23,14 @@ class WelcomeController extends Controller {
         return $this->render('CmsCoreBundle:Welcome:index.html.twig');
     }
 
+    public function cloudBaasAction()
+    {
+        return $this->render('CmsCoreBundle:Welcome:cloudBaas.html.twig');
+    }
+
     public function signupAction()
     {
         return $this->render('CmsCoreBundle:Welcome:signup.html.twig');
-    }
-
-    public function aboutAction()
-    {
-        return $this->render('CmsCoreBundle:Welcome:about.html.twig');
-    }
-
-    public function aboutSlidesAction()
-    {
-        return $this->render('CmsCoreBundle:Welcome:aboutSlides.html.twig');
     }
 
 }
