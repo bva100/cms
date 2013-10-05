@@ -39,6 +39,11 @@ welcome.wordpress:
   defaults: { _controller: CmsCoreBundle:Welcome:wordpress }
   methods: [GET]
 
+welcome.joomla:
+  pattern: /joomla
+  defaults: { _controller: CmsCoreBundle:Welcome:joomla }
+  methods: [GET]
+
 #app help
 cms_core.help:
   pattern: /help

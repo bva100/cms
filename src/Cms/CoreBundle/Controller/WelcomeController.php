@@ -43,6 +43,11 @@ class WelcomeController extends Controller {
         return $this->render('CmsCoreBundle:Welcome:wordpress.html.twig');
     }
 
+    public function joomlaAction()
+    {
+        return $this->render('CmsCoreBundle:Welcome:joomla.html.twig');
+    }
+
     public function signupAction()
     {
         return $this->render('CmsCoreBundle:Welcome:signup.html.twig');
