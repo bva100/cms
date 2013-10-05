@@ -29,6 +29,10 @@ welcome.backend_cms:
   defaults: { _controller: CmsCoreBundle:Welcome:backendCms }
   methods: [GET]
 
+welcome.faster_load_time:
+  pattern: /faster-load-time
+  defaults: { _controller: CmsCoreBundle:Welcome:fasterLoadTime }
+  methods: [GET]
 
 #app help
 cms_core.help:

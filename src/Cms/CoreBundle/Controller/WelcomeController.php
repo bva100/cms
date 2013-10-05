@@ -33,6 +33,11 @@ class WelcomeController extends Controller {
         return $this->render('CmsCoreBundle:Welcome:backendCms.html.twig');
     }
 
+    public function fasterLoadTimeAction()
+    {
+        return $this->render('CmsCoreBundle:Welcome:fasterLoadTime.html.twig');
+    }
+
     public function signupAction()
     {
         return $this->render('CmsCoreBundle:Welcome:signup.html.twig');

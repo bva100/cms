@@ -1,0 +1,174 @@
+{% extends 'CmsCoreBundle:Welcome:base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/welcome/index.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block title %}Cloud BaaS {{  parent() }}{% endblock %}
+
+{% block metatags %}
+    <meta name="description" content="PipeStack is a backend content management service used to create astonishing Web and jQuery Mobile Apps in no time. PipeStack is fast, scalable, easy to use.">
+{% endblock %}
+
+{% block body %}
+    <div id='topnav-container'>
+        <div class="container">
+            <nav class="row">
+                {% block welcomeHeader %}
+                    {{  parent() }}
+                {% endblock %}
+            </nav>
+        </div>
+    </div>
+    <div id="primary-content">
+        <div class="container">
+            <section class="row">
+                <div id='primary-image-wrapper' class="span6 hidden-phone">
+                    <img src="/flat-ui/images/imac.png" alt="PipeStack CMS" width="570" height="472"/>
+                </div>
+                <div class="span6">
+                    <h1 id='primary-header' style="font-size: 51px; line-height: 50px;">Faster Load Times <br /> For Your CMS</h1>
+                    <div class="visible-phone" id="mobile-imac-container">
+                        <img src="/flat-ui/images/imac.png" alt="PipeStack CMS" width="300" height="248"/>
+                    </div>
+                    <p style="padding: 20px 24px;">
+                        PipeStack is a powerful and scalable system that helps your content management system load fast. With PipeStack, you can easily add a scalable and powerful backend to your current CMS. Lower your costs by dropping traditional CMS hosting solutions and increase revenue by ensuing faster load times for all of your visitors today.
+                    </p>
+                    <a href="{{ path('cms_core.user_register') }}" id="primary-cta" class="btn btn-xlarge btn-danger" style="margin-top: 30px;">Try It Today For Free</a>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="features">
+        <div class="container">
+            <div class="row">
+                <section class="span4">
+                    <div class="tile" id='fast-tile'>
+                        <h2>Lightening Fast</h2>
+                        <i class="icon-bolt icon-4x"></i>
+                        <p>Our backend service provides significantly faster load times for your CMS. We accomplish this by using high tech, cutting edge database and server technology.</p>
+                    </div>
+                </section>
+                <section class="span4">
+                    <div class="tile" id="multilingual-tile">
+                        <h2>Cloud Management</h2>
+                        <i class="icon-cloud icon-4x"></i>
+                        <p>Our service is managed in the cloud so you'll never have to worry about creating servers, setting up databases or tweaking performance. We take care of that for you.</p>
+                    </div>
+                </section>
+                <section class="span4">
+                    <div class="tile" id="cog-tile">
+                        <h2>Scalable</h2>
+                        <i class="icon-cog icon-4x"></i>
+                        <p>The secret to PipeStack's service lies in it's incredibly scalable system. And, scalability is the key to handling more traffic while achieving faster load times for your visitors.</p>
+                    </div>
+                </section>
+            </div>
+            <div class="row">
+                <section class="span4">
+                    <div class="tile" id="easy-to-use-tile">
+                        <h2>Easy Integration</h2>
+                        <i class="icon-thumbs-up icon-4x"></i>
+                        <p>We make integration with your current CMS easy by setting up a backend link for you. Using our API you can get up and running with the PipeStack solution today.</p>
+                    </div>
+                </section>
+                <section class="span4">
+                    <div class="tile" id="mobile-tile">
+                        <h2>Media Delivery</h2>
+                        <i class="icon-camera-retro icon-4x"></i>
+                        <p>Not only does our service achieve faster load times for you data, but it also achieves faster load times for your media. Load your images, video and music quickly.</p>
+                    </div>
+                </section>
+                <section class="span4">
+                    <div class="tile" id="api-tile">
+                        <h2>RESTful API</h2>
+                        <i class="icon-magic icon-4x"></i>
+                        <p>Our service is delivered through a sleek web API. The interface is intuitive which means you'll be up and running in no time. Checkout the <a href="{{ path('cms_core.developers') }}">docs</a>.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <section id="testimonials">
+        <div class="container">
+            {#<div class="row row-title">#}
+            {#<div class="span12">#}
+            {#<h2>Who's Talking About PipeStack?</h2>#}
+            {#</div>#}
+            {#</div>#}
+            {#<div class="row row-top">#}
+            {#<div class="quote-block">#}
+            {#<div class="span2">#}
+            {#<img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>#}
+            {#</div>#}
+            {#<div class="span4">#}
+            {#<blockquote>#}
+            {#<i class="icon-quote-right icon-2x pull-right"></i>#}
+            {#<span class=''>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</span>#}
+            {#<small class="pull-right">Brian Anderson, <cite title="Source Title">CEO Ovooko</cite></small>#}
+            {#</blockquote>#}
+            {#</div>#}
+            {#</div>#}
+            {#<div class="quote-block">#}
+            {#<div class="span2">#}
+            {#<img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>#}
+            {#</div>#}
+            {#<div class="span4">#}
+            {#<blockquote>#}
+            {#<i class="icon-quote-right icon-2x pull-right"></i>#}
+            {#<span class=''>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</span>#}
+            {#<small class="pull-right">Brian Anderson, <cite title="Source Title">CEO Ovooko</cite></small>#}
+            {#</blockquote>#}
+            {#</div>#}
+            {#</div>#}
+            {#</div>#}
+            {#<div class="row">#}
+            {#<div class="quote-block">#}
+            {#<div class="span2">#}
+            {#<img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>#}
+            {#</div>#}
+            {#<div class="span4">#}
+            {#<blockquote>#}
+            {#<i class="icon-quote-right icon-2x pull-right"></i>#}
+            {#<span class=''>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</span>#}
+            {#<small class="pull-right">Brian Anderson, <cite title="Source Title">CEO Ovooko</cite></small>#}
+            {#</blockquote>#}
+            {#</div>#}
+            {#</div>#}
+            {#<div class="quote-block">#}
+            {#<div class="span2">#}
+            {#<img src="{{ asset('testimonial-profile-brian.png') }}" alt="testimonial-brian" class="img-circle pull-right" width="125" height="125"/>#}
+            {#</div>#}
+            {#<div class="span4">#}
+            {#<blockquote>#}
+            {#<i class="icon-quote-right icon-2x pull-right"></i>#}
+            {#<span class=''>Swine ball tip corned beef, salami venison chicken bres aola beef pork chop short ribs turkey brisket meat loaf shoulder tongue. Andouille shank turkey shoulder jowla oaf.</span>#}
+            {#<small class="pull-right">Brian Anderson, <cite title="Source Title">CEO Ovooko</cite></small>#}
+            {#</blockquote>#}
+            {#</div>#}
+            {#</div>#}
+            {#</div>#}
+        </div>
+    </section>
+    {% block signupBlocks %}
+        {{ parent() }}
+    {% endblock %}
+    <div id="footer">
+        <div class="container">
+            <footer class="row">
+                <ul>
+                    <li><a href="#about">about</a></li>
+                    <li><a href="{{ path('cms_core.developers') }}">docs</a></li>
+                    <li><a href="mailto:support@pipestack.com">contact</a></li>
+                    <li><a href="#features">testimonial</a></li>
+                    <li><a href="#blog">blog</a></li>
+                </ul>
+            </footer>
+        </div>
+    </div>
+{% endblock %}
