@@ -158,17 +158,7 @@
 {% block signupBlocks %}
     {{ parent() }}
 {% endblock %}
-<div id="footer">
-    <div class="container">
-        <footer class="row">
-            <ul>
-                <li><a href="#about">about</a></li>
-                <li><a href="{{ path('cms_core.developers') }}">docs</a></li>
-                <li><a href="mailto:support@pipestack.com">contact</a></li>
-                <li><a href="#features">testimonial</a></li>
-                <li><a href="#blog">blog</a></li>
-            </ul>
-        </footer>
-    </div>
-</div>
+{% block welcomeFooter %}
+    {{ parent() }}
+{% endblock %}
 {% endblock %}

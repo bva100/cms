@@ -13,7 +13,7 @@
     <div class="span pull-left">
         <a id="logo-name" href="{{ path('_welcome') }}">PipeStack</a>
         <a href="mailto:support@pipestack.com" class="topnav-anchor" style="margin-left: 72px;">Support</a>
-        <a href="http://demo.pipestack.com" class="topnav-anchor">Mobile Demo</a>
+        <a href="{{ path('welcome.pricing') }}" class="topnav-anchor">Pricing</a>
         <a href="{{ path('cms_core.developers') }}" class="topnav-anchor">Docs</a>
     </div>
     <div class="span pull-right">
@@ -50,6 +50,22 @@
                     </div>
                 </section>
             </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block welcomeFooter %}
+    <div id="footer">
+        <div class="container">
+            <footer class="row">
+                <ul>
+                    <li><a href="#blog">blog</a></li>
+                    <li><a href="{{ path('cms_core.developers') }}">docs</a></li>
+                    <li><a href="mailto:support@pipestack.com">contact</a></li>
+                    <li><a href="{{ path('welcome.pricing') }}">pricing</a></li>
+                    <li><a href="http://demo.pipestack.com">mobile demo</a></li>
+                </ul>
+            </footer>
         </div>
     </div>
 {% endblock %}
