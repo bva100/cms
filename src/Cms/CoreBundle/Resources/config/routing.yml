@@ -34,6 +34,11 @@ welcome.faster_load_time:
   defaults: { _controller: CmsCoreBundle:Welcome:fasterLoadTime }
   methods: [GET]
 
+welcome.wordpress:
+  pattern: /wordpress
+  defaults: { _controller: CmsCoreBundle:Welcome:wordpress }
+  methods: [GET]
+
 #app help
 cms_core.help:
   pattern: /help

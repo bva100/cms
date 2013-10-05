@@ -38,6 +38,11 @@ class WelcomeController extends Controller {
         return $this->render('CmsCoreBundle:Welcome:fasterLoadTime.html.twig');
     }
 
+    public function wordpressAction()
+    {
+        return $this->render('CmsCoreBundle:Welcome:wordpress.html.twig');
+    }
+
     public function signupAction()
     {
         return $this->render('CmsCoreBundle:Welcome:signup.html.twig');
