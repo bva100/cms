@@ -24,6 +24,12 @@ welcome.cloud_baas:
   defaults: { _controller: CmsCoreBundle:Welcome:cloudBaas }
   methods: [GET]
 
+welcome.backend_cms:
+  pattern: /backend-cms
+  defaults: { _controller: CmsCoreBundle:Welcome:backendCms }
+  methods: [GET]
+
+
 #app help
 cms_core.help:
   pattern: /help

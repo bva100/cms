@@ -28,6 +28,11 @@ class WelcomeController extends Controller {
         return $this->render('CmsCoreBundle:Welcome:cloudBaas.html.twig');
     }
 
+    public function backendCmsAction()
+    {
+        return $this->render('CmsCoreBundle:Welcome:backendCms.html.twig');
+    }
+
     public function signupAction()
     {
         return $this->render('CmsCoreBundle:Welcome:signup.html.twig');
