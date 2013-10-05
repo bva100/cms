@@ -19,6 +19,11 @@ _welcome:
   defaults: { _controller: CmsCoreBundle:Welcome:index }
   methods: [GET]
 
+welcome.pricing:
+  pattern: /pricing
+  defaults: { _controller: CmsCoreBundle:Welcome:pricing }
+  methods: [GET]
+
 welcome.cloud_baas:
   pattern: /cloud-baas
   defaults: { _controller: CmsCoreBundle:Welcome:cloudBaas }

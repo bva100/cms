@@ -53,6 +53,11 @@ class WelcomeController extends Controller {
         return $this->render('CmsCoreBundle:Welcome:drupal.html.twig');
     }
 
+    public function pricingAction()
+    {
+        return $this->render('CmsCoreBundle:Welcome:pricing.html.twig');
+    }
+
     public function signupAction()
     {
         return $this->render('CmsCoreBundle:Welcome:signup.html.twig');

@@ -1,0 +1,62 @@
+{% extends 'CmsCoreBundle:Welcome:base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@CmsCoreBundle/Resources/public/js/welcome/index.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/welcome/pricing.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block title %} Pricing Plans {{  parent() }}{% endblock %}
+
+{% block metatags %}
+    <meta name="description" content="PipeStack pricing plans">
+{% endblock %}
+
+{% block body %}
+    <div id='topnav-container'>
+        <div class="container">
+            <nav class="row">
+                {% block welcomeHeader %}
+                    {{  parent() }}
+                {% endblock %}
+            </nav>
+        </div>
+    </div>
+    {% block signupBlocks %}
+        {{ parent() }}
+    {% endblock %}
+    <div id="primary-content">
+        <div class="container">
+            <section class="row">
+                <div class="span12">
+                    <h2>Don't like these prices? Have a questions? Let's talk! <a href="mailto:support@pipestack.com">Email Us</a>   </h2>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="container">
+            <footer class="row">
+                <ul>
+                    <li><a href="#about">about</a></li>
+                    <li><a href="{{ path('cms_core.developers') }}">docs</a></li>
+                    <li><a href="mailto:support@pipestack.com">contact</a></li>
+                    <li><a href="#features">testimonial</a></li>
+                    <li><a href="#blog">blog</a></li>
+                </ul>
+            </footer>
+        </div>
+    </div>
+{% endblock %}
