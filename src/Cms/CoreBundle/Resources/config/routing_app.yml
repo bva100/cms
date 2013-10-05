@@ -1,3 +1,19 @@
+#thanks
+cms_core.app_thanks_enterprise:
+  pattern: /thank-you-enterprise
+  defaults: { _controller: CmsCoreBundle:App:thanks, accountPlan: enterprise }
+  methods: [GET]
+
+cms_core.app_thanks_premium:
+  pattern: /thank-you-premium
+  defaults: { _controller: CmsCoreBundle:App:thanks, accountPlan: premium }
+  methods: [GET]
+
+cms_core.app_thanks_free:
+  pattern: /thank-you-free
+  defaults: { _controller: CmsCoreBundle:App:thanks, accountPlan: free }
+  methods: [GET]
+
 #app
 cms_core.app_index:
   pattern: /index

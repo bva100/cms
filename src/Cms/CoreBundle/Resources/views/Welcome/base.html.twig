@@ -23,3 +23,33 @@
         </span>
     </div>
 {% endblock %}
+
+{% block signupBlocks %}
+    <div id="signup-blocks">
+        <div class="container">
+            <div class="row">
+                <section class="span4">
+                    <div class='tile tile-signup'>
+                        <h3>Try for Free</h3>
+                        <p>Want to jump in? Start your 30 day free trial today. No payment information is required, just register and go.</p>
+                        <a href="{{ path('cms_core.user_register', {'accountPlan':'free'}) }}" class="btn btn-xlarge btn-primary">Try for Free</a>
+                    </div>
+                </section>
+                <section class="span4">
+                    <div class="tile tile-signup">
+                        <h3>Get Premium</h3>
+                        <p>Sign up for a premium account and get your PipeStack instance today. Prices start at $60 per month for 15 gigs of storage.</p>
+                        <a href="{{ path('cms_core.user_register', {'accountPlan':'premium'}) }}" class="btn btn-xlarge btn-info">Get Premium</a>
+                    </div>
+                </section>
+                <section class="span4">
+                    <div class="tile tile-signup">
+                        <h3>Get Enterprise</h3>
+                        <p>Sign up for an enterprise account for larger instances and priority customer support. Please <a href="mailto:support@pipestack.com">contact us</a> for more information. </p>
+                        <a href="{{ path('cms_core.user_register', {'accountPlan':'enterprise'}) }}" class="btn btn-xlarge btn-danger"><span class="hidden-tablet">Get </span>Enterprise</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

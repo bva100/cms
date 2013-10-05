@@ -1,0 +1,23 @@
+{% extends 'CmsCoreBundle:App:components.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@CmsCoreBundle/Resources/public/css/app/thanks.css'
+        filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block title %}
+    Thanks {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <h1>Thanks for signing up for PipeStack, {{ user.name.first }}!</h1>
+    <p>Your account was successfully created.</p>
+    {% if  accountPlan == "enterprise" %}
+        <p>We'll be contacting you shortly. Please expect an email from support@pipestack.com.</p>
+    {% endif %}
+    <p><a href="{{ path('cms_core.site_new') }}" class="btn btn-danger">Click Here to Proceed</a></p>
+{% endblock %}

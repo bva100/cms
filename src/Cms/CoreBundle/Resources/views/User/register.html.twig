@@ -25,7 +25,7 @@
                         {% endfor %}
                         <form action="{{ path('cms_core.user_create') }}" method="post">
                             <input type="hidden" name="token" value="{{ token }}"/>
-                            <input type="hidden" name="accountType" value="{{ accountType }}"/>
+                            <input type="hidden" name="accountPlan" value="{{ accountPlan }}"/>
                             <div class="control-group">
                                 <input type="text" id="first-name" class="login-field span" name="firstName" placeholder="first name" value="{{ firstName|default() }}" pattern="^[A-Za-z_]{1,20}$" title="First name must be all letters and no longer than 20 characters" required/>
                             </div>

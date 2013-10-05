@@ -25,4 +25,13 @@ class AppController extends Controller {
         ));
     }
 
+    public function thanksAction($accountPlan)
+    {
+        $this->get('session')->getFlashBag()->clear();
+        return $this->render('CmsCoreBundle:App:thanks.html.twig', array(
+            'user' => $this->getUser(),
+            'accountPlan' => $accountPlan
+        ));
+    }
+
 }

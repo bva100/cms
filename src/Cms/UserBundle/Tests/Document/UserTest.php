@@ -228,5 +228,15 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->user->hasSiteId('2134234'));
     }
 
+    /**
+     * @covers Cms\UserBundle\Document\User::setAccountPlan
+     * @covers Cms\UserBundle\Document\User::getAccountPlan
+     */
+    public function testSetGetAccountPlan()
+    {
+        $this->user->setAccountPlan('foobar');
+        $this->assertEquals('foobar', $this->user->getAccountPlan());
+    }
+
 
 }

@@ -88,6 +88,11 @@ class User implements UserInterface, \Serializable{
     private $siteIds;
 
     /**
+     * @MongoDB\String
+     */
+    private $accountPlan;
+
+    /**
      * Set default salt group index and default state
      */
     public function __construct($saltGroupIndex = 1, $state = 'active')
@@ -613,5 +618,23 @@ class User implements UserInterface, \Serializable{
     {
         return in_array($siteId, $this->siteIds);
     }
-    
+
+    /**
+     * @param $accountPlan
+     * @return $this
+     */
+    public function setAccountPlan($accountPlan)
+    {
+        $this->accountPlan = $accountPlan;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountPlan()
+    {
+        return $this->accountPlan;
+    }
+
 }
