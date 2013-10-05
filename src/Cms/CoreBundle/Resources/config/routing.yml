@@ -44,6 +44,11 @@ welcome.joomla:
   defaults: { _controller: CmsCoreBundle:Welcome:joomla }
   methods: [GET]
 
+welcome.drupal:
+  pattern: /drupal
+  defaults: { _controller: CmsCoreBundle:Welcome:drupal }
+  methods: [GET]
+
 #app help
 cms_core.help:
   pattern: /help
