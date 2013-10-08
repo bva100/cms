@@ -262,13 +262,15 @@ class ContentType extends Base {
     }
 
     /**
-     *  Not used
+     * Set categories. Add category is preferred method.
      *
-     * @throws \Exception
+     * @param array $categories
+     * @return $this
      */
-    public function setCategories()
+    public function setCategories(array $categories)
     {
-        throw new \Exception('setCategories is not used. Try using addCategory instead.');
+        $this->categories = $categories;
+        return $this;
     }
 
     /**
@@ -367,15 +369,17 @@ class ContentType extends Base {
     }
 
     /**
-     * @param array $fields
+     * Set tags. Add tag is preferred method.
+     *
+     * @param array $tags
      * @return $this
      */
-    public function setFields(array $fields)
+    public function setTags(array $tags)
     {
-        $this->fields = $fields;
+        $this->tags = $tags;
         return $this;
     }
-
+    
     /**
      * Add a tag
      *
@@ -415,6 +419,16 @@ class ContentType extends Base {
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * @param array $fields
+     * @return $this
+     */
+    public function setFields(array $fields)
+    {
+        $this->fields = $fields;
+        return $this;
     }
 
     /**
