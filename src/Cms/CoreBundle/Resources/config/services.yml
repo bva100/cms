@@ -25,6 +25,7 @@ parameters:
     cms.api_output.class: Cms\CoreBundle\Services\Api\Output
     cms.api_base.class: Cms\CoreBundle\Services\Api\Base
     cms.acl_helper.class: Cms\CoreBundle\Services\Acl\Helper
+    cms.entity_setter_content_type.class: Cms\CoreBundle\Services\EntitySetter\ContentType
 
 
 services:
@@ -89,3 +90,5 @@ services:
         class: %cms.api_base.class%
     acl_helper:
         class: %cms.acl_helper.class%
+    set_contentType:
+        class: %cms.entity_setter_content_type.class%
