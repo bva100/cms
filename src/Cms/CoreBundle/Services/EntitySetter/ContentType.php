@@ -31,8 +31,14 @@ class ContentType extends AbstractEntitySetter {
         if ( isset($description) ){
             $this->entity->setDescription($description);
         }
-        if ( isset($formats) ){
-            $this->entity->setFormats($formats);
+        if ( isset($formatType) and $formatType === 'static' )
+        {
+            $this->entity->addFormat('static');
+        }
+        else if( isset($formatType) and $formatType === 'dynamic')
+        {
+            $this->entity->addFormat('single');
+            $this->entity->addFormat('loop');
         }
         if ( isset($loops) ){
             $this->entity->setLoops($loops);

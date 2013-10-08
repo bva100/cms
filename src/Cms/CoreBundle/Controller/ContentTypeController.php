@@ -18,40 +18,20 @@ class ContentTypeController extends Controller {
     {
         $id = (string)$this->getRequest()->request->get('id');
         $siteId = (string)$this->getRequest()->request->get('siteId');
-        $name = (string)$this->getRequest()->request->get('name');
-        $slugPrefix = (string)$this->getRequest()->request->get('slugPrefix');
-        $formatType = (string)$this->getRequest()->request->get('format');
         $site = $this->get('persister')->getRepo('CmsCoreBundle:Site')->find($siteId);
-        if ( ! $site )
-        {
+        if ( ! $site ){
             throw $this->createNotFoundException('Site not found. Be sure the proper siteId was passed.');
         }
-        // validate that current user has access to edit sites content types here
         $contentType = $id ? $site->getContentType($id) : new ContentType();
-        if ( $name )
-        {
-            $contentType->setName($name);
+        if ( ! $contentType ){
+            throw $this->createNotFoundException('ContentType with id '.$id.' not found');
         }
-        if ( $slugPrefix )
-        {
-            $contentType->setSlugPrefix($slugPrefix);
+        $contentType = $this->get('set_contentType')->setRequest($this->getRequest())->setEntity($contentType)->patch();
+        if ( ! $id ){
+            $site->addContentType($contentType);
         }
-        if ( $formatType === 'static' )
-        {
-            $contentType->addFormat('static');
-        }
-        else if($formatType === 'dynamic')
-        {
-            $contentType->addFormat('single');
-            $contentType->addFormat('loop');
-        }
-        $site->addContentType($contentType);
-        $success = $this->get('persister')->save($site);
-        $xmlResponse = $this->get('xmlResponse')->execute($this->getRequest(), $success);
-        if ( $xmlResponse )
-        {
-            return $xmlResponse;
-        }
+        // validate that current user has access to edit sites content types here
+        $this->get('persister')->save($site);
         return $this->redirect($this->generateUrl('cms_core.site_read', array('id' => $siteId)));
     }
 

@@ -10,7 +10,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
     {
         $name = 'foobar';
         $description = 'fooz and barz';
-        $formats = array('foo', 'bars');
+        $formatType = 'dynamic';
         $loops = array('bing', 'bong');
         $templateName = 'steveJobs';
         $slugPrefix = 'foo/';
@@ -27,7 +27,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase {
         $patchedEntity = $service->patch();
         $this->assertEquals($name, $patchedEntity->getName());
         $this->assertEquals($description, $patchedEntity->getDescription());
-        $this->assertEquals($formats, $patchedEntity->getFormats());
+        $this->assertEquals(array('single', 'loop'), $patchedEntity->getFormats());
         $this->assertEquals($loops, $patchedEntity->getLoops());
         $this->assertEquals($templateName, $patchedEntity->getTemplateName());
         $this->assertEquals($slugPrefix, $patchedEntity->getSlugPrefix());
